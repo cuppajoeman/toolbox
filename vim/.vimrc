@@ -1,4 +1,4 @@
-"                                  _
+"                                _
 "  _______  ______  ____  ____ _  (_)___  ___  ____ ___  ____ _____
 " / ___/ / / / __ \/ __ \/ __ `/ / / __ \/ _ \/ __ `__ \/ __ `/ __ \
 "/ /__/ /_/ / /_/ / /_/ / /_/ / / / /_/ /  __/ / / / / / /_/ / / / /
@@ -17,6 +17,8 @@
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-fugitive'
+Plug 'takac/vim-hardtime'
 call plug#end()
 
 
@@ -35,6 +37,10 @@ call plug#end()
 " Disables automatic commenting on newline:
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
+" Open this file easily
+    map <leader>ve :vs ~/.vimrc<CR>
+    map <leader>vr :source ~/.vimrc<CR>
+
 " Goyo for more readable text
     map <leader>g :Goyo \| set linebreak<CR>
     set nocompatible
@@ -43,6 +49,11 @@ call plug#end()
 
 " Code
 	syntax on
+	" Verilog
+	autocmd BufNewFile,BufRead *.v,*.vs set syntax=verilog
+
+" Hardmode
+	let g:hardtime_default_on = 1
 
 " Persistent Undo
 	set noswapfile
@@ -76,5 +87,6 @@ call plug#end()
 	colorscheme gruvbox
 
 " middle of line command
-	map gm :call cursor(0, virtcol('$')/2)<CR>
+	map <leader>m :call cursor(0, virtcol('$')/2)<CR>
+
 
