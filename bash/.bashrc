@@ -112,5 +112,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# === Custom Stuff ===
+# === Vim Mode! ===
 set -o vi
+# Automatically ls after cd
+cdls() { cd "$@" && ls -al; }

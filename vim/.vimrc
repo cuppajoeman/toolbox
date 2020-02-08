@@ -1,4 +1,4 @@
-"                                _
+"                                  _
 "  _______  ______  ____  ____ _  (_)___  ___  ____ ___  ____ _____
 " / ___/ / / / __ \/ __ \/ __ `/ / / __ \/ _ \/ __ `__ \/ __ `/ __ \
 "/ /__/ /_/ / /_/ / /_/ / /_/ / / / /_/ /  __/ / / / / / /_/ / / / /
@@ -16,7 +16,10 @@
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'ajh17/VimCompletesMe'
 Plug 'morhetz/gruvbox'
+Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'takac/vim-hardtime'
 call plug#end()
@@ -86,7 +89,17 @@ call plug#end()
 	set background=dark
 	colorscheme gruvbox
 
+" Bar
+	let g:airline_section_b = '%{strftime("%H:%M")}'
+
+" Vimcompletesme selection
+	inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" openframeworks compile
+	" autocmd  BufRead,BufNewFile  *.cpp let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
 " middle of line command
 	map <leader>m :call cursor(0, virtcol('$')/2)<CR>
 
+" Open bottom terminal
+	map <leader>bt :new +resize10 term://bash<CR>
 
