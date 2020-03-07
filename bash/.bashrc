@@ -114,5 +114,9 @@ fi
 
 # === Vim Mode! ===
 set -o vi
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 # Automatically ls after cd
 cdls() { cd "$@" && ls -al; }

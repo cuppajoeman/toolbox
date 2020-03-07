@@ -9,6 +9,12 @@ alias brc="vim ~/.bashrc"
 alias bal="vim ~/.bash_aliases"
 alias brld="source ~/.bash_profile"
 
+# Arch linux Aliases
+alias pi="sudo pacman -S"
+
+# Locations
+alias bs="cd ~/basic-system"
+
 # Ranger (drops you into the current dir on exit)
 alias ran='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 
