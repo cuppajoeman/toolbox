@@ -1,11 +1,16 @@
 #-------------------------------------------------------------
 # My custom stuff
 #-------------------------------------------------------------
+
+# Files
 alias v="vim"
 alias vrc="vim ~/.vimrc"
 alias brc="vim ~/.bashrc"
 alias bal="vim ~/.bash_aliases"
 alias brld="source ~/.bash_profile"
+
+# Ranger (drops you into the current dir on exit)
+alias ran='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 
 #-------------------------------------------------------------
 # Git Alias Commands

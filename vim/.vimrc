@@ -16,6 +16,7 @@
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
+Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
 Plug 'ajh17/VimCompletesMe'
 Plug 'morhetz/gruvbox'
@@ -103,3 +104,23 @@ call plug#end()
 " Open bottom terminal
 	map <leader>bt :new +resize10 term://bash<CR>
 
+" Help in new tab
+	com! -nargs=1 Th :tab h <args> 
+
+" vim hardcodes background color erase even if the terminfo file does
+" not contain bce (not to mention that libvte based terminals
+" incorrectly contain bce in their terminfo files). This causes
+" incorrect background rendering when using a color theme with a
+" background color.
+	let &t_ut=''
+
+" Copy to 'clipboard registry'
+" vmap <C-c> "*y
+
+" Select all text
+" nmap <C-a> ggVG
+
+nnoremap <C-y> "+y
+vnoremap <C-y> "+y
+nnoremap <C-p> "+gP
+vnoremap <C-p> "+gP
