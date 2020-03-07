@@ -3,3 +3,6 @@ stow vim
 stow zathura
 stow bash
 stow kitty
+stow ranger
+stow tmux
+stow xmodmap
