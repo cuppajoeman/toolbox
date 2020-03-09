@@ -1,0 +1,3 @@
+# tmux
+* TPM
+	* tmux - resurrect

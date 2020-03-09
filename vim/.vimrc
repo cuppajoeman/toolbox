@@ -16,6 +16,8 @@
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/vim-peekaboo'
+Plug 'SirVer/ultisnips'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
 Plug 'ajh17/VimCompletesMe'
@@ -23,6 +25,7 @@ Plug 'morhetz/gruvbox'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'takac/vim-hardtime'
+Plug 'lervag/vimtex'
 call plug#end()
 
 
@@ -61,8 +64,18 @@ call plug#end()
 
 " Persistent Undo
 	set noswapfile
-	set undofile " Maintain undo history between sessions
-	set undodir=~/.vim/undodir
+" Let's save undo info!
+	if !isdirectory($HOME."/.vim")
+		call mkdir($HOME."/.vim", "", 0770)
+	endif
+
+	" All permissions only for me (privacy)
+	if !isdirectory($HOME."/.vim/undo-dir")
+		call mkdir($HOME."/.vim/undo-dir", "", 0700)
+	endif
+
+	set undodir=~/.vim/undo-dir
+	set undofile
 
 " Splits open at the bottom and right
     set splitbelow
@@ -107,13 +120,6 @@ call plug#end()
 " Help in new tab
 	com! -nargs=1 Th :tab h <args> 
 
-" vim hardcodes background color erase even if the terminfo file does
-" not contain bce (not to mention that libvte based terminals
-" incorrectly contain bce in their terminfo files). This causes
-" incorrect background rendering when using a color theme with a
-" background color.
-	let &t_ut=''
-
 " Copy to 'clipboard registry'
 " vmap <C-c> "*y
 
@@ -124,3 +130,23 @@ nnoremap <C-y> "+y
 vnoremap <C-y> "+y
 nnoremap <C-p> "+gP
 vnoremap <C-p> "+gP
+
+"  ___               ___   ___         ___  
+" |   | |     |   | |       |   |\  | |     
+" |-+-  |     |   | | +-    +   | + |  -+-  
+" |     |     |   | |   |   |   |  \|     | 
+"        ---   ---   ---   ---         ---  
+                                          
+" VimTex 
+	let g:vimtex_view_method = 'zathura'
+
+	map <F1> :sp ~/.vim/LocalSnippets/math.snippets<CR>
+	map <F2> :sp ~/.vim/LocalSnippets/words.snippets<CR>
+	map <F3> :sp ~/.vim/LocalSnippets/tex.snippets<CR>
+
+" Ultisnips
+	let g:UltiSnipsExpandTrigger="<tab>"
+	let g:UltiSnipsJumpForwardTrigger="<tab>"
+	let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+	let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/LocalSnippets']
+
