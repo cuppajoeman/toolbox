@@ -2,6 +2,10 @@
 # My custom stuff
 #-------------------------------------------------------------
 
+# Tools
+alias uoftsshY="ssh -Y nolancal@teach.cs.utoronto.ca"
+alias uoftssh="ssh -Y nolancal@teach.cs.utoronto.ca"
+
 # Files
 alias v="vim"
 alias vrc="vim ~/.vimrc"
