@@ -20,7 +20,6 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'SirVer/ultisnips'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
-Plug 'ajh17/VimCompletesMe'
 Plug 'morhetz/gruvbox'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
@@ -149,4 +148,5 @@ vnoremap <C-p> "+gP
 	let g:UltiSnipsJumpForwardTrigger="<tab>"
 	let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 	let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/LocalSnippets']
+
 
