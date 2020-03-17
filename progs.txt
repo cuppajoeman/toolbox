@@ -1,0 +1,7 @@
+zathura
+flameshot
+weechat
+ranger
+spotify
+gvim
+tmux

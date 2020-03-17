@@ -17,7 +17,6 @@
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-peekaboo'
-Plug 'SirVer/ultisnips'
 Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
 Plug 'morhetz/gruvbox'
@@ -25,6 +24,7 @@ Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'takac/vim-hardtime'
 Plug 'lervag/vimtex'
+Plug 'https://github.com/sophacles/vim-processing'
 call plug#end()
 
 

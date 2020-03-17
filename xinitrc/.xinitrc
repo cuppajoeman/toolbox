@@ -3,6 +3,7 @@
 # ~/.xinitrc
 #
 # Executed by startx (run your window manager from here)
+setxkbmap -option caps:escape
 
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
