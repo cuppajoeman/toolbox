@@ -5,6 +5,7 @@
 # Tools
 alias uoftsshY="ssh -Y nolancal@teach.cs.utoronto.ca"
 alias uoftssh="ssh -Y nolancal@teach.cs.utoronto.ca"
+alias swap="setxkbmap -option caps:swapescape"
 
 # Files
 alias v="vim"
@@ -29,7 +30,7 @@ alias g="git status"
 alias ga="git add"
 alias gaa="git add ."
 #alias gau="git add -u"
-alias gc="git commit -m"
+alias gc="git commit"
 #alias gca="git commit -am"
 #alias gb="git branch"
 #alias gbd="git branch -d"

@@ -112,6 +112,7 @@ call plug#end()
 	" autocmd  BufRead,BufNewFile  *.cpp let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
 " middle of line command
 	map <leader>m :call cursor(0, virtcol('$')/2)<CR>
+	map <leader>M :make \| copen <CR>
 
 " Open bottom terminal
 	map <leader>bt :new +resize10 term://bash<CR>
