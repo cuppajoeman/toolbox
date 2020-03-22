@@ -5,5 +5,4 @@ stow bash
 stow kitty
 stow ranger
 stow tmux
-stow xmodmap
-stow xinitrc
+stow xprofile

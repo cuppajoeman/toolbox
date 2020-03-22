@@ -24,7 +24,8 @@ Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'takac/vim-hardtime'
 Plug 'lervag/vimtex'
-Plug 'https://github.com/sophacles/vim-processing'
+Plug 'sophacles/vim-processing'
+Plug 'ajh17/VimCompletesMe'
 call plug#end()
 
 
@@ -111,7 +112,8 @@ call plug#end()
 " openframeworks compile
 	" autocmd  BufRead,BufNewFile  *.cpp let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
 " middle of line command
-	map <leader>m :call cursor(0, virtcol('$')/2)<CR>
+	" map <leader>m :call cursor(0, virtcol('$')/2)<CR>
+	map <leader>m :make<CR>
 	map <leader>M :make \| copen <CR>
 
 " Open bottom terminal
@@ -137,17 +139,4 @@ vnoremap <C-p> "+gP
 " |     |     |   | |   |   |   |  \|     | 
 "        ---   ---   ---   ---         ---  
                                           
-" VimTex 
-	let g:vimtex_view_method = 'zathura'
-
-	map <F1> :sp ~/.vim/LocalSnippets/math.snippets<CR>
-	map <F2> :sp ~/.vim/LocalSnippets/words.snippets<CR>
-	map <F3> :sp ~/.vim/LocalSnippets/tex.snippets<CR>
-
-" Ultisnips
-	let g:UltiSnipsExpandTrigger="<tab>"
-	let g:UltiSnipsJumpForwardTrigger="<tab>"
-	let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-	let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/LocalSnippets']
-
-
+autocmd FileType vim let b:vcm_tab_complete = 'vim'

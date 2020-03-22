@@ -5,3 +5,4 @@ ranger
 spotify
 gvim
 tmux
+weechat
