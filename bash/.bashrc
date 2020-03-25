@@ -120,3 +120,5 @@ export EDITOR="$VISUAL"
 
 # Automatically ls after cd
 cdls() { cd "$@" && ls -al; }
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

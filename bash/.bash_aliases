@@ -15,7 +15,7 @@ alias bal="vim ~/.bash_aliases"
 alias brld="source ~/.bash_profile"
 
 # Arch linux Aliases
-alias pi="sudo pacman -S"
+alias ai="sudo apt install"
 
 # Locations
 alias bs="cd ~/basic-system"
