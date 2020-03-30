@@ -18,9 +18,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'jiangmiao/auto-pairs'
-Plug 'vim-airline/vim-airline'
-Plug 'morhetz/gruvbox'
-Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'takac/vim-hardtime'
 Plug 'lervag/vimtex'
@@ -101,7 +98,7 @@ call plug#end()
 
 " colorscheme 
 	set background=dark
-	colorscheme gruvbox
+	" colorscheme gruvbox
 
 " Bar
 	let g:airline_section_b = '%{strftime("%H:%M")}'

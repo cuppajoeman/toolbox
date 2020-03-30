@@ -1,0 +1,30 @@
+# Make sure you have weechat-python installed
+
+/server add freenode chat.freenode.net
+/set irc.server.freenode.nicks "uname"
+
+/set irc.server.freenode.autoconnect on
+
+/set irc.server.freenode.addresses "chat.freenode.net/7000"
+/set irc.server.freenode.ssl on
+/set irc.server.freenode.sasl_username "mynick"
+/set irc.server.freenode.sasl_password "xxxxxxx"
+
+/connect freenode
+
+# Mode indicator & vi_buffer
+/script install vimode.py
+/fset vimode.mode_indicator
+# press s then enter
+"mode_indicator+[input_prompt]+(away),[input_search], [input_paste],input_text,[vi_buffer]"
+
+# cmd_completion
+/fset weechat.bar.status.items
+# press s then enter
+"[time],[buffer_last_number],[buffer_plugin],buffer_number+:+buffer_name+(buffer_modes)+{buffer_nicklist_count}+buffer_zoom+buffer_filter,scroll,[lag],[hotlist],completion,cmd_completion"
+
+# Enable vim like search
+/set plugins.var.python.vimode.search_vim on
+
+
+

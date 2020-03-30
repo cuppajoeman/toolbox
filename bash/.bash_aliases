@@ -6,7 +6,11 @@
 alias uoftsshY="ssh -Y nolancal@teach.cs.utoronto.ca"
 alias uoftssh="ssh -Y nolancal@teach.cs.utoronto.ca"
 alias swap="setxkbmap -option caps:swapescape"
+alias q="exit"
 
+# Program
+alias sp_em="emacs --with-profile spacemacs"
+ 
 # Files
 alias v="vim"
 alias vrc="vim ~/.vimrc"
@@ -14,8 +18,12 @@ alias brc="vim ~/.bashrc"
 alias bal="vim ~/.bash_aliases"
 alias brld="source ~/.bash_profile"
 
-# Arch linux Aliases
-alias ai="sudo apt install"
+#  linux Aliases
+alias xi="sudo xbps-install -S "
+alias xq="sudo xbps-query -Rs "
+alias xrrec="sudo xbps-remove -R "
+alias xr="sudo xbps-remove "
+alias sd="sudo shutdown -h now"
 
 # Locations
 alias bs="cd ~/basic-system"
