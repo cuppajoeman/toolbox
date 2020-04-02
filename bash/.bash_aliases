@@ -9,7 +9,7 @@ alias swap="setxkbmap -option caps:swapescape"
 alias q="exit"
 
 # Program
-alias sp_em="emacs --with-profile spacemacs"
+alias spem="emacs --with-profile spacemacs"
  
 # Files
 alias v="vim"
@@ -17,6 +17,8 @@ alias vrc="vim ~/.vimrc"
 alias brc="vim ~/.bashrc"
 alias bal="vim ~/.bash_aliases"
 alias brld="source ~/.bash_profile"
+alias krc="vim .config/kitty/kitty.conf"
+
 
 #  linux Aliases
 alias xi="sudo xbps-install -S "

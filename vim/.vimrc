@@ -23,6 +23,7 @@ Plug 'takac/vim-hardtime'
 Plug 'lervag/vimtex'
 Plug 'sophacles/vim-processing'
 Plug 'ajh17/VimCompletesMe'
+Plug 'dylanaraps/wal.vim'
 call plug#end()
 
 
@@ -97,7 +98,8 @@ call plug#end()
     set shiftwidth=4
 
 " colorscheme 
-	set background=dark
+	colorscheme wal
+	"set background=dark
 	" colorscheme gruvbox
 
 " Bar
