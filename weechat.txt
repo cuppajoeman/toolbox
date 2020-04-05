@@ -18,3 +18,6 @@
 * multiline
 * autojoin
 * Notifications: https://github.com/s3rvac/weechat-notify-send (install dunst and libnotify)
+* smart filter: 
+	* /set irc.look.smart_filter on 
+	* /filter add irc_smart * irc_smart_filter * 

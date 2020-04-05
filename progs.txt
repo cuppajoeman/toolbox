@@ -1,8 +1,14 @@
 zathura
+kitty
+wal
+feh
+firefox (hopefully brave)
+steam
+tex-live
+i3-gaps
+emacs
 flameshot
 weechat
 ranger
-spotify
 gvim
 tmux
-weechat
