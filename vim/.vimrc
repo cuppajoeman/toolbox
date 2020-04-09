@@ -6,11 +6,11 @@
 "         /_/   /_/         /___/
 
 " Automatic vim-plug installation
-	if empty(glob('~/.vim/autoload/plug.vim'))
-	  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-	endif
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 
 " Plugins
@@ -20,10 +20,10 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-fugitive'
 Plug 'takac/vim-hardtime'
-Plug 'lervag/vimtex'
+Plug 'morhetz/gruvbox'
 Plug 'sophacles/vim-processing'
+Plug 'vim-airline/vim-airline'
 Plug 'ajh17/VimCompletesMe'
-Plug 'dylanaraps/wal.vim'
 call plug#end()
 
 
@@ -98,9 +98,9 @@ call plug#end()
     set shiftwidth=4
 
 " colorscheme 
-	colorscheme wal
-	"set background=dark
-	" colorscheme gruvbox
+	" colorscheme wal
+	set background=dark
+	colorscheme gruvbox
 
 " Bar
 	let g:airline_section_b = '%{strftime("%H:%M")}'

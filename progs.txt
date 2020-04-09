@@ -1,11 +1,15 @@
+git
+curl
 zathura
-kitty
+fzf
 wal
-feh
-firefox (hopefully brave)
+firefox
+lingot
+kazam
+GTick
 steam
-tex-live
-i3-gaps
+texlive
+slack
 emacs
 flameshot
 weechat
