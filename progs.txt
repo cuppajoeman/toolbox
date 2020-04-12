@@ -16,3 +16,5 @@ weechat
 ranger
 gvim
 tmux
+qalculate
+youtube-dl
