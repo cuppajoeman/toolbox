@@ -15,7 +15,7 @@
 # PLUGINS:
 
 * VIM in IRC,  https://github.com/GermainZ/weechat-vimode 
-* multiline
+* multiline.pl
 * autojoin
 * Notifications: https://github.com/s3rvac/weechat-notify-send (install dunst and libnotify)
 * smart filter: 

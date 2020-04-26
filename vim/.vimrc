@@ -21,9 +21,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-fugitive'
 Plug 'takac/vim-hardtime'
 Plug 'morhetz/gruvbox'
-Plug 'sophacles/vim-processing'
 Plug 'vim-airline/vim-airline'
-Plug 'ajh17/VimCompletesMe'
+Plug 'SirVer/ultisnips'
 call plug#end()
 
 
@@ -113,6 +112,9 @@ call plug#end()
 " middle of line command
 	" map <leader>m :call cursor(0, virtcol('$')/2)<CR>
 	map <leader>m :make<CR>
+	map <leader>c :! caou %<CR>
+	map <leader>r :! rm -v !(*.md)<CR>
+
 	map <leader>M :make \| copen <CR>
 
 " Open bottom terminal
@@ -139,3 +141,17 @@ vnoremap <C-p> "+gP
 "        ---   ---   ---   ---         ---  
                                           
 autocmd FileType vim let b:vcm_tab_complete = 'vim'
+
+"" Ultisnips
+
+	map <F2> :sp ~/.vim/LocalSnippets/words.snippets<CR>
+	map <F3> :sp ~/.vim/LocalSnippets/markdown.snippets<CR>
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+	let g:UltiSnipsExpandTrigger="<tab>"
+	let g:UltiSnipsJumpForwardTrigger="<tab>"
+	let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+	let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/LocalSnippets']
+	filetype plugin indent on
+
+

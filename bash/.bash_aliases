@@ -10,6 +10,8 @@ alias q="exit"
 
 # Program
 alias spem="emacs --with-profile spacemacs"
+alias ydlm="youtube-dl -x --audio-format mp3 "
+
  
 # Files
 alias v="vim"
@@ -21,11 +23,8 @@ alias krc="vim .config/kitty/kitty.conf"
 
 
 #  linux Aliases
-alias xi="sudo xbps-install -S "
-alias xq="sudo xbps-query -Rs "
-alias xrrec="sudo xbps-remove -R "
-alias xr="sudo xbps-remove "
-alias sd="sudo shutdown -h now"
+alias ai="sudo apt install"
+alias ar="sudo apt remove"
 
 # Locations
 alias bs="cd ~/basic-system"
