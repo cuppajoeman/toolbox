@@ -33,7 +33,6 @@ search .steam
 search local
 search app
 shell tea
-search steam
 search apps
 search config
 open_with 
@@ -43,3 +42,9 @@ mkdir creative
 delete
 rename academic.html
 rename creative.html
+search steam
+search md
+rename 2020-04-24.md
+search M
+search MEGA
+mkdir work

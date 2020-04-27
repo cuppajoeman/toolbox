@@ -2,13 +2,10 @@ git
 curl
 zathura
 fzf
-wal
 firefox
-lingot
-kazam
 GTick
 steam
-texlive
+texlive - install online
 slack
 emacs
 flameshot
@@ -16,8 +13,8 @@ weechat
 ranger
 gvim
 tmux
-qalculate
 youtube-dl
 neofetch
 keynav
-spt
+openframeworks
+pandoc
