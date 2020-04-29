@@ -23,6 +23,7 @@ Plug 'takac/vim-hardtime'
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'SirVer/ultisnips'
+Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 
@@ -100,6 +101,9 @@ call plug#end()
 	" colorscheme wal
 	set background=dark
 	colorscheme gruvbox
+
+" See through bg
+	hi Normal guibg=NONE ctermbg=NONE
 
 " Bar
 	let g:airline_section_b = '%{strftime("%H:%M")}'

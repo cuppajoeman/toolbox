@@ -12,6 +12,7 @@ flameshot
 weechat
 ranger
 gvim
+guake
 tmux
 youtube-dl
 neofetch

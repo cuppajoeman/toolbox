@@ -7,9 +7,9 @@ alias uoftsshY="ssh -Y nolancal@teach.cs.utoronto.ca"
 alias uoftssh="ssh -Y nolancal@teach.cs.utoronto.ca"
 alias swap="setxkbmap -option caps:swapescape"
 alias q="exit"
+alias h="cd ~/"
 
 # Program
-alias spem="emacs --with-profile spacemacs"
 alias ydlm="youtube-dl -x --audio-format mp3 "
 
  
@@ -18,13 +18,14 @@ alias v="vim"
 alias vrc="vim ~/.vimrc"
 alias brc="vim ~/.bashrc"
 alias bal="vim ~/.bash_aliases"
-alias brld="source ~/.bash_profile"
-alias krc="vim .config/kitty/kitty.conf"
+alias todo="vim ~/MEGA/todo.md"
+alias brld="source ~/.bashrc"
 
 
 #  linux Aliases
 alias ai="sudo apt install"
 alias ar="sudo apt remove"
+alias as="apt-cache search"
 
 # Locations
 alias bs="cd ~/basic-system"

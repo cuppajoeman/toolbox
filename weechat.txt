@@ -2,13 +2,14 @@
 
 /server add freenode chat.freenode.net
 /set irc.server.freenode.nicks "uname"
+/set irc.server.freenode.username "My user name"
 
 /set irc.server.freenode.autoconnect on
 
 /set irc.server.freenode.addresses "chat.freenode.net/7000"
 /set irc.server.freenode.ssl on
 /set irc.server.freenode.sasl_username "mynick"
-/set irc.server.freenode.sasl_password "xxxxxxx"
+/tset irc.server.freenode.sasl_password "xxxxxxx"
 
 /connect freenode
 

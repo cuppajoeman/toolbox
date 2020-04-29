@@ -2,7 +2,6 @@
 * video speed - https://addons.mozilla.org/en-CA/firefox/addon/videospeed/?src=search
 * startpage
 * vimium ff 
-  * default search engine - https://www.startpage.com/do/dsearch?query=
 * Remove YouTube Recommended Videos, Comments - https://addons.mozilla.org/en-CA/firefox/addon/youtube-recommended-videos/
 * bitwarden
 * darkmode

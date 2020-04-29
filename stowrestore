@@ -2,5 +2,5 @@
 stow vim
 stow zathura
 stow bash
-stow ranger
 stow tmux
+stow ranger
