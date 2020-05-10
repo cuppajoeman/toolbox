@@ -8,6 +8,7 @@ alias uoftssh="ssh -Y nolancal@teach.cs.utoronto.ca"
 alias swap="setxkbmap -option caps:swapescape"
 alias q="exit"
 alias h="cd ~/"
+alias m="cd ~/MEGA"
 
 # Program
 alias ydlm="youtube-dl -x --audio-format mp3 "
@@ -17,9 +18,11 @@ alias ydlm="youtube-dl -x --audio-format mp3 "
 alias v="vim"
 alias vrc="vim ~/.vimrc"
 alias brc="vim ~/.bashrc"
+alias trc="vim ~/.tmux.conf"
 alias bal="vim ~/.bash_aliases"
 alias todo="vim ~/MEGA/todo.md"
 alias brld="source ~/.bashrc"
+alias trld="tmux source-file ~/.tmux.conf"
 
 
 #  linux Aliases

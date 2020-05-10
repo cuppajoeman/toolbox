@@ -24,6 +24,8 @@ Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'SirVer/ultisnips'
 Plug 'plasticboy/vim-markdown'
+Plug 'tpope/vim-surround'
+Plug 'haya14busa/incsearch.vim'
 call plug#end()
 
 
@@ -127,16 +129,14 @@ call plug#end()
 " Help in new tab
 	com! -nargs=1 Th :tab h <args> 
 
-" Copy to 'clipboard registry'
-" vmap <C-c> "*y
+" Copy file to clipboard
+	let @c = 'gg"*yG'
 
-" Select all text
-" nmap <C-a> ggVG
-
-nnoremap <C-y> "+y
-vnoremap <C-y> "+y
-nnoremap <C-p> "+gP
-vnoremap <C-p> "+gP
+" Simple copy pasting
+	nnoremap <C-y> "+y
+	vnoremap <C-y> "+y
+	nnoremap <C-p> "+gP
+	vnoremap <C-p> "+gP
 
 "  ___               ___   ___         ___  
 " |   | |     |   | |       |   |\  | |     
@@ -158,4 +158,14 @@ autocmd FileType vim let b:vcm_tab_complete = 'vim'
 	let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/LocalSnippets']
 	filetype plugin indent on
 
-
+" Inc search
+	map /  <Plug>(incsearch-forward)
+	map ?  <Plug>(incsearch-backward)
+	set hlsearch
+	let g:incsearch#auto_nohlsearch = 1
+	map n  <Plug>(incsearch-nohl-n)
+	map N  <Plug>(incsearch-nohl-N)
+	map *  <Plug>(incsearch-nohl-*)
+	map #  <Plug>(incsearch-nohl-#)
+	map g* <Plug>(incsearch-nohl-g*)
+	map g# <Plug>(incsearch-nohl-g#)map g/ <Plug>(incsearch-stay)
