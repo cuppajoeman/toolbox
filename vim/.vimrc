@@ -26,6 +26,7 @@ Plug 'SirVer/ultisnips'
 Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-surround'
 Plug 'haya14busa/incsearch.vim'
+Plug 'lervag/vimtex'
 call plug#end()
 
 
@@ -146,10 +147,16 @@ call plug#end()
                                           
 autocmd FileType vim let b:vcm_tab_complete = 'vim'
 
+"" Vimtex
+	let g:vimtex_view_method='zathura'
+	let g:tex_flavor = 'latex'
+	au BufReadPost *.tex set syntax=tex
+
 "" Ultisnips
 
 	map <F2> :sp ~/.vim/LocalSnippets/words.snippets<CR>
-	map <F3> :sp ~/.vim/LocalSnippets/markdown.snippets<CR>
+	map <F3> :sp ~/.vim/LocalSnippets/tex.snippets<CR>
+	map <F4> :sp ~/.vim/LocalSnippets/math.snippets<CR>
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 	let g:UltiSnipsExpandTrigger="<tab>"
