@@ -9,7 +9,7 @@
 /set irc.server.freenode.addresses "chat.freenode.net/7000"
 /set irc.server.freenode.ssl on
 /set irc.server.freenode.sasl_username "mynick"
-/tset irc.server.freenode.sasl_password "xxxxxxx"
+/set irc.server.freenode.sasl_password "xxxxxxx"
 
 /connect freenode
 
@@ -22,3 +22,5 @@
 * smart filter: 
 	* /set irc.look.smart_filter on 
 	* /filter add irc_smart * irc_smart_filter * 
+	* if they haven't spoken in the past X minutes then they get filtered
+		/set irc.look.smart_filter_delay 5

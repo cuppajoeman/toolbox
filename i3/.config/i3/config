@@ -15,102 +15,55 @@ set $mod Mod4
 # is used in the bar {} block below.
 font pango:monospace 8
 
-# Bar
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
-# Gaps
-for_window [class=".*"] border pixel 2
-gaps inner 20
-gaps outer 20
-# smart_gaps on
-
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
-# Before i3 v4.8, we used to recommend this one as the default:
-# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec st
+bindsym $mod+Return exec i3-sensible-terminal
 
-# start a ranger session Fix this?
-#bindsym $mod+r exec rxvt-unicode -e ranger
-
-# kill focused window
+# kill focused window - (quickly: removed shift)
 bindsym $mod+q kill
 
-# === HARDWARE ===
-# Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+# Screenshot
+bindsym $mod+Print exec flameshot gui
+
+# Browser 
+bindsym $mod+b exec brave
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -nb "$fg" -nf "$bg" -sb "$bg" -sf "$fg"
-
+bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
-# === Startup Programs ===
-
-# Make the menu key act as right windows key, xset disables autorepeat
-exec --no-startup-id xmodmap -e 'keycode 135 = Super_R' && xset -r 135
-
-# Start mpd
-exec --no-startup-id mpd
-
-# Start compton
-exec --no-startup-id compton -b
-
-# Start nm-applet for internet connection
-exec --no-startup-id nm-applet
-
-# Set wallpaper
-exec --no-startup-id sh ~/.fehbg
-
-# Screenshot
-bindsym $mod+Print exec --no-startup-id exec flameshot gui
-
-# Browser
-bindsym $mod+w exec chromium
-
-# Spotify
-bindsym $mod+s exec spotify
-
-# Lock Screen
-bindsym $mod+shift+x exec betterlockscreen -l blur
-
 # change focus
+bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-bindsym $mod+h focus left
-bindsym $mod+semicolon focus right
-
-# Remove title bars
-#new_window none
-
-# Resize by 1
-bindsym $mod+Ctrl+o resize shrink width 1 px or 1 ppt
-bindsym $mod+Ctrl+i resize grow height 1 px or 1 ppt
-bindsym $mod+Ctrl+u resize shrink height 1 px or 1 ppt
-bindsym $mod+Ctrl+y resize grow width 1 px or 1 ppt
-
-# Resize by 10
-bindsym $mod+Ctrl+Shift+o resize shrink width 10 px or 10 ppt
-bindsym $mod+Ctrl+Shift+i resize grow height 10 px or 10 ppt
-bindsym $mod+Ctrl+Shift+u resize shrink height 10 px or 10 ppt
-bindsym $mod+Ctrl+Shift+y resize grow width 10 px or 10 ppt
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -124,98 +77,31 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# Terminal - Scratchpad
-for_window [instance="dropdown"] floating enable
-for_window [instance="dropdown"] resize set 625 400
-for_window [instance="dropdown"] move scratchpad
-for_window [instance="dropdown"] border pixel 5
-exec --no-startup-id exec st -n dropdown
-bindsym $mod+u [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
-
-
-# Ranger - Scratchpad
-for_window [instance="ranger"] floating enable
-for_window [instance="ranger"] resize set 625 400
-for_window [instance="ranger"] move scratchpad
-for_window [instance="ranger"] border pixel 5
-exec --no-startup-id exec st -n ranger -e ranger
-bindsym $mod+r [instance="ranger"] scratchpad show; [instance="ranger"] move position center
-
-# Todolist - Scratchpad
-for_window [instance="todo"] floating enable
-for_window [instance="todo"] resize set 625 400
-for_window [instance="todo"] move scratchpad
-for_window [instance="todo"] border pixel 5
-exec --no-startup-id exec st -n todo -e nvim -c 'Goyo 70%' ~/My_Files/TODO.md
-bindsym $mod+Shift+t [instance="todo"] scratchpad show; [instance="todo"] move position center
-
-# IRC - Scratchpad
-for_window [instance="irc"] floating enable
-for_window [instance="irc"] resize set 900 500
-for_window [instance="irc"] move scratchpad
-for_window [instance="irc"] border pixel 5
-exec --no-startup-id exec st -n irc -e weechat
-bindsym $mod+Shift+i [instance="irc"] scratchpad show; [instance="irc"] move position center
-
-# Music - Scratchpad
-for_window [instance="music"] floating enable
-for_window [instance="music"] resize set 900 500
-for_window [instance="music"] move scratchpad
-for_window [instance="music"] border pixel 5
-exec --no-startup-id exec st -n music -e ncmpcpp
-bindsym $mod+m [instance="music"] scratchpad show; [instance="music"] move position center
-
-# Clock - Pomodoro
-for_window [title="Pomodoro"] floating enable
-for_window [title="Pomodoro"] move scratchpad
-exec --no-startup-id exec gnome-pomodoro
-bindsym $mod+c [title="Pomodoro"] scratchpad show; [title="Pomodoro"] move position center
-
-# Exocortex - Scratchpad
-for_window [instance="exo"] floating enable
-for_window [instance="exo"] resize set 750 500
-for_window [instance="exo"] move scratchpad
-for_window [instance="exo"] border pixel 5
-exec --no-startup-id exec st -n exo -e nvim -c 'Goyo 70%' ~/My_Files/scratch.txt
-bindsym $mod+x [instance="exo"] scratchpad show; [instance="exo"] move position center
-
-# ScratchTex - LatexScratchpad
-#for_window [instance="stex"] floating enable
-#for_window [instance="stex"] resize set 750 500
-#for_window [instance="stex"] move scratchpad
-#for_window [instance="stex"] border pixel 5
-#exec --no-startup-id exec st -n stex -e vim  ~/scratch.tex
-#bindsym $mod+x [instance="stex"] scratchpad show; [instance="stex"] move position center
-
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# Instead of having to choose between vertical and horizontal, just toggle it
-bindsym $mod+t split toggle
+# split in horiZontal orientation
+bindsym $mod+z split h
+
+# split in vertical orientation
+bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+Shift+a layout stacking
-bindsym $mod+Shift+b layout tabbed
-bindsym $mod+Shift+s layout toggle split
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
-# toggle tiling / floating
-bindsym $mod+Shift+w sticky toggle
-
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
-
-# Switch to previous workspace for left and right hand
-bindsym $mod+backslash workspace back_and_forth
-bindsym $mod+Tab workspace back_and_forth
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -223,7 +109,8 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
-# workspace variables
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -233,79 +120,103 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-set $ws0 "0"
+set $ws10 "10"
 
 # switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws0
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws0
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
-
-# Set colors from Xresources
-# from the generated scheme.
-# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
-# it fails to get colors from Xresources.
-set_from_resource $fg i3wm.color7 #f0f0f0
-set_from_resource $bg i3wm.color2 #f0f0f0
-
-# class                 border  backgr. text indicator child_border
-client.focused          $bg     $bg     $fg  $bg       $bg
-client.focused_inactive $bg     $bg     $fg  $bg       $bg
-client.unfocused        $bg     $bg     $fg  $bg       $bg
-client.urgent           $bg     $bg     $fg  $bg       $bg
-client.placeholder      $bg     $bg     $fg  $bg       $bg
-
-client.background       $bg
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
-#mode "resize" {
-#        # These bindings trigger as soon as you enter the resize mode
-#
-#        # Pressing left will shrink the window’s width.
-#        # Pressing right will grow the window’s width.
-#        # Pressing up will shrink the window’s height.
-#        # Pressing down will grow the window’s height.
-#        bindsym j resize shrink width 10 px or 10 ppt
-#        bindsym k resize grow height 10 px or 10 ppt
-#        bindsym l resize shrink height 10 px or 10 ppt
-#        bindsym semicolon resize grow width 10 px or 10 ppt
-#
-#        # same bindings, but for the arrow keys
-#        bindsym Left resize shrink width 10 px or 10 ppt
-#        bindsym Down resize grow height 10 px or 10 ppt
-#        bindsym Up resize shrink height 10 px or 10 ppt
-#        bindsym Right resize grow width 10 px or 10 ppt
-#
-#        # back to normal: Enter or Escape
-#        bindsym Return mode "default"
-#        bindsym Escape mode "default"
-#}
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
 
-#bindsym $mod+r mode "resize"
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+Shift+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+Shift+r mode "default"
+}
+
+# reSize
+bindsym $mod+Shift+s mode "resize"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        status_command i3status
+}
+
+# Scratchpads
+# Terminal - Scratchpad
+for_window [instance="dropdown"] floating enable
+for_window [instance="dropdown"] resize set 625 400
+for_window [instance="dropdown"] move scratchpad
+for_window [instance="dropdown"] border pixel 5
+exec --no-startup-id urxvt -name dropdown
+bindsym $mod+u [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
+
+# Ranger - Scratchpad
+for_window [instance="ranger"] floating enable
+for_window [instance="ranger"] resize set 625 400
+for_window [instance="ranger"] move scratchpad
+for_window [instance="ranger"] border pixel 5
+exec --no-startup-id urxvt -name ranger -e ranger 
+bindsym $mod+r [instance="ranger"] scratchpad show; [instance="ranger"] move position center
+
+# Todolist - Scratchpad
+for_window [instance="todo"] floating enable
+for_window [instance="todo"] resize set 625 400
+for_window [instance="todo"] move scratchpad
+for_window [instance="todo"] border pixel 5
+exec --no-startup-id urxvt -name todo -e vim ~/MEGA/todo.md 
+bindsym $mod+t [instance="todo"] scratchpad show; [instance="todo"] move position center
+
+# IRC - Scratchpad
+for_window [instance="irc"] floating enable
+for_window [instance="irc"] resize set 900 500
+for_window [instance="irc"] move scratchpad
+for_window [instance="irc"] border pixel 5
+exec --no-startup-id urxvt -name irc -e weechat 
+bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position center
 

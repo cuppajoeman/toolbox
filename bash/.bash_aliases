@@ -26,8 +26,8 @@ alias trld="tmux source-file ~/.tmux.conf"
 
 
 #  linux Aliases
-alias ai="sudo apt install"
-alias ar="sudo apt remove"
+alias pi="sudo pacman -S"
+alias pr="sudo pacman -R"
 alias as="apt-cache search"
 
 # Locations
