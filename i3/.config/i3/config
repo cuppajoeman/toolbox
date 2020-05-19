@@ -46,11 +46,16 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window - (quickly: removed shift)
 bindsym $mod+q kill
 
+# == COMPUTER SPECIFIC START == (Omit this if you don't have my programs or get the requirements)
+# Requirements: flameshot, firefox, spotify
+
 # Screenshot
 bindsym $mod+Print exec flameshot gui
 
 # Browser 
-bindsym $mod+b exec brave
+bindsym $mod+b exec firefox
+
+# == COMPUTER SPECIFIC END == 
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
@@ -187,7 +192,16 @@ bar {
         status_command i3status
 }
 
-# Scratchpads
+# == COMPUTER SPECIFIC START == (Omit this if you are not on my current setup or get requirements)
+# Requirements: urxvt, vim, ranger, weechat
+# You will have to modify anything that uses my directory structure.
+
+# -- Force floating --
+for_window [class="Mathpix Snipping Tool" instance="mathpix-snipping-tool"] floating enable move position center
+for_window [class="flameshot" instance="flameshot"] floating enable move position center
+
+# -- Scratchpads --
+
 # Terminal - Scratchpad
 for_window [instance="dropdown"] floating enable
 for_window [instance="dropdown"] resize set 625 400
@@ -203,6 +217,14 @@ for_window [instance="ranger"] move scratchpad
 for_window [instance="ranger"] border pixel 5
 exec --no-startup-id urxvt -name ranger -e ranger 
 bindsym $mod+r [instance="ranger"] scratchpad show; [instance="ranger"] move position center
+
+# Place to write - Scratchpad
+for_window [instance="scratch"] floating enable
+for_window [instance="scratch"] resize set 625 400
+for_window [instance="scratch"] move scratchpad
+for_window [instance="scratch"] border pixel 5
+exec --no-startup-id urxvt -name scratch -e vim ~/MEGA/scratch.txt
+bindsym $mod+s [instance="scratch"] scratchpad show; [instance="scratch"] move position center
 
 # Todolist - Scratchpad
 for_window [instance="todo"] floating enable
@@ -220,3 +242,4 @@ for_window [instance="irc"] border pixel 5
 exec --no-startup-id urxvt -name irc -e weechat 
 bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position center
 
+# == COMPUTER SPECIFIC END ==

@@ -1,6 +1,7 @@
 #! /bin/sh
 stow vim
+stow i3
 stow zathura
 stow bash
-# stow tmux
+stow tmux
 stow ranger

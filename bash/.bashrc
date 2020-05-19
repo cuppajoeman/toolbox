@@ -115,8 +115,7 @@ fi
 # === Vim Mode! ===
 set -o vi
 
-export VISUAL=vim
-export EDITOR="$VISUAL"
+export EDITOR=vim
 
 export PATH="/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
 export MANPATH="/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH"

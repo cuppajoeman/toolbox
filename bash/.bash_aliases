@@ -12,6 +12,9 @@ alias m="cd ~/MEGA"
 
 # Program
 alias ydlm="youtube-dl -x --audio-format mp3 "
+alias scrrec="ffmpeg -video_size 1280x1024 -framerate 25 -f x11grab -i :0.0 rec.mp4"
+alias webcam="mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0 -fps 60 -vf screenshot"
+
 
  
 # Files

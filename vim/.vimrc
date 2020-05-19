@@ -16,15 +16,7 @@ endif
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
-Plug 'junegunn/vim-peekaboo'
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-fugitive'
-Plug 'takac/vim-hardtime'
-Plug 'morhetz/gruvbox'
-Plug 'vim-airline/vim-airline'
 Plug 'SirVer/ultisnips'
-Plug 'plasticboy/vim-markdown'
-Plug 'tpope/vim-surround'
 Plug 'haya14busa/incsearch.vim'
 Plug 'lervag/vimtex'
 call plug#end()
@@ -49,22 +41,14 @@ call plug#end()
     map <leader>ve :vs ~/.vimrc<CR>
     map <leader>vr :source ~/.vimrc<CR>
 
-" Goyo for more readable text
-    map <leader>g :Goyo \| set linebreak<CR>
-    set nocompatible
-    set number
-    set relativenumber
-
 " Code
 	syntax on
 	" Verilog
 	autocmd BufNewFile,BufRead *.v,*.vs set syntax=verilog
 
-" Hardmode
-	let g:hardtime_default_on = 1
-
 " Persistent Undo
 	set noswapfile
+
 " Let's save undo info!
 	if !isdirectory($HOME."/.vim")
 		call mkdir($HOME."/.vim", "", 0770)
@@ -103,32 +87,9 @@ call plug#end()
 " colorscheme 
 	" colorscheme wal
 	set background=dark
-	colorscheme gruvbox
-
-" See through bg
-	hi Normal guibg=NONE ctermbg=NONE
-
-" Bar
-	let g:airline_section_b = '%{strftime("%H:%M")}'
 
 " Vimcompletesme selection
 	inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" openframeworks compile
-	" autocmd  BufRead,BufNewFile  *.cpp let &makeprg = 'if [ -f Makefile ]; then make Release && make RunRelease; else make Release -C .. && make RunRelease -C ..; fi'
-" middle of line command
-	" map <leader>m :call cursor(0, virtcol('$')/2)<CR>
-	map <leader>m :make<CR>
-	map <leader>c :! caou %<CR>
-	map <leader>r :! rm -v !(*.md)<CR>
-
-	map <leader>M :make \| copen <CR>
-
-" Open bottom terminal
-	map <leader>bt :new +resize10 term://bash<CR>
-
-" Help in new tab
-	com! -nargs=1 Th :tab h <args> 
 
 " Copy file to clipboard
 	let @c = 'gg"*yG'
@@ -139,18 +100,33 @@ call plug#end()
 	nnoremap <C-p> "+gP
 	vnoremap <C-p> "+gP
 
+" Keep cursor in center of page
+	augroup VCenterCursor
+	  au!
+	  au BufEnter,WinEnter,WinNew,VimResized *,*.*
+			\ let &scrolloff=winheight(win_getid())/2
+	augroup END
+
+" Open help in a new tab
+	cabbrev help tab help
+
 "  ___               ___   ___         ___  
 " |   | |     |   | |       |   |\  | |     
 " |-+-  |     |   | | +-    +   | + |  -+-  
 " |     |     |   | |   |   |   |  \|     | 
 "        ---   ---   ---   ---         ---  
-                                          
-autocmd FileType vim let b:vcm_tab_complete = 'vim'
 
+" Goyo for more readable text
+    map <leader>g :Goyo \| set linebreak<CR>
+    set nocompatible
+    set number
+    set relativenumber
+                                          
 "" Vimtex
 	let g:vimtex_view_method='zathura'
 	let g:tex_flavor = 'latex'
 	au BufReadPost *.tex set syntax=tex
+	map <leader>ims /\$.\{-}\$<CR>
 
 "" Ultisnips
 
@@ -176,3 +152,4 @@ autocmd FileType vim let b:vcm_tab_complete = 'vim'
 	map #  <Plug>(incsearch-nohl-#)
 	map g* <Plug>(incsearch-nohl-g*)
 	map g# <Plug>(incsearch-nohl-g#)map g/ <Plug>(incsearch-stay)
+
