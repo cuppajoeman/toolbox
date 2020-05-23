@@ -116,6 +116,7 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
+
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -138,6 +139,9 @@ bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
+
+# For instance: Assume you are on workspace "1: www" and switch to "2: IM" using mod+2 because somebody sent you a message. You don’t need to remember where you came from now, you can just press $mod+2 again to switch back to "1: www". 
+workspace_auto_back_and_forth yes
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -218,15 +222,15 @@ for_window [instance="ranger"] border pixel 5
 exec --no-startup-id urxvt -name ranger -e ranger 
 bindsym $mod+r [instance="ranger"] scratchpad show; [instance="ranger"] move position center
 
-# Place to write - Scratchpad
-for_window [instance="scratch"] floating enable
-for_window [instance="scratch"] resize set 625 400
-for_window [instance="scratch"] move scratchpad
-for_window [instance="scratch"] border pixel 5
-exec --no-startup-id urxvt -name scratch -e vim ~/MEGA/scratch.txt
-bindsym $mod+s [instance="scratch"] scratchpad show; [instance="scratch"] move position center
+# Exocortex - Scratchpad
+for_window [instance="exo"] floating enable
+for_window [instance="exo"] resize set 625 400
+for_window [instance="exo"] move scratchpad
+for_window [instance="exo"] border pixel 5
+exec --no-startup-id urxvt -name exo -e vim ~/MEGA/scratch.txt
+bindsym $mod+x [instance="exo"] scratchpad show; [instance="exo"] move position center
 
-# Todolist - Scratchpad
+# Notepad - Scratchpad
 for_window [instance="todo"] floating enable
 for_window [instance="todo"] resize set 625 400
 for_window [instance="todo"] move scratchpad
@@ -241,5 +245,13 @@ for_window [instance="irc"] move scratchpad
 for_window [instance="irc"] border pixel 5
 exec --no-startup-id urxvt -name irc -e weechat 
 bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position center
+
+# Music - Scratchpad
+for_window [instance="spotify"] floating enable
+for_window [instance="spotify"] resize set 900 500
+for_window [instance="spotify"] move scratchpad
+for_window [instance="spotify"] border pixel 5
+exec --no-startup-id spotify
+bindsym $mod+m [instance="spotify"] scratchpad show; [instance="spotify"] move position center
 
 # == COMPUTER SPECIFIC END ==

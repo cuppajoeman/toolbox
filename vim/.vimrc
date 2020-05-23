@@ -92,7 +92,7 @@ call plug#end()
 	inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Copy file to clipboard
-	let @c = 'gg"*yG'
+	let @c = 'gg"+yG'
 
 " Simple copy pasting
 	nnoremap <C-y> "+y
