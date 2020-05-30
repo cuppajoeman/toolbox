@@ -7,6 +7,7 @@ alias uoftsshY="ssh -Y nolancal@teach.cs.utoronto.ca"
 alias uoftssh="ssh -Y nolancal@teach.cs.utoronto.ca"
 alias swap="setxkbmap -option caps:swapescape"
 alias q="exit"
+alias monitor="xrandr --output VGA-0 --mode 1280x1024 --rate 75.02"
 alias h="cd ~/"
 alias m="cd ~/MEGA"
 

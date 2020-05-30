@@ -13,12 +13,14 @@
 
 /connect freenode
 
+
+/set irc.server.freenode.autojoin "##math,#linux,#vim,#archlinux,##programming,##C,#python,#latex,#weechat"
+
 # PLUGINS:
 
 * VIM in IRC,  https://github.com/GermainZ/weechat-vimode 
 * multiline.pl
-* autojoin
-* Notifications: https://github.com/s3rvac/weechat-notify-send (install dunst and libnotify)
+* Notifications: https://github.com/s3rvac/weechat-notify-send (install dunst)
 * smart filter: 
 	* /set irc.look.smart_filter on 
 	* /filter add irc_smart * irc_smart_filter * 

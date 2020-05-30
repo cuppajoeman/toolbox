@@ -117,10 +117,6 @@ set -o vi
 
 export EDITOR=vim
 
-export PATH="/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
-export MANPATH="/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH"
-export INFOPATH="/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH"
-
 # Automatically ls after cd
 cdls() { cd "$@" && ls -al; }
 
