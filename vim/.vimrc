@@ -138,7 +138,7 @@ call plug#end()
 	let g:UltiSnipsExpandTrigger="<tab>"
 	let g:UltiSnipsJumpForwardTrigger="<tab>"
 	let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-	let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/LocalSnippets']
+	let g:UltiSnipsSnippetDirectories=['LocalSnippets']
 	filetype plugin indent on
 
 " Inc search

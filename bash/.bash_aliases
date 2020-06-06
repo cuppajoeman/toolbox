@@ -23,6 +23,7 @@ alias v="vim"
 alias vrc="vim ~/.vimrc"
 alias brc="vim ~/.bashrc"
 alias trc="vim ~/.tmux.conf"
+alias irc="vim ~/.config/i3/config"
 alias krc="vim ~/.config/kitty/kitty.conf"
 alias bal="vim ~/.bash_aliases"
 alias brld="source ~/.bashrc"
@@ -38,7 +39,7 @@ alias as="apt-cache search"
 alias bs="cd ~/basic-system"
 
 # Ranger (drops you into the current dir on exit)
-alias ran='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
+alias r='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 
 #-------------------------------------------------------------
 # Git Alias Commands
