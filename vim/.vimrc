@@ -1,7 +1,3 @@
-"                                  _
-"  _______  ______  ____  ____ _  (_)___  ___  ____ ___  ____ _____
-" / ___/ / / / __ \/ __ \/ __ `/ / / __ \/ _ \/ __ `__ \/ __ `/ __ \
-"/ /__/ /_/ / /_/ / /_/ / /_/ / / / /_/ /  __/ / / / / / /_/ / / / /
 "\___/\__,_/ .___/ .___/\__,_/_/ /\____/\___/_/ /_/ /_/\__,_/_/ /_/
 "         /_/   /_/         /___/
 
@@ -19,6 +15,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'SirVer/ultisnips'
 Plug 'haya14busa/incsearch.vim'
 Plug 'lervag/vimtex'
+Plug 'morhetz/gruvbox'
 call plug#end()
 
 
@@ -38,13 +35,11 @@ call plug#end()
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Open this file easily
-    map <leader>ve :vs ~/.vimrc<CR>
+    map <leader>ve :tabnew ~/.vimrc<CR>
     map <leader>vr :source ~/.vimrc<CR>
 
 " Code
 	syntax on
-	" Verilog
-	autocmd BufNewFile,BufRead *.v,*.vs set syntax=verilog
 
 " Persistent Undo
 	set noswapfile
@@ -85,20 +80,23 @@ call plug#end()
     set shiftwidth=4
 
 " colorscheme 
-	" colorscheme wal
 	set background=dark
+	colorscheme gruvbox
+	" vim hardcodes background color erase even if the terminfo file does
+	" not contain bce (not to mention that libvte based terminals
+	" incorrectly contain bce in their terminfo files). This causes
+	" incorrect background rendering when using a color theme with a
+	" background color.
+	let &t_ut=''
 
-" Vimcompletesme selection
-	inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Copy file to clipboard
-	let @c = 'gg"+yG'
+" copy or past from X11 clipboard
+	vmap <leader>xy :!xclip -f -sel clip<CR>
+	map <leader>xp mz:-1r !xclip -o -sel clip<CR>`z
 
 " Simple copy pasting
-	nnoremap <C-y> "+y
-	vnoremap <C-y> "+y
-	nnoremap <C-p> "+gP
-	vnoremap <C-p> "+gP
+	" nnoremap <C-y> "+y
+	vnoremap <C-y> :!xclip -f -sel clip<CR>	
+	nnoremap <C-p> mz:-1r !xclip -o -sel clip<CR>`z
 
 " Keep cursor in center of page
 	augroup VCenterCursor
@@ -109,6 +107,9 @@ call plug#end()
 
 " Open help in a new tab
 	cabbrev help tab help
+
+" statusline
+	let laststatus=2
 
 "  ___               ___   ___         ___  
 " |   | |     |   | |       |   |\  | |     
@@ -129,7 +130,6 @@ call plug#end()
 	map <leader>ims /\$.\{-}\$<CR>
 
 "" Ultisnips
-
 	map <F2> :sp ~/.vim/LocalSnippets/words.snippets<CR>
 	map <F3> :sp ~/.vim/LocalSnippets/tex.snippets<CR>
 	map <F4> :sp ~/.vim/LocalSnippets/math.snippets<CR>

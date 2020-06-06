@@ -16,7 +16,7 @@ fi
 # Make sure the accel is off, then we lower mouse sens
 xinput set-prop 8 "Coordinate Transformation Matrix" .5 0 0 0 .5 0 0 0 1
 # Set the screensaver
-feh --bg-max --randomize ~/MEGA/backgrounds/* &
+~/.fehbg &
 # Screenshots
 flameshot &
 # File Sync
@@ -24,7 +24,7 @@ megasync &
 # Swap caps and escape
 setxkbmap -option caps:swapescape
 # Turn on compositor
-picom &
+picom -b
 # Notifications
 dunst &
 exec i3

@@ -117,7 +117,18 @@ set -o vi
 
 export EDITOR=vim
 
-# Automatically ls after cd
-cdls() { cd "$@" && ls -al; }
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# Preventing nested ranger instances
+
+ranger() {
+    if [ -z "$RANGER_LEVEL" ]; then
+        /usr/bin/ranger "$@"
+    else
+        exit
+    fi
+}
+
+# Openframeworks path
+export PG_OF_PATH=~/of-workspace
+

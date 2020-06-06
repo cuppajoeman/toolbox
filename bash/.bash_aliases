@@ -14,7 +14,7 @@ alias m="cd ~/MEGA"
 # Program
 alias ydlm="youtube-dl -x --audio-format mp3 "
 alias scrrec="ffmpeg -video_size 1280x1024 -framerate 25 -f x11grab -i :0.0 rec.mp4"
-alias webcam="mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0 -fps 60 -vf screenshot"
+alias webcam="mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video1 -fps 60 -vf screenshot"
 
 
  
@@ -23,8 +23,8 @@ alias v="vim"
 alias vrc="vim ~/.vimrc"
 alias brc="vim ~/.bashrc"
 alias trc="vim ~/.tmux.conf"
+alias krc="vim ~/.config/kitty/kitty.conf"
 alias bal="vim ~/.bash_aliases"
-alias todo="vim ~/MEGA/todo.md"
 alias brld="source ~/.bashrc"
 alias trld="tmux source-file ~/.tmux.conf"
 

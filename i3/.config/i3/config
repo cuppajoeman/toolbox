@@ -26,19 +26,10 @@ font pango:monospace 8
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
-
-# Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
@@ -47,7 +38,22 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+q kill
 
 # == COMPUTER SPECIFIC START == (Omit this if you don't have my programs or get the requirements)
-# Requirements: flameshot, firefox, spotify
+# Requirements: flameshot, firefox, spotify, networkmanager, phyiscal thinkpad
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Bind menu key to another windows key
+exec --no-startup-id xmodmap -e 'keycode 135 = Super_R' && xset -r 135
+
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Screenshot
 bindsym $mod+Print exec flameshot gui
@@ -203,6 +209,8 @@ bar {
 # -- Force floating --
 for_window [class="Mathpix Snipping Tool" instance="mathpix-snipping-tool"] floating enable move position center
 for_window [class="flameshot" instance="flameshot"] floating enable move position center
+for_window [class="glfw-application" instance="glfw-application"] floating enable move position center
+
 
 # -- Scratchpads --
 
@@ -211,7 +219,7 @@ for_window [instance="dropdown"] floating enable
 for_window [instance="dropdown"] resize set 625 400
 for_window [instance="dropdown"] move scratchpad
 for_window [instance="dropdown"] border pixel 5
-exec --no-startup-id urxvt -name dropdown
+exec --no-startup-id kitty --name dropdown
 bindsym $mod+u [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 
 # Ranger - Scratchpad
@@ -219,7 +227,7 @@ for_window [instance="ranger"] floating enable
 for_window [instance="ranger"] resize set 625 400
 for_window [instance="ranger"] move scratchpad
 for_window [instance="ranger"] border pixel 5
-exec --no-startup-id urxvt -name ranger -e ranger 
+exec --no-startup-id kitty --name ranger ranger 
 bindsym $mod+r [instance="ranger"] scratchpad show; [instance="ranger"] move position center
 
 # Exocortex - Scratchpad
@@ -227,7 +235,7 @@ for_window [instance="exo"] floating enable
 for_window [instance="exo"] resize set 625 400
 for_window [instance="exo"] move scratchpad
 for_window [instance="exo"] border pixel 5
-exec --no-startup-id urxvt -name exo -e vim ~/MEGA/scratch.txt
+exec --no-startup-id kitty --name exo vim ~/MEGA/scratch.txt
 bindsym $mod+x [instance="exo"] scratchpad show; [instance="exo"] move position center
 
 # Notepad - Scratchpad
@@ -235,7 +243,7 @@ for_window [instance="todo"] floating enable
 for_window [instance="todo"] resize set 625 400
 for_window [instance="todo"] move scratchpad
 for_window [instance="todo"] border pixel 5
-exec --no-startup-id urxvt -name todo -e vim ~/MEGA/todo.md 
+exec --no-startup-id kitty --name todo vim ~/MEGA/todo.md 
 bindsym $mod+t [instance="todo"] scratchpad show; [instance="todo"] move position center
 
 # IRC - Scratchpad
@@ -243,7 +251,7 @@ for_window [instance="irc"] floating enable
 for_window [instance="irc"] resize set 900 500
 for_window [instance="irc"] move scratchpad
 for_window [instance="irc"] border pixel 5
-exec --no-startup-id urxvt -name irc -e weechat 
+exec --no-startup-id kitty --name irc weechat 
 bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position center
 
 # Music - Scratchpad
