@@ -13,8 +13,8 @@ fi
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-# Make sure the accel is off, then we lower mouse sens
-xinput set-prop 8 "Coordinate Transformation Matrix" .5 0 0 0 .5 0 0 0 1
+# Make sure the accel is off, then we lower mouse sens (only applies to zowie mouse)
+# xinput set-prop 8 "Coordinate Transformation Matrix" .5 0 0 0 .5 0 0 0 1
 # Set the screensaver
 ~/.fehbg &
 # Screenshots
@@ -27,4 +27,6 @@ setxkbmap -option caps:swapescape
 picom -b
 # Notifications
 dunst &
+# Redshift
+redshift -l 45.08345:-64.36546 &
 exec i3

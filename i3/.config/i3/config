@@ -103,8 +103,8 @@ bindsym $mod+v split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+# change container layout (Stacked, tabbed, toggle split)
+# bindsym $mod+S layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -210,6 +210,8 @@ bar {
 for_window [class="Mathpix Snipping Tool" instance="mathpix-snipping-tool"] floating enable move position center
 for_window [class="flameshot" instance="flameshot"] floating enable move position center
 for_window [class="glfw-application" instance="glfw-application"] floating enable move position center
+for_window [class="SimpleScreenRecorder" instance="SimpleScreenRecorder"] floating enable move position center
+
 
 
 # -- Scratchpads --
@@ -221,6 +223,14 @@ for_window [instance="dropdown"] move scratchpad
 for_window [instance="dropdown"] border pixel 5
 exec --no-startup-id kitty --name dropdown
 bindsym $mod+u [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
+
+# pulsemixer - Scratchpad
+for_window [instance="pulsemixer"] floating enable
+for_window [instance="pulsemixer"] resize set 75 ppt 75 ppt
+for_window [instance="pulsemixer"] move scratchpad
+for_window [instance="pulsemixer"] border pixel 5
+exec --no-startup-id kitty --name pulsemixer pulsemixer
+bindsym $mod+s [instance="pulsemixer"] scratchpad show; [instance="pulsemixer"] move position center
 
 # Ranger - Scratchpad
 for_window [instance="ranger"] floating enable
@@ -235,16 +245,16 @@ for_window [instance="paper"] floating enable
 for_window [instance="paper"] resize set 75 ppt 75 ppt
 for_window [instance="paper"] move scratchpad
 for_window [instance="paper"] border pixel 5
-exec --no-startup-id kitty --name paper vim ~/MEGA/scratch.txt
+exec --no-startup-id kitty --name paper vim ~/MEGA/scratch/scratch.txt
 bindsym $mod+p [instance="paper"] scratchpad show; [instance="paper"] move position center
 
-# teXpaper - Scratchpad
-for_window [instance="texpaper"] floating enable
-for_window [instance="texpaper"] resize set 50 ppt 50 ppt
-for_window [instance="texpaper"] move scratchpad
-for_window [instance="texpaper"] border pixel 5
-exec --no-startup-id kitty --name texpaper vim ~/MEGA/scratch.txt
-bindsym $mod+x [instance="texpaper"] scratchpad show; [instance="texpaper"] move position center
+# LaTeX - Scratchpad
+for_window [instance="latex"] floating enable
+for_window [instance="latex"] resize set 75 ppt 75 ppt
+for_window [instance="latex"] move scratchpad
+for_window [instance="latex"] border pixel 5
+exec --no-startup-id kitty --name latex vim ~/MEGA/scratch/tex/scratch.tex
+bindsym $mod+x [instance="latex"] scratchpad show; [instance="latex"] move position center
 
 # Notepad - Scratchpad
 for_window [instance="todo"] floating enable

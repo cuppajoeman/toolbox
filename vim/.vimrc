@@ -74,7 +74,11 @@ call plug#end()
 " Indentataion
     set autoindent
     " size of a hard tabstop
-    set tabstop=4
+    " set tabstop=4
+	" For david
+	set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+
+
 
     " size of an "indent"
     set shiftwidth=4
@@ -88,10 +92,6 @@ call plug#end()
 	" incorrect background rendering when using a color theme with a
 	" background color.
 	let &t_ut=''
-
-" copy or past from X11 clipboard
-	vmap <leader>xy :!xclip -f -sel clip<CR>
-	map <leader>xp mz:-1r !xclip -o -sel clip<CR>`z
 
 " Simple copy pasting
 	" nnoremap <C-y> "+y
@@ -110,6 +110,9 @@ call plug#end()
 
 " statusline
 	let laststatus=2
+
+" clear highlighting
+	command C let @/=""
 
 "  ___               ___   ___         ___  
 " |   | |     |   | |       |   |\  | |     
