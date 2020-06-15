@@ -93,10 +93,12 @@ call plug#end()
 	" background color.
 	let &t_ut=''
 
+
 " Simple copy pasting
-	" nnoremap <C-y> "+y
-	vnoremap <C-y> :!xclip -f -sel clip<CR>	
-	nnoremap <C-p> mz:-1r !xclip -o -sel clip<CR>`z
+        " nnoremap <C-y> "+y
+        vnoremap <C-y> "+y
+        nnoremap <C-p> "+gP
+        " vnoremap <C-p> "+gP
 
 " Keep cursor in center of page
 	augroup VCenterCursor
