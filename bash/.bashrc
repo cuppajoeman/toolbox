@@ -157,3 +157,6 @@ ix() {
     }
     curl $opts -F f:1='<-' $* ix.io/$id
 }
+
+# open manpages in vim
+viman () { text=$(man "$@") && echo "$text" | vim -R +":set ft=man" - ; }

@@ -29,4 +29,6 @@ picom -b
 dunst &
 # Redshift
 redshift -l 45.08345:-64.36546 &
+# Optimus manager
+optimus-manager-qt &
 exec i3

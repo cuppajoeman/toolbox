@@ -16,6 +16,7 @@ Plug 'SirVer/ultisnips'
 Plug 'haya14busa/incsearch.vim'
 Plug 'lervag/vimtex'
 Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 
@@ -115,6 +116,11 @@ call plug#end()
 
 " clear highlighting
 	command C let @/=""
+
+" View man pages in vim
+    runtime! ftplugin/man.vim
+    let g:ft_man_open_mode = 'tab'
+
 
 "  ___               ___   ___         ___  
 " |   | |     |   | |       |   |\  | |     

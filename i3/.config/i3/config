@@ -209,7 +209,7 @@ bar {
 # -- Force floating --
 for_window [class="Mathpix Snipping Tool" instance="mathpix-snipping-tool"] floating enable move position center
 for_window [class="flameshot" instance="flameshot"] floating enable move position center
-for_window [class="glfw-application" instance="glfw-application"] floating enable move position center
+for_window [class="GLFW-Application" instance="GLFW-Application"] floating enable move position center
 for_window [class="SimpleScreenRecorder" instance="SimpleScreenRecorder"] floating enable move position center
 
 
@@ -262,7 +262,7 @@ for_window [instance="todo"] resize set 75 ppt 75 ppt
 for_window [instance="todo"] move scratchpad
 for_window [instance="todo"] border pixel 5
 exec --no-startup-id kitty --name todo vim ~/MEGA/todo.md 
-bindsym $mod+t [instance="todo"] scratchpad show; [instance="todo"] move position center
+bindsym $mod+n [instance="todo"] scratchpad show; [instance="todo"] move position center
 
 # IRC - Scratchpad
 for_window [instance="irc"] floating enable
@@ -271,6 +271,14 @@ for_window [instance="irc"] move scratchpad
 for_window [instance="irc"] border pixel 5
 exec --no-startup-id kitty --name irc weechat 
 bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position center
+
+# qTox - Scratchpad
+for_window [instance="qtox"] floating enable
+for_window [instance="qtox"] resize set 75 ppt 75 ppt
+for_window [instance="qtox"] move scratchpad
+for_window [instance="qtox"] border pixel 5
+exec --no-startup-id qtox
+bindsym $mod+t [instance="qtox"] scratchpad show; [instance="qtox"] move position center
 
 # Music - Scratchpad
 for_window [instance="spotify"] floating enable
