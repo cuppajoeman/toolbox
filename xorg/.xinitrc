@@ -15,18 +15,29 @@ fi
 
 # Make sure the accel is off, then we lower mouse sens (only applies to zowie mouse)
 # xinput set-prop 8 "Coordinate Transformation Matrix" .5 0 0 0 .5 0 0 0 1
+
+# === Graphical ===
 # Set the screensaver
 ~/.fehbg &
 # Screenshots
 flameshot &
-# File Sync
-megasync &
-# Swap caps and escape
-setxkbmap -option caps:swapescape
 # Turn on compositor
 picom -b
 # Notifications
 dunst &
+
+# === Utilities ===
+# File Sync
+megasync &
 # Optimus manager
 optimus-manager-qt &
+# Redshift
+redshift-gtk &
+# Clipboard
+copyq &
+
+# === Settings ===
+# Swap caps and escape
+setxkbmap -option caps:swapescape
+
 exec i3

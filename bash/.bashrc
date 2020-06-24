@@ -112,12 +112,24 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# ===============
+# === OPTIONS ===
+# ===============
+
 # === Vim Mode! ===
 set -o vi
 
 export EDITOR=vim
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# If you are using a lot of sudo commands on a row, it is more logical to refresh the timeout every time you use sudo than to increase timestamp_timeout. Refreshing the timeout can be done with sudo -v (whereas sudo -K revokes immediately).  
+
+alias sudo='sudo -v; sudo '
+
+# =================
+# === FUNCTIONS ===
+# =================
 
 # Preventing nested ranger instances
 

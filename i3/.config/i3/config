@@ -111,6 +111,9 @@ bindsym $mod+e layout toggle split
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
+# toggle sticky window
+bindsym $mod+Shift+s sticky toggle
+
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
@@ -193,8 +196,8 @@ mode "resize" {
         bindsym $mod+Shift+r mode "default"
 }
 
-# reSize
-bindsym $mod+Shift+s mode "resize"
+# resiZe
+bindsym $mod+Shift+z mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -240,13 +243,13 @@ for_window [instance="ranger"] border pixel 5
 exec --no-startup-id kitty --name ranger ranger 
 bindsym $mod+r [instance="ranger"] scratchpad show; [instance="ranger"] move position center
 
-# Paper - Scratchpad
-for_window [instance="paper"] floating enable
-for_window [instance="paper"] resize set 75 ppt 75 ppt
-for_window [instance="paper"] move scratchpad
-for_window [instance="paper"] border pixel 5
-exec --no-startup-id kitty --name paper vim ~/MEGA/scratch/scratch.txt
-bindsym $mod+p [instance="paper"] scratchpad show; [instance="paper"] move position center
+# Passwords - Scratchpad
+for_window [instance="bitwarden"] floating enable
+for_window [instance="bitwarden"] resize set 75 ppt 75 ppt
+for_window [instance="bitwarden"] move scratchpad
+for_window [instance="bitwarden"] border pixel 5
+exec --no-startup-id bitwarden-desktop
+bindsym $mod+p [instance="bitwarden"] scratchpad show; [instance="bitwarden"] move position center
 
 # LaTeX - Scratchpad
 for_window [instance="latex"] floating enable
@@ -257,12 +260,12 @@ exec --no-startup-id kitty --name latex vim ~/MEGA/scratch/tex/scratch.tex
 bindsym $mod+x [instance="latex"] scratchpad show; [instance="latex"] move position center
 
 # Notepad - Scratchpad
-for_window [instance="todo"] floating enable
-for_window [instance="todo"] resize set 75 ppt 75 ppt
-for_window [instance="todo"] move scratchpad
-for_window [instance="todo"] border pixel 5
-exec --no-startup-id kitty --name todo vim ~/MEGA/todo.md 
-bindsym $mod+n [instance="todo"] scratchpad show; [instance="todo"] move position center
+for_window [instance="notes"] floating enable
+for_window [instance="notes"] resize set 75 ppt 75 ppt
+for_window [instance="notes"] move scratchpad
+for_window [instance="notes"] border pixel 5
+exec --no-startup-id kitty --name notes vim ~/MEGA/notes.md 
+bindsym $mod+n [instance="notes"] scratchpad show; [instance="notes"] move position center
 
 # IRC - Scratchpad
 for_window [instance="irc"] floating enable
@@ -288,4 +291,11 @@ for_window [instance="spotify"] border pixel 5
 exec --no-startup-id spotify
 bindsym $mod+m [instance="spotify"] scratchpad show; [instance="spotify"] move position center
 
+# Calculator - Scratchpad
+for_window [instance="qalculate-gtk"] floating enable
+for_window [instance="qalculate-gtk"] resize set 75 ppt 75 ppt
+for_window [instance="qalculate-gtk"] move scratchpad
+for_window [instance="qalculate-gtk"] border pixel 5
+exec --no-startup-id qalculate-gtk
+bindsym $mod+c [instance="qalculate-gtk"] scratchpad show; [instance="qalculate-gtk"] move position center
 # == COMPUTER SPECIFIC END ==

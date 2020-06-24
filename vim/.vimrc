@@ -96,10 +96,10 @@ call plug#end()
 
 
 " Simple copy pasting
-        " nnoremap <C-y> "+y
+        nnoremap <C-y> "+y
         vnoremap <C-y> "+y
         nnoremap <C-p> "+gP
-        " vnoremap <C-p> "+gP
+        vnoremap <C-p> "+gP
 
 " Keep cursor in center of page
 	augroup VCenterCursor
@@ -139,11 +139,12 @@ call plug#end()
 	let g:tex_flavor = 'latex'
 	au BufReadPost *.tex set syntax=tex
 	map <leader>ims /\$.\{-}\$<CR>
+	map <leader>dms /\\\[\_.\{-}\\\]<CR>
 
 "" Ultisnips
-	map <F2> :sp ~/.vim/LocalSnippets/words.snippets<CR>
-	map <F3> :sp ~/.vim/LocalSnippets/tex.snippets<CR>
-	map <F4> :sp ~/.vim/LocalSnippets/math.snippets<CR>
+	map <F2> :tabnew ~/.vim/LocalSnippets/words.snippets<CR>
+	map <F3> :tabnew ~/.vim/LocalSnippets/tex.snippets<CR>
+	map <F4> :tabnew ~/.vim/LocalSnippets/math.snippets<CR>
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 	let g:UltiSnipsExpandTrigger="<tab>"
@@ -163,4 +164,41 @@ call plug#end()
 	map #  <Plug>(incsearch-nohl-#)
 	map g* <Plug>(incsearch-nohl-g*)
 	map g# <Plug>(incsearch-nohl-g#)map g/ <Plug>(incsearch-stay)
+
+" '||'  '|'                  .'|.          '||     '||''''|                   .          
+"  ||    |   ....    ....  .||.   ... ...   ||      ||  .    ....     ....  .||.   ....  
+"  ||    |  ||. '  .|...||  ||     ||  ||   ||      ||''|   '' .||  .|   ''  ||   ||. '  
+"  ||    |  . '|.. ||       ||     ||  ||   ||      ||      .|' ||  ||       ||   . '|.. 
+"   '|..'   |'..|'  '|...' .||.    '|..'|. .||.    .||.     '|..'|'  '|...'  '|.' |'..|' 
+                                                                                       
+" REGEX
+" QUESTION: How do I do the .* in regex to match newlines too?
+" ANSWER: 
+" \_. matches any character including end-of-line. However, as :h \_. warns, using it with * will match all text to the end of the buffer.
+" \{-} is similar to *, matching 0 or more instances of the proceeding atom. But it matches as few as possible instead of as many as possible. This makes \{-} safe if your example pattern appears more than once. For example:
+" 
+" author = {{foo
+"            bar}},
+" 
+" editor = {{buz
+"            baz}},
+" 
+" Using %s/{{\(\_.*\)}}/{\1}/g changes the starting double brace for author, but the closing double brace for editor. Since * matches as many atoms as possible, the pattern matches until the last double brace it finds. This results in the following:
+" 
+" author = {foo
+"            bar}},
+" 
+" editor = {{buz
+"            baz},
+" 
+" However, using %s/{{\(\_.\{-}\)}}/{\1}/g gives the desired result for both author and editor as it stops searching at the first double brace it finds:
+" 
+" author = {foo
+"            bar},
+" 
+" editor = {buz
+"            baz},
+
+                                                                                       
+
 
