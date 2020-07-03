@@ -42,6 +42,9 @@ call plug#end()
 " Code
 	syntax on
 
+" Buffers
+  nnoremap <leader>b :ls<cr>:b<space>
+
 " Persistent Undo
 	set noswapfile
 
@@ -73,16 +76,14 @@ call plug#end()
     set nowrapscan
 
 " Indentataion
-    set autoindent
-    " size of a hard tabstop
-    " set tabstop=4
-	" For david
-	set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
-
-
-
-    " size of an "indent"
-    set shiftwidth=4
+    filetype plugin indent on
+    " On pressing tab, insert 2 spaces
+    set expandtab
+    " show existing tab with 2 spaces width
+    set tabstop=2
+    set softtabstop=2
+    " when indenting with '>', use 2 spaces width
+    set shiftwidth=2
 
 " colorscheme 
 	set background=dark
@@ -110,6 +111,8 @@ call plug#end()
 
 " Open help in a new tab
 	cabbrev help tab help
+" Vertically split a buffer
+        cabbrev vb vert sb
 
 " statusline
 	let laststatus=2
@@ -129,7 +132,8 @@ call plug#end()
 "        ---   ---   ---   ---         ---  
 
 " Goyo for more readable text
-    map <leader>g :Goyo \| set linebreak<CR>
+    map <leader>g :Goyo 75% \| set linebreak<CR>
+    let g:goyo_linenr=1
     set nocompatible
     set number
     set relativenumber
@@ -142,9 +146,7 @@ call plug#end()
 	map <leader>dms /\\\[\_.\{-}\\\]<CR>
 
 "" Ultisnips
-	map <F2> :tabnew ~/.vim/LocalSnippets/words.snippets<CR>
-	map <F3> :tabnew ~/.vim/LocalSnippets/tex.snippets<CR>
-	map <F4> :tabnew ~/.vim/LocalSnippets/math.snippets<CR>
+	map <F2> :tabnew ~/.vim/LocalSnippets/<CR>
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 	let g:UltiSnipsExpandTrigger="<tab>"
@@ -201,4 +203,18 @@ call plug#end()
 
                                                                                        
 
+" Question: Getting tired of switching tabs all the time
 
+" DISCUSSION:
+" cuppajoeman | Right now I'm using gt and gT to go through tabs, sometimes I have a lot of tabs open so it's painful to manually  
+"             | remember the number of each tab, what solutions do you guys have for going to tabs quickly? I've used fuzzy        
+"             | finding before in vscode but not sure if that would be necessary here                                              
+" cuppajoeman | (I also know how to jump directly to a tab)                                                                        
+"      nedbat | cuppajoeman: one option would be to not use tabs, and just use buffers                                             
+"      nedbat | cuppajoeman: IDEs like VSCode use a tab per file, but in vim, tabs are more like workspaces.                       
+" cuppajoeman | Ahh, that's interesting, thanks for the comment! And just to be sure a buffer is just like where a representation  
+"             | of the file resides in memory right?                                                                               
+"      nedbat | cuppajoeman: it's a file in memory, yes                                                                            
+" cuppajoeman | So opening a couple files in buffers means that they're in memory but they're not necessarily all being displayed  
+
+" https://stackoverflow.com/questions/102384/using-vims-tabs-like-buffers/103590#103590
