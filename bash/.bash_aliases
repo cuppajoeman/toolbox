@@ -39,8 +39,6 @@ alias as="apt-cache search"
 # Locations
 alias bs="cd ~/basic-system"
 
-# Ranger (drops you into the current dir on exit)
-alias r='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 
 #-------------------------------------------------------------
 # Git Alias Commands

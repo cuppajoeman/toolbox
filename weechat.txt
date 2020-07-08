@@ -16,7 +16,7 @@
 
 /connect freenode
 
-/set irc.server.freenode.autojoin "##math,#linux,#vim,##programming,##C,#python,#archlinux,#weechat,#freenode,#archlinux-offtopic,#latex,#lmms"
+/set irc.server.freenode.autojoin "##math,#linux,#vim,##programming,##C,#python,#archlinux,#weechat,#ranger,#freenode,##networking,#nginx,#archlinux-offtopic,#latex,#lmms"
 
 # PLUGINS:
 

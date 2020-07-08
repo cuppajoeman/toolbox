@@ -94,11 +94,8 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# split in horiZontal orientation
-bindsym $mod+z split h
-
-# split in vertical orientation
-bindsym $mod+v split v
+# Split orientation
+bindsym $mod+t layout toggle split
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -227,13 +224,21 @@ for_window [instance="dropdown"] border pixel 5
 exec --no-startup-id kitty --name dropdown
 bindsym $mod+u [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 
-# pulsemixer - Scratchpad
-for_window [instance="pulsemixer"] floating enable
-for_window [instance="pulsemixer"] resize set 75 ppt 75 ppt
-for_window [instance="pulsemixer"] move scratchpad
-for_window [instance="pulsemixer"] border pixel 5
-exec --no-startup-id kitty --name pulsemixer pulsemixer
-bindsym $mod+s [instance="pulsemixer"] scratchpad show; [instance="pulsemixer"] move position center
+# pulsemixer Volume - Scratchpad
+for_window [instance="volume"] floating enable
+for_window [instance="volume"] resize set 75 ppt 75 ppt
+for_window [instance="volume"] move scratchpad
+for_window [instance="volume"] border pixel 5
+exec --no-startup-id kitty --name volume pulsemixer
+bindsym $mod+v [instance="volume"] scratchpad show; [instance="volume"] move position center
+
+# calcurse Schedule - Scratchpad
+for_window [instance="schedule"] floating enable
+for_window [instance="schedule"] resize set 75 ppt 75 ppt
+for_window [instance="schedule"] move scratchpad
+for_window [instance="schedule"] border pixel 5
+exec --no-startup-id kitty --name schedule calcurse
+bindsym $mod+s [instance="schedule"] scratchpad show; [instance="schedule"] move position center
 
 # Ranger - Scratchpad
 for_window [instance="ranger"] floating enable
@@ -275,13 +280,13 @@ for_window [instance="irc"] border pixel 5
 exec --no-startup-id kitty --name irc weechat 
 bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position center
 
-# qTox - Scratchpad
-for_window [instance="qtox"] floating enable
-for_window [instance="qtox"] resize set 75 ppt 75 ppt
-for_window [instance="qtox"] move scratchpad
-for_window [instance="qtox"] border pixel 5
-exec --no-startup-id qtox
-bindsym $mod+t [instance="qtox"] scratchpad show; [instance="qtox"] move position center
+# # qTox - Scratchpad
+# for_window [instance="qtox"] floating enable
+# for_window [instance="qtox"] resize set 75 ppt 75 ppt
+# for_window [instance="qtox"] move scratchpad
+# for_window [instance="qtox"] border pixel 5
+# exec --no-startup-id qtox
+# bindsym $mod+t [instance="qtox"] scratchpad show; [instance="qtox"] move position center
 
 # Music - Scratchpad
 for_window [instance="spotify"] floating enable
