@@ -24,6 +24,7 @@ if status is-interactive
   abbr --add --global ydlm "youtube-dl -x --audio-format mp3 "
   abbr --add --global scrrec "ffmpeg -video_size 1280x1024 -framerate 25 -f x11grab -i :0.0 rec.mp4"
   abbr --add --global webcam "mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video2 -fps 60 -vf screenshot"
+  abbr --add --global mail "mailsync && neomutt"
 
 
    
@@ -105,4 +106,13 @@ end
 # open manpages in vim
 function viman 
   man "$argv" | vim -R +":set ft=man" - ;
+end
+
+# search for word in pdf's
+function pfind
+  pdfgrep -n -i -e "$argv" *.pdf
+end
+
+function thread_compile
+  gcc -g "$argv.c" -o "$argv" -lpthread 
 end
