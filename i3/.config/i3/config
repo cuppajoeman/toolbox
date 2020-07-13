@@ -32,7 +32,7 @@ floating_modifier $mod
 
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec kitty
 
 # kill focused window - (quickly: removed shift)
 bindsym $mod+q kill
@@ -218,7 +218,7 @@ for_window [class="SimpleScreenRecorder" instance="SimpleScreenRecorder"] floati
 
 # Terminal - Scratchpad
 for_window [instance="dropdown"] floating enable
-for_window [instance="dropdown"] resize set 75 ppt 75 ppt
+for_window [instance="dropdown"] resize set 90 ppt 90 ppt
 for_window [instance="dropdown"] move scratchpad
 for_window [instance="dropdown"] border pixel 5
 exec --no-startup-id kitty --name dropdown
@@ -226,7 +226,7 @@ bindsym $mod+u [instance="dropdown"] scratchpad show; [instance="dropdown"] move
 
 # pulsemixer Volume - Scratchpad
 for_window [instance="volume"] floating enable
-for_window [instance="volume"] resize set 75 ppt 75 ppt
+for_window [instance="volume"] resize set 90 ppt 90 ppt
 for_window [instance="volume"] move scratchpad
 for_window [instance="volume"] border pixel 5
 exec --no-startup-id kitty --name volume pulsemixer
@@ -234,7 +234,7 @@ bindsym $mod+v [instance="volume"] scratchpad show; [instance="volume"] move pos
 
 # calcurse Schedule - Scratchpad
 for_window [instance="schedule"] floating enable
-for_window [instance="schedule"] resize set 75 ppt 75 ppt
+for_window [instance="schedule"] resize set 90 ppt 90 ppt
 for_window [instance="schedule"] move scratchpad
 for_window [instance="schedule"] border pixel 5
 exec --no-startup-id kitty --name schedule calcurse
@@ -242,7 +242,7 @@ bindsym $mod+s [instance="schedule"] scratchpad show; [instance="schedule"] move
 
 # Ranger - Scratchpad
 for_window [instance="ranger"] floating enable
-for_window [instance="ranger"] resize set 75 ppt 75 ppt
+for_window [instance="ranger"] resize set 90 ppt 90 ppt
 for_window [instance="ranger"] move scratchpad
 for_window [instance="ranger"] border pixel 5
 exec --no-startup-id kitty --name ranger ranger 
@@ -250,7 +250,7 @@ bindsym $mod+r [instance="ranger"] scratchpad show; [instance="ranger"] move pos
 
 # Passwords - Scratchpad
 for_window [instance="bitwarden"] floating enable
-for_window [instance="bitwarden"] resize set 75 ppt 75 ppt
+for_window [instance="bitwarden"] resize set 90 ppt 90 ppt
 for_window [instance="bitwarden"] move scratchpad
 for_window [instance="bitwarden"] border pixel 5
 exec --no-startup-id bitwarden-desktop
@@ -258,7 +258,7 @@ bindsym $mod+p [instance="bitwarden"] scratchpad show; [instance="bitwarden"] mo
 
 # LaTeX - Scratchpad
 for_window [instance="latex"] floating enable
-for_window [instance="latex"] resize set 75 ppt 75 ppt
+for_window [instance="latex"] resize set 90 ppt 90 ppt
 for_window [instance="latex"] move scratchpad
 for_window [instance="latex"] border pixel 5
 exec --no-startup-id kitty --name latex vim ~/MEGA/scratch/tex/scratch.tex
@@ -266,7 +266,7 @@ bindsym $mod+x [instance="latex"] scratchpad show; [instance="latex"] move posit
 
 # Notepad - Scratchpad
 for_window [instance="notes"] floating enable
-for_window [instance="notes"] resize set 75 ppt 75 ppt
+for_window [instance="notes"] resize set 90 ppt 90 ppt
 for_window [instance="notes"] move scratchpad
 for_window [instance="notes"] border pixel 5
 exec --no-startup-id kitty --name notes vim ~/MEGA/notes.md 
@@ -274,7 +274,7 @@ bindsym $mod+n [instance="notes"] scratchpad show; [instance="notes"] move posit
 
 # IRC - Scratchpad
 for_window [instance="irc"] floating enable
-for_window [instance="irc"] resize set 75 ppt 75 ppt
+for_window [instance="irc"] resize set 90 ppt 90 ppt
 for_window [instance="irc"] move scratchpad
 for_window [instance="irc"] border pixel 5
 exec --no-startup-id kitty --name irc weechat 
@@ -282,7 +282,7 @@ bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position 
 
 # # qTox - Scratchpad
 # for_window [instance="qtox"] floating enable
-# for_window [instance="qtox"] resize set 75 ppt 75 ppt
+# for_window [instance="qtox"] resize set 90 ppt 90 ppt
 # for_window [instance="qtox"] move scratchpad
 # for_window [instance="qtox"] border pixel 5
 # exec --no-startup-id qtox
@@ -290,7 +290,7 @@ bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position 
 
 # Music - Scratchpad
 for_window [instance="spotify"] floating enable
-for_window [instance="spotify"] resize set 75 ppt 75 ppt
+for_window [instance="spotify"] resize set 90 ppt 90 ppt
 for_window [instance="spotify"] move scratchpad
 for_window [instance="spotify"] border pixel 5
 exec --no-startup-id spotify
@@ -298,7 +298,7 @@ bindsym $mod+m [instance="spotify"] scratchpad show; [instance="spotify"] move p
 
 # Calculator - Scratchpad
 for_window [instance="qalculate-gtk"] floating enable
-for_window [instance="qalculate-gtk"] resize set 75 ppt 75 ppt
+for_window [instance="qalculate-gtk"] resize set 90 ppt 90 ppt
 for_window [instance="qalculate-gtk"] move scratchpad
 for_window [instance="qalculate-gtk"] border pixel 5
 exec --no-startup-id qalculate-gtk

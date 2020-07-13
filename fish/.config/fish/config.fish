@@ -106,3 +106,4 @@ end
 function viman 
   man "$argv" | vim -R +":set ft=man" - ;
 end
+

@@ -35,6 +35,10 @@ You would like to try out my vim configuration
   * see mouse-settings, Note: the config must be stowed to /etc
 * keyboard
 
+## Output
+* Monitor
+  * `mons` for configuring output
+
 ## Movement
 * Everything vim (to the furthest extent)
 
@@ -51,3 +55,13 @@ You would like to try out my vim configuration
 * fish
 ### Latex Writing
 * vim + vimtex + ultisnips (feel free to check out my other repo for some snippets)
+### Music
+* Spotify
+  * Musixmatch for lyrics
+
+## Server System
+* vim-gtk (for ultisnips)
+* my-snips repo
+* tmux
+* fish, then `chsh -s /usr/bin/fish`
+* ranger

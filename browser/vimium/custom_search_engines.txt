@@ -1,0 +1,8 @@
+# Custom Key Mappings
+# Don't open new tabs
+unmap t
+
+# Custom Search Engines
+# Music
+m: https://www.last.fm/search?q=%s
+y: https://www.youtube.com/results?search_query=
