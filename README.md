@@ -24,7 +24,8 @@ You would like to try out my vim configuration
 * X
 * i3wm
 * picom for transparency
-* Iosevka font
+* Font:
+  * iosevka-fixed-slab
 * For the following you can use lxappearance
   * Adwaita-dark gtk theme
   * high-contrast icon theme
@@ -58,6 +59,15 @@ You would like to try out my vim configuration
 ### Music
 * Spotify
   * Musixmatch for lyrics
+### Version Control
+* Git
+  * Set default diff viewer
+  ```
+  git config --global diff.tool vimdiff
+  git config --global difftool.prompt false
+  git config --global alias.d difftool
+  ```
+
 
 ## Server System
 * vim-gtk (for ultisnips)

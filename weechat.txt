@@ -4,10 +4,13 @@
 /set weechat.plugin.autoload "*,!ruby,!lua,!aspell,!tcl"
 
 /server add freenode chat.freenode.net
+/server add oftc irc.oftc.net
+
 /set irc.server.freenode.nicks "uname"
 /set irc.server.freenode.username "My user name"
 
 /set irc.server.freenode.autoconnect on
+/set irc.server.oftc.autoconnect on
 
 /set irc.server.freenode.addresses "chat.freenode.net/7000"
 /set irc.server.freenode.ssl on
@@ -16,7 +19,8 @@
 
 /connect freenode
 
-/set irc.server.freenode.autojoin "##math,#linux,#vim,##programming,##C,#python,#archlinux,#weechat,#ranger,#freenode,##networking,#nginx,#archlinux-offtopic,#latex,#lmms"
+/set irc.server.freenode.autojoin "##math,##cs,##computerscience,#linux,#vim,##programming,##C,#python,#archlinux,#weechat,#ranger,#freenode,##networking,#nginx,#archlinux-offtopic,#latex,#lmms"
+/set irc.server.oftc.autojoin "#fish"
 
 # PLUGINS:
 
