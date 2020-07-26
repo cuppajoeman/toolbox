@@ -212,8 +212,6 @@ for_window [class="flameshot" instance="flameshot"] floating enable move positio
 for_window [class="GLFW-Application" instance="GLFW-Application"] floating enable move position center
 for_window [class="SimpleScreenRecorder" instance="SimpleScreenRecorder"] floating enable move position center
 
-
-
 # -- Scratchpads --
 
 # Terminal - Scratchpad

@@ -75,7 +75,7 @@ if status is-interactive
   #abbr --add --global glga "git log --graph --oneline --all --decorate"
   #abbr --add --global gb "git branch"
   #abbr --add --global gs "git show"
-  abbr --add --global gd "diff --color --color-words --abbrev"
+  abbr --add --global gd "git difftool"
   # abbr --add --global gdc "git diff --cached"
   # abbr --add --global gbl "git blame"
   abbr --add --global gps "git push"

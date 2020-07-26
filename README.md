@@ -44,8 +44,19 @@ You would like to try out my vim configuration
 * Everything vim (to the furthest extent)
 
 ## Tools
-### Communication
-* weechat for irc
+### Man pages
+### IRC
+* weechat 
+  * plugins
+    * vimode.py
+    * go.py
+    * weechat-notify-send
+  * bindings
+    * alt-b toggles buflist
+    * alt-n toggles nicklist
+  * configurations
+    * limit the nicklist size
+    * hide join/leave messages (intelligently)
 ### Editor
 * vim - check the vim directory for more
 ### Terminal Emulator
@@ -67,6 +78,11 @@ You would like to try out my vim configuration
   git config --global difftool.prompt false
   git config --global alias.d difftool
   ```
+  * Set the default editor to vim
+### Mathmatics
+* Qalculate - for quick calculation
+* geogebra-5 - for 2d/3d graphing
+* lang. to check conjectures
 
 
 ## Server System
