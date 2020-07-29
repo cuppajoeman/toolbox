@@ -59,6 +59,7 @@ You would like to try out my vim configuration
     * hide join/leave messages (intelligently)
 ### Editor
 * vim - check the vim directory for more
+  * co-vim for pair programming - https://github.com/FredKSchott/CoVim
 ### Terminal Emulator
 * kitty
 ### Shell

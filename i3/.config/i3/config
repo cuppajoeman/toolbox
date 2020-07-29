@@ -264,7 +264,9 @@ bindsym $mod+x [instance="latex"] scratchpad show; [instance="latex"] move posit
 
 # Notepad - Scratchpad
 for_window [instance="notes"] floating enable
-for_window [instance="notes"] resize set 90 ppt 90 ppt
+for_window [instance=" 
+
+notes"] resize set 90 ppt 90 ppt
 for_window [instance="notes"] move scratchpad
 for_window [instance="notes"] border pixel 5
 exec --no-startup-id kitty --name notes vim ~/MEGA/notes.md 

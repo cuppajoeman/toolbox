@@ -18,9 +18,7 @@ Plug 'markonm/traces.vim'
 Plug 'lervag/vimtex'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-surround'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'dhruvasagar/vim-table-mode'
+"Plug 'FredKSchott/CoVim'
 call plug#end()
 
 

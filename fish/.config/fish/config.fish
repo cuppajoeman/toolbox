@@ -116,3 +116,10 @@ end
 function thread_compile
   gcc -g "$argv.c" -o "$argv" -lpthread 
 end
+
+# generate and open a temporary pdf
+function ptemp
+  pandoc "$argv" -o ~/temp/temp.pdf
+  zathura --fork ~/temp/temp.pdf
+end
+
