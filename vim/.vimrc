@@ -8,6 +8,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+"python import sys; sys.path.append("/usr/lib/python3.8/site-packages")
 
 " Plugins
 call plug#begin('~/.vim/plugged')
@@ -119,6 +120,8 @@ call plug#end()
 	cabbrev help tab help
 " Vertically split a buffer
   cabbrev vb vert sb
+" folding
+  set foldmethod=syntax
 
 " statusline
 	let laststatus=2
@@ -126,6 +129,9 @@ call plug#end()
 " searching with casing
   set ignorecase
   set smartcase
+
+" Don't break your fingers on regex
+  cmap <c-o> .\{-}
 
 " clear highlighting
 	command C let @/=""

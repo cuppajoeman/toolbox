@@ -34,6 +34,8 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec kitty
 
+bindsym $mod+Shift+Return exec kitty ranger
+
 # kill focused window - (quickly: removed shift)
 bindsym $mod+q kill
 
@@ -60,6 +62,8 @@ bindsym $mod+Print exec flameshot gui
 
 # Browser 
 bindsym $mod+b exec firefox
+
+bindsym $mod+Scroll_Lock exec ocrdesktop
 
 # == COMPUTER SPECIFIC END == 
 

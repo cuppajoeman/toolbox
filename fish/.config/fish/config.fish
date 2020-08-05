@@ -18,7 +18,7 @@ if status is-interactive
   abbr --add --global monitor "xrandr --output VGA-0 --mode 1280x1024 --rate 75.02"
   abbr --add --global vnceee "x11vnc -display :0 -geometry 1024x600"
   abbr --add --global h "cd ~/"
-  abbr --add --global m "cd ~/MEGA"
+  abbr --add --global m "cd ~/Nextcloud"
 
   # Program
   abbr --add --global ydlm "youtube-dl -x --audio-format mp3 "
