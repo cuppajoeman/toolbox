@@ -28,7 +28,7 @@ dunst &
 
 # === Utilities ===
 # File Sync
-megasync &
+nextcloud &
 # Optimus manager
 optimus-manager-qt &
 # Redshift
