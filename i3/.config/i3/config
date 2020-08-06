@@ -258,6 +258,14 @@ for_window [instance="bitwarden"] border pixel 5
 exec --no-startup-id bitwarden-desktop
 bindsym $mod+p [instance="bitwarden"] scratchpad show; [instance="bitwarden"] move position center
 
+# pianO - Scratchpad
+for_window [instance="vmpk"] floating enable
+for_window [instance="vmpk"] resize set 90 ppt 40 ppt
+for_window [instance="vmpk"] move scratchpad
+for_window [instance="vmpk"] border pixel 5
+exec --no-startup-id vmpk
+bindsym $mod+o [instance="vmpk"] scratchpad show; [instance="vmpk"] move position center
+
 # LaTeX - Scratchpad
 for_window [instance="latex"] floating enable
 for_window [instance="latex"] resize set 90 ppt 90 ppt
@@ -299,6 +307,14 @@ for_window [instance="spotify"] move scratchpad
 for_window [instance="spotify"] border pixel 5
 exec --no-startup-id spotify
 bindsym $mod+m [instance="spotify"] scratchpad show; [instance="spotify"] move position center
+
+# musiclYrics - Scratchpad
+for_window [instance="musixmatch"] floating enable
+for_window [instance="musixmatch"] resize set 10 ppt 10 ppt
+for_window [instance="musixmatch"] move scratchpad
+for_window [instance="musixmatch"] border pixel 5
+exec --no-startup-id musixmatch
+bindsym $mod+y [instance="musixmatch"] scratchpad show; [instance="musixmatch"] move position center
 
 # Calculator - Scratchpad
 for_window [instance="qalculate-gtk"] floating enable
