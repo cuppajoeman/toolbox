@@ -31,6 +31,7 @@ You would like to try out my vim configuration
   * high-contrast icon theme
   * thedot mouse cursor
 
+
 ## Input
 * trackball 
   * see mouse-settings, Note: the config must be stowed to /etc
@@ -39,6 +40,8 @@ You would like to try out my vim configuration
 ## Output
 * Monitor
   * `mons` for configuring output
+* Sound
+  * Pulsemixer to change volume
 
 ## Movement
 * Everything vim (to the furthest extent)
@@ -59,18 +62,14 @@ You would like to try out my vim configuration
     * hide join/leave messages (intelligently)
 ### Editor
 * vim - check the vim directory for more
-  * co-vim for pair programming - https://github.com/FredKSchott/CoVim
 ### Terminal Emulator
-* kitty
+* st
 ### Shell
-* Abbreviations: 
-  * I have a file where I store generic abbreviations of the form abbrev "expansion", then I can generate specific abbreviations for the specific shell I'm using at the moment (check out abbreviations folder)
 * fish
 ### Latex Writing
 * vim + vimtex + ultisnips (feel free to check out my other repo for some snippets)
 ### Music
 * Spotify
-  * Musixmatch for lyrics
 ### Version Control
 * Git
   * Set default diff viewer
