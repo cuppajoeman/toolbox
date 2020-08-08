@@ -23,7 +23,7 @@ if status is-interactive
   # Program
   abbr --add --global ydlm "youtube-dl -x --audio-format mp3 "
   abbr --add --global scrrec "ffmpeg -video_size 1280x1024 -framerate 25 -f x11grab -i :0.0 rec.mp4"
-  abbr --add --global webcam "mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video2 -fps 60 -vf screenshot"
+  abbr --add --global webcam "mpv --demuxer-lavf-format=video4linux2 --demuxer-lavf-o-set=input_format=mjpeg av://v4l2:/dev/video0"
   abbr --add --global mail "mailsync && neomutt"
 
 
