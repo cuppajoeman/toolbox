@@ -6,8 +6,8 @@
 /server add freenode chat.freenode.net
 /server add oftc irc.oftc.net
 
-/set irc.server.freenode.nicks "uname"
-/set irc.server.freenode.username "My user name"
+/set irc.server.freenode.nicks "cuppajoeman"
+/set irc.server.freenode.username "cuppajoeman"
 
 /set irc.server.freenode.autoconnect on
 /set irc.server.oftc.autoconnect on
@@ -17,19 +17,76 @@
 /set irc.server.freenode.sasl_username "mynick"
 /set irc.server.freenode.sasl_password "xxxxxxx"
 
+/set irc.server.freenode.autojoin "##math,##cs,#linux,#vim,##programming,##philosophy,#music,#music-theory,#git,##C,#python,#archlinux,#artix,#weechat,#ranger,#freenode,##networking,#hardware,#nginx,#latex,#lmms,#dunst,#dwarffortress"
+/set irc.server.oftc.autojoin "#fish,#Bitlbee"
+
 /connect freenode
+/connect oftc
 
-/set irc.server.freenode.autojoin "##math,##cs,#linux,#vim,##programming,##philosophy,#music,#music-theory,#git,##C,#python,#archlinux,#weechat,#ranger,#freenode,##networking,#nginx,#latex,#lmms,#dwarffortress"
-/set irc.server.oftc.autojoin "#fish"
-
-# PLUGINS:
-
-* VIM in IRC,  https://github.com/GermainZ/weechat-vimode 
-* multiline.pl
-* Notifications: https://github.com/s3rvac/weechat-notify-send (install dunst)
 * smart filter: 
-
 /set irc.look.smart_filter on 
 /filter add irc_smart * irc_smart_filter * 
 # if they haven't spoken in the past X minutes then they get filtered
 /set irc.look.smart_filter_delay 5
+/save
+
+# Key bindings
+/key bind meta-n /bar toggle nicklist
+/key bind meta-b /bar toggle buflist
+/save
+
+# PLUGINS:
+* VIM in IRC,  https://github.com/GermainZ/weechat-vimode 
+
+/script install vimode.py
+/vimode bind_keys
+/set weechat.bar.input.items "mode_indicator+[input_prompt]+(away),[input_search], [input_paste],input_text,[vi_buffer]"
+/set weechat.bar.status.items "[time],[buffer_last_number],[buffer_plugin],buffer_number+:+buffer_name+(buffer_modes)+{buffer_nicklist_count}+buffer_zoom+buffer_filter,scroll,[lag],[hotlist],completion,cmd_completion"
+/set plugins.var.python.vimode.search_vim on
+/save
+
+
+* go.py
+/key bind meta-g /go
+/set plugins.var.python.go.short_name "on"
+/save
+
+* weechat-matrix - https://github.com/poljar/weechat-matrix
+
+Start by loading the Weechat-Matrix plugin:
+
+/script load matrix.py
+
+/set matrix.server.matrix_org.username johndoe
+/set matrix.server.matrix_org.password jd_is_awesome
+
+/matrix connect matrix_org
+
+Automatically load the script
+
+$ ln -s /usr/share/weechat/python/weechat-matrix.py -t ~/.weechat/python/autoload/
+
+Automatically connect to the server
+
+/set matrix.server.matrix_org.autoconnect on
+If everything works, save the configuration
+
+/save
+
+* multiline.pl
+
+* Notifications: https://github.com/s3rvac/weechat-notify-send (install dunst)
+cp notify_send.py ~/.weechat/python
+cd ~/.weechat/python/autoload
+ln -s ../notify_send.py
+
+
+* Bitlbee-facebook 
+  * install the aur package 
+  * follow the steps on the main bitlbee arch wiki page 
+  * start it up 
+  * connect to the locahost server and do the steps on the bitlbee wiki - set autoconnect to on
+  * use blist [offline] or see who is online to message people who are currently online.
+  * message them with /query username
+
+* weechat-discord from aur

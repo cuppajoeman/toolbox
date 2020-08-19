@@ -278,7 +278,6 @@
     background = "#222222"
     foreground = "#888888"
     timeout = 10
-    script = ~/notification.sh
     # Icon for notifications with low urgency, uncomment to enable
     #icon = /path/to/icon
 
@@ -286,7 +285,6 @@
     background = "#285577"
     foreground = "#ffffff"
     timeout = 10
-    script = ~/notification.sh
     # Icon for notifications with normal urgency, uncomment to enable
     #icon = /path/to/icon
 
@@ -388,6 +386,12 @@
 #    # This notification will not be displayed, but will be included in the history
 #    summary = "foobar"
 #    skip_display = yes
+#
+
+[weechat]
+    appname = weechat
+    urgency = critical
+    script = ~/notification.sh
 
 #[signed_on]
 #    appname = Pidgin
