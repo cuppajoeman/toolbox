@@ -34,7 +34,7 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec st
 
-bindsym $mod+Shift+Return exec kitty ranger
+bindsym $mod+Shift+Return exec st ranger
 
 # kill focused window - (quickly: removed shift)
 bindsym $mod+q kill

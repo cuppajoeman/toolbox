@@ -104,9 +104,9 @@ function ranger
 end
 
 # open manpages in vim
-function viman 
-  man "$argv" | vim -R +":set ft=man" - ;
-end
+# function viman 
+#   man "$argv" | vim -R +":set ft=man" - ;
+# end
 
 # search for word in pdf's
 function pfind

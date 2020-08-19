@@ -72,6 +72,9 @@ call plug#end()
     set incsearch
     set nowrapscan
 
+" Have a vartical ruler
+    set colorcolumn=80
+
 " Indentataion
     filetype plugin indent on
     " On pressing tab, insert 2 spaces
