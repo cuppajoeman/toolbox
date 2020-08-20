@@ -259,19 +259,19 @@ exec --no-startup-id bitwarden-desktop
 bindsym $mod+p [instance="bitwarden"] scratchpad show; [instance="bitwarden"] move position center
 
 # pianO - Scratchpad
-for_window [instance="vmpk"] floating enable
-for_window [instance="vmpk"] resize set 90 ppt 40 ppt
-for_window [instance="vmpk"] move scratchpad
-for_window [instance="vmpk"] border pixel 5
-exec --no-startup-id vmpk
-bindsym $mod+o [instance="vmpk"] scratchpad show; [instance="vmpk"] move position center
+# for_window [instance="vmpk"] floating enable
+# for_window [instance="vmpk"] resize set 90 ppt 40 ppt
+# for_window [instance="vmpk"] move scratchpad
+# for_window [instance="vmpk"] border pixel 5
+# exec --no-startup-id vmpk
+# bindsym $mod+o [instance="vmpk"] scratchpad show; [instance="vmpk"] move position 50 px 800 px 
 
 # LaTeX - Scratchpad
 for_window [instance="latex"] floating enable
 for_window [instance="latex"] resize set 90 ppt 90 ppt
 for_window [instance="latex"] move scratchpad
 for_window [instance="latex"] border pixel 5
-exec --no-startup-id st -n latex vim ~/Nextcloud/2TB/scratch/tex/scratch.tex
+exec --no-startup-id st -n latex vim ~/Nextcloud2/2TB/scratch/tex/scratch.tex
 bindsym $mod+x [instance="latex"] scratchpad show; [instance="latex"] move position center
 
 # Notepad - Scratchpad
@@ -279,7 +279,7 @@ for_window [instance="notes"] floating enable
 for_window [instance="notes"] resize set 90 ppt 90 ppt
 for_window [instance="notes"] move scratchpad
 for_window [instance="notes"] border pixel 5
-exec --no-startup-id st -n notes vim ~/Nextcloud/2TB/notes.md 
+exec --no-startup-id st -n notes vim ~/Nextcloud2/2TB/notes.md 
 bindsym $mod+n [instance="notes"] scratchpad show; [instance="notes"] move position center
 
 # IRC - Scratchpad
