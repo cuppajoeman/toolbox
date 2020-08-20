@@ -28,7 +28,7 @@ dunst &
 
 # === Utilities ===
 # File Sync
-nextcloud &
+#nextcloud &
 # Optimus manager
 optimus-manager-qt &
 # Redshift
@@ -40,4 +40,5 @@ copyq &
 # Swap caps and escape
 setxkbmap -option caps:swapescape
 
+#exec xfce4-session 
 exec i3

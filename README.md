@@ -30,6 +30,7 @@ You would like to try out my vim configuration
   * Adwaita-dark gtk theme
   * high-contrast icon theme
   * thedot mouse cursor
+* arc-dark gtk theme
 
 
 ## Input

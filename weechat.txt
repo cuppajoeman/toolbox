@@ -17,7 +17,7 @@
 /set irc.server.freenode.sasl_username "mynick"
 /set irc.server.freenode.sasl_password "xxxxxxx"
 
-/set irc.server.freenode.autojoin "##math,##cs,#linux,#vim,##programming,##philosophy,#music,#music-theory,#git,##C,#python,#archlinux,#artix,#weechat,#ranger,#freenode,##networking,#hardware,#nginx,#latex,#lmms,#dunst,#dwarffortress"
+/set irc.server.freenode.autojoin "##math,##cs,#linux,#vim,##programming,##philosophy,#music,#music-theory,#git,##C,#python,#archlinux,#artix,#weechat,#ranger,#i3,#freenode,##networking,#hardware,#nginx,#latex,#lmms,#dunst,#dwarffortress"
 /set irc.server.oftc.autojoin "#fish,#Bitlbee"
 
 /connect freenode
@@ -90,3 +90,5 @@ ln -s ../notify_send.py
   * message them with /query username
 
 * weechat-discord from aur
+
+* weechat-slack
