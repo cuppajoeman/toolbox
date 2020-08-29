@@ -1,41 +1,68 @@
 clear
-ctrl+semicolon start
+
+# Configuration
+ctrl+semicolon start,grid 4x4,grid-nav on
+ctrl+period start,cursorzoom 75 75
+g grid-nav off
 Escape end
 ctrl+bracketleft end
+
+# Recording
 q record ~/.keynav_macros
 shift+at playback
 a history-back
+
+
+# Mouse movement
+space warp,click 1,end
+Return warp,click 1,end
+semicolon warp,end
+
+# Mouse commands
+w warp
+t windowzoom
+c cursorzoom 75 75
+z cut-up, cut-down, cut-left, cut-right
+shift+c cursorzoom 150 150
+ctrl+c cursorzoom 300 300
+e end
+
+1 click 1
+2 click 2
+3 click 3
+
+# scrolling up and down
+n click 5
+m click 4
+
+d drag 1
+
+# Movement commands
 h cut-left
 j cut-down
 k cut-up
 l cut-right
+
 shift+h move-left
 shift+j move-down
 shift+k move-up
 shift+l move-right
-space warp,click 1,end
-Return warp,click 1,end
-semicolon warp,end
-w warp
-t windowzoom
-c cursorzoom 300 300
-e end
-1 click 1
-2 click 2
-3 click 3
+
 ctrl+h cut-left
 ctrl+j cut-down
 ctrl+k cut-up
 ctrl+l cut-right
-y cut-left,cut-up
-u cut-right,cut-up
-b cut-left,cut-down
-n cut-right,cut-down
-shift+y move-left,move-up
-shift+u move-right,move-up
-shift+b move-left,move-down
-shift+n move-right,move-down
-ctrl+y cut-left,cut-up
-ctrl+u cut-right,cut-up
-ctrl+b cut-left,cut-down
-ctrl+n cut-right,cut-down
+
+# JK are dominant keys - because we work in vertical files
+# UI are above J and OP are above K
+# Thus UI modify J (left right) and OP modify K (left right)
+
+o cut-left,cut-up
+p cut-right,cut-up
+u cut-left,cut-down
+i cut-right,cut-down
+
+shift+o move-left,move-up
+shift+p move-right,move-up
+shift+u move-left,move-down
+shift+i move-right,move-down

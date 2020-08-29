@@ -113,6 +113,11 @@ function pfind
   pdfgrep -n -i -e "$argv" *.pdf
 end
 
+# search the running processes for a given word
+function psgrep
+  ps aux | grep "$argv" 
+end
+
 function thread_compile
   gcc -g "$argv.c" -o "$argv" -lpthread 
 end
@@ -122,4 +127,9 @@ function ptemp
   pandoc "$argv" -o ~/temp/temp.pdf
   zathura --fork ~/temp/temp.pdf
 end
+
+function ix
+   "$argv" |  curl -F 'f:1=<-' ix.io
+end
+
 

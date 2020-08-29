@@ -35,6 +35,8 @@ optimus-manager-qt &
 redshift-gtk &
 # Clipboard
 copyq &
+# Mouse
+keynav &
 
 # === Settings ===
 # Swap caps and escape
