@@ -118,9 +118,9 @@ function psgrep
   ps aux | grep "$argv" 
 end
 
-function thread_compile
-  gcc -g "$argv.c" -o "$argv" -lpthread 
-end
+#function thread_compile
+#  gcc -g "$argv.c" -o "$argv" -lpthread 
+#end
 
 # generate and open a temporary pdf
 function ptemp
@@ -131,5 +131,3 @@ end
 function ix
    "$argv" |  curl -F 'f:1=<-' ix.io
 end
-
-

@@ -12,7 +12,7 @@
 /set irc.server.freenode.autoconnect on
 /set irc.server.oftc.autoconnect on
 
-/set irc.server.freenode.addresses "chat.freenode.net/7000"
+/server add freenode chat.freenode.net/6697 -ssl
 /set irc.server.freenode.ssl on
 /set irc.server.freenode.sasl_username "mynick"
 /set irc.server.freenode.sasl_password "xxxxxxx"
@@ -46,7 +46,8 @@
 /save
 
 
-* go.py
+# go.py
+/script install go.py
 /key bind meta-g /go
 /set plugins.var.python.go.short_name "on"
 /save
@@ -73,7 +74,7 @@ If everything works, save the configuration
 
 /save
 
-* multiline.pl
+# multiline.pl
 
 * Notifications: https://github.com/s3rvac/weechat-notify-send (install dunst)
 cp notify_send.py ~/.weechat/python

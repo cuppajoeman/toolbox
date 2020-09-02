@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:Iosevka Fixed Slab 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -24,17 +24,19 @@ font pango:monospace 8
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+# exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+#
 
+default_border none
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 
 # start a terminal
-bindsym $mod+Return exec st
+bindsym $mod+Return exec kitty
 
-bindsym $mod+Shift+Return exec st ranger
+bindsym $mod+Shift+Return exec kitty ranger
 
 # kill focused window - (quickly: removed shift)
 bindsym $mod+q kill
@@ -62,8 +64,6 @@ bindsym $mod+Print exec flameshot gui
 
 # Browser 
 bindsym $mod+b exec brave
-
-bindsym $mod+Scroll_Lock exec ocrdesktop
 
 # == COMPUTER SPECIFIC END == 
 
@@ -127,16 +127,16 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
+set $ws1 "1|Browser"
+set $ws2 "2|Terminal"
+set $ws3 "3|IRC"
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws8 "8|Schedule"
+set $ws9 "9|Notes"
+set $ws10 "10|Music"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -205,7 +205,10 @@ bindsym $mod+Shift+z mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+    status_command i3status
+    mode hide
+    hidden_state hide
+    modifier Mod4
 }
 
 # == COMPUTER SPECIFIC START == (Omit this if you are not on my current setup or get requirements)
@@ -218,38 +221,40 @@ for_window [class="flameshot" instance="flameshot"] floating enable move positio
 for_window [class="GLFW-Application" instance="GLFW-Application"] floating enable move position center
 for_window [class="SimpleScreenRecorder" instance="SimpleScreenRecorder"] floating enable move position center
 
-# -- Scratchpads --
 
-# Terminal - Scratchpad
-for_window [instance="dropdown"] floating enable
-for_window [instance="dropdown"] resize set 90 ppt 90 ppt
-for_window [instance="dropdown"] move scratchpad
-for_window [instance="dropdown"] border pixel 5
-exec --no-startup-id st -n dropdown
-bindsym $mod+u [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
+exec --no-startup-id brave
+for_window [class="Brave"] move workspace $ws1
 
-# pulsemixer Volume - Scratchpad
+exec --no-startup-id kitty --name "2|Terminal"
+for_window [instance="2|Terminal"] move workspace $ws2
+
+exec --no-startup-id kitty --name "3|IRC" weechat 
+for_window [instance="3|IRC"] move workspace $ws3
+
+exec --no-startup-id kitty --name "8|Schedule" calcurse
+for_window [instance="8|Schedule"] move workspace $ws8
+
+exec --no-startup-id kitty --name "9|Notes" vim ~/Nextcloud/2TB/notes.md 
+for_window [instance="9|Notes"] move workspace $ws9
+
+exec --no-startup-id kitty --name "10|Music" cmus
+for_window [instance="10|Music"] move workspace $ws10
+
+
+# alsamixer Volume - Scratchpad
 for_window [instance="volume"] floating enable
 for_window [instance="volume"] resize set 90 ppt 90 ppt
 for_window [instance="volume"] move scratchpad
 for_window [instance="volume"] border pixel 5
-exec --no-startup-id st -n volume pulsemixer
+exec --no-startup-id kitty --name volume alsamixer
 bindsym $mod+v [instance="volume"] scratchpad show; [instance="volume"] move position center
-
-# calcurse Schedule - Scratchpad
-for_window [instance="schedule"] floating enable
-for_window [instance="schedule"] resize set 90 ppt 90 ppt
-for_window [instance="schedule"] move scratchpad
-for_window [instance="schedule"] border pixel 5
-exec --no-startup-id st -n schedule calcurse
-bindsym $mod+s [instance="schedule"] scratchpad show; [instance="schedule"] move position center
 
 # Ranger - Scratchpad
 for_window [instance="ranger"] floating enable
 for_window [instance="ranger"] resize set 90 ppt 90 ppt
 for_window [instance="ranger"] move scratchpad
 for_window [instance="ranger"] border pixel 5
-exec --no-startup-id st -n ranger ranger 
+exec --no-startup-id kitty --name ranger ranger 
 bindsym $mod+r [instance="ranger"] scratchpad show; [instance="ranger"] move position center
 
 # Passwords - Scratchpad
@@ -259,68 +264,4 @@ for_window [instance="bitwarden"] move scratchpad
 for_window [instance="bitwarden"] border pixel 5
 exec --no-startup-id bitwarden-desktop
 bindsym $mod+p [instance="bitwarden"] scratchpad show; [instance="bitwarden"] move position center
-
-# pianO - Scratchpad
-# for_window [instance="vmpk"] floating enable
-# for_window [instance="vmpk"] resize set 90 ppt 40 ppt
-# for_window [instance="vmpk"] move scratchpad
-# for_window [instance="vmpk"] border pixel 5
-# exec --no-startup-id vmpk
-# bindsym $mod+o [instance="vmpk"] scratchpad show; [instance="vmpk"] move position 50 px 800 px 
-
-# LaTeX - Scratchpad
-for_window [instance="latex"] floating enable
-for_window [instance="latex"] resize set 90 ppt 90 ppt
-for_window [instance="latex"] move scratchpad
-for_window [instance="latex"] border pixel 5
-exec --no-startup-id st -n latex vim ~/Nextcloud2/2TB/scratch/tex/scratch.tex
-bindsym $mod+x [instance="latex"] scratchpad show; [instance="latex"] move position center
-
-# Notepad - Scratchpad
-for_window [instance="notes"] floating enable
-for_window [instance="notes"] resize set 90 ppt 90 ppt
-for_window [instance="notes"] move scratchpad
-for_window [instance="notes"] border pixel 5
-exec --no-startup-id st -n notes vim ~/Nextcloud2/2TB/notes.md 
-bindsym $mod+n [instance="notes"] scratchpad show; [instance="notes"] move position center
-
-# IRC - Scratchpad
-for_window [instance="irc"] floating enable
-for_window [instance="irc"] resize set 90 ppt 90 ppt
-for_window [instance="irc"] move scratchpad
-for_window [instance="irc"] border pixel 5
-exec --no-startup-id st -n irc weechat 
-bindsym $mod+i [instance="irc"] scratchpad show; [instance="irc"] move position center
-
-# # qTox - Scratchpad
-# for_window [instance="qtox"] floating enable
-# for_window [instance="qtox"] resize set 90 ppt 90 ppt
-# for_window [instance="qtox"] move scratchpad
-# for_window [instance="qtox"] border pixel 5
-# exec --no-startup-id qtox
-# bindsym $mod+t [instance="qtox"] scratchpad show; [instance="qtox"] move position center
-
-# Music - Scratchpad
-for_window [instance="spotify"] floating enable
-for_window [instance="spotify"] resize set 90 ppt 90 ppt
-for_window [instance="spotify"] move scratchpad
-for_window [instance="spotify"] border pixel 5
-exec --no-startup-id spotify
-bindsym $mod+m [instance="spotify"] scratchpad show; [instance="spotify"] move position center
-
-# musiclYrics - Scratchpad
-for_window [instance="musixmatch"] floating enable
-for_window [instance="musixmatch"] resize set 10 ppt 10 ppt
-for_window [instance="musixmatch"] move scratchpad
-for_window [instance="musixmatch"] border pixel 5
-exec --no-startup-id musixmatch
-bindsym $mod+y [instance="musixmatch"] scratchpad show; [instance="musixmatch"] move position center
-
-# Calculator - Scratchpad
-for_window [instance="qalculate-gtk"] floating enable
-for_window [instance="qalculate-gtk"] resize set 90 ppt 90 ppt
-for_window [instance="qalculate-gtk"] move scratchpad
-for_window [instance="qalculate-gtk"] border pixel 5
-exec --no-startup-id qalculate-gtk
-bindsym $mod+c [instance="qalculate-gtk"] scratchpad show; [instance="qalculate-gtk"] move position center
 # == COMPUTER SPECIFIC END ==
