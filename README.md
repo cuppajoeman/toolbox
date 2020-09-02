@@ -78,7 +78,12 @@ You would like to try out my vim configuration
   git config --global diff.tool vimdiff
   git config --global difftool.prompt false
   git config --global alias.d difftool
+  git config merge.tool vimdiff
+  git config merge.conflictstyle diff3
+  git config mergetool.prompt false
   ```
+
+  * And 
   * Set the default editor to vim
 ### Mathmatics
 * Qalculate - for quick calculation

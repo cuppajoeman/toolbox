@@ -65,6 +65,9 @@ bindsym $mod+Print exec flameshot gui
 # Browser 
 bindsym $mod+b exec brave
 
+# lOck
+bindsym $mod+Shift+o exec i3lock -f
+
 # == COMPUTER SPECIFIC END == 
 
 # start dmenu (a program launcher)
