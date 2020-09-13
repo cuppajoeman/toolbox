@@ -3,6 +3,9 @@ fish_vi_key_bindings
 # Disable the greeting
 set fish_greeting
 
+# Set vim as default editor
+set -gx EDITOR vim
+
 # Set the cursors to be a line
 set fish_cursor_default line
 set fish_cursor_insert line
