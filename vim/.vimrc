@@ -13,7 +13,7 @@ endif
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 Plug 'dag/vim-fish'
 Plug 'markonm/traces.vim'
 Plug 'lervag/vimtex'
@@ -73,7 +73,7 @@ call plug#end()
     set nowrapscan
 
 " Have a vartical ruler
-    set colorcolumn=80
+    "set colorcolumn=80
 
 " Indentataion
     filetype plugin indent on
