@@ -23,10 +23,12 @@ xsetwacom set 17 button 11 key Ctrl D
 xsetwacom set 17 button 12 key Shift Ctrl V
 # Switch to Eraser
 xsetwacom set 17 button 13 key Shift Ctrl E
-# Switch to Pen
-xsetwacom set 17 button 14 key Shift Ctrl P
-# PEN
-# Undo
-xsetwacom set 14 button 2 key Ctrl Z
 # Selection
-xsetwacom set 14 button 3 key Shift Ctrl R
+xsetwacom set 17 button 14 key Shift Ctrl R
+
+# PEN
+# Switch to Pen
+xsetwacom set 14 button 2 key Shift Ctrl P
+# Undo
+xsetwacom set 14 button 3 key Ctrl Z
+

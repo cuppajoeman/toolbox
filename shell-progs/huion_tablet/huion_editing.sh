@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # XOURNALPP bindings
 PAD_ID=$(xsetwacom --list | grep 'Pad pad' | sed 's/[^0-9]*//g')
-PEN_ID=$(xsetwacom --list | grep 'Pen' | sed 's/[^0-9]*//g')
+PEN_ID=$(xsetwacom --list | grep 'stylus' | sed 's/[^0-9]*//g')
 # PAD
 # Paste
 xsetwacom set $PAD_ID button 1 key Ctrl V
@@ -22,11 +22,11 @@ xsetwacom set $PAD_ID button 11 key Ctrl 6
 xsetwacom set $PAD_ID button 12 key Shift Ctrl A
 # New eraser
 xsetwacom set $PAD_ID button 13 key Shift Ctrl E
-# Switch to Pen
-xsetwacom set $PAD_ID button 14 key Shift Ctrl P
+# Selection
+xsetwacom set $PAD_ID button 14 key Shift Ctrl R
 
 # PEN
+# Switch to Pen
+xsetwacom set $PEN_ID button 2 key Shift Ctrl P
 # Undo
-xsetwacom set $PEN_ID button 2 key Ctrl Z
-# Selection
-xsetwacom set $PEN_ID button 3 key Shift Ctrl R
+xsetwacom set $PEN_ID button 3 key Ctrl Z
