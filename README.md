@@ -34,8 +34,7 @@ You would like to try out my vim configuration
 
 
 ## Input
-* trackball 
-  * see mouse-settings, Note: the config must be stowed to /etc
+* mouse-settings I have a script there which disables mouse acceleration and then has an option to change the mouse sensiviity
 * keyboard
 
 ## Output

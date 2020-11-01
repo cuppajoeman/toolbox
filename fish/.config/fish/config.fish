@@ -46,7 +46,7 @@ if status is-interactive
 
 
   #  linux Aliases
-  abbr --add --global pi "sudo pacman -S"
+  abbr --add --global pi "yay -S"
   abbr --add --global pr "sudo pacman -R"
   abbr --add --global as "apt-cache search"
 
