@@ -1,11 +1,11 @@
-"\___/\__,_/ .___/ .___/\__,_/_/ /\____/\___/_/ /_/ /_/\__,_/_/ /_/
+ "\___/\__,_/ .___/ .___/\__,_/_/ /\____/\___/_/ /_/ /_/\__,_/_/ /_/
 "         /_/   /_/         /___/
 
 " Automatic vim-plug installation
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  autocmd VimEnter * PlugInstall --sync | source MYVIMRC
 endif
 
 "python import sys; sys.path.append("/usr/lib/python3.8/site-packages")
@@ -13,12 +13,13 @@ endif
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
-"Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 Plug 'dag/vim-fish'
 Plug 'markonm/traces.vim'
 Plug 'lervag/vimtex'
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-surround'
+"Plug '907th/vim-auto-save'
 "Plug 'FredKSchott/CoVim'
 call plug#end()
 
@@ -29,12 +30,22 @@ call plug#end()
 " Enable autocompletion:
 	set wildmode=longest,list,full
 
+" Enable highlighting search
+  set hlsearch
+
+" No highlight
+	map <F3> :noh<CR>
+
 " Disables automatic commenting on newline:
 	" autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Open this file easily
-    map <leader>ve :tabnew ~/.vimrc<CR>
-    map <leader>vr :source ~/.vimrc<CR>
+  map <leader>ve :tabnew ~/.vimrc<CR>
+  map <leader>vr :source ~/.vimrc<CR>
+
+" copy into windows 
+  xnoremap <leader>c <esc>:'<,'>:w !clip.exe<CR>
+
 
 " Code
 	syntax on
@@ -46,13 +57,13 @@ call plug#end()
 	set noswapfile
 
 " Let's save undo info!
-	if !isdirectory($HOME."/.vim")
-		call mkdir($HOME."/.vim", "", 0770)
+	if !isdirectory(HOME."/.vim")
+		call mkdir(HOME."/.vim", "", 0770)
 	endif
 
 	" All permissions only for me (privacy)
-	if !isdirectory($HOME."/.vim/undo-dir")
-		call mkdir($HOME."/.vim/undo-dir", "", 0700)
+	if !isdirectory(HOME."/.vim/undo-dir")
+		call mkdir(HOME."/.vim/undo-dir", "", 0700)
 	endif
 
 	set undodir=~/.vim/undo-dir
@@ -153,8 +164,8 @@ call plug#end()
 " To use this the markdown file on the left and the corresponding tex file on
 " the right, use @n on the right side and @s on the left
 
-let @i = 'F$l"lyt=f=l"ryt$'
-let @d = '"lyt=f=l"ry$'
+let @i = 'Fl"lyt=f=l"ryt'
+let @d = '"lyt=f=l"ry'
 
 
 "  ___               ___   ___         ___  
@@ -171,6 +182,9 @@ let @d = '"lyt=f=l"ry$'
     set nocompatible
     set number
     set relativenumber
+
+"" autosave
+""let g:auto_save = 1  " enable AutoSave on Vim startup
                                           
 "" Vimtex
 	let g:vimtex_view_method='zathura'
@@ -178,8 +192,10 @@ let @d = '"lyt=f=l"ry$'
   set conceallevel=1
   let g:tex_conceal='abdmg'
 	au BufReadPost *.tex set syntax=tex
-	map <leader>ims ?\$.\{-}\$<CR>
+	map <leader>ims ?\.\{-}\<CR>
 	map <leader>dms ?\\\[\_.\{-}\\\]<CR>
+  " media wiki convert
+	command Wmc let a = ['<math>','</math>'] | %s/\$/\=reverse(a)[1]/g
 
 "" Ultisnips
 	map <F2> :tabnew ~/.vim/LocalSnippets/<CR>
