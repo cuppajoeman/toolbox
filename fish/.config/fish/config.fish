@@ -7,7 +7,7 @@ set fish_greeting
 set -gx EDITOR vim
 
 # Path
-set -gx PATH $PATH
+set -gx PATH $HOME/.elan/bin $PATH
 
 # Set the cursors to be a line
 set fish_cursor_default line
