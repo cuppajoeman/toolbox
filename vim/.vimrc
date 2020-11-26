@@ -17,7 +17,7 @@ Plug 'SirVer/ultisnips'
 Plug 'dag/vim-fish'
 Plug 'markonm/traces.vim'
 Plug 'lervag/vimtex'
-Plug 'morhetz/gruvbox'
+"Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-surround'
 "Plug '907th/vim-auto-save'
 "Plug 'FredKSchott/CoVim'
@@ -57,13 +57,13 @@ call plug#end()
 	set noswapfile
 
 " Let's save undo info!
-	if !isdirectory(HOME."/.vim")
-		call mkdir(HOME."/.vim", "", 0770)
+	if !isdirectory($HOME."/.vim")
+		call mkdir($HOME."/.vim", "", 0770)
 	endif
 
 	" All permissions only for me (privacy)
-	if !isdirectory(HOME."/.vim/undo-dir")
-		call mkdir(HOME."/.vim/undo-dir", "", 0700)
+	if !isdirectory($HOME."/.vim/undo-dir")
+		call mkdir($HOME."/.vim/undo-dir", "", 0700)
 	endif
 
 	set undodir=~/.vim/undo-dir
@@ -98,7 +98,7 @@ call plug#end()
 
 " colorscheme 
 	set background=dark
-	colorscheme gruvbox
+	"colorscheme gruvbox
 	" vim hardcodes background color erase even if the terminfo file does
 	" not contain bce (not to mention that libvte based terminals
 	" incorrectly contain bce in their terminfo files). This causes
