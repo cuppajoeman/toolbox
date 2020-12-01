@@ -1,0 +1,20 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{Introduction to \LaTeX{}}
+\author{Author's Name}
+
+\maketitle
+
+$\left( \implies \right)$ 
+Assume that $\phi _{P}$ is a propositional consequence of $\Gamma_{P}$, we'll show that $\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}$ is a tautology 
+
+\begin{itemize}
+  \item Let $v$ be a truth assignment function, our goal is to show that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = T$, after recursively applying the definition of $\bar{v}$, it will finally be applied to each $\gamma_{iP}$ 
+  \item if $v\left(\gamma_{iP}\right)=T$ for every $i \in \left[ n \right]$ then since $\phi _{P}$ is a propositional consequence of $\Gamma_{P}$ then $\bar{v}\left(\phi _{P}\right)=T$ this in combination with  $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right]\right)=T$ shows that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = T$
+\end{itemize}
+
+
+\end{document}

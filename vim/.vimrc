@@ -191,11 +191,13 @@ let @d = '"lyt=f=l"ry'
 	let g:tex_flavor = 'latex'
   set conceallevel=1
   let g:tex_conceal='abdmg'
+  hi clear Conceal
+
 	au BufReadPost *.tex set syntax=tex
-	map <leader>ims ?\.\{-}\<CR>
+	map <leader>ims :vimgrep /\$.\{-}\$/g % \| tab cwindow<CR>
 	map <leader>dms ?\\\[\_.\{-}\\\]<CR>
   " media wiki convert
-	command Wmc let a = ['<math>','</math>'] | %s/\$/\=reverse(a)[1]/g
+	map <leader>ltm :%w !pandoc -t mediawiki \| xclip -sel clip<CR>
 
 "" Ultisnips
 	map <F2> :tabnew ~/.vim/LocalSnippets/<CR>
