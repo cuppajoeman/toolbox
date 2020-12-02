@@ -13,8 +13,10 @@ Assume that $\phi _{P}$ is a propositional consequence of $\Gamma_{P}$, we'll sh
 
 \begin{itemize}
   \item Let $v$ be a truth assignment function, our goal is to show that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = T$, after recursively applying the definition of $\bar{v}$, it will finally be applied to each $\gamma_{iP}$ 
-  \item if $v\left(\gamma_{iP}\right)=T$ for every $i \in \left[ n \right]$ then since $\phi _{P}$ is a propositional consequence of $\Gamma_{P}$ then $\bar{v}\left(\phi _{P}\right)=T$ this in combination with  $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right]\right)=T$ shows that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = T$
+    \begin{itemize}
+      \item if $v\left(\gamma_{iP}\right)=T$ for every $i \in \left[ n \right]$ then since $\phi _{P}$ is a propositional consequence of $\Gamma_{P}$ then $\bar{v}\left(\phi _{P}\right)=T$ this in combination with  $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right]\right)=T$ shows that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = T$
+      \item Otherwise there exists an $i \in \left[ n \right]$ such that $v\left(\gamma_{iP}\right)=F$ thus we know that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = F$ and so the implication is vacuously true, this can also be seen by the equivalence of $P \to Q$ and $\neg P \lor Q$ 
+    \end{itemize}
 \end{itemize}
-
 
 \end{document}

@@ -33,6 +33,58 @@ call plug#end()
 " Enable highlighting search
   set hlsearch
 
+" Thanks KnoP
+function! Testvimgrep() abort
+  normal mm " mark cursorpos to get back later
+  %s/^\s*// " unindent whole file
+  execute 'vimgrep /\$.\{-}\$/g %'
+  copen
+  set buftype=nofile
+  set modifiable
+  let done = 0
+  while !done
+    if line('.')==line('$')|let done=1|endif
+    s/^[^|]*|\d\+ col //
+    normal 0dw
+    let x = @-
+    let x +=1
+    execute 'normal ' . x . 'x'
+    normal f$lD
+    if !done
+      normal j
+    endif
+  endwhile
+  set buftype=quickfix
+  set nomodified
+  wincmd p
+  normal gg=G`m
+endfunction
+
+
+function! FormatQuickfix(info)
+  let items = getqflist({'id': a:info.id, 'items': 1}).items
+  let l = []
+  for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+    let item = items[idx]
+    call add(l, item.text[item.col - 1 : ])
+  endfor
+  return l
+endfunction
+
+" set quickfixtextfunc=FormatQuickfix
+
+function! FindTexSnippets() abort
+  vimgrep /\$.\{-}\$/gj %
+  call setqflist([], ' ', {'items': getqflist(), 'quickfixtextfunc': 'FormatQuickfix'})
+  cclose
+  vertical cwindow 80
+endfunction
+
+nnoremap <leader>ims :call FindTexSnippets()<CR>
+
+
+set quickfixtextfunc=FormatQuickfix
+
 " No highlight
 	map <F3> :noh<CR>
 
@@ -194,7 +246,8 @@ let @d = '"lyt=f=l"ry'
   hi clear Conceal
 
 	au BufReadPost *.tex set syntax=tex
-	map <leader>ims :vimgrep /\$.\{-}\$/g % \| tab cwindow<CR>
+	"map <leader>ims :vimgrep  /\$.\{-}\$/g % \| vs cwindow \| g/\$.\{-}\$/ <CR>
+	map <leader>ims :V \$.\{-}\$ \| cwindow <CR>
 	map <leader>dms ?\\\[\_.\{-}\\\]<CR>
   " media wiki convert
 	map <leader>ltm :%w !pandoc -t mediawiki \| xclip -sel clip<CR>
