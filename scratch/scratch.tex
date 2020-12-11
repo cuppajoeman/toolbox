@@ -8,15 +8,13 @@
 
 \maketitle
 
-$\left( \implies \right)$ 
-Assume that $\phi _{P}$ is a propositional consequence of $\Gamma_{P}$, we'll show that $\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}$ is a tautology 
+Fix a structure $\mathfrak{A} $  and an assignment function $s : Vars \to A $. We have to show: $\mathfrak{U} \models \left( \left[ \left( x_1= y_1 \right) \land \left( x_1= y_1 \right) \land  \dotsb \land \left( x_n= y_n \right)   \right] \to  \left( f\left(x_{1}, x_{2},  \dots ,x_{n - 1},x_{n} \right) = f\left(x_{1}, x_{2},  \dots ,x_{n - 1},x_{n} \right)  \right)  \right) \left[ s \right]$
 
-\begin{itemize}
-  \item Let $v$ be a truth assignment function, our goal is to show that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = T$, after recursively applying the definition of $\bar{v}$, it will finally be applied to each $\gamma_{iP}$ 
-    \begin{itemize}
-      \item if $v\left(\gamma_{iP}\right)=T$ for every $i \in \left[ n \right]$ then since $\phi _{P}$ is a propositional consequence of $\Gamma_{P}$ then $\bar{v}\left(\phi _{P}\right)=T$ this in combination with  $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right]\right)=T$ shows that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = T$
-      \item Otherwise there exists an $i \in \left[ n \right]$ such that $v\left(\gamma_{iP}\right)=F$ thus we know that $\bar{v}\left(\left[ \gamma_{1P} \land \gamma_{2P}\land \dotsb \land \gamma_{nP} \right] \to \phi _{P}\right) = F$ and so the implication is vacuously true, this can also be seen by the equivalence of $P \to Q$ and $\neg P \lor Q$ 
-    \end{itemize}
-\end{itemize}
+Since the is an implication of the form $\psi \to  \lambda$  one may assume $\psi$, another way to see that is by looking at the equivalence to $\neg \psi \lor \lambda$, since if $\mathfrak{A} \models \left( \neg \psi  \right)\left[ s \right]  $, in otherwords $\mathfrak{A} \not \models \psi\left[ s \right]$, then we would already know that $\mathfrak{A}  \models \left( \psi \lor \lambda  \right)\left[ s \right]$, therefore one may assume that $\mathfrak{A} \models \psi\left[ s \right]$ and then show that $\mathfrak{A} \models \lambda\left[ s \right] $.
+
+In our case, we assume that $\mathfrak{A} \models \left[ \left( x_1= y_1 \right) \land \left( x_1= y_1 \right) \land  \dotsb \land \left( x_n= y_n \right)   \right]\left[ s \right] $, now we must show that $\mathfrak{A} \models \left( f\left(x_{1}, x_{2},  \dots ,x_{n - 1},x_{n} \right) = f\left(y_{1}, y_{2},  \dots ,y_{n - 1},y_{n} \right)  \right) \left[ s \right] $, recall from the second clause of the definition of satisfaction, one must show that $\bar{s} \left(f\left(x_{1}, x_{2},  \dots ,x_{n - 1},x_{n} \right) \right) = \bar{s} \left(f\left(y_{1}, y_{2},  \dots ,y_{n - 1},y_{n} \right) \right) $, but that $\bar{s} \left(f\left(x_{1}, x_{2},  \dots ,x_{n - 1},x_{n} \right) \right) = f\left(\bar{s} \left( x \right) _{1}, \bar{s} \left( x \right) _{2},  \dots ,\bar{s} \left( x \right) _{n - 1},\bar{s} \left( x \right) _{n} \right) $ and also $\bar{s} \left(f\left(y_{1}, y_{2},  \dots ,y_{n - 1},y_{n} \right) \right) = f\left(\bar{s} \left( y \right) _{1}, \bar{s} \left( y \right) _{2},  \dots ,\bar{s} \left( y \right) _{ n - 1},\bar{s} \left( y \right) _{n} \right) $
+
+
+
 
 \end{document}

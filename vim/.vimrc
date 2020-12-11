@@ -33,6 +33,9 @@ call plug#end()
 " Enable highlighting search
   set hlsearch
 
+" Fast O
+  set noesckeys
+
 " Thanks KnoP
 function! Testvimgrep() abort
   normal mm " mark cursorpos to get back later
@@ -61,32 +64,12 @@ function! Testvimgrep() abort
 endfunction
 
 
-function! FormatQuickfix(info)
-  let items = getqflist({'id': a:info.id, 'items': 1}).items
-  let l = []
-  for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
-    let item = items[idx]
-    call add(l, item.text[item.col - 1 : ])
-  endfor
-  return l
-endfunction
-
-" set quickfixtextfunc=FormatQuickfix
-
-function! FindTexSnippets() abort
-  vimgrep /\$.\{-}\$/gj %
-  call setqflist([], ' ', {'items': getqflist(), 'quickfixtextfunc': 'FormatQuickfix'})
-  cclose
-  vertical cwindow 80
-endfunction
-
-nnoremap <leader>ims :call FindTexSnippets()<CR>
-
-
-set quickfixtextfunc=FormatQuickfix
 
 " No highlight
 	map <F3> :noh<CR>
+
+" Draw a underline current location 
+  set cursorline
 
 " Disables automatic commenting on newline:
 	" autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -183,7 +166,7 @@ set quickfixtextfunc=FormatQuickfix
   command Date :put=strftime('%F')
 
 " Open help in a new tab
-	cabbrev help tab help
+	cabbrev h tab help
 " Vertically split a buffer
   cabbrev vb vert sb
 " folding
@@ -247,10 +230,34 @@ let @d = '"lyt=f=l"ry'
 
 	au BufReadPost *.tex set syntax=tex
 	"map <leader>ims :vimgrep  /\$.\{-}\$/g % \| vs cwindow \| g/\$.\{-}\$/ <CR>
-	map <leader>ims :V \$.\{-}\$ \| cwindow <CR>
+	map <leader>ims :call FindTexSnippets() \| set filetype=tex<CR>
 	map <leader>dms ?\\\[\_.\{-}\\\]<CR>
   " media wiki convert
-	map <leader>ltm :%w !pandoc -t mediawiki \| xclip -sel clip<CR>
+	"map <leader>ltm :%w !pandoc -t mediawiki \| xclip -sel clip<CR>
+	map <leader>ltm :!pandoc -t mediawiki scratch.tex \| xclip -sel clip<CR>
+
+
+function! FormatQuickfix(info)
+  let items = getqflist({'id': a:info.id, 'items': 1}).items
+  let l = []
+  for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+    let item = items[idx]
+    call add(l, item.text[item.col - 1 : ])
+  endfor
+  return l
+endfunction
+
+set quickfixtextfunc=FormatQuickfix
+
+function! FindTexSnippets() abort
+  vimgrep /\$.\{-}\$/gj %
+  call setqflist([], ' ', {'items': getqflist(), 'quickfixtextfunc': 'FormatQuickfix'})
+  cclose
+  vertical cwindow 80
+endfunction
+
+nnoremap <leader>ims :call FindTexSnippets()<CR>
+
 
 "" Ultisnips
 	map <F2> :tabnew ~/.vim/LocalSnippets/<CR>
