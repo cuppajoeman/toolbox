@@ -60,12 +60,16 @@ You would like to try out my vim configuration
   * configurations
     * limit the nicklist size
     * hide join/leave messages (intelligently)
+### Session Management
+* tmux
 ### Editor
 * vim - check the vim directory for more
+  * swim to change between vimrc 
 ### Terminal Emulator
 * st
 ### Shell
-* fish
+* bash
+* athame
 ### Latex Writing
 * vim + vimtex + ultisnips (feel free to check out my other repo for some snippets)
 ### Music
