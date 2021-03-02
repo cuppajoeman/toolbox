@@ -7,18 +7,29 @@ let mapleader = " "
 " Helps force plugins to load correctly when it is turned back on below
 filetype off
 
+" Auto install plug if it doesn't exist
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 "Load plugins here (pathogen or vundle)
 call plug#begin('~/.vim/plugged')
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'lervag/vimtex'
 Plug 'SirVer/ultisnips'
-Plug 'rust-lang/rust.vim'
+Plug 'markonm/traces.vim'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 " === VIMRC ===
 " Open this file easily
 map <leader>ve :tabnew ~/.vimrc<CR>
 map <leader>vr :source ~/.vimrc<CR>
+
+" Refactor link to plugin after pasting link
+map <leader>pr 0vf/;;cPlug 'A'
 
 " === BUFFERS ===
 
@@ -49,6 +60,11 @@ set relativenumber
 " Show file stats
 set ruler
 
+"jump to the last position when reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
 
 " Show bufferlist and prepare input
   nnoremap <leader>b :ls<cr>:b<space>
@@ -69,11 +85,14 @@ set encoding=utf-8
 " set wrap
 " set textwidth=79
 " set formatoptions=tcqrn1
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+filetype plugin indent on
+" On pressing tab, insert 2 spaces
 set expandtab
-set noshiftround
+" show existing tab with 2 spaces width
+set tabstop=2
+set softtabstop=2
+" when indenting with '>', use 2 spaces width
+set shiftwidth=2
 
 " Cursor motion
 set scrolloff=3
@@ -193,6 +212,8 @@ let g:UltiSnipsSnippetDirectories=["math-snippets", "programming-snippets"]
 
 map <F2> :tabnew ~/math-snippets/math.snippets<CR>
 map <F3> :tabnew ~/math-snippets/<CR>
+map <F4> :tabnew ~/programming-snippets/<CR>
+map <F5> :tabnew ~/tool-box/<CR>
 map <leader>s :call UltiSnips#RefreshSnippets()<CR>
 
 "map <leader>f :vnew \| 0read ! ~/math-snippets/snippet_finder.sh 
