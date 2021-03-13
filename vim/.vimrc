@@ -133,20 +133,6 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" Move lines around using the Alt modifier
-"The command :m .+1 (which can be abbreviated to :m+) moves the current line to after line number .+1 (current line number + 1). That is, the current line is moved down one line.
-
-"The command :m .-2 (which can be abbreviated to :m-2) moves the current line to after line number .-2 (current line number − 2). That is, the current line is moved up one line.
-
-"After visually selecting some lines, entering :m '>+1 moves the selected lines to after line number '>+1 (one line after the last selected line; '> is a mark assigned by Vim to identify the selection end). That is, the block of selected lines is moved down one line.
-
-The == re-indents the line to suit its new position. For the visual-mode mappings, gv reselects the last visual block and = re-indents that block. 
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " === ABBR. ===
 " Don't break your fingers on regex
