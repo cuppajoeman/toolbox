@@ -21,6 +21,7 @@ Plug 'lervag/vimtex'
 Plug 'SirVer/ultisnips'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-surround'
+Plug 'valloric/MatchTagAlways'
 call plug#end()
 
 " === VIMRC ===
