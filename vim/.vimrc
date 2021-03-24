@@ -211,6 +211,10 @@ onoremap <silent> il :<c-u>normal! g_v^<cr>
 " Insert date
   command Date :put=strftime('%F')
 
+" Temporary wiki editing
+  command Wf %s/<math>\(.\{-}\)<\/math>/$\1$/ge | %s/<math display="block">\(.\{-}\)<\/math>/\r\\\[\r\t\1\r\\\]/ge | %s/\[\[.\{-}|\(.\{-}\)\]\]/\1/ge
+
+
 " PLUGINS
 " ultisnips
 let g:UltiSnipsExpandTrigger="<tab>"
