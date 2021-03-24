@@ -22,6 +22,7 @@ Plug 'SirVer/ultisnips'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-surround'
 Plug 'valloric/MatchTagAlways'
+Plug 'junegunn/goyo.vim'
 call plug#end()
 
 " === VIMRC ===
@@ -42,6 +43,9 @@ nnoremap <leader>b :ls<cr>:b<space>
 
 " Turn on syntax highlighting
 syntax on
+
+" Please...
+set belloff=all
 
 " Set colorscheme
 colorscheme torte
