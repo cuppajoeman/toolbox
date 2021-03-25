@@ -183,6 +183,7 @@ map <F1> :tab help<CR>
 " Open help in a new tab
 cabbrev h tab help
 
+
 " Formatting
 map <leader>q gqip
 
@@ -216,7 +217,10 @@ onoremap <silent> il :<c-u>normal! g_v^<cr>
   command Date :put=strftime('%F')
 
 " Temporary wiki editing
-  command Wf %s/<math>\(.\{-}\)<\/math>/$\1$/ge | %s/<math display="block">\(.\{-}\)<\/math>/\r\\\[\r\t\1\r\\\]/ge | %s/\[\[.\{-}|\(.\{-}\)\]\]/\1/ge
+  command Wf %s/<math>\(.\{-}\)<\/math>/$\1$/ge | %s/<math display="inline">\(.\{-}\)<\/math>/$\1$/ge | %s/<math display="block">\(.\{-}\)<\/math>/\r\\\[\r\t\1\r\\\]/ge | %s/\[\[.\{-}|\(.\{-}\)\]\]/\1/ge
+
+" Get name
+  map <leader>gn yt:p
 
 
 " PLUGINS
@@ -232,14 +236,12 @@ let g:vimtex_view_general_viewer='zathura'
 let g:vimtex_view_method='zathura'
 
 
-map <F2> :tabnew ~/math-snippets/math.snippets<CR>
-map <F3> :tabnew ~/math-snippets/<CR>
+map <F3> :tabe ~/math-snippets/ \| vs ~/math-snippets/prebuilt_contexts<CR>
 map <F4> :tabnew ~/programming-snippets/<CR>
 map <F5> :tabnew ~/tool-box/<CR>
 map <leader>s :call UltiSnips#RefreshSnippets()<CR>
 
-"map <leader>f :vnew \| 0read ! ~/math-snippets/snippet_finder.sh 
-map <leader>f :tabnew ~/<CR>
+cabbrev fs :~/math-snippets/snippet_finder.sh 
 
 map <leader>h :tab help 
 
