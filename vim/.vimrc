@@ -23,12 +23,14 @@ Plug 'markonm/traces.vim'
 Plug 'tpope/vim-surround'
 Plug 'valloric/MatchTagAlways'
 Plug 'junegunn/goyo.vim'
+Plug 'flipcoder/vim-textbeat'
 call plug#end()
 
 " === VIMRC ===
 " Open this file easily
 map <leader>ve :tabnew ~/.vimrc<CR>
 map <leader>vr :source ~/.vimrc<CR>
+map <leader>g :Goyo <CR>
 
 " Refactor link to plugin after pasting link
 map <leader>pr 0vf/;;cPlug 'A'
@@ -153,6 +155,9 @@ map <C-l> <C-w>l
   cmap <c-o> .\{-}
 " Operate on visual selection
   cmap <c-v> \%V
+  cmap <c-g> \(\)<left><left>
+  cmap <c-h> <left>
+  cmap <c-l> <right>
 
 " Allow hidden buffers
 set hidden
@@ -202,6 +207,18 @@ onoremap <silent> il :<c-u>normal! g_v^<cr>
 
 " === CUSTOM BEHAVIOR ===
 
+" Commenting blocks of code.
+augroup commenting_blocks_of_code
+  autocmd!
+  autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
+  autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+  autocmd FileType conf,fstab       let b:comment_leader = '# '
+  autocmd FileType tex              let b:comment_leader = '% '
+  autocmd FileType mail             let b:comment_leader = '> '
+  autocmd FileType vim              let b:comment_leader = '" '
+augroup END
+noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
 " Keep cursor in center of page
 	augroup VCenterCursor
@@ -222,6 +239,12 @@ onoremap <silent> il :<c-u>normal! g_v^<cr>
 " Get name
   map <leader>gn yt:p
 
+" Rotate parameter list right to left
+  let @r = 'F(ldt,f)i, pF(f,xx'
+
+" === Temporary  === 
+map <leader>a :s/\[\(\d\+\)\]/\='[' .((submatch(1)+K)%12+12)%12. ']'/g
+
 
 " PLUGINS
 " ultisnips
@@ -236,17 +259,21 @@ let g:vimtex_view_general_viewer='zathura'
 let g:vimtex_view_method='zathura'
 
 
-map <F3> :tabe ~/math-snippets/ \| vs ~/math-snippets/prebuilt_contexts<CR>
+
+map <F3> :tabe ~/math-snippets/ <CR>
 map <F4> :tabnew ~/programming-snippets/<CR>
 map <F5> :tabnew ~/tool-box/<CR>
 map <leader>s :call UltiSnips#RefreshSnippets()<CR>
 
-cabbrev fs :~/math-snippets/snippet_finder.sh 
+" Inline to display
+map <leader>i2d O\[\]j:s/%€kb\$//gddkkp
+
+cabbrev fs !~/math-snippets/snippet_finder.sh 
 
 map <leader>h :tab help 
+
 
 " === MEDIAWIKI ===
 
 " media wiki convert
   map <leader>ltm :!pandoc % -t mediawiki -o output.txt<CR>
-
