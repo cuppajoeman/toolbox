@@ -18,7 +18,7 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'lervag/vimtex'
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-surround'
 Plug 'valloric/MatchTagAlways'
@@ -45,6 +45,10 @@ nnoremap <leader>b :ls<cr>:b<space>
 
 " Turn on syntax highlighting
 syntax on
+
+" Don't indent when pasting
+set copyindent
+set pastetoggle=<F2>
 
 " Please...
 set belloff=all
