@@ -1,6 +1,9 @@
 " Don't try to be vi compatible
 set nocompatible
 
+if has('python3')
+endif
+
 " leader key
 let mapleader = " "
 
@@ -16,9 +19,9 @@ endif
 
 "Load plugins here (pathogen or vundle)
 call plug#begin('~/.vim/plugged')
+Plug 'SirVer/ultisnips'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'lervag/vimtex'
-Plug 'SirVer/ultisnips'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-surround'
 Plug 'valloric/MatchTagAlways'
