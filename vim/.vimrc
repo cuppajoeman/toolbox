@@ -49,6 +49,10 @@ nnoremap <leader>b :ls<cr>:b<space>
 " Turn on syntax highlighting
 syntax on
 
+" Don't indent when pasting
+set copyindent
+set pastetoggle=<F2>
+
 " Please...
 set belloff=all
 
