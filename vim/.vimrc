@@ -90,7 +90,7 @@ endif
 set visualbell
 
 " Fast O
-set noesckeys
+" set noesckeys
 
 " Draw a underline current location 
   set cursorline
