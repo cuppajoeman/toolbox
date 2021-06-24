@@ -8,7 +8,7 @@ endif
 "Load plugins here (pathogen or vundle)
 call plug#begin(stdpath('data') . '/plugged')
   " have my own custom snippets
-  Plug 'SirVer/ultisnips'
+  " Plug 'SirVer/ultisnips'
   " Plug 'christoomey/vim-tmux-navigator'
   " Work with latex
   Plug 'lervag/vimtex'
@@ -23,6 +23,8 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'neovim/nvim-lspconfig'
   " auto completion
   Plug 'hrsh7th/nvim-compe'
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+  Plug 'kyazdani42/blue-moon'
 call plug#end()
 
 " Refactor link to plugin after pasting link

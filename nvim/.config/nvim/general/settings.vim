@@ -1,4 +1,3 @@
-
 " Turn on syntax highlighting
 syntax on
 
@@ -10,10 +9,8 @@ set pastetoggle=<F2>
 set belloff=all
 
 " Set colorscheme
-colorscheme torte
-
-" Transparency
-hi Normal guibg=NONE ctermbg=NONE
+set termguicolors
+colorscheme blue-moon
 
 " For plugins to load correctly
 filetype plugin indent on
@@ -30,11 +27,8 @@ set ruler
 " Blink cursor on error instead of beeping (grr)
 set visualbell
 
-" Fast O
-" set noesckeys
-
 " Draw a underline current location 
-  set cursorline
+set cursorline
 
 " Encoding
 set encoding=utf-8

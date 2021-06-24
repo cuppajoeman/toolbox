@@ -14,3 +14,5 @@ source ~/.config/nvim/plug-config/vimtex.vim
 source ~/.config/nvim/plug-config/lsp-config.vim
 luafile ~/.config/nvim/lua/plugins/compe-config.lua
 luafile ~/.config/nvim/lua/lsp/python-ls.lua
+
+
