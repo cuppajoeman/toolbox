@@ -24,8 +24,11 @@ call plug#begin(stdpath('data') . '/plugged')
   " auto completion
   Plug 'hrsh7th/nvim-compe'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+  "nice on the eyes
   Plug 'kyazdani42/blue-moon'
+  " because pyright doesn't do formatting
+  Plug 'mhartington/formatter.nvim'
 call plug#end()
 
 " Refactor link to plugin after pasting link
-map <leader>pr 0vf/;;cPlug 'A'
+map <leader>rl 0vf/;;cPlug 'A'
