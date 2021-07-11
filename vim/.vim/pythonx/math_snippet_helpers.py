@@ -1,1 +1,0 @@
-/home/ccn/math-snippets/math_snippet_helpers.py
