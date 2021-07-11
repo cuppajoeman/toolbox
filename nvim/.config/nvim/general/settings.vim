@@ -29,6 +29,9 @@ set visualbell
 
 " Draw a underline current location 
 set cursorline
+set cursorcolumn
+
+highlight CursorColumn guibg=#292d3e
 
 " Encoding
 set encoding=utf-8
