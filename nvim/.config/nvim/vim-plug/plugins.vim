@@ -19,6 +19,7 @@ call plug#begin(stdpath('data') . '/plugged')
   " Simple text editing
   Plug 'junegunn/goyo.vim'
   " Plug 'flipcoder/vim-textbeat'
+  Plug 'takac/vim-hardtime'
   " Language server protocol configurations
   Plug 'neovim/nvim-lspconfig'
   " auto completion
@@ -31,4 +32,4 @@ call plug#begin(stdpath('data') . '/plugged')
 call plug#end()
 
 " Refactor link to plugin after pasting link
-map <leader>rl 0vf/;;cPlug 'A'
+map <leader>fl 0vf/;;cPlug 'A'

@@ -12,6 +12,26 @@ set belloff=all
 set termguicolors
 colorscheme blue-moon
 
+" Keep cursor in center of page
+	augroup VCenterCursor
+	  au!
+	  au BufEnter,WinEnter,WinNew,VimResized *,*.*
+			\ let &scrolloff=winheight(win_getid())/2
+	augroup END
+
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
+" Folding
+set foldmethod=indent   
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
+
+
 " For plugins to load correctly
 filetype plugin indent on
 
