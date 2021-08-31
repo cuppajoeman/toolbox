@@ -8,7 +8,7 @@ endif
 "Load plugins here (pathogen or vundle)
 call plug#begin(stdpath('data') . '/plugged')
   " have my own custom snippets
-  " Plug 'SirVer/ultisnips'
+  Plug 'SirVer/ultisnips'
   " Plug 'christoomey/vim-tmux-navigator'
   " Work with latex
   Plug 'lervag/vimtex'
@@ -19,16 +19,16 @@ call plug#begin(stdpath('data') . '/plugged')
   " Simple text editing
   Plug 'junegunn/goyo.vim'
   " Plug 'flipcoder/vim-textbeat'
-  Plug 'takac/vim-hardtime'
+  "Plug 'takac/vim-hardtime'
   " Language server protocol configurations
-  Plug 'neovim/nvim-lspconfig'
+  "Plug 'neovim/nvim-lspconfig'
   " auto completion
-  Plug 'hrsh7th/nvim-compe'
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+  "Plug 'hrsh7th/nvim-compe'
+  "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
   "nice on the eyes
-  Plug 'kyazdani42/blue-moon'
+  "Plug 'kyazdani42/blue-moon'
   " because pyright doesn't do formatting
-  Plug 'mhartington/formatter.nvim'
+  "Plug 'mhartington/formatter.nvim'
 call plug#end()
 
 " Refactor link to plugin after pasting link

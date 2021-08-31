@@ -31,6 +31,10 @@ set foldnestmax=10
 set nofoldenable
 set foldlevel=2
 
+" Tabs
+ set tabstop=4
+ set shiftwidth=4
+ set expandtab
 
 " For plugins to load correctly
 filetype plugin indent on
@@ -51,7 +55,7 @@ set visualbell
 set cursorline
 set cursorcolumn
 
-highlight CursorColumn guibg=#292d3e
+" highlight CursorColumn guibg=#292d3e
 
 " Encoding
 set encoding=utf-8
