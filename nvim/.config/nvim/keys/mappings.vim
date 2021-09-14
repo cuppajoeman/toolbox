@@ -37,11 +37,12 @@ map <leader><space> :let @/=''<cr>
 " Remap help key.
 map <F1> :tab help<CR>
 
+map <c-f> :!blacktex -i %:S<CR>
+
 
 " custom text objects 
 " In Line: entire line sans white-space
 xnoremap <silent> il :<c-u>normal! g_v^<cr>
 onoremap <silent> il :<c-u>normal! g_v^<cr>
-
 
 map <leader>h :tab help 
