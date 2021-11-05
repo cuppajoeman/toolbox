@@ -1,1 +1,6 @@
 set selection-clipboard clipboard
+map <C-f> focus_inputbar ":exec sh -c 'python bookmarker.py d \"def:/\" && jpdfbookmarks custom_toc_logic_book.pdf -a custom_logic_toc.txt -f '"
+map <C-m> focus_inputbar ":exec sh -c 'python bookmarker.py t \"thm:/\" && jpdfbookmarks custom_toc_logic_book.pdf -a custom_logic_toc.txt -f '"
+set font "monospace normal 30"
+set recolor true
+map <C-v> toggle_fullscreen

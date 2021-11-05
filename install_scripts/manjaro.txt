@@ -1,0 +1,4 @@
+add ./autostart.sh to it
+remove light locker, install xscreensaver
+remove binding that interferes with mathpix
+add ability to scroll transparency 

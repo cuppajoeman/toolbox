@@ -27,7 +27,8 @@ cmap <c-o> .\{-}
 
 " Operate on visual selection
 cmap <c-v> \%V
-cmap <c-g> ()<left><left>
+" Groups
+cmap <c-g> \(\)<left><left>
 cmap <c-h> <left>
 cmap <c-l> <right>
 
@@ -36,8 +37,6 @@ map <leader><space> :let @/=''<cr>
 
 " Remap help key.
 map <F1> :tab help<CR>
-
-map <c-f> :!blacktex -i %:S<CR>
 
 
 " custom text objects 

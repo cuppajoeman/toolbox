@@ -1,0 +1,9 @@
+python-black
+python-pygame
+python-pillow
+python-numpy
+python-pyperclip
+pygtk
+python-matplotlib
+python-scikit-learn
+rubygems
