@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Declare an array of string with type
-declare -a StringArray=("~/knowledge-book" "~/basic-system" )
+declare -a StringArray=("$HOME/knowledge-book" "$HOME/basic-system" )
  
 # Iterate the string array using for loop
 for val in ${StringArray[@]}; do
