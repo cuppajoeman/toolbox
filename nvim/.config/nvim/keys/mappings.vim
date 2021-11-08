@@ -14,6 +14,12 @@ nnoremap <Leader>r :%s/\<<C-r><C-w>\>/
 nnoremap j gj
 nnoremap k gk
 
+" Copying to clipboard quickly
+nnoremap <leader>y "+y
+
+" Copy whole file to clipboard
+nnoremap <leader>c :%y+<CR>
+
 " Shortcutting split navigation, saving a keypress:
 map <C-h> <C-w>h
 map <C-j> <C-w>j
@@ -37,7 +43,6 @@ map <leader><space> :let @/=''<cr>
 
 " Remap help key.
 map <F1> :tab help<CR>
-
 
 " custom text objects 
 " In Line: entire line sans white-space
