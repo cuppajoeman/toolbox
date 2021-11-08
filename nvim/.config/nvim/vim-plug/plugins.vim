@@ -18,6 +18,7 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'tpope/vim-surround'
   " Simple text editing
   Plug 'junegunn/goyo.vim'
+  Plug 'motemen/vim-help-random'
   " Plug 'flipcoder/vim-textbeat'
   "Plug 'takac/vim-hardtime'
   " Language server protocol configurations

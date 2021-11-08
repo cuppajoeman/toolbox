@@ -7,3 +7,4 @@ pygtk
 python-matplotlib
 python-scikit-learn
 rubygems
+python-pandocfilters

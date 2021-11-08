@@ -22,4 +22,4 @@ pandoc
 perl-rename
 youtube-dl
 noto-fonts-emoji
-jpgoptim
+jpegoptim
