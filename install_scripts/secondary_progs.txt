@@ -17,3 +17,4 @@ xcursor-thedot
 qalculate-gtk
 reaper-bin
 obs-studio
+rofi
