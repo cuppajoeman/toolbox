@@ -1,7 +1,7 @@
 pycharm-professional
 spotify
 gnome-clocks
-texlive-full
+texlive-most
 jpdfbookmarks
 dpscreenocr
 tesseract-data-eng
