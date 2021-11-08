@@ -53,6 +53,7 @@
       <property name="&lt;Primary&gt;&lt;Shift&gt;Print" type="string" value="xfce4-screenshooter -r"/>
       <property name="&lt;Alt&gt;F1" type="string" value="xfce4-popup-whiskermenu"/>
       <property name="Print" type="string" value="flameshot gui"/>
+      <property name="&lt;Super&gt;space" type="string" value="rofi -show window"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
