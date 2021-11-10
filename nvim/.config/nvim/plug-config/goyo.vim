@@ -1,1 +1,1 @@
-" map <leader>g :Goyo <CR>
+map <leader>g :Goyo <CR>

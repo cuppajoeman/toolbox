@@ -10,7 +10,7 @@ source ~/.config/nvim/keys/mappings.vim
 " Plugin Configuration
 source ~/.config/nvim/plug-config/ultisnips.vim
 " source ~/.config/nvim/plug-config/hardtime.vim
-" source ~/.config/nvim/plug-config/goyo.vim
+source ~/.config/nvim/plug-config/goyo.vim
 source ~/.config/nvim/plug-config/vimtex.vim
 " source ~/.config/nvim/plug-config/lsp-config.vim
 " luafile ~/.config/nvim/lua/plugins/compe-config.lua

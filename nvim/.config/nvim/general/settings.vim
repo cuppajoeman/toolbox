@@ -1,5 +1,7 @@
-" Turn on syntax highlighting
+" Turn off syntax highlighting
 syntax on
+
+set textwidth=80
 
 " Don't indent when pasting
 set copyindent
@@ -10,7 +12,7 @@ set belloff=all
 
 " Set colorscheme
 set termguicolors
-" colorscheme blue-moon
+colorscheme blue-moon
 
 " Keep cursor in center of page
 	augroup VCenterCursor

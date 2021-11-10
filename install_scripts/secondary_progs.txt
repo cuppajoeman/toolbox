@@ -18,3 +18,6 @@ qalculate-gtk
 reaper-bin
 obs-studio
 rofi
+tikzit
+inkscape
+gimp
