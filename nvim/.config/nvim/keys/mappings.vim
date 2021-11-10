@@ -50,3 +50,5 @@ xnoremap <silent> il :<c-u>normal! g_v^<cr>
 onoremap <silent> il :<c-u>normal! g_v^<cr>
 
 map <leader>h :tab help 
+
+nnoremap <leader>f :! blacktex -i "%:p"<cr>
