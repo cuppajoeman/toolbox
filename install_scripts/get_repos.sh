@@ -1,1 +1,2 @@
-git clone git@gitlab.com:cuppajoeman/basic-system.git ~/basic-system
+git clone git@github.com:cuppajoeman/knowledge-book.git ~/knowledge-book
+git clone git@github.com:cuppajoeman/math-snippets.git ~/math-snippets
