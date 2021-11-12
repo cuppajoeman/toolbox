@@ -126,3 +126,5 @@ set incsearch
 set ignorecase
 set smartcase
 set showmatch
+
+au VimEnter *.tex :set indentexpr&
