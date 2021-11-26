@@ -128,3 +128,8 @@ set smartcase
 set showmatch
 
 au VimEnter *.tex :set indentexpr&
+
+" Show current date
+set ruler
+set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
+

@@ -21,3 +21,9 @@ rofi
 tikzit
 inkscape
 gimp
+audacity
+element-desktop
+peek
+gtick
+code
+xournalpp

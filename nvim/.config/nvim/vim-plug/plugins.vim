@@ -28,6 +28,7 @@ call plug#begin(stdpath('data') . '/plugged')
   "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
   "nice on the eyes
   Plug 'kyazdani42/blue-moon'
+  Plug 'danro/rename.vim'
   " because pyright doesn't do formatting
   "Plug 'mhartington/formatter.nvim'
 call plug#end()
