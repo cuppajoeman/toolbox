@@ -27,3 +27,4 @@ peek
 gtick
 code
 xournalpp
+ripgrep-all
