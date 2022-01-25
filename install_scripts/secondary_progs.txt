@@ -28,3 +28,4 @@ gtick
 code
 xournalpp
 ripgrep-all
+gpick

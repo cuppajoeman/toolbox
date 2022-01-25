@@ -31,6 +31,7 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'danro/rename.vim'
   " because pyright doesn't do formatting
   "Plug 'mhartington/formatter.nvim'
+  Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
 
 " Refactor link to plugin after pasting link
