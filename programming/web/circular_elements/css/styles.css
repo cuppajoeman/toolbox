@@ -1,0 +1,31 @@
+.circlegraph {
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+
+.circlegraph:before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  border: 2px solid teal;
+  width: calc( 100% - 2px * 2);
+  height: calc( 100% - 2px * 2 );
+  border-radius: 50%;
+}
+
+.circlegraph .circle {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100px;
+  height: 100px;
+  margin: calc( -100px / 2 );
+  background: teal;
+  border-radius: 50%;
+}
+
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

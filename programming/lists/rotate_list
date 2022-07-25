@@ -1,0 +1,5 @@
+Array.prototype.rotate = function(n) {
+  // Rotates an array left n units
+  n = n % this.length;
+  return this.slice(n, this.length).concat(this.slice(0, n));
+}
