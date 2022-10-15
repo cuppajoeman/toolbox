@@ -1,3 +1,8 @@
+filename=$(basename -- "$fullfile")
+extension="${filename##*.}"
+filename="${filename%.*}"
+
+
 ~% FILE="example.tar.gz"
 
 ~% echo "${FILE%%.*}"
