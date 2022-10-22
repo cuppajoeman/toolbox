@@ -1,15 +1,16 @@
 body {
     background-color: gray;
-    color: slateblue;
+    color: white;
 }
 
 a:link {
     text-decoration: none;
+    color: white;
 }
 
 a:visited {
     text-decoration: none;
-    color: slateblue;
+    color: white;
 }
 
 a:hover {
