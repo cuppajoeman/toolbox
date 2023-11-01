@@ -1,0 +1,40 @@
+---
+title: toolbox
+---
+
+<p>my personal toolbox of programs and configurations, feel free to rummage around.</p>
+
+<img src="toolbox.png" alt="" width="300px">
+
+<h2>general</h2>
+
+<h3>input</h3>
+<ul>
+{% for post in collections.tbx_input  %}
+<li>
+    <a href="{{ post.url }}">{{ post.data.title }}</a>
+</li>
+{% endfor %}
+</ul>
+
+<h2>linux</h2>
+
+<h2>math</h2>
+
+<h2>bash</h2>
+<ul>
+    {% for post in collections.tbx_bash  %}
+    <li>
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>game dev</h2>
+<ul>
+    {% for post in collections.tbx_game_dev  %}
+    <li>
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
