@@ -6,6 +6,9 @@ title: toolbox
 
 <img src="toolbox.png" alt="" width="300px">
 
+<p><i>Note: While this is meant to simply store useful scripts and such, since it is now available on-line, it may become a learning source as well, in that regard if you want to make tweaks to the scripts or add supplementary explanations feel free to write comments on the respective page or make a pull request to the
+    <a href="https://github.com/cuppajoeman/toolbox">source code</a></i></p>
+
 <h2>general</h2>
 
 <h3>input</h3>
@@ -18,6 +21,13 @@ title: toolbox
 </ul>
 
 <h2>linux</h2>
+<ul>
+    {% for post in collections.tbx_linux  %}
+    <li>
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
 
 <h2>math</h2>
 
@@ -33,6 +43,24 @@ title: toolbox
 <h2>game dev</h2>
 <ul>
     {% for post in collections.tbx_game_dev  %}
+    <li>
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>c</h2>
+<ul>
+    {% for post in collections.tbx_c  %}
+    <li>
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>web</h2>
+<ul>
+    {% for post in collections.tbx_web  %}
     <li>
         <a href="{{ post.url }}">{{ post.data.title }}</a>
     </li>

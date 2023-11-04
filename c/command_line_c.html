@@ -1,0 +1,88 @@
+---
+title: command line c
+---
+
+<p>
+    When working with c or c++ in the command line I usually make scripts to help me with common tasks. Usually I will make a few scripts to activate different kinds of builds quickly
+</p>
+
+<p><span class="goal">These scripts should be project independent so that we can re-use them in any given c/c++ project.</span></p>
+
+<p>
+    <i>Note: My toolchain is cmake for builds, clang for formatting, and bash for scripting</i>
+</p>
+
+<p>
+    The first step of this process is to create a scripts dir in the root of the project
+</p>
+
+<p>
+
+    We'll start with a script which moves us to the correct directory: <code>scripts/move_to_base_project_dir.sh</code>
+</p>
+
+<pre>
+    <code class="language-bash">
+#!/bin/bash
+cd [your project directory]
+    </code>
+</pre>
+
+Notes:
+
+<ul>
+    <li>we're making this a script because if we ever change our project dir we can still use these scripts from anywhere</li>
+    <li>[your project directory] must be an absolute path, this is because we will run this script multiple times, if it was a relative path say "..", then we would continually be moving back a directory.</li>
+    <li><span class="todo">Add an argument to each script which mentions if it's already in the project dir, if it is don't cd again, this will allow support for relative paths</span></li>
+</ul>
+
+<p>With cmake we start by generating the builds system: <code>scripts/generate_build_system.sh</code></p>
+
+<pre>
+    <code>
+#!/bin/bash
+./move_to_base_project_dir.sh
+cmake -S . -B build
+    </code>
+</pre>
+
+<p>Next we can build the project: <code>scripts/build.sh</code></p>
+<pre>
+    <code>
+#!/bin/bash
+./move_to_base_project_dir.sh
+cmake --build build
+    </code>
+</pre>
+
+<p>If we want to generate the build system and build all at once: <code>scripts/build_process.sh</code></p>
+
+<pre>
+    <code class="language-bash">
+#!/bin/bash
+./move_to_project_dir.sh
+./generate_build_system.sh && ./build.sh
+    </code>
+</pre>
+
+<p>Now that you've built your project run it: <code>scripts/run.sh</code></p>
+
+<pre>
+    <code class="language-bash">
+#!/bin/bash
+./move_to_project_dir.sh
+./build/[executable name]
+    </code>
+</pre>
+
+<p>You've made some edits, and you want to build and run the program: <code>scripts/build_and_run.sh</code></p>
+
+<pre>
+    <code class="language-bash">
+#!/bin/bash
+./move_to_project_dir.sh
+./build_process.sh && ./run.sh
+    </code>
+</pre>
+
+<p>Notice that the only parameters to these scripts were the executable name and the project directory, to complete our goal, we should store these in a file and load them in dynamically</p>
