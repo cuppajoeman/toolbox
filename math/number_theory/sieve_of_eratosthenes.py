@@ -1,5 +1,8 @@
-"""Animated Sieve of Erathosthenes.
 """
+Animated Sieve of Erathosthenes.
+author: cuppajoeman
+"""
+
 import pygame
 from random import randint
 from typing import List, Tuple

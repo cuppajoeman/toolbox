@@ -1,0 +1,28 @@
+---
+title: go back to where you left off
+---
+
+<h2>optional prerequisites</h2>
+<ul>
+    <li><a href="../fullscreen_help.html">open help in fullscreen</a></li>
+</ul>
+
+<div class="code-file" data-file-name="../go_back_to_where_you_left_off.vim">
+</div>
+
+<h2>figuring out how it works</h2>
+<ul>
+    <li>
+        Launch vim, type <code>:help</code> to open the help screen and use <code>ctrl-w o</code> to make it the only visible window
+    </li>
+    <li>
+        Now run <code>:help restore-cursor</code>, look at the source code, the dependencies to understanding it would be <code>autocommands</code>, <code>autogroups</code>, <code>line(...)</code>, <code>execute</code>, use help to find out how they work
+    </li>
+    <li>hint: know that <code>\"</code> escapes the <code>"</code> character so that you can put it inside of a string like: <code>"'\""</code>, which is the string that represents '"</li>
+    <li>
+        Finding our way to the reference manual, open up <code>motion.txt</code> under basic editing, by placing our cursor on the file name and pressing <code>ctrl-]</code>
+    </li>
+    <li>
+        Next navigate to the <code>mark-motion</code> section of the file, scroll the window downward in the buffer a few times until you find <code>'"</code>, now understand what it does.
+    </li>
+</ul>
