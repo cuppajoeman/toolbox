@@ -1,0 +1,27 @@
+---
+title: run script fuzzy
+---
+
+<p>
+    If you're like me, then you've possibly built up quite a few bash scripts that can help you with doing various things while operating the command line.
+</p>
+
+<h2>organization</h2>
+
+<p>
+    As you build up more and more tools, you'll want to stay organized, for me this starts out as using nested directories to induce a hierarchy that helps me locate relevant files. This should work fine, and just remember to have good naming conventions so you can remember the paths to your tools.
+</p>
+
+<p>
+    Once you have more than 20+ personal tools, in a good hierarchy, it might be time to invest in faster ways to use these tools. For me I knew the time had come when I found myself typing <code>~/common_dirs/toolbox/linux/filesystem/find/recursively_find_files_by_contents.sh</code> many times in a week.
+</p>
+
+<p>
+    One solution to this dilemma is to use: https://github.com/junegunn/fzf, with it we can make the following script
+</p>
+
+<div class="code-file" data-file-name="../run_script_fuzzy.sh"></div>
+
+<p>
+    Note that our hierarchy was not a waste of time because if we forgot the script name, we just have to remember one of the ancestor directories it is located in, and fzf will filter out all other files, which will probably show us our file of interest quickly.
+</p>
