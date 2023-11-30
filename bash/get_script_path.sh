@@ -8,7 +8,7 @@ get_current_script_path_bash_source() {
     # to the script (e.g. permissions re-evaled after suid)
     exit 1  # fail
   fi
-  echo "$MY_PATH"
+  return "$MY_PATH"
 }
 
 get_current_script_path_first_arg() {
