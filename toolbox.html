@@ -29,6 +29,24 @@ title: toolbox
     {% endfor %}
 </ul>
 
+<h2>latex</h2>
+<ul>
+    {% for post in collections.tbx_latex  %}
+    <li>
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>filesystem</h2>
+<ul>
+    {% for post in collections.tbx_filesystem  %}
+    <li>
+        <a href="{{ post.url }}">{{ post.data.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
 <h2>vim</h2>
 <ul>
     {% for post in collections.tbx_vim  %}

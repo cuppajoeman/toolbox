@@ -32,22 +32,12 @@ Notes:
     <li><span class="todo">Add an argument to each script which mentions if it's already in the project dir, if it is don't cd again, this will allow support for relative paths</span></li>
 </ul>
 
-<h1>CMake</h1>
+<h1>cmake scripts</h1>
 
-<h2>gotcha's</h2>
-<ul>
-    <li>CMake is not:</li>
-        <ul>
-            <li>A compiler</li>
-            <li>A build system</li>
-        </ul>
-    <li>Cmake indeed:</li>
-    <ul>
-        <li>Generates the required files for the build system that exists on your operating system, for example on linux it may generate make files, if you're using VSCode it will generate solution files.</li>
-        <li>Is an abstraction above the compiler that let's you write CMake instructions on how to build your project without binding yourself to a specific build system such as make</li>
-        <li>Makes it possible for you to compile the same code on multiple operating systems, because different operating systems may use different build systems</li>
-    </ul>
-</ul>
+<p>
+    If you're not yet familiar with cmake check out my page on it <a href="cmake.html">here</a>
+</p>
+
 
 <h2>compiling a program</h2>
 
