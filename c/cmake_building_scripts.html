@@ -21,12 +21,8 @@ title: command line c
     We'll start with a script which moves us to the correct directory: <code>scripts/move_to_base_project_dir.sh</code>
 </p>
 
-<pre>
-    <code class="language-bash">
-#!/bin/bash
-cd [your project directory]
-    </code>
-</pre>
+
+<div class="code-file" data-file-name="../move_to_base_project_dir.sh"></div>
 
 Notes:
 
@@ -36,53 +32,37 @@ Notes:
     <li><span class="todo">Add an argument to each script which mentions if it's already in the project dir, if it is don't cd again, this will allow support for relative paths</span></li>
 </ul>
 
-<p>With cmake we start by generating the builds system: <code>scripts/generate_build_system.sh</code></p>
+<h1>cmake scripts</h1>
 
-<pre>
-    <code>
-#!/bin/bash
-./move_to_base_project_dir.sh
-cmake -S . -B build
-    </code>
-</pre>
+<p>
+    If you're not yet familiar with cmake check out my page on it <a href="cmake.html">here</a>
+</p>
 
-<p>Next we can build the project: <code>scripts/build.sh</code></p>
-<pre>
-    <code>
-#!/bin/bash
-./move_to_base_project_dir.sh
-cmake --build build
-    </code>
-</pre>
 
-<p>If we want to generate the build system and build all at once: <code>scripts/build_process.sh</code></p>
+<h2>compiling a program</h2>
 
-<pre>
-    <code class="language-bash">
-#!/bin/bash
-./move_to_project_dir.sh
-./generate_build_system.sh && ./build.sh
-    </code>
-</pre>
+<p>
+    Because <code>cmake</code> provides a solution to a complex problem, it is highly configurable, and usually a highly configurable systems make doing simple things a little more involved, indeed this manifests itself in cmake while trying to build a simple project. Here's the breakdown
+</p>
 
-<p>Now that you've built your project run it: <code>scripts/run.sh</code></p>
+<p>With cmake we start by generating the build system (on my machine this will create a makefile)</p>
 
-<pre>
-    <code class="language-bash">
-#!/bin/bash
-./move_to_project_dir.sh
-./build/[executable name]
-    </code>
-</pre>
+<div class="code-file" data-file-name="../generate_build_system.sh"></div>
 
-<p>You've made some edits, and you want to build and run the program: <code>scripts/build_and_run.sh</code></p>
+<p>Next we can build the project</p>
 
-<pre>
-    <code class="language-bash">
-#!/bin/bash
-./move_to_project_dir.sh
-./build_process.sh && ./run.sh
-    </code>
-</pre>
+<div class="code-file" data-file-name="../build.sh"></div>
+
+<p>If we want to generate the build system and build all at once</p>
+
+<div class="code-file" data-file-name="../build_process.sh"></div>
+
+<p>Now that you've built your project run it</p>
+
+<div class="code-file" data-file-name="../run.sh"></div>
+
+<p>You've made some edits, and you want to build and run the program</p>
+
+<div class="code-file" data-file-name="../build_and_run.sh"></div>
 
 <p>Notice that the only parameters to these scripts were the executable name and the project directory, to complete our goal, we should store these in a file and load them in dynamically</p>

@@ -1,2 +1,2 @@
 #!/bin/bash
-cd ..
+cd [your path here]

@@ -1,0 +1,40 @@
+---
+title: opengl
+---
+
+<p>
+    This will document how I learned opengl for free using the internet.
+</p>
+
+<p>
+    I started off by reading from the website learnopengl, it starts with including glfw into a c program, which in order to do you have to understand how to compile and link libraries into your own c programs, for this I learned about cmake using their official tutorial, once I finished the tutorial I was able to use glfw and create a basic window.
+</p>
+
+<p>
+    After creating a basic window I followed along with learnopengl until I could create the basic triangle, glfw also has a good reference for how to do it
+</p>
+
+
+<h2>a good way to remember how to work with opengl</h2>
+
+<p>
+    opengl is like the laziest person in the world who is staring at a TV and won't turn their head, if you want opengl to see something you're going to have to bring it into their field of vision, they're so lazy in fact that if you want to make it seem like an object is moving, they expect you to manipulate the entire world to make it seem like it is. That's why you to transform your objects over time and then apply perspective transformations.
+</p>
+
+<h3>more specifically</h3>
+
+<p>
+
+    The way I like to think of this is that opengl defines clip space which is what gets rendered to the screen. If something is to be visible, we make sure it's inside of the clip space. Since what we see is called clip space, then we call this camera space, because clip space is some arbitrary idea, whereas a camera to us makes sense.
+
+    Now usually we also use a projection transformation to make the world look as we see perceive it, we see things with perspective, that is to say.
+
+    For example, geometrically and mathematically given two parallel infinitely long lines they should  never touch and always look in-line with each other, but due to how light enters our eye, we get the effect that they are no longer parallel. A computer is not a human and it doesn't automatically perceive things this way since it's just a machine and doesn't know how to see things like we do.
+
+    The reason we have things like model space and world space is simply scoping as you mentioned implicitly, that is it can be useful to the programmer to be able consider the origin of all space as the center of a specific object, for example if we wanted to animate a boomerang, we would rotate it around the center of the boomering, not the center of the world, and for that the model space is useful, but this concept is a general one, supposing we have a car with wheels, we might want to have a model space for each individual part of the car so that we can do specific transformations to only that section easily.
+</p>
+
+<ul>
+    <li><a href="https://physics.stackexchange.com/questions/265573/why-do-we-have-perspective-in-space">understanding perspective</a></li>
+    <li><a href="https://www.youtube.com/watch?v=iClme2zsg3I">model importing</a></li>
+</ul>
