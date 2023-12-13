@@ -9,7 +9,21 @@ fi
 
 executable=$(find $(dirname -- "${BASH_SOURCE[0]}") -name "*.sh" | fzf)
 
-echo $executable selected, now provide arguments
+echo script: $executable selected
+
+echo -------------------------
+echo ------SCRIPT-SOURCE------
+echo -------------------------
+echo
+
+cat $executable
+
+echo
+echo -------------------------
+echo -------------------------
+echo -------------------------
+
+echo now provide arguments
 
 read -a input_arguments -p "args: " 
 
