@@ -90,18 +90,35 @@ title: opengl
 <h3>before</h3>
 <ul>
     <li>go buy cd's / <code>glGenVertexArrays</code></li>
+    <ul>
+        <li>ex) create your shotgun VAO</li>
+    </ul>
     <li>burn data to your cd's / <code>glGenBuffers, glBindBuffer, glBufferData</code></li>
+    <ul>
+        <li>ex) load in vertices for your shotgun model along with extra data like texture coordinates, normals, etc...</li>
+    </ul>
     <li>tell the computer how to find the songs / <code>glGetAttribLocation, glEnableVertexAttribArray, glVertexAttribPointer</code></li>
+    <ul>
+        <li>ex) you tell opengl how to iterate through your data (a pointer for the 3d vertices in space and then a pointer for moving over the texture coordinates)</li>
+    </ul>
 </ul>
 
 <h3>now play your music</h3>
 <ul>
     <li>select the correct cd / <code>glBindVertexArray</code></li>
+    <ul>
+        <li>ex) you select the shotgun VAO and load it up</li>
+    </ul>
     <li>enable the correct equalization / <code>glUseProgram</code></li>
+    <ul>
+        <li>ex) you select the correct shader for this model</li>
+    </ul>
     <li>press play / <code>glDrawArrays, glDrawElements</code></li>
+    <ul>
+        <li>ex) draw the shotgun</li>
+    </ul>
     <li>when done listening stop the cd from playing / <code>glBindVertexArray(0)</code></li>
-</ul>
-
-<ul>
-    <li><a href="https://www.youtube.com/watch?v=iClme2zsg3I">model importing</a></li>
+    <ul>
+        <li>ex) unload the shotgun data, maybe you need to draw hud elements now</li>
+    </ul>
 </ul>
