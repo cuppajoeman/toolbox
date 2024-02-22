@@ -1,17 +1,19 @@
 nmap <C-n> :call VToggleNetrw()<CR>
 let g:netrw_winsize=20 " set the size of it to take up 20% of the windows width
+let g:netrw_banner = 0 " hide the text at the top
+let g:netrw_liststyle = 3 " tree style listings
 
 function! VToggleNetrw()
-        let number_open_buffers = bufnr("$") " The result is a Number, which is the highest buffer number
+        let n = bufnr("$") " The result is a Number, which is the highest buffer number
         let netrw_already_open = 0
-        while (number_open_buffers >= 1) 
-            if (getbufvar(i, "&filetype") == "netrw") " check to see if the buffer's filetype is netrw
-                silent exe "bwipeout " . i
+        while (n >= 1) 
+            if (getbufvar(n, "&filetype") == "netrw") " check to see if the buffer's filetype is netrw
+                silent exe "bwipeout " . n
                 let netrw_already_open = 1
             endif
-            let number_open_buffers -= 1
+            let n -= 1
         endwhile
     if !netrw_already_open " if not already open
-        silent Vexplore "then launch it
+        silent Lexplore "then launch it
     endif
 endfunction
