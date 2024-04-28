@@ -1,0 +1,92 @@
+<p>
+    Getting up and running with C can be hard for the beginner, using IDE's can be confusing especially when trying to include dependencies. Here I'll document my learning path that was most beneficial to me when learning how to use C.
+</p>
+
+<p>
+    While learning C, I believe it is beneficial to your learning process to use some form of linux machine, a solid linux distribution is manjaro linux, if you have an old spare laptop, I recommend installing a lightweight linux distro on it.
+</p>
+
+<p>
+    <b>IMPORTANT:</b> before you start this guide, make sure you have a C reference, for that I recommend ansi c book which you can find online, or learncpp website, if you want a paper copy, use
+    <a href="https://github.com/amalrajan/learncpp-download">this tool</a>
+</p>
+
+
+<h2>Compiled Vs Interpreted</h2>
+
+<p>
+    A processor on your computer runs commands in the form of machine code, which is a special language that is most efficient and each command it processes does some atomic operation, and is not readable by a human
+</p>
+
+<p>
+    If we go one step up we would have something called assembly code, which is a language which allows us to write these atomic operations in a human readable format but is quite a low level language.
+</p>
+
+<p>
+    Finally going another layer up, we have high level programming languages like C, Java, Python, ... which allow us to focus on larger ideas. With these layers in place, we should be able to realize that in order for any program to do anything at some point it has to get to the CPU, meaning it has to be in machine code.
+</p>
+
+<p>
+    One way of converting a program into machine code would be to first take the program file then convert it into an executable containing the already converted machine code, or we could run the program file directly translating each line into the proper machine code and simultaneously running it.
+</p>
+
+<p>
+    An easy comparison would be taking a document written in french, then having someone come and translate the entire thing into english and then you reading it versus them live-translating the document from french to english. In the former case, it would be faster to read the document once already translated, as compared to the live translation, since you're dependent on the time it takes for the translator to convert between the languages.
+</p>
+
+<p>
+    A language in which you write programs that are first turned into machine code as an executable are called compiled languages, and ones that do the translation every time the program is run is called an interpreted language. C is a compiled language.
+</p>
+
+<h2>How to Compile</h2>
+
+<p>
+    Now that we know that C is a compiled language, we need a method to compile our programs, on linux an easy one is gcc, so for example if you had a program which is valid you could run <code>gcc example.c</code> to create the executable <code>a.out</code>.
+</p>
+
+<h2>Make</h2>
+
+<p>
+    Compiling by hand for simple projects is fine, but over time as your projects get more complicated you'll want to use systems that can build your project easily, on unix systems one of the most well known is called Make, look up "Make Explained" on your search engine of choice, and you should be able to learn about what it does and how it works. I also recommend reading
+    <a href="https://stackoverflow.com/questions/768373/what-is-the-difference-between-make-and-gcc">what the difference is betwen make and gcc</a>
+</p>
+
+<h2>Cross Platform</h2>
+
+<p>
+    Make is great when you're at a linux command line, but sometimes you might not be, and potentially if your software gains enough steam you'll have developers with different preferences on how they interact with the code.
+</p>
+
+<p>
+    To facilitate this situation, the program Cmake exists, read <a href="https://stackoverflow.com/questions/25789644/what-is-the-difference-between-using-a-makefile-and-cmake-to-compile-the-code">this</a> (query "cmake vs makefiles" on google.com) to understand the difference. Another good starting point is <a href="https://stackoverflow.com/questions/26007566/how-is-cmake-used">how cmake is used</a> (query "is cmake a compiler" on google.com).
+</p>
+
+<p>
+    I'll assume you've read that and you're on board with cmake, now visit cmake's official website and use it as a reference to get started.
+</p>
+
+<h2>Debugging</h2>
+
+<p>
+    To debug your programs in the command line I recommend gdb, in order to use gdb you must compile your program in a debug mode. Use <code>man g++</code> and find the -g option, this embeds debug symbols into the executable making it easy to debug. With cmake you can pass the option <code>-D CMAKE_BUILD_TYPE=Debug</code>
+</p>
+
+<p>
+    For more detailed debugging focused on memory, we'll quote <a href="https://stackoverflow.com/users/89218/paleozogt">paleozogt</a> from stack exchange:
+</p>
+
+<blockquote>
+    <i>
+        Sometimes the crash itself isn't the real cause of the problem-- perhaps the memory got smashed at an earlier point but it took a while for the corruption to show itself. Check out <a href="https://valgrind.org/">valgrind</a>, which has lots of checks for pointer problems (including array bounds checking). It'll tell you where the problem starts, not just the line where the crash occurs.
+    </i>
+</blockquote>
+
+<h2>compiling for different operating systems</h2>
+<p>
+    When you create an executable it's built for your hardware and os, so that an executable for your computer will probably not work on some other random computer.
+</p>
+
+<p>
+    If you want to build for windows then [todo complete]
+</p>
+

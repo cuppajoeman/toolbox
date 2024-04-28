@@ -1,0 +1,77 @@
+<p>
+    There are certain components to a physics engine that most will have, today we'll motivate their existance
+</p>
+
+<p>
+    If you're curious as to why we need an engine, it's mainly due to the complexity that arises when you're trying to figure out which objects collide with which other objects. Before we get to that complexity we'll look at the basics:
+</p>
+
+<h2>Set Up</h2>
+
+<p>
+    To understand how a physics simulation works, let's think of a video game that has gravity, players that can move around, and guns which fire projectiles.
+</p>
+
+<h2>Time</h2>
+
+<p>
+    The first fundamental component of such a system, would be the concept of time, as without it nothing would happen, everything would be frozen in space and nothing would move. We as humans have a hard time grappling about a continuum of time, one way we've found to manage with it is by counting seconds, breaking it down into discreet steps.
+</p>
+
+<p>
+    We can teach our programs to count by using the while loop that runs continually and then measuring the amount of time that has passed since last iteration. Our physics simulation will also use this concept, moving from one state to another, while updating positions and information based on how much time has passed since last time we updated our simulation.
+</p>
+
+
+<h2>Collisions</h2>
+
+<p>
+    First things first, we should make sure our players don't fall through the floor when gravity is applied, so our physics engine simulation needs to be able to do collisions, this will also be useful for when two players collide.
+</p>
+
+<p>
+    Since our physics simulation is written in code, to some extent things will be run sequentially (ignoring any threading for now), and so given two objects, how would we know if they're colliding? Well we could grab one, and then another, and then based on their shape, figure out if they're intersecting in any way, and then we would know if they are colliding.
+</p>
+
+<h3>Efficiency</h3>
+
+<p>
+    Naively we could take this idea, iterate over each of the objects that could collide in our simulation and check for collisions. This is a good first start, but if we had N things that collide we could find a quick upperbound on how that scales up. We would have to check each one of the N objects against the N-1 others, so as the number of objects increases, the time to do these checks would increase at a rate of N^2, which becomes unwieldy
+</p>
+
+<i>Note: by unwieldy I mean your game may become extremely laggy or come to a grinding halt, making an experience that none of your potential players are going to want to experience.</i>
+
+
+<p>
+    If we had an inexpensive test to quickly rule out objects or groups of objects of having the possibility of colliding, then we could cut down on the number of checks we would have to perform, which would bring our game back from being a laggy mess to a real-time experience.
+</p>
+
+The great thing is that over the years we've come up with many different solutions on how we can do this:
+
+<ul>
+
+    <li>spatial partitioning: Carve up space and cheaply exclude objects that are in different regions, examples include</li>
+    <li>binary space partitioning</li>
+    <li>octrees/quadtrees</li>
+    <li>grids</li>
+    <li>object partitioning: a similar idea to the one before but now the focus is around the space an object takes up rather than the section of space it's in. An example of this are sphere trees.</li>
+    <li>sort and sweep: place the objects in order spatially and rule out collisions between objects that aren't adjacent</li>
+</ul>
+
+<p>
+    These structures that help speed up our system are usually called <b>acceleration structures</b>.
+</p>
+
+<p>
+    Since this topic has such significance when it comes to physics engines, it has been called <b>broad phase</b> collision detection, and is specifically about how to cut down on the number of collisions that need to be checked for, it also comes with another phase, which is called <b>narrow phase</b> collision detection which corresponds to the actual checking of collisions between objects.
+</p>
+
+<h2>Pipeline</h2>
+With everything we've just discussed we can construct a basic pipeline that looks something like this
+
+<ol>
+    <li>Use a broad phase technique to cut down on the number of collisions that need to be checked for</li>
+    <li>Check for the actual collisions</li>
+    <li>Based on the amount of time since the last physics step, update the positions of the objects</li>
+    <li>Repeat</li>
+</ol>

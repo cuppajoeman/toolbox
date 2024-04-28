@@ -1,0 +1,33 @@
+<h2>gotcha's</h2>
+<ul>
+    <li>CMake is not:</li>
+    <ul>
+        <li>A compiler</li>
+        <li>A build system</li>
+    </ul>
+    <li>Cmake indeed:</li>
+    <ul>
+        <li>Generates the required files for the build system that exists on your operating system, for example on linux it may generate make files, if you're using VSCode it will generate solution files.</li>
+        <li>Is an abstraction above the compiler that let's you write CMake instructions on how to build your project without binding yourself to a specific build system such as make</li>
+        <li>Makes it possible for you to compile the same code on multiple operating systems, because different operating systems may use different build systems</li>
+    </ul>
+</ul>
+
+<h2>compiling a program</h2>
+
+<p>
+    Because <code>cmake</code> provides a solution to a complex problem, it is highly configurable, and usually a highly configurable systems make doing simple things a little more involved, indeed this manifests itself in cmake while trying to build a simple project. Here's the breakdown
+</p>
+
+<p>With cmake we start by generating the build system (on my machine this will create a makefile)</p>
+
+<div class="code-file" data-file-name="generate_build_system.sh"></div>
+
+<p>Next we can build the project</p>
+
+<div class="code-file" data-file-name="build.sh"></div>
+
+<p>
+    For further useful scripts with cmake check my page on <a href="cmake_building_scripts.html">them</a>, if you want to learn how to integrate external libraries with cmake check my page on that
+    <a href="external_libraries_with_cmake.html">here</a>
+</p>

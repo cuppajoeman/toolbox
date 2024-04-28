@@ -1,0 +1,18 @@
+<p>
+    Git submodules provide a way to consider any repository as a versioned "package" that can be included in any other git repo.
+</p>
+
+<h1>gotcha's</h1>
+<ul>
+    <li>When you clone a repository git will <b>not</b> automatically clone in the contents of any submodules, but it will clone an empty directory with the name of that repository, in order to actually get the contents of those submodules you have to do the following</li>
+
+    <div class="code-file" data-file-name="clone_submodule_contents.sh"></div>
+
+    <li>You'll notice that in order to get the contents of your submodules that it's a composite command:</li>
+
+    <ul>
+        <li>git submodule init: to initialize your local configuration file</li>
+        <li>git submodule update: to fetch all the data from that project and check out the appropriate commit listed in your superproject</li>
+    </ul>
+
+</ul>

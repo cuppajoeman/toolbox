@@ -1,0 +1,90 @@
+<p>
+    All programming languages have an implementation of ordered lists, they can be strings arrays vectors, each of which can be a static size or change dynamically, here are some common operations and their function names in some popular languages
+</p>
+
+<p>
+    <i>Note: I find this as a handy reference instead of looking up the same questions on the internet over and over again.</i>
+</p>
+
+<h1>finding</h1>
+
+<h2>find the first index of search query</h2>
+<ul>
+    <li>python:</li>
+    <pre>
+        <code class="language-python">
+>>> ["foo", "bar", "baz"].index("bar")
+1
+        </code>
+    </pre>
+    <li>javascript</li>
+    <pre>
+        <code class="language-javascript">
+const array1 = [5, 12, 8, 130, 44];
+
+const isLargeNumber = (element) => element > 13;
+
+console.log(array1.findIndex(isLargeNumber));
+// Expected output: 3
+        </code>
+    </pre>
+    <li><a href="https://stackoverflow.com/questions/3909784/how-do-i-find-a-particular-value-in-an-array-and-return-its-index">c++</a></li>
+</ul>
+
+<h2>find the last index of search query in string</h2>
+
+<ul>
+    <li>javascript</li>
+    <pre>
+        <code>
+let text = "Hello planet earth, you are a great planet.";
+let result = text.lastIndexOf("planet");
+// result is 36 and not 5
+        </code>
+    </pre>
+</ul>
+
+<h1>substrings</h1>
+
+<h2>slicing</h2>
+
+<ul>
+    <li>python:</li>
+    <pre>
+        <code class="language-python">
+>>> b = "Hello, World!"
+>>> print(b[2:5])
+llo
+        </code>
+    </pre>
+    <li>javascript:</li>
+    <pre>
+        <code class="language-javascript">
+const str = 'The quick brown fox jumps over the lazy dog.';
+
+console.log(str.slice(31));
+// Expected output: "the lazy dog."
+
+console.log(str.slice(4, 19));
+// Expected output: "quick brown fox"
+
+console.log(str.slice(-4));
+// Expected output: "dog."
+
+console.log(str.slice(-9, -5));
+// Expected output: "lazy"
+        </code>
+    </pre>
+</ul>
+
+<h1>contains element</h1>
+<ul>
+    <li>javascript:</li>
+    <pre>
+        <code class="lanaguage-javascript">
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.includes("Mango"); // returns true
+        </code>
+    </pre>
+</ul>
+
