@@ -2,10 +2,10 @@
 	path = fast-html
 	url = git@github.com:simple-web-tools/fast-html.git
 [submodule "insert-file-contents"]
-	path = insert-file-contents
+	path = content/insert-file-contents
 	url = git@github.com:simple-web-tools/insert-file-contents.git
 [submodule "cjm-css"]
-	path = cjm-css
+	path = content/cjm-css
 	url = git@github.com:cuppajoeman/cjm-css.git
 [submodule "fsweb"]
 	path = fsweb
