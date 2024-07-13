@@ -23,7 +23,7 @@
     opengl is like the laziest person in the world who is staring at a TV and won't turn their head, if you want opengl to see something you're going to have to bring it into their field of vision, they're so lazy in fact that if you want to make it seem like an object is moving, they expect you to manipulate the entire world to make it seem like it is. That's why you to transform your objects over time and then apply a <a href="https://physics.stackexchange.com/questions/265573/why-do-we-have-perspective-in-space">understanding perspective</a> transformation.
 </p>
 
-<img src="../lazy_cat.png" width="500px" alt="">
+<img src="lazy_cat.png" width="500px" alt="">
 
 <p>
     That's pretty much a long winded way of saying the camera doesn't move.
@@ -54,7 +54,7 @@
     There is one physical object that operates quite like it, the CD player:
 </p>
 
-<img src="../cd_player_multiple_disks.jpg" width="500px" alt="">
+<img src="cd_player_multiple_disks.jpg" width="500px" alt="">
 
 <p>
     This cd player doesn't necessarily look normal as it can hold 100 different cd's but this will make sense in a few seconds.
@@ -68,7 +68,7 @@
     You launch your cd burning software and make 15 cd's each one having songs from a different genre. You go back to your cd player and load all 15 cd's in. You also have some hi-fi speakers hooked up to the cd player that would benefit from some equalization, meaning that you can tweak the bass, mids and treble before any sound comes out, each genre of music has a general equalization setup that makes the music sound it's best. Suppose you have a few equalization set ups like <code>e_jazz</code>, <code>e_rock</code>, <code>e_classical</code>, etc..
 </p>
 
-<img src="../graphic_equilizer.jpg" width="500px" alt="">
+<img src="graphic_equilizer.jpg" width="500px" alt="">
 
 <p>
     You're feeling like listening to some jazz, so you turn on your music system, and set your equalization to <code>e_jazz</code>, and you select the cd <code>c_jazz</code> and you press play, and everything sounds great. After going through a few songs, you decide to listen to some rock so you switch to the <code>c_rock</code> cd and play a song, it sounds a little weird because you forgot to change the eq to be <code>e_rock</code>, so you pause the song, make sure that <code>e_rock</code> is enabled and then it all sounds good.
@@ -78,7 +78,7 @@
     This process is exactly mirrored when using opengl. When you go out to buy your cd's you are calling <code>glGenVertexArrays</code>. Suppose you download your songs along with some album art as well, when you burn this data onto your cd's you are using <code>glGenBuffers</code>, <code>glBindBuffer</code> and <code>glBufferData</code>. When you put a cd that has album art into your cd player it still works fine because it knows where to get actual song data, so it knows how to interpret the info on the disk, this interpretation is equivalent to the methods <code>glGetAttribLocation</code>, <code>glEnableVertexAttribArray</code>, <code>glVertexAttribPointer</code>.
 </p>
 
-<img src="../cd_burner_xp.jpg" width="500" alt="">
+<img src="cd_burner_xp.jpg" width="500" alt="">
 
 
 <h2>recap</h2>
