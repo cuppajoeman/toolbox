@@ -1,0 +1,9 @@
+<p>
+  When working with textures in OpenGL, there are a few conceptual things you need to wrap your mind around in order to use them properly in shaders. If your shaders use at most one texture sampler, understanding texture units isn't strictly required. However, if you need to incorporate more than one texture—such as a diffuse map and a specular map—into your shaders, texture units become essential. 
+</p>
+<p>
+  Let's say you want to draw a crate where the textures on each side include wood and metal bolts. For this, you'll use a diffuse map (which provides the base color of the texture) and a specular map (which indicates how shiny parts of the texture are). To use both textures in a shader, you must bind each texture to a separate texture unit. This process involves loading the textures using a library like stb and then binding them with functions such as `glBindTexture`. By assigning each texture to a different texture unit with `glActiveTexture`, you ensure that the shader can access and combine them properly.
+</p>
+<p>
+  In your OpenGL code, you will load and bind these textures, and set the active texture units. For instance, `glActiveTexture(GL_TEXTURE0)` followed by `glBindTexture(GL_TEXTURE_2D, diffuseTexture)` binds the diffuse texture to the first texture unit. Similarly, `glActiveTexture(GL_TEXTURE1)` and `glBindTexture(GL_TEXTURE_2D, specularTexture)` binds the specular texture to the second texture unit. In your shader, you then use sampler uniforms to access these textures. This setup allows your shader to sample from both textures simultaneously, combining their effects to produce a more realistic rendering of the crate.
+</p>
