@@ -1,0 +1,35 @@
+<p>
+    Sometimes you want to trim videos at the command line, my workflow goes like this, figure out where I want the vid to start and end, and then run the following command:
+</p>
+
+
+<pre>
+ffmpeg -i input.mp4 -ss 00:01:00 -to 00:01:30 -c copy output.mp4
+</pre>
+
+<ul>
+    <li>
+    -i input.mp4: Specifies the input file.
+    </li>
+    <li>
+    -ss 00:01:00: Sets the start time to 1 minute into the video.
+    </li>
+    <li>
+    -to 00:01:30: Sets the end time to 1 minute and 30 seconds.
+    </li>
+    <li>
+    -c copy: Copies the codec, avoiding re-encoding and making the process faster.
+    </li>
+    <li>
+    output.mp4: Specifies the output file name.
+    </li>
+</ul>
+
+
+<p>
+    This will trim the video from 1:00 to 1:30, resulting in a 30-second clip.
+</p>
+
+<p>
+    Also note that you can leave off leading zeros in the time format so you could get 13 to 57 seconds with <code>ffmpeg -i input.mp4 -ss 13 -to 57 -c copy output.mp4</code>.
+</p>
