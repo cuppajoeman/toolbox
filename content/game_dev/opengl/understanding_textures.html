@@ -1,9 +1,135 @@
-<p>
-  When working with textures in OpenGL, there are a few conceptual things you need to wrap your mind around in order to use them properly in shaders. If your shaders use at most one texture sampler, understanding texture units isn't strictly required. However, if you need to incorporate more than one texture—such as a diffuse map and a specular map—into your shaders, texture units become essential. 
-</p>
-<p>
-  Let's say you want to draw a crate where the textures on each side include wood and metal bolts. For this, you'll use a diffuse map (which provides the base color of the texture) and a specular map (which indicates how shiny parts of the texture are). To use both textures in a shader, you must bind each texture to a separate texture unit. This process involves loading the textures using a library like stb and then binding them with functions such as `glBindTexture`. By assigning each texture to a different texture unit with `glActiveTexture`, you ensure that the shader can access and combine them properly.
-</p>
-<p>
-  In your OpenGL code, you will load and bind these textures, and set the active texture units. For instance, `glActiveTexture(GL_TEXTURE0)` followed by `glBindTexture(GL_TEXTURE_2D, diffuseTexture)` binds the diffuse texture to the first texture unit. Similarly, `glActiveTexture(GL_TEXTURE1)` and `glBindTexture(GL_TEXTURE_2D, specularTexture)` binds the specular texture to the second texture unit. In your shader, you then use sampler uniforms to access these textures. This setup allows your shader to sample from both textures simultaneously, combining their effects to produce a more realistic rendering of the crate.
-</p>
+    <h1>OpenGL Texture Units and Samplers</h1>
+    <p>When using multiple textures in a shader, you need to bind each texture to a different texture unit. Each texture unit acts as a slot where you can attach a texture, and you will need to ensure that your shader can sample from each texture unit accordingly.</p>
+
+    <h2>Example: Drawing a Crate with Diffuse and Specular Maps</h2>
+    <p>Let's expand on the example of drawing a crate with both a diffuse map (base color) and a specular map (shininess). Here’s how you would handle this in OpenGL:</p>
+
+    <h3>1. Load and Bind Textures</h3>
+    <p>You need to load your textures (diffuse and specular) and bind them to different texture units. For this example, we'll use texture units <code>GL_TEXTURE0</code> for the diffuse map and <code>GL_TEXTURE1</code> for the specular map.</p>
+
+    <h4>Load Textures</h4>
+    <pre><code>#include &lt;stb_image.h&gt;
+
+// Load diffuse texture
+GLuint diffuseTexture;
+glGenTextures(1, &diffuseTexture);
+glBindTexture(GL_TEXTURE_2D, diffuseTexture);
+int width, height, nrChannels;
+unsigned char *data = stbi_load("diffuse_map.jpg", &width, &height, &nrChannels, 0);
+if (data)
+{
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+}
+else
+{
+    std::cout &lt;&lt; "Failed to load diffuse texture" &lt;&lt; std::endl;
+}
+stbi_image_free(data);
+
+// Load specular texture
+GLuint specularTexture;
+glGenTextures(1, &specularTexture);
+glBindTexture(GL_TEXTURE_2D, specularTexture);
+data = stbi_load("specular_map.jpg", &width, &height, &nrChannels, 0);
+if (data)
+{
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+}
+else
+{
+    std::cout &lt;&lt; "Failed to load specular texture" &lt;&lt; std::endl;
+}
+stbi_image_free(data);
+</code></pre>
+
+    <h4>Bind Textures to Texture Units</h4>
+    <pre><code>// Bind diffuse texture to texture unit 0
+glActiveTexture(GL_TEXTURE0);
+glBindTexture(GL_TEXTURE_2D, diffuseTexture);
+
+// Bind specular texture to texture unit 1
+glActiveTexture(GL_TEXTURE1);
+glBindTexture(GL_TEXTURE_2D, specularTexture);
+</code></pre>
+
+    <h3>2. Set Up Shader Program</h3>
+    <p>Compile and link your shader program:</p>
+
+    <h4>Vertex Shader (<code>vertex_shader.glsl</code>)</h4>
+    <pre><code>#version 330 core
+layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec2 aTexCoord;
+out vec2 TexCoord;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    TexCoord = aTexCoord;
+}
+</code></pre>
+
+    <h4>Fragment Shader (<code>fragment_shader.glsl</code>)</h4>
+    <pre><code>#version 330 core
+in vec2 TexCoord;
+out vec4 FragColor;
+
+uniform sampler2D diffuseTexture;
+uniform sampler2D specularTexture;
+
+void main()
+{
+    vec3 diffuseColor = texture(diffuseTexture, TexCoord).rgb;
+    float specularFactor = texture(specularTexture, TexCoord).r;
+    vec3 finalColor = diffuseColor * (0.2 + 0.8 * specularFactor); // Example calculation
+    FragColor = vec4(finalColor, 1.0);
+}
+</code></pre>
+
+    <h3>3. Set Shader Uniforms</h3>
+    <p>Before rendering, you need to tell the shader which texture unit corresponds to each sampler.</p>
+    <pre><code>GLuint shaderProgram = // Compile and link shaders here;
+glUseProgram(shaderProgram);
+
+// Set the diffuse texture sampler to use texture unit 0
+glUniform1i(glGetUniformLocation(shaderProgram, "diffuseTexture"), 0);
+
+// Set the specular texture sampler to use texture unit 1
+glUniform1i(glGetUniformLocation(shaderProgram, "specularTexture"), 1);
+</code></pre>
+
+    <h3>4. Rendering Loop</h3>
+    <p>In the rendering loop, you use the shader program and draw your objects.</p>
+    <pre><code>while (!glfwWindowShouldClose(window))
+{
+    // Clear the screen
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Bind shader program
+    glUseProgram(shaderProgram);
+
+    // Bind the textures
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuseTexture);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, specularTexture);
+
+    // Draw your object
+    glBindVertexArray(VAO); // Assuming VAO is set up
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    
+    // Swap buffers
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+}
+</code></pre>
+
+    <h2>Summary</h2>
+    <ul>
+        <li>Load and bind textures to different texture units.</li>
+        <li>Set the shader program and bind each texture to the corresponding texture unit.</li>
+        <li>Set the sampler uniforms in the shader to indicate which texture unit to use.</li>
+        <li>Render your objects with the shader program, ensuring the correct textures are bound.</li>
+    </ul>
