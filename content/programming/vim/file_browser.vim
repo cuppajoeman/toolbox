@@ -7,7 +7,7 @@ let g:netrw_liststyle = 3 " tree style listings
 " this makes it so that moving back over to a window on the right from netrw 
 " causes it to duplicate itself, so we rebind this:
 " see :help netrw-ctrl-l, and read https://stackoverflow.com/a/33351897/6660685   
- nmap <unique> <c-r> <Plug>NetrwRefresh
+ nmap <unique> <c-n><c-r> <Plug>NetrwRefresh
 
 function! VToggleNetrw()
         let n = bufnr("$") " The result is a Number, which is the highest buffer number

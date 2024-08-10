@@ -1,0 +1,7 @@
+~/projects
+~/projects/frag-z-organization
+~/temp
+~/Downloads
+~/Videos
+/home/ccn/projects/frag-z-organization/client
+/home/ccn/projects/toolbox
