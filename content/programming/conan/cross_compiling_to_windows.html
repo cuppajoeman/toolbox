@@ -1,0 +1,37 @@
+<p>
+  I was trying to figure out how I can cross compile from linux to windows, I initially noticed that settings.yml said nothing about mingw and so I got a little confused, eventually I found a sample profile which was outdated and used some broken packages like mingw_installer which no longer existed, at the end of the day I was able to get it to work like this. Create the following windows conan profile:
+</p>
+
+<pre>
+  <code>
+[tool_requires]
+mingw-w64/8.0.2
+
+[settings]
+os=Windows
+arch=x86_64
+compiler=gcc
+compiler.cppstd=17
+compiler.version=14
+compiler.libcxx=libstdc++11
+compiler.threads=posix
+build_type=Release
+
+  </code>
+</pre>
+
+<p>
+  Then navigate to your project directory and run 
+</p>
+
+<pre>
+  <code>
+    conan install . -pr:b=default -pr:h=windows --build=missing
+  </code>
+</pre>
+
+<span class="warning">note that I had to blast away my previous build directory because it had contained the linux build data and I think it just combined it with the new mingw stuff causing a problem during compilation the first time</span>
+
+<p>
+  From there it successfully built my required packages using mingw and I used cmake --preset conan-release and then cmake --build --preset conan-release and then it compiled, I got an unrelated error during my first go with cmake building because I forgot to set the cppstd to the same that of which I built the linux version with, so don't forget things like that.
+</p>
