@@ -5,11 +5,15 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin()
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'justinmk/vim-dirvish'
 Plug 'bfrg/vim-cpp-modern'
 call plug#end()
+
+nmap <leader>fz :Files<CR>
 
 " configure clang format
 function! Formatonsave()

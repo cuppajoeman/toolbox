@@ -11,6 +11,7 @@ source ~/projects/toolbox/content/programming/vim/persistent_undo.vim
 source ~/projects/toolbox/content/programming/vim/easy_window_navigation.vim
 source ~/projects/toolbox/content/programming/vim/go_back_to_where_you_left_off.vim
 source ~/projects/toolbox/content/programming/vim/visual_info.vim
+source  ~/projects/toolbox/content/programming/vim/change_root.vim
 " source ~/projects/toolbox/content/programming/vim/file_browser.vim
 
 " plugin stuff
