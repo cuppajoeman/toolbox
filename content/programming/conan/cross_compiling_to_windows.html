@@ -26,11 +26,11 @@ build_type=Release
 
 <pre>
   <code>
-    conan install . -pr:b=default -pr:h=windows --build=missing
+    conan install . -pr:b=default -pr:h=windows --build=missing -of=build_windows
   </code>
 </pre>
 
-<span class="warning">note that I had to blast away my previous build directory because it had contained the linux build data and I think it just combined it with the new mingw stuff causing a problem during compilation the first time</span>
+<span class="warning">-of specifies the root output folder for generated and build files, if you don't specify this it will by default overwrite stuff in your current build making the subsequent cmake calls fail</span>
 
 <p>
   From there it successfully built my required packages using mingw and I used cmake --preset conan-release and then cmake --build --preset conan-release and then it compiled, I got an unrelated error during my first go with cmake building because I forgot to set the cppstd to the same that of which I built the linux version with, so don't forget things like that.
