@@ -14,6 +14,7 @@ Plug 'bfrg/vim-cpp-modern'
 call plug#end()
 
 nmap <leader>fz :Files<CR>
+nmap <leader>bz :Buffers<CR>
 
 " configure clang format
 function! Formatonsave()
