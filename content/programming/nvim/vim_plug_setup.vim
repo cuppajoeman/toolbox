@@ -20,10 +20,17 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'tpope/vim-commentary'
 Plug 'vim-scripts/DoxygenToolkit.vim'
+"Function / class comment :
+"  In vim, place the cursor on the line of the function header (or returned
+"  value of the function) or the class.  Then execute the command :Dox.  This
+"  will generate the skeleton and leave the cursor after the @brief tag.
+
 " html
 Plug 'mattn/emmet-vim'
 " colorscheme
 Plug 'cocopon/iceberg.vim'
+" focus 
+Plug 'junegunn/goyo.vim'
 call plug#end()
 
 " dirvish use :cd % to change root

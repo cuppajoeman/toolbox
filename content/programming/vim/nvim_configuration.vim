@@ -7,7 +7,8 @@ source ~/projects/toolbox/content/programming/vim/split_settings.vim
 source ~/projects/toolbox/content/programming/vim/tabs.vim
 " source ~/projects/toolbox/content/programming/vim/terminal.vim
 source ~/projects/toolbox/content/programming/vim/buffers.vim
-" source ~/projects/toolbox/content/programming/vim/persistent_undo.vim
+"source ~/projects/toolbox/content/programming/vim/persistent_undo.vim
+set undofile
 source ~/projects/toolbox/content/programming/vim/easy_window_navigation.vim
 source ~/projects/toolbox/content/programming/vim/go_back_to_where_you_left_off.vim
 source ~/projects/toolbox/content/programming/vim/visual_info.vim

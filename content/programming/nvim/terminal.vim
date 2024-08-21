@@ -1,7 +1,7 @@
 " Function to open a terminal in the current window
 function! OpenTerminal()
   " Open a terminal window in the current window
-  execute 'terminal ++curwin'
+  execute 'terminal'
 endfunction
 
 " Function to open a terminal in the current file's directory
@@ -17,7 +17,7 @@ endfunction
 " Function to run ranger in the current window
 function! RunRangerInCurrentWindow()
   " Run ranger in the current window
-  execute 'terminal ++curwin ranger'
+  execute 'terminal ranger'
 endfunction
 
 " Command to open a terminal in the current file's directory
@@ -36,9 +36,3 @@ nnoremap <leader>tr :TDR<CR>
 " Key mappings for terminal mode
 " Get out of Terminal-Mode
 tnoremap <leader>t<Esc> <C-\><C-n>
-
-" Be able to hide the terminal
-noremap <leader>tq <C-w>:hide<CR>
-
-" Open a terminal in the current window
-noremap <leader>ter :call OpenTerminal()<CR>

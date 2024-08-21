@@ -94,8 +94,17 @@ run_script() {
         fi
 
         # Prompt for arguments
-        echo "Now provide arguments (use quotes for multi-word arguments)"
+        echo "Now provide arguments (use quotes for multi-word arguments or press Enter to use no arguments)."
+        echo "Note: Adding '&' at the end will run the process in the background and won't be parsed as an argument."
         read -r input_arguments_line
+
+        # Check if the last argument is "&"
+        if [[ "$input_arguments_line" =~ \&$ ]]; then
+            run_in_background=true
+            input_arguments_line="${input_arguments_line%&}"
+        else
+            run_in_background=false
+        fi
 
         # Use `eval` to correctly parse the arguments, handling quoted strings
         eval "input_arguments=($input_arguments_line)"
@@ -123,14 +132,28 @@ run_script() {
         fi
 
         # Execute the script
-        echo "Executing: $command_to_run"
-        $interpreter "$script" "${input_arguments[@]}"
+        if $run_in_background; then
+            echo "Running in background: $command_to_run"
+            nohup $interpreter "$script" "${input_arguments[@]}" &>/dev/null &
+        else
+            echo "Executing: $command_to_run"
+            if $interpreter "$script" "${input_arguments[@]}"; then
+                echo -e "\e[1;32mCommand executed successfully!\e[0m"
+            else
+                echo -e "\e[1;31mCommand execution failed!\e[0m"
+            fi
+        fi
 
         # Ask if the user wants to run the same script with different arguments
-        echo "Do you want to run the same script again with different arguments? (type 'done' to stop)"
+        echo "Press Enter to run the same script again with different arguments, type 'ano' to select a different script, or type 'exit' to quit."
         read -r user_input
-        if [[ "$user_input" == "done" ]]; then
-            break
+        if [[ "$user_input" == "exit" ]]; then
+            echo "Exiting..."
+            exit 0
+        elif [[ "$user_input" == "ano" ]]; then
+            return 0  # Return to the main loop to select a different script
+        elif [[ -z "$user_input" ]]; then
+            continue  # Run the same script with different arguments
         fi
     done
 }

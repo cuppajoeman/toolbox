@@ -6,3 +6,5 @@
 /home/ccn/projects/frag-z-organization/client
 /home/ccn/projects/toolbox
 /home/ccn/projects/cube-connect-organization/client
+/home/ccn/projects/openmath
+/home/ccn/Sync/mental/math

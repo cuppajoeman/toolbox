@@ -12,12 +12,12 @@ make_y_depend_on_x = True
 
 if make_y_depend_on_x:
     aspect_ratio = ry/rx
-    horizontal_pixel_count = 2040
+    horizontal_pixel_count = 512
     vertical_pixel_count = int(horizontal_pixel_count * aspect_ratio)
 else:
     aspect_ratio = rx/ry
     # increasing the resolution makes the image clearer
-    vertical_pixel_count = 2040
+    vertical_pixel_count = 512
     horizontal_pixel_count = int(vertical_pixel_count * aspect_ratio)
 
 
