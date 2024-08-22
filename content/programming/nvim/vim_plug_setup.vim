@@ -25,6 +25,10 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 "  value of the function) or the class.  Then execute the command :Dox.  This
 "  will generate the skeleton and leave the cursor after the @brief tag.
 
+" python 
+
+Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
+
 " html
 Plug 'mattn/emmet-vim'
 " colorscheme
