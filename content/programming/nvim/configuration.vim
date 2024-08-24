@@ -5,8 +5,11 @@ source ~/projects/toolbox/content/programming/vim/easy_file_opening.vim
 source ~/projects/toolbox/content/programming/vim/easy_editing.vim
 source ~/projects/toolbox/content/programming/vim/split_settings.vim
 source ~/projects/toolbox/content/programming/vim/tabs.vim
+source ~/projects/toolbox/content/programming/nvim/whitespace.vim
+source ~/projects/toolbox/content/programming/nvim/date.vim
 source ~/projects/toolbox/content/programming/nvim/terminal.vim
 source ~/projects/toolbox/content/programming/nvim/buffers.vim
+source ~/projects/toolbox/content/programming/nvim/espanso_editing.vim
 " source ~/projects/toolbox/content/programming/nvim/persistent_undo.vim
 source ~/projects/toolbox/content/programming/nvim/easy_window_navigation.vim
 source ~/projects/toolbox/content/programming/nvim/go_back_to_where_you_left_off.vim
