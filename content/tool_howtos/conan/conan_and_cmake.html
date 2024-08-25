@@ -1,0 +1,13 @@
+<h2>Dealing with a C++ Version</h2>
+<p>
+    You can specify a c++ version in cmake, but you can also specify one in your conan profile, so what's going on here? Do these things conflict, and why is there not some single solution?
+</p>
+
+<p>
+    First of all, note that conan is not tailored for cmake, it can operate with other build generation systems, but you can forget that if you've been using it for a while. The first thing to think about is what profiles actually are, generally they can be specified for each project, but you won't always want to do it, so a profile can be thought of as "your preference" in terms of how things should be built no matter where you are, so the settings you would want on any project if given your own choice, for me I just use the newest cpp version, the mold linker and a few options like -Werror, etc...
+</p>
+
+<p>
+    What this means is that if you have a cpp version set in your profile, perhaps even your default profile, you will want to make sure that the version you set in your cmakelists.txt matches, because if it doesn't then because conan will build external libraries using the newest cpp version which is different then the one specified in the cmakelists file then when it attempts to link packages built with a different cpp version, things may go wrong, so make sure those versions are the same.
+</p>
+

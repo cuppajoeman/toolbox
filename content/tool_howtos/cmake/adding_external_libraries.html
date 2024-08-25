@@ -1,0 +1,17 @@
+<pre>
+    <code>
+include_directories(external_libraries/JoltPhysics)
+add_subdirectory(external_libraries/JoltPhysics/Build)
+    </code>
+</pre>
+
+<p>
+    Now hunt in the projects own cmake list for the name of the library, in our case it's <code>Jolt</code> and so we add the line:
+</p>
+
+<pre>
+    <code>
+target_link_libraries(${PROJECT_NAME} Jolt)
+    </code>
+</pre>
+
