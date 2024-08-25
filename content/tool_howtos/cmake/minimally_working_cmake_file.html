@@ -1,22 +1,10 @@
 <pre>
-  # Minimum required version of CMake
+    <code>
+# Minimum required version of CMake
 cmake_minimum_required(VERSION 3.10)
 
-# Project name and version
-project(MyProject VERSION 1.0)
+project(project_name)
 
-# Specify the C++ standard
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
-# Add the executable
-add_executable(MyProject main.cpp)
-</pre>
-
-<p>
-  You can also create the files needed to run a language server like by adding this line somewhere
-</p>
-
-<pre>
-  set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+add_executable(${PROJECT_NAME} main.cpp)
+    </code>
 </pre>
