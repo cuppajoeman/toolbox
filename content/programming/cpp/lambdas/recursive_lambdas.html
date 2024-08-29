@@ -1,0 +1,39 @@
+<p>
+Working with lambdas is great in c++, but sometimes you want to make recursive lambdas, there are a few pitfalls that I've been in. I'm listing them here to pull me (or you!) out in the future :)
+</p>
+
+<h1>Gotcha's</h1>
+
+<h2>bad_function_call issue</h2>
+
+<p>The following code example produces a bad function call due to capturing the lambda by value:</p>
+<pre><code>// Declaration
+std::function&lt;void(const SBone*, const core::vector3df&amp;, const core::quaternion&amp;)&gt; f_build;
+
+f_build = [f_build](const SBone* bone, const core::vector3df&amp; pos, const core::quaternion&amp; rot)
+{
+    // This will cause a "bad call" due to incomplete capture of f_build
+    f_build(bone, pos, rot);
+};
+</code></pre>
+
+<h2>Corrected Code</h2>
+<p>The issue is resolved by capturing the lambda by reference:</p>
+<pre><code>// Declaration
+std::function&lt;void(const SBone*, const core::vector3df&amp;, const core::quaternion&amp;)&gt; f_build;
+
+f_build = [&amp;f_build](const SBone* bone, const core::vector3df&amp; pos, const core::quaternion&amp; rot)
+{
+    // This will correctly call the fully initialized f_build
+    f_build(bone, pos, rot);
+};
+</code></pre>
+
+<h2>Explanation</h2>
+<p>Here's why capturing by value causes a "bad call":</p>
+<ul>
+    <li><strong>Copy of <code>f_build</code></strong>: When capturing by value, the lambda captures a copy of the <code>f_build</code> variable. However, at the point of the lambda's creation, <code>f_build</code> is not fully initialized. It is still being defined, leading to an incomplete or invalid function.</li>
+    <li><strong>Uninitialized or Incomplete State</strong>: The lambda inside the <code>f_build</code> variable refers to an incomplete or invalid function, which results in a "bad call" when the lambda tries to invoke itself.</li>
+    <li><strong>Reference to <code>f_build</code></strong>: Capturing <code>f_build</code> by reference (<code>[&amp;f_build]</code>) ensures that the lambda uses the actual <code>f_build</code> variable, which will eventually hold the fully initialized lambda function.</li>
+    <li><strong>Correct Recursive Call</strong>: By capturing by reference, the recursive call inside the lambda correctly invokes the complete and fully initialized lambda function, allowing recursion to work as intended.</li>
+</ul>
