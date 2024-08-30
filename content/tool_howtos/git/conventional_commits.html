@@ -1,0 +1,20 @@
+<p>
+    When working conventional commits v1.0.0, there are a few situations that might need thinking about.
+</p>
+
+<h2>multiple scopes</h2>
+<p>
+    As required by the standard, there is only one scope, but sometimes this doesn't make sense. To see why suppose we're working on a game engine, and we want to add in a gui element showing how much ping we have, we start working on the feature, but it sspans into the networking code and also the gui code, in our codebase we currently have the scopes networking and gui defined, and so when completing this feature we see that it involves two scopes.
+</p>
+<p>
+Potentially in the future there will be a way to specify this with (networking, gui), but since this is not supported by the v1.0.0 conventional commits standard, then what we can do instead is make a new scope which is networking-gui in such a case, the only difference here is just a change from ", " to "-", and that the ordering matters.
+</p>
+
+<h2>submodules</h2>
+<p>
+    Some people use submodules just to include dependencies that they don't work on, and simply update the version, in such a case using <code>chore</code> as the type can make sense, unless these changes actually have a substantial effect on your codebase and in that case you either commit how the change effect the entire codebase, for example suppose a submodule had a performance upgrade, then perhaps this change improves UI speed by 25% percent on your computer, then in that case you could commit with that info in your repository such as <code>perf(ui): ...</code>, this can make sense because in a way by using someone ele's code as a submodule in your code, it really is a piece of your code, which was just updated by someone that was not you, and so it's not just a chore.
+</p>
+
+<p>
+    If you simply use submodules as organization tools for your own code which you can <a href="/tool_howtos/git/submodules.html">read about here</a>, then follow that page as a guide, and simply use conventional commits applied to the method of committing there.
+</p>

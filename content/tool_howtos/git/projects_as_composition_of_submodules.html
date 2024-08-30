@@ -1,0 +1,65 @@
+<h1>motivation</h1>
+
+<p>Using a codebase structured with reusable pieces of logic stored in submodules offers several benefits, particularly when managing complex or large-scale projects. Here’s the reasoning behind this approach:</p>
+
+<h2>Modularity and Reusability</h2>
+<p><strong>Reasoning:</strong> By breaking down the codebase into submodules, you can encapsulate distinct pieces of functionality or logic into separate, reusable components. This modular approach allows you to develop, test, and maintain each submodule independently.</p>
+<p><strong>Benefit:</strong> You avoid code duplication and make it easier to reuse common logic across different parts of your project or even in different projects. For instance, a logging utility or a data processing algorithm can be developed once and used wherever needed.</p>
+
+<h2>Isolation of Changes</h2>
+<p><strong>Reasoning:</strong> When changes are needed, isolating those changes to specific submodules helps manage their scope and impact. Each submodule can be updated independently based on its functionality.</p>
+<p><strong>Benefit:</strong> This reduces the risk of unintended side effects in unrelated parts of the codebase. For example, if you need to update a data processing algorithm, you can do so in its submodule without affecting other components like the UI framework or logging utilities.</p>
+
+<h2>Clearer Commit History</h2>
+<p><strong>Reasoning:</strong> Committing changes within the context of a submodule, with specific messages, allows you to maintain a detailed and organized commit history.</p>
+<p><strong>Benefit:</strong> It becomes easier to track and understand what changes were made to each submodule and why. This improves transparency and helps in debugging issues or understanding the evolution of the codebase over time.</p>
+
+<h2>Simplified Integration</h2>
+<p><strong>Reasoning:</strong> When updates are made to submodules, updating the main repository to reflect these changes ensures that the overall system is in sync with the latest versions of its components.</p>
+<p><strong>Benefit:</strong> This keeps the main repository up-to-date with the latest improvements and fixes from its submodules, ensuring that all pieces of the codebase work together harmoniously.</p>
+
+<h2>Effective Impact Analysis</h2>
+<p><strong>Reasoning:</strong> Describing the net effect of changes in the main repository helps stakeholders understand how modifications in individual submodules contribute to the overall functionality and quality of the application.</p>
+<p><strong>Benefit:</strong> It provides a high-level view of how changes across different submodules impact the entire codebase, facilitating better communication and coordination among team members.</p>
+
+<h2>Enhanced Version Control</h2>
+<p><strong>Reasoning:</strong> Each submodule has its own version history and can be versioned independently. This approach allows for precise tracking of changes and easier rollbacks if necessary.</p>
+<p><strong>Benefit:</strong> You can manage versioning and releases more effectively, ensuring that specific versions of submodules are used consistently across different environments or projects.</p>
+
+<span class="warning">Consider this approach only if you are certain that you will be reusing pieces of code in a specific domain. It is most beneficial when you are committing to use a particular language or technology stack, and the effort to manage and maintain submodules is justified by the need for modularity and reuse. Otherwise, the overhead of maintaining multiple submodules can become a significant timesink, leading to increased complexity without proportional benefits. Carefully evaluate whether the benefits of modularization outweigh the maintenance costs in your specific context.</span>
+
+<h1>operation</h1>
+
+<h2>Making Changes</h2>
+<p>Suppose you have a goal in the entire project Make the necessary changes in each relevant submodule. This could involve bug fixes, new features, or updates to align with new requirements.</p>
+
+<h2>Committing Changes</h2>
+<p>For each submodule, commit the changes with a clear and specific message that details what was changed and why. The commit message should focus on the individual submodule’s changes.</p>
+<ul>
+    <li>Example commit message for Submodule A: <code>Fixed bug in logging utility affecting asynchronous operations</code></li>
+    <li>Example commit message for Submodule B: <code>Updated data processing algorithm to improve performance</code></li>
+</ul>
+
+<h2>Updating the Main Repository</h2>
+<p>After committing changes to the submodules, update the main repository to reflect these changes. This involves:</p>
+<ul>
+    <li>Updating the submodule references in the main repository to point to the new commits.</li>
+    <li>Committing these updates to the main repository with a message that explains the net effect of the changes.</li>
+    <li>Example commit message for the main repository: <code>Updated submodules to include fixes and improvements: logging utility, data processing algorithm, and UI framework</code></li>
+</ul>
+
+<h2>Describing the Net Effect</h2>
+<p>In the main repository’s commit message or associated documentation, provide a summary of how the changes in each submodule contribute to the overall codebase. This helps stakeholders understand the impact of the updates.</p>
+<ul>
+    <li>Example net effect description: <code>The updates include a bug fix in the logging utility, performance improvements in the data processing algorithm, and enhancements to the UI framework. These changes collectively improve application stability, performance, and user experience.</code></li>
+</ul>
+
+<h2>Example Directory Layout</h2>
+<pre>
+/main-repo
+/submodule-A (logging utilities)
+/submodule-B (data processing algorithms)
+/submodule-C (UI framework)
+/docs (documentation about overall changes and net effects)
+/scripts (automation scripts for building and testing)
+</pre>
