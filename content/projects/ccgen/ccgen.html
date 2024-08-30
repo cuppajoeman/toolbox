@@ -1,3 +1,112 @@
-<p>
-    Have you been writing commits for a while now? It's time to automate the boring parts, so that we can focus on writing descriptive messages, and be able to have our commits machine readable, to do this we will follow the conventionalcommits standard, but let's make a command line program to make the generation of these commits simple.
-</p>
+<h1>conventional commits generator (ccgen)</h1>
+
+<p><strong>ccgen</strong> is a command-line tool that helps you create commit messages that adhere to the Conventional Commits specification. The tool allows you to interactively build commit messages, ensuring consistency and clarity in your version control history.</p>
+
+<h2>features</h2>
+<ul>
+    <li>Supports the mandatory commit types: <code>feat</code> and <code>fix</code>.</li>
+    <li>Allows you to define custom commit types and scopes through a configuration file (<code>ccgen.ini</code>).</li>
+    <li>Interactive prompts to guide you through creating a commit message.</li>
+    <li>Ability to generate a default configuration file with common commit types.</li>
+</ul>
+
+<h2>installation</h2>
+<p>To use the Conventional Commits Generator, simply download the <code>ccgen.py</code> script and place it in your project directory.</p>
+
+<h2>configuration</h2>
+<p>The tool uses a configuration file <code>ccgen.ini</code> to define custom commit types and scopes. You can generate a default configuration file by running the following command:</p>
+
+<pre>
+    <code>python ccgen.py generate-config</code>
+</pre>
+
+<p>This will create a <code>ccgen.ini</code> file with the following default commit types:</p>
+<pre>
+<code>
+[types]
+docs = Documentation only changes
+style = Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc.)
+refactor = A code change that neither fixes a bug nor adds a feature
+perf = A code change that improves performance
+test = Adding missing tests or correcting existing tests
+build = Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+ci = Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+chore = Other changes that don’t modify src or test files
+revert = Reverts a previous commit
+
+[scopes]
+ui = Changes to the user interface
+backend = Changes to backend logic
+api = Changes to the API
+cli = Changes to the CLI
+docs = Changes to documentation
+</code>
+</pre>
+
+<div class="note">
+    <strong>Note:</strong> The commit types <code>feat</code> and <code>fix</code> are always available by default and do not need to be included in the configuration file.
+</div>
+
+<h2>usage</h2>
+<p>To generate a commit message interactively, use the following command:</p>
+
+<div class="code-block">
+    <code>python ccgen.py commit</code>
+</div>
+
+<p>This command will prompt you to enter the following information:</p>
+<ul>
+    <li><strong>Commit Type:</strong> The type of change (e.g., <code>feat</code>, <code>fix</code>, or a custom type from the configuration file).</li>
+    <li><strong>Scope:</strong> (Optional) The scope of the change (e.g., <code>ui</code>, <code>backend</code>).</li>
+    <li><strong>Description:</strong> A short description of the change.</li>
+    <li><strong>Detailed Message:</strong> (Optional) A longer description of the change.</li>
+    <li><strong>Breaking Change:</strong> (Optional) Indicate if this commit introduces breaking changes.</li>
+    <li><strong>Issue Reference:</strong> (Optional) Reference any issues this commit closes.</li>
+</ul>
+
+<h3>example</h3>
+<p>Here's an example of how the tool might be used:</p>
+
+<div class="code-block">
+    <pre>
+python ccgen.py commit
+
+# Prompts and Responses:
+Select the type of change you are committing (type 'help' for more info): feat
+Enter the scope of the change (optional, leave empty to skip): ui
+Enter a short description of the change: Add new color theme to the UI
+Enter a longer description of the change (optional, leave empty to skip): 
+Does this commit introduce breaking changes? (y/n): n
+Reference any issues this commit closes (optional, leave empty to skip): #42
+
+# Generated Commit Message:
+feat(ui): Add new color theme to the UI
+Closes: #42
+    </pre>
+</div>
+
+<h2>command-line options</h2>
+<p>The script supports the following commands:</p>
+<ul>
+    <li><code>generate-config</code>: Generates a default <code>ccgen.ini</code> configuration file.</li>
+    <li><code>commit</code>: Starts the interactive commit message generation process.</li>
+</ul>
+
+<h2>configuration file format</h2>
+<p>The configuration file (<code>ccgen.ini</code>) is divided into sections:</p>
+<ul>
+    <li><strong>[types]</strong>: Defines custom commit types. Each type is associated with a description.</li>
+    <li><strong>[scopes]</strong>: Defines scopes that can be associated with commits. Each scope is associated with a description.</li>
+</ul>
+
+<p>Example:</p>
+<pre>
+<code>[types]
+docs = Documentation only changes
+style = Changes that do not affect the meaning of the code
+
+[scopes]
+backend = Changes to backend logic
+api = Changes to the API
+</code>
+</pre>
