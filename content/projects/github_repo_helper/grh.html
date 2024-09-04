@@ -1,0 +1,57 @@
+<p><strong>grh</strong> (GitHub Repo Helper) is a command-line tool designed to help you manage GitHub repositories. It allows you to fetch, list, add, and clone repositories from a specified GitHub organization or user.</p>
+
+<h2>Features</h2>
+<ul>
+    <li>Fetch and list public repositories from a specified GitHub organization or user.</li>
+    <li>Add selected repositories as submodules to a specified directory.</li>
+    <li>Clone selected repositories into a specified directory.</li>
+</ul>
+
+<h2>Installation</h2>
+<p>Ensure you have Python and the required libraries installed. You can install the necessary libraries using pip:</p>
+<pre><code>pip install requests</code></pre>
+
+<h2>Usage</h2>
+<p>To use <strong>grh</strong>, run the following command:</p>
+<pre><code>python grh.py &lt;src_directory&gt; [--config &lt;config_file&gt;] [--org &lt;organization&gt;] [--user &lt;username&gt;]</code></pre>
+
+<h3>Options</h3>
+<ul>
+    <li><code>&lt;src_directory&gt;</code>: The directory where repositories will be added or cloned.</li>
+    <li><code>--config &lt;config_file&gt;</code>: Path to the configuration file. Default is <code>config.ini</code>.</li>
+    <li><code>--org &lt;organization&gt;</code>: GitHub organization name to fetch repositories from.</li>
+    <li><code>--user &lt;username&gt;</code>: GitHub username to fetch repositories from.</li>
+</ul>
+
+<h3>Commands</h3>
+<ul>
+    <li><strong>list</strong>: List all repositories from the specified GitHub organization or user.</li>
+    <li><strong>add</strong>: Search for a repository and add it as a submodule to the specified directory.</li>
+    <li><strong>clone</strong>: Search for a repository and clone it into the specified directory.</li>
+    <li><strong>exit</strong>: Exit the tool.</li>
+</ul>
+
+<h2>Configuration File</h2>
+<p>The configuration file (e.g., <code>config.ini</code>) should have the following format:</p>
+<pre><code>[Settings]
+github_org = your_organization
+github_user = your_username
+</code></pre>
+
+<h2>Examples</h2>
+<h3>List Repositories from an Organization</h3>
+<pre><code>python grh.py src_directory --org cpp-toolbox</code></pre>
+
+<h3>List Repositories from a User</h3>
+<pre><code>python grh.py src_directory --user cuppajoeman</code></pre>
+
+<h3>List Repositories Using a Configuration File</h3>
+<pre><code>python grh.py src_directory --config config.ini</code></pre>
+
+<h3>Add a Repository as a Submodule</h3>
+<pre><code>python grh.py src_directory --org cpp-toolbox
+# Enter 'add' to search and add a repository as a submodule.</code></pre>
+
+<h3>Clone a Repository</h3>
+<pre><code>python grh.py src_directory --user cuppajoeman
+# Enter 'clone' to search and clone a repository.</code></pre>
