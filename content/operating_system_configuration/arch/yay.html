@@ -1,0 +1,33 @@
+<p>
+  Installing packages manually is what is recommended by the arch wiki, but eventually that gets tiresome so I installed yay which automates parts of building aur packages.
+</p>
+
+<h1>how to get it</h1>
+<p>
+  First and foremost follow the <a href="https://wiki.archlinux.org/title/Arch_User_Repository#Installing_and_upgrading_packages">wiki guide on getting aur packages</a>, but I will maintain a quick version here for myself:
+</p>
+<pre>
+  <code>
+# Install Git
+sudo pacman -S git
+
+# Clone the Yay repository into /opt directory
+# /opt is used to store optional or third-party software
+# that is not managed by the default package manager.
+cd /opt
+sudo git clone https://aur.archlinux.org/yay-git.git
+
+# Change the ownership of the Yay directory to the current user
+# This is necessary because the repository was cloned as root, 
+# so the user must take ownership to build and manage the package 
+# without requiring root privileges.
+sudo chown -R $(whoami):$(whoami) ./yay-git
+
+# Navigate to the cloned directory
+cd yay-git
+
+# Install the required development tools and build the Yay package
+sudo pacman -S --needed base-devel
+makepkg -si
+    </code>
+</pre>
