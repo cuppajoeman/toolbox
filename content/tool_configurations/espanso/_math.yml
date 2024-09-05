@@ -1,0 +1,331 @@
+matches:
+
+  - trigger: ":mm"
+    replace: "\\( $|$ \\) "
+
+  - trigger: ":dm"
+    replace: "\\[\n $|$ \n\\] "
+
+  - trigger: ":jj"
+    replace: "\\left( $|$ \\right) "
+
+  - trigger: ":pp"
+    replace: "+ "
+
+  - trigger: ":ee"
+    replace: "= "
+
+  - trigger: ":dd"
+    replace: "\\cdot "
+
+  - trigger: ":xx"
+    replace: "\\times "
+
+  - trigger: ":ss"
+    replace: "- "
+
+  - trigger: ":sum"
+    replace: "\\sum "
+
+  - trigger: ":prod"
+    replace: "\\prod "
+
+  - trigger: ":^^"
+    replace: "\\land "
+
+  - trigger: ":vv"
+    replace: "\\lor "
+
+  - trigger: ":nn"
+    replace: "\\cap "
+
+  - trigger: ":Bn"
+    replace: "\\bigcap "
+
+  - trigger: ":uu"
+    replace: "\\cup "
+
+  - trigger: ":Bu"
+    replace: "\\bigcup "
+
+  - trigger: ":fr"
+    replace: "\\frac{ $|$ }{  } "
+
+  - trigger: ":..."
+    replace: "\\ldots "
+
+  - trigger: ":ne"
+    replace: "\\neq "
+
+  - trigger: ":lt"
+    replace: "\\lt "
+
+  - trigger: ":le"
+    replace: "\\le "
+
+  - trigger: ":gt"
+    replace: "\\gt "
+
+  - trigger: ":ge"
+    replace: "\\ge "
+
+  - trigger: ":in"
+    replace: "\\in "
+
+  - trigger: ":notin"
+    replace: "\\notin "
+
+  - trigger: ":sube"
+    replace: "\\subseteq "
+
+  - trigger: ":supe"
+    replace: "\\supseteq "
+
+  - trigger: ":eq"
+    replace: "\\equiv "
+
+  - trigger: ":EE"
+    replace: "\\exists "
+
+  - trigger: ":AA"
+    replace: "\\forall "
+
+  - trigger: ":bar"
+    replace: "\\bar "
+
+  - trigger: ":cal"
+    replace: "\\mathcal{ $|$ } "
+
+  - trigger: ":bb"
+    replace: "\\mathbb{ $|$ } "
+
+  - trigger: ":set"
+    replace: "\\left\\{ $|$ \\right\\} "
+
+  - trigger: ":oline"
+    replace: "\\overline{ $|$ } "
+
+  - trigger: ":ona"
+    replace: "\\operatorname{ $|$ } "
+
+  - trigger: ":'"
+    replace: "\\prime "
+
+  - trigger: ":to"
+    replace: "\\to "
+
+  - trigger: ":and"
+    replace: "\\land "
+
+  - trigger: ":or"
+    replace: "\\lor "
+
+  - trigger: ":dm"
+    replace: "\\[&#10;    $|$&#10;\\] "
+
+  - trigger: ":imp"
+    replace: "\\implies "
+
+  - trigger: ":limp"
+    replace: "\\impliedby "
+
+  - trigger: ":rm"
+    replace: "\\mathrm{ $|$ } $out$ "
+
+  - trigger: ":phi"
+    replace: "\\phi "
+
+  - trigger: ":eps"
+    replace: "\\epsilon "
+
+  - trigger: ":del"
+    replace: "\\delta "
+
+  - trigger: ":abs"
+    replace: "\\left\\lvert $|$ \\right\\rvert "
+
+  - trigger: ":gath"
+    replace: "\\begin{gather}&#10;    $|$&#10;\\end{gather} "
+
+  - trigger: ":alig"
+    replace: "\\begin{align}&#10;    $|$&#10;\\end{align} "
+
+  - trigger: ":vimp"
+    replace: "\\Updownarrow "
+
+  - trigger: ":Ome"
+    replace: "\\Omega "
+
+  - trigger: ":oo"
+    replace: "\\infty "
+
+  - trigger: ":typ"
+    replace: "\\texttt{$|$} "
+
+  - trigger: ":flr"
+    replace: "\\left\\lfloor $|$ \\right\\rfloor "
+
+  - trigger: ":ceil"
+    replace: "\\left\\lceil $|$ \\right\\rceil "
+
+  - trigger: ":dmd"
+    replace: "\\diamond "
+
+  - trigger: ":pmat"
+    replace: "\\begin{pmatrix} $|$ \\end{pmatrix} "
+
+  - trigger: ":deq"
+    replace: "\\circeq "
+
+  - trigger: ":bf"
+    replace: "\\mathbf{ $|$ } "
+
+  - trigger: ":mod"
+    replace: "~\\%~ "
+
+  - trigger: ":srel"
+    replace: "\\stackrel{$first$}{$second$} "
+
+  - trigger: ":psi"
+    replace: "\\psi "
+
+  - trigger: ":div"
+    replace: "\\mid "
+
+  - trigger: ":the"
+    replace: "\\theta "
+
+  - trigger: ":binom"
+    replace: "\\binom{$first$}{$second$} "
+
+  - trigger: ":op"
+    replace: "1 "
+
+  - trigger: ":tp"
+    replace: "2 "
+
+  - trigger: ":hp"
+    replace: "3 "
+
+  - trigger: ":rp"
+    replace: "4 "
+
+  - trigger: ":ip"
+    replace: "5 "
+
+  - trigger: ":sp"
+    replace: "6 "
+
+  - trigger: ":vp"
+    replace: "7 "
+
+  - trigger: ":fp"
+    replace: "4 "
+
+  - trigger: ":ep"
+    replace: "8 "
+
+  - trigger: ":np"
+    replace: "9 "
+
+  - trigger: ":zp"
+    replace: "0 "
+
+  - trigger: ":flrdiv"
+    replace: "~//~ "
+
+  - trigger: ":bs"
+    replace: "\\boldsymbol{$|$} "
+
+  - trigger: ":mbf"
+    replace: "\\mathbf{$|$} "
+
+  - trigger: ":part"
+    replace: "\\partial "
+
+  - trigger: ":repop0"
+    replace: "$var$_0 $op$ $var$_1 $op$ \\ldots $op$ $var$_$end$ "
+
+  - trigger: ":poly"
+    replace: "a_0 + a_1 x^1 + \\cdots a_n x^n "
+
+  - trigger: ":cases"
+    replace: "\\begin{cases}&#10;$0$&#10;\\end{cases} "
+
+  - trigger: ":sq"
+    replace: "\\sqrt{ $|$ } "
+
+  - trigger: ":ome"
+    replace: "\\omega "
+
+  - trigger: ":sig"
+    replace: "\\sigma "
+
+  - trigger: ":alp"
+    replace: "\\alpha "
+
+  - trigger: ":pm"
+    replace: "\\pm "
+
+  - trigger: ":sqn"
+    replace: "\\sqrt[$|$]{ $in2$ } "
+
+  - trigger: ":tau"
+    replace: "\\tau "
+
+  - trigger: ":cos"
+    replace: "\\cos "
+
+  - trigger: ":sin"
+    replace: "\\sin "
+
+  - trigger: ":iff"
+    replace: "\\iff "
+
+  - trigger: ":lam"
+    replace: "\\lambda "
+
+  - trigger: ":sim"
+    replace: "\\sim "
+
+  - trigger: ":lim"
+    replace: "\\lim "
+
+  - trigger: ":c.."
+    replace: "\\cdots "
+
+  - trigger: ":repop1"
+    replace: "$var$_1 $op$ $var$_2 $op$ \\ldots $op$ $var$_$end$ "
+
+  - trigger: ":ang"
+    replace: "\\left\\langle $|$ \\right\\rangle "
+
+  - trigger: ":hgk"
+    replace: "_ { $|$ } ^ { $out$ } "
+
+  - trigger: ":hk"
+    replace: "_ { $|$ } "
+
+  - trigger: ":gg"
+    replace: "^ "
+
+  - trigger: ":gk"
+    replace: "^ { $|$ } "
+
+  - trigger: ":;;"
+    replace: "\\left\\langle $|$ \\right\\rangle "
+
+  - trigger: ":nor"
+    replace: "\\lVert $|$ \\rVert "
+
+  - trigger: ":dsnor"
+    replace: "\\left\\lVert $|$ \\right\\rVert "
+
+  - trigger: ":pmod"
+    replace: "\\pmod{ $|$ } "
+
+  - trigger: ":frflr"
+    replace: "\\left\\rfloor $1$ \\right\\lfloor "
+
+  - trigger: ":int"
+    replace: "\\int "
