@@ -1,0 +1,20 @@
+matches:
+    
+  # enable math mode
+  - trigger: ":em"
+    replace: "{{output}}" 
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "notify-send $(~/projects/toolbox/content/tool_configurations/espanso/espanso_match_file_manager.py enable math)"
+
+  # disable math mode
+  - trigger: ":qm"
+    replace: "{{output}}" 
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "~/projects/toolbox/content/tool_configurations/espanso/espanso_match_file_manager.py disable math"
+          cmd: "notify-send $(~/projects/toolbox/content/tool_configurations/espanso/espanso_match_file_manager.py disable math)"
