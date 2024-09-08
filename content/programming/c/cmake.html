@@ -13,6 +13,8 @@
     </ul>
 </ul>
 
+
+
 <h2>compiling a program</h2>
 
 <p>
@@ -31,3 +33,67 @@
     For further useful scripts with cmake check my page on <a href="cmake_building_scripts.html">them</a>, if you want to learn how to integrate external libraries with cmake check my page on that
     <a href="external_libraries_with_cmake.html">here</a>
 </p>
+
+<hr>
+
+<h1>informal rundown</h1>
+
+<p>cmake is a tool that helps you build your code. think of it like a project manager for your code—it doesn’t do the actual compiling, but it sets everything up so your compiler can do its thing. and the best part? it works across different platforms like windows, linux, and macos.</p>
+
+<p>cmake isn’t a compiler by itself. it’s more like a translator between your project’s setup and whatever compiler you’re using (like gcc, clang, or visual studio). so instead of writing custom build files for each platform (ugh, painful), you use cmake to create them for you automatically. neat, right?</p>
+
+<h2>why should you bother with cmake?</h2>
+
+<p>because setting up a project manually for each operating system induces a ton of overhead. with cmake, you write one set of instructions, and it figures out the rest. no more messing with different file formats for windows vs linux vs mac.</p>
+
+<p>for example, on linux, cmake can create makefiles (which you run with the <code>make</code> command). on windows, it can generate visual studio solutions. you don’t have to worry about the details—cmake handles it.</p>
+
+<h2>ok, how does it work?</h2>
+<p>cmake uses a file called <code>CMakeLists.txt</code>. this file tells cmake how to build your project. here’s a super simple example:</p>
+
+<pre><code>cmake_minimum_required(VERSION 3.10)
+project(my_project)
+
+# use c++17
+set(CMAKE_CXX_STANDARD 17)
+
+# define the executable
+add_executable(my_app main.cpp)</code></pre>
+
+<p>here’s the rundown:</p>
+<ul>
+    <li><code>cmake_minimum_required</code>: this tells cmake the minimum version it needs to run.</li>
+    <li><code>project</code>: this names your project (in this case, "my_project").</li>
+    <li><code>set(CMAKE_CXX_STANDARD 17)</code>: you're telling cmake to use c++17.</li>
+    <li><code>add_executable</code>: this says “hey, turn <code>main.cpp</code> into an executable file called <code>my_app</code>.”</li>
+</ul>
+
+<h2>now what?</h2>
+<p>after you’ve written your <code>CMakeLists.txt</code>, you tell cmake to generate the necessary build files. on linux, you’d do something like this:</p>
+
+<pre><code>mkdir build
+cd build
+cmake ..
+make</code></pre>
+
+<p>here’s what’s happening:</p>
+<ol>
+    <li><strong>mkdir build</strong>: this creates a directory called “build” where cmake will put all the generated files.</li>
+    <li><strong>cd build</strong>: go into the build directory.</li>
+    <li><strong>cmake ..</strong>: run cmake, telling it to look in the parent directory (that’s where your <code>CMakeLists.txt</code> file is).</li>
+    <li><strong>make</strong>: now you can run <code>make</code> to actually compile your code.</li>
+</ol>
+
+<p>boom! your project is built.</p>
+
+<h2>what if my project is more complicated?</h2>
+<p>cmake can handle that too. if you’ve got a bigger project with dependencies (like using libraries for graphics or networking), cmake can find and include those libraries for you. for example, let’s say you want to use <code>OpenGL</code> and <code>Boost</code>:</p>
+
+<pre><code>find_package(OpenGL REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system filesystem)</code></pre>
+
+<p>this tells cmake to look for opengl and boost on your system and link them to your project automatically.</p>
+
+<h2>wrapping up</h2>
+<p>cmake is one of those tools that saves you tons of time, especially if you're dealing with different platforms. it simplifies the whole process of compiling and linking your code, so you can focus on coding rather than figuring out how to set up your project for windows, linux, or mac.</p>
+

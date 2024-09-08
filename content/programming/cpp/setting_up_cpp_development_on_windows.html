@@ -1,0 +1,59 @@
+<p>
+    Here's how I setup cpp for development on windows
+</p>
+
+<ul>
+    <li>
+        download <a href="https://www.msys2.org/">msys2</a>
+    </li>
+    <li>
+        use the URCT terminal profile, note that when you launch the terminal you will not be in the root of your base computers filesystem, instead you have to do <code>cd /c/Users/username</code> to get there
+    </li>
+    <li>
+        download <a href="https://packages.msys2.org/base/git">git</a> (note that you might already have git installed such as git bash on your computer, this is ok, this version won't conflict and is contained within the scope of your msys2 setup)
+    </li>
+    <pre>
+        <code>
+            pacman -S git
+        </code>
+    </pre>
+    <li>
+        download the <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-python-conan?repo=ucrt64">conan package manager</a> for cpp packages
+    </li>
+    <pre>
+        <code>
+            pacman -S mingw-w64-ucrt-x86_64-python-conan
+        </code>
+    </pre>
+    <p>
+        After downloading the above be sure to generate a conan profile with <code>conan profile detect</code>
+    </p>
+    <li>
+        download cmake <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-cmake">cmake</a> which is a build configuration generator, this allows you to setup a project to be built with specific settings while not having to have those settings stored in an operating system specific fasion, for example you can force your project to use c++23 without no matter what compiler you're using (apple-clang, mingw-gcc, gcc).
+    </li>
+    <pre>
+        <code>
+            pacman -S mingw-w64-ucrt-x86_64-cmake
+        </code>
+    </pre>
+    <li>
+        download a compiler, I usually get <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-gcc?repo=ucrt64">gcc</a>
+    </li>
+    <pre>
+        <code>
+            pacman -S mingw-w64-ucrt-x86_64-gcc
+        </code>
+    </pre>
+    <p>
+        Also if cmake wants to use Mingw Makefiles then make sure you have <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-make">make</a>
+    </p>
+    <pre>
+        <code>
+            pacman -S mingw-w64-ucrt-x86_64-make
+        </code>
+    </pre>
+    <p>
+        You should now be setup to start compiling, if you want an editor you can grab neovim
+    </p>
+</ul>
+
