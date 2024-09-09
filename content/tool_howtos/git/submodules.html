@@ -22,3 +22,19 @@
     </pre>
 
 </ul>
+
+<h1>mistakes</h1>
+
+<h2>HEAD detached from 54b9bf8</h2>
+
+<p>
+    If you see that you are on a detached head, this means that you cannot commit any changes here, if you have uncommitted changes you can switch to main with <code>git checkout main</code>, if you do have committed changes then you have to do this:
+</p>
+<pre>
+    <code>
+git switch -c temp-work
+git switch main
+git merge temp-work
+git branch -d temp-work
+    </code>
+</pre>
