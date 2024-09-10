@@ -1,0 +1,89 @@
+<p>Below, you'll find code snippets that outline a basic approach to dynamic light management. These examples are intended to inspire and guide you as you implement your own solutions.</p>
+
+<p>before you get started read this article: https://learnopengl.com/Lighting/Multiple-lights</p>
+
+<h3>1. Maximum Number of Lights</h3>
+<p>Start by defining the maximum number of point lights your system will support:</p>
+<pre><code>#define MAX_POINT_LIGHTS 4</code></pre>
+
+<h3>2. Light Structure</h3>
+<p>Here’s a structure to define light properties:</p>
+<pre><code>
+struct Light {
+    vec3 position;   // Light position
+    vec3 ambient;    // Ambient color component
+    vec3 diffuse;    // Diffuse color component
+    vec3 specular;   // Specular color component
+    float constant;  // Attenuation constant
+    float linear;    // Attenuation linear coefficient
+    float quadratic; // Attenuation quadratic coefficient
+};
+            </code></pre>
+
+            <h3>3. Updating Light Information</h3>
+            <p>Use this function to update light properties based on their distance from the camera:</p>
+            <pre><code>
+void UpdateLights(float maxLightDistance) {
+    for (int i = 0; i &lt; numLights; i++) {
+        Light light = lights[i];
+        
+        // Calculate distance from the camera
+        float distance = length(cameraPosition - light.position);
+        
+        if (distance &gt; maxLightDistance) {
+            // Light is too far; ignore it
+            lightIntensity[i] = 0.0;
+        } else {
+            // Calculate attenuation factor
+            float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
+            lightIntensity[i] = attenuation;
+        }
+        
+        // Update shader with light data
+        UpdateShaderLightData(i, light);
+    }
+}
+            </code></pre>
+
+            <h3>4. Updating Shader Light Data</h3>
+            <p>This function sends updated light data to the shader:</p>
+            <pre><code>
+void UpdateShaderLightData(int index, Light light) {
+    glUseProgram(shaderProgram);
+    
+    // Update light properties in the shader
+    std::string uniformName = "pointLights[" + std::to_string(index) + "].position";
+    glUniform3fv(glGetUniformLocation(shaderProgram, uniformName.c_str()), 1, &light.position[0]);
+    
+    uniformName = "pointLights[" + std::to_string(index) + "].ambient";
+    glUniform3fv(glGetUniformLocation(shaderProgram, uniformName.c_str()), 1, &light.ambient[0]);
+    
+    uniformName = "pointLights[" + std::to_string(index) + "].diffuse";
+    glUniform3fv(glGetUniformLocation(shaderProgram, uniformName.c_str()), 1, &light.diffuse[0]);
+    
+    uniformName = "pointLights[" + std::to_string(index) + "].specular";
+    glUniform3fv(glGetUniformLocation(shaderProgram, uniformName.c_str()), 1, &light.specular[0]);
+    
+    uniformName = "pointLights[" + std::to_string(index) + "].constant";
+    glUniform1f(glGetUniformLocation(shaderProgram, uniformName.c_str()), light.constant);
+    
+    uniformName = "pointLights[" + std::to_string(index) + "].linear";
+    glUniform1f(glGetUniformLocation(shaderProgram, uniformName.c_str()), light.linear);
+    
+    uniformName = "pointLights[" + std::to_string(index) + "].quadratic";
+    glUniform1f(glGetUniformLocation(shaderProgram, uniformName.c_str()), light.quadratic);
+    
+    uniformName = "pointLights[" + std::to_string(index) + "].intensity";
+    glUniform1f(glGetUniformLocation(shaderProgram, uniformName.c_str()), lightIntensity[index]);
+}
+            </code></pre>
+
+            <h3>5. Main Rendering Loop</h3>
+            <p>Incorporate light updates into your main rendering loop:</p>
+            <pre><code>
+void RenderScene() {
+    UpdateLights(maxLightDistance);
+    
+    // Proceed with rendering the scene
+}
+            </code></pre>

@@ -22,3 +22,29 @@
     </pre>
 
 </ul>
+
+<h1>mistakes</h1>
+
+<h2>HEAD detached from 54b9bf8</h2>
+
+<p>
+    If you see that you are on a detached head, this means that you cannot commit any changes here, if you have uncommitted changes you can switch to main with <code>git checkout main</code>, if you do have committed changes then you have to do this:
+</p>
+<pre>
+    <code>
+git switch -c temp-work
+git switch main
+git merge temp-work
+git branch -d temp-work
+    </code>
+</pre>
+
+<p>
+    To avoid this problem in the future, we have to realize why this usually occurs, it happens when you clone a repository and initialize its submodules such as by doing <code>git clone --recursive URL</code>, it makes sense that git puts every submodule at its respective commit, this is so that you can have reproducible behavior when you clone in submodules, but sometimes you know what you want the most up-to-date version of a submodule, in that case run this after the fact:
+</p>
+
+<pre>
+    <code>
+        git submodule foreach --recursive git checkout main
+    </code>
+</pre>
