@@ -8,24 +8,92 @@
     When creating maps with blender, this is mainly referred to as modelling so start with that <a href="https://docs.blender.org/manual/en/latest/modeling/index.html">section</a> first at least understand object and edit mode. Next read through the mesh section and tool section. At this point you should have the bare minimum to get started
 </p>
 
-<h1>learn your tools</h1>
+<h1>key features</h1>
 
 <ul>
-    <li>extrude: pull the side of a 3d shape out while creating a new shape at the same time</li>
-    <li>3d cursor: a point in space which is denoted by the white and red dashed circle, it is used as a reference point when you use various tools, use ctrl+c to recenter it at the origin of the space</li>
-    <li>rip region: allows you to break geometry such as disconnecting edges</li>
-    <li>knife: allows you to cut into geometry</li>
-    <li>spin: rotate and duplicate an object in a circular pattern</li>
+    <li>blender is modal, when you are in a different mode, some features may not be avaiable, therefore make sure to know what mode you are in at any time</li>
 </ul>
 
-<h1>must know shortcuts</h1>
+<h1>terminology</h1>
+
+<ul>
+    <li><strong>Modeling Tools:</strong>
+        <ul>
+            <li>extrude: pull the side of a 3D shape out while creating a new shape at the same time</li>
+            <li>rip region: allows you to break geometry, such as disconnecting edges</li>
+            <li>knife: allows you to cut into geometry</li>
+            <li>bevel: making edges and corners smoother</li>
+            <li>spin: rotate and duplicate an object in a circular pattern</li>
+            <li>loop cut: adds a new edge loop around the geometry for more detailed modeling</li>
+            <li>inset: creates a new face inside the selected face by offsetting its edges</li>
+            <li>vertex: a point in 3D space where edges meet</li>
+            <li>edge: a line segment connecting two vertices</li>
+            <li>face: a flat surface enclosed by edges</li>
+            <li>mesh: a collection of vertices, edges, and faces that define the shape of a 3D object</li>
+            <li>selection tools: tools for selecting vertices, edges, or faces (e.g., box select, circle select)</li>
+            <li>proportional editing: allows for smooth, gradual transformations of geometry based on distance from the selected area</li>
+            <li>smooth: a tool for smoothing out the surface of a mesh to reduce sharp edges and improve appearance</li>
+            <li>edge slide: moves an edge along its adjacent edges while maintaining its connectivity</li>
+            <li>shrink/fatten: adjusts the thickness of selected geometry, allowing it to expand or contract</li>
+            <li>shear: changes the shape of the mesh by slanting it along a specified axis</li>
+            <li>poly build: allows for building geometry from scratch by adding and connecting new faces</li>
+        </ul>
+    </li>
+    <li><strong>Modifiers:</strong>
+        <ul>
+            <li>mirror: a modifier that mirrors the geometry across a specified axis</li>
+            <li>subdivision surface: a modifier that adds smoothness and detail to a mesh by subdividing its faces</li>
+            <li>boolean: a modifier that performs boolean operations (union, difference, intersection) between objects</li>
+            <li>array: a modifier that creates a duplicate of the object in a grid or line pattern</li>
+            <li>solidify: a modifier that adds thickness to a mesh, useful for creating solid objects from thin surfaces</li>
+            <li>displace: a modifier that displaces the geometry based on a texture or other input</li>
+            <li>decimate: a modifier that reduces the number of polygons in a mesh while retaining its shape</li>
+            <li>wave: a modifier that creates a waving effect on the geometry</li>
+            <li>lattice: a modifier that deforms the mesh based on a lattice structure</li>
+        </ul>
+    </li>
+    <li><strong>Animation and Rigging:</strong>
+        <ul>
+            <li>bone: something that allows animators to make meshes behave like humans</li>
+            <li>keyframe: a frame in an animation where specific values (e.g., position, rotation) are set to define the movement or transformation of objects</li>
+            <li>rig: a skeletal structure used to animate and control a 3D model</li>
+            <li>animation: the process of creating movement over time by changing the position, rotation, or other properties of objects</li>
+            <li>armature: a type of rigging system that uses a hierarchical bone structure to animate and control a character or object</li>
+        </ul>
+    </li>
+    <li><strong>Scene and Camera:</strong>
+        <ul>
+            <li>3D cursor: a point in space denoted by a white and red dashed circle. It serves as a reference point for various tools and transformations. You can move it to any location in the 3D viewport, and it will serve as the origin for actions like extrusion or transformations. Use Ctrl+C to recenter the 3D cursor to the origin (0,0,0) of the scene. You can also use the 3D cursor to place new objects or pivot transformations around it.</li>
+            <li>camera: the viewpoint through which the scene is rendered and displayed</li>
+            <li>scene: the entire collection of objects, lights, cameras, and other elements in a Blender project</li>
+        </ul>
+    </li>
+    <li><strong>Rendering and Compositing:</strong>
+        <ul>
+            <li>render: the process of generating a final image or animation from a 3D scene</li>
+            <li>node editor: a workspace for creating and managing material, shader, and compositing nodes</li>
+            <li>compositing: the process of combining multiple images or render passes to create the final output</li>
+        </ul>
+    </li>
+    <li><strong>Special Effects:</strong>
+        <ul>
+            <li>particle system: a simulation tool for creating effects like smoke, fire, and rain</li>
+        </ul>
+    </li>
+    <li><strong>Sculpting and Drawing:</strong>
+        <ul>
+            <li>sculpting: a method of modeling that allows for free-form manipulation of a mesh to create complex shapes</li>
+            <li>grease pencil: a tool for drawing directly in the 3D viewport, useful for annotations and 2D animation</li>
+        </ul>
+    </li>
+</ul>
+
+
+
+<h1>do this now</h1>
 
 <p>
-    Before you do anything else, go to preferences and then to keymap, search for "search menu" and create the binding <code>shift + space</code> that maps to it.
-</p>
-
-<p>
-    This will be the meta binding that allows you to figure out new things and do things quickly. Use shift + space to do whatever you want simply by searching for what you want to do.
+    Go to preferences and then to keymap, search for "search menu" and create the binding <code>shift + space</code> that maps to it. This will be the meta binding that allows you to figure out new things and do things quickly. Use shift + space to do whatever you want simply by searching for what you want to do, by knowing the terminology then you can almost do everything you want.
 </p>
 
 <ul>
