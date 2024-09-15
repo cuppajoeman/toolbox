@@ -14,224 +14,306 @@
     <li>blender is modal, when you are in a different mode, some features may not be avaiable, therefore make sure to know what mode you are in at any time</li>
 </ul>
 
-<h1>terminology</h1>
 <button onclick="toggleAll()">Toggle All Descriptions</button>
-<h1>Blender Tools and Modifiers</h1>
-<ul>
-    <li><strong>Modeling Tools:</strong>
-        <ul>
-            <li>
-                <details>
-                    <summary>extrude</summary>
-                    <div>
-                        <p><strong>Description:</strong> Pull the side of a 3D shape out while creating a new shape at the same time.</p>
-                        <p><strong>Example Usage:</strong> Use extrude to create the arms of a character by extending a base mesh outwards.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>loop cut</summary>
-                    <div>
-                        <p><strong>Description:</strong> Add additional edge loops to a mesh to increase its detail and control the shape.</p>
-                        <p><strong>Example Usage:</strong> Apply loop cuts to a cylinder to add more detail before refining the shape into a more complex model.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>knife</summary>
-                    <div>
-                        <p><strong>Description:</strong> Allows you to cut into geometry.</p>
-                        <p><strong>Example Usage:</strong> Use the knife tool to add new edges to a mesh by cutting across existing faces.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>bevel</summary>
-                    <div>
-                        <p><strong>Description:</strong> Making edges and corners smoother.</p>
-                        <p><strong>Example Usage:</strong> Apply bevel to the edges of a box to make the edges rounded and less harsh.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>inset</summary>
-                    <div>
-                        <p><strong>Description:</strong> Create a new face inside an existing face, useful for adding detail.</p>
-                        <p><strong>Example Usage:</strong> Use the inset tool to add detail to the surface of a building facade, such as window frames.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>poly build</summary>
-                    <div>
-                        <p><strong>Description:</strong> Allows for the creation of new polygons and vertices directly in the viewport.</p>
-                        <p><strong>Example Usage:</strong> Use poly build to manually construct complex meshes by adding and connecting vertices.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>smooth</summary>
-                    <div>
-                        <p><strong>Description:</strong> Smooths out the surface of a mesh.</p>
-                        <p><strong>Example Usage:</strong> Apply the smooth tool to a character’s body to eliminate harsh angles and create a more natural appearance.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>edge slide</summary>
-                    <div>
-                        <p><strong>Description:</strong> Move edges along their adjacent faces while keeping the mesh’s topology.</p>
-                        <p><strong>Example Usage:</strong> Use edge slide to adjust the placement of edge loops on a model to refine its shape.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>shrink/fatten</summary>
-                    <div>
-                        <p><strong>Description:</strong> Adjust the thickness of a mesh's faces.</p>
-                        <p><strong>Example Usage:</strong> Use shrink/fatten to adjust the thickness of a wall or the clothing on a character model.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>shear</summary>
-                    <div>
-                        <p><strong>Description:</strong> Distorts the shape of the mesh by shearing it along its axis.</p>
-                        <p><strong>Example Usage:</strong> Apply shear to deform the shape of an object, such as skewing the sides of a building to create a slanted effect.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>rip</summary>
-                    <div>
-                        <p><strong>Description:</strong> Allows you to break geometry, such as disconnecting edges.</p>
-                        <p><strong>Example Usage:</strong> Use rip to separate parts of a model, such as detaching a door from a wall.</p>
-                    </div>
-                </details>
-            </li>
-        </ul>
-    </li>
-    <li><strong>Modifiers:</strong>
-        <ul>
-            <li>
-                <details>
-                    <summary>subdivision surface</summary>
-                    <div>
-                        <p><strong>Description:</strong> A modifier that adds smoothness and detail to a mesh by subdividing its faces.</p>
-                        <p><strong>Example Usage:</strong> Apply subdivision surface to a low-poly model to increase its smoothness and add more detail, useful for creating a high-quality final model.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>boolean</summary>
-                    <div>
-                        <p><strong>Description:</strong> A modifier that performs boolean operations (union, difference, intersection) between objects.</p>
-                        <p><strong>Example Usage:</strong> Use the boolean modifier to combine two objects, such as merging a cylinder into a box to create a hole or add detail.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>array</summary>
-                    <div>
-                        <p><strong>Description:</strong> A modifier that creates a duplicate of the object in a grid or line pattern.</p>
-                        <p><strong>Example Usage:</strong> Use the array modifier to create multiple copies of a fence along a line or grid for a repeated pattern.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>solidify</summary>
-                    <div>
-                        <p><strong>Description:</strong> A modifier that adds thickness to a mesh, useful for creating solid objects from thin surfaces.</p>
-                        <p><strong>Example Usage:</strong> Apply the solidify modifier to a paper-thin sheet to give it realistic thickness, turning it into a solid object like a book cover.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>displace</summary>
-                    <div>
-                        <p><strong>Description:</strong> A modifier that displaces the geometry based on a texture or other input.</p>
-                        <p><strong>Example Usage:</strong> Use the displace modifier to create a rocky surface by displacing vertices based on a texture that simulates terrain.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>decimate</summary>
-                    <div>
-                        <p><strong>Description:</strong> A modifier that reduces the number of polygons in a mesh while retaining its shape.</p>
-                        <p><strong>Example Usage:</strong> Apply the decimate modifier to a high-poly model to reduce its complexity for use in real-time applications or to improve performance.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>wave</summary>
-                    <div>
-                        <p><strong>Description:</strong> A modifier that creates a waving effect on the geometry.</p>
-                        <p><strong>Example Usage:</strong> Use the wave modifier to simulate the movement of water or cloth by applying a waving effect to a plane or surface.</p>
-                    </div>
-                </details>
-            </li>
-        </ul>
-    </li>
-    <li><strong>Simulation Systems:</strong>
-        <ul>
-            <li>
-                <details>
-                    <summary>particle system</summary>
-                    <div>
-                        <p><strong>Description:</strong> A system used to create and manage particles for effects like smoke, fire, or rain.</p>
-                        <p><strong>Example Usage:</strong> Use the particle system to add realistic fire and smoke effects to a scene, such as a burning building or a campfire.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>fluid simulation</summary>
-                    <div>
-                        <p><strong>Description:</strong> A simulation system for creating realistic fluid effects, such as water or lava.</p>
-                        <p><strong>Example Usage:</strong> Set up a fluid simulation to simulate a flowing river or a cascading waterfall, adjusting the settings to achieve the desired look and behavior.</p>
-                    </div>
-                </details>
-            </li>
-            <li>
-                <details>
-                    <summary>cloth simulation</summary>
-                    <div>
-                        <p><strong>Description:</strong> A simulation system for creating realistic cloth movements and interactions.</p>
-                        <p><strong>Example Usage:</strong> Use cloth simulation to animate a character's cape or clothing, allowing it to move and react realistically to wind or movement.</p>
-                    </div>
-                </details>
-            </li>
-        </ul>
-    </li>
-</ul>
-<h2>Topology</h2>
-<p><strong>Description:</strong> Topology refers to the layout and organization of polygons and vertices in a 3D model. Proper topology is crucial for ensuring that a model deforms correctly during animation, can be textured efficiently, and is optimized for rendering.</p>
-<p><strong>Why It's Important:</strong> Good topology allows for smooth deformations, proper UV mapping, and efficient rendering. Bad topology can lead to issues such as:</p>
-<ul>
-    <li><strong>Unwanted Deformations:</strong> Models may deform in unnatural ways during animation due to poorly placed edge loops or poles.</li>
-    <li><strong>Texture Stretching:</strong> Irregular topology can cause texture maps to stretch or compress unevenly, resulting in visible artifacts.</li>
-    <li><strong>Performance Issues:</strong> Excessive or unnecessary polygons can slow down rendering and increase file size.</li>
-</ul>
-<p><strong>Real-World Problems:</strong> For example, in a character animation, poor topology might result in a character's face stretching unnaturally when they smile, or in a game, it might cause visual glitches or performance drops.</p>
-
-
-
+<div>
+    <h1>Blender Tools and Modifiers</h1>
+    <ul>
+        <li><strong>Modeling Tools:</strong>
+            <ul>
+                <li>
+                    <details>
+                        <summary>extrude</summary>
+                        <div>
+                            <p><strong>Description:</strong> Pull the side of a 3D shape out while creating a new shape at the same time.</p>
+                            <p><strong>Example Usage:</strong> Use extrude to create the arms of a character by extending a base mesh outwards.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>loop cut</summary>
+                        <div>
+                            <p><strong>Description:</strong> Add additional edge loops to a mesh to increase its detail and control the shape.</p>
+                            <p><strong>Example Usage:</strong> Apply loop cuts to a cylinder to add more detail before refining the shape into a more complex model.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>knife</summary>
+                        <div>
+                            <p><strong>Description:</strong> Allows you to cut into geometry.</p>
+                            <p><strong>Example Usage:</strong> Use the knife tool to add new edges to a mesh by cutting across existing faces.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>bevel</summary>
+                        <div>
+                            <p><strong>Description:</strong> Making edges and corners smoother.</p>
+                            <p><strong>Example Usage:</strong> Apply bevel to the edges of a box to make the edges rounded and less harsh.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>inset</summary>
+                        <div>
+                            <p><strong>Description:</strong> Create a new face inside an existing face, useful for adding detail.</p>
+                            <p><strong>Example Usage:</strong> Use the inset tool to add detail to the surface of a building facade, such as window frames.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>poly build</summary>
+                        <div>
+                            <p><strong>Description:</strong> Allows for the creation of new polygons and vertices directly in the viewport.</p>
+                            <p><strong>Example Usage:</strong> Use poly build to manually construct complex meshes by adding and connecting vertices.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>smooth</summary>
+                        <div>
+                            <p><strong>Description:</strong> Smooths out the surface of a mesh.</p>
+                            <p><strong>Example Usage:</strong> Apply the smooth tool to a character’s body to eliminate harsh angles and create a more natural appearance.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>edge slide</summary>
+                        <div>
+                            <p><strong>Description:</strong> Move edges along their adjacent faces while keeping the mesh’s topology.</p>
+                            <p><strong>Example Usage:</strong> Use edge slide to adjust the placement of edge loops on a model to refine its shape.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>shrink/fatten</summary>
+                        <div>
+                            <p><strong>Description:</strong> Adjust the thickness of a mesh's faces.</p>
+                            <p><strong>Example Usage:</strong> Use shrink/fatten to adjust the thickness of a wall or the clothing on a character model.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>shear</summary>
+                        <div>
+                            <p><strong>Description:</strong> Distorts the shape of the mesh by shearing it along its axis.</p>
+                            <p><strong>Example Usage:</strong> Apply shear to deform the shape of an object, such as skewing the sides of a building to create a slanted effect.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>rip</summary>
+                        <div>
+                            <p><strong>Description:</strong> Allows you to break geometry, such as disconnecting edges.</p>
+                            <p><strong>Example Usage:</strong> Use rip to separate parts of a model, such as detaching a door from a wall.</p>
+                        </div>
+                    </details>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Modifiers:</strong>
+            <ul>
+                <li>
+                    <details>
+                        <summary>subdivision surface</summary>
+                        <div>
+                            <p><strong>Description:</strong> A modifier that adds smoothness and detail to a mesh by subdividing its faces.</p>
+                            <p><strong>Example Usage:</strong> Apply subdivision surface to a low-poly model to increase its smoothness and add more detail, useful for creating a high-quality final model.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>boolean</summary>
+                        <div>
+                            <p><strong>Description:</strong> A modifier that performs boolean operations (union, difference, intersection) between objects.</p>
+                            <p><strong>Example Usage:</strong> Use the boolean modifier to combine two objects, such as merging a cylinder into a box to create a hole or add detail.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>array</summary>
+                        <div>
+                            <p><strong>Description:</strong> A modifier that creates a duplicate of the object in a grid or line pattern.</p>
+                            <p><strong>Example Usage:</strong> Use the array modifier to create multiple copies of a fence along a line or grid for a repeated pattern.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>solidify</summary>
+                        <div>
+                            <p><strong>Description:</strong> A modifier that adds thickness to a mesh, useful for creating solid objects from thin surfaces.</p>
+                            <p><strong>Example Usage:</strong> Apply the solidify modifier to a paper-thin sheet to give it realistic thickness, turning it into a solid object like a book cover.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>displace</summary>
+                        <div>
+                            <p><strong>Description:</strong> A modifier that displaces the geometry based on a texture or other input.</p>
+                            <p><strong>Example Usage:</strong> Use the displace modifier to create a rocky surface by displacing vertices based on a texture that simulates terrain.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>decimate</summary>
+                        <div>
+                            <p><strong>Description:</strong> A modifier that reduces the number of polygons in a mesh while retaining its shape.</p>
+                            <p><strong>Example Usage:</strong> Apply the decimate modifier to a high-poly model to reduce its complexity for use in real-time applications or to improve performance.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>wave</summary>
+                        <div>
+                            <p><strong>Description:</strong> A modifier that creates a waving effect on the geometry.</p>
+                            <p><strong>Example Usage:</strong> Use the wave modifier to simulate the movement of water or cloth by applying a waving effect to a plane or surface.</p>
+                        </div>
+                    </details>
+                </li>
+            </ul>
+        </li>
+        <li><strong>Simulation Systems:</strong>
+            <ul>
+                <li>
+                    <details>
+                        <summary>particle system</summary>
+                        <div>
+                            <p><strong>Description:</strong> A system used to create and manage particles for effects like smoke, fire, or rain.</p>
+                            <p><strong>Example Usage:</strong> Use the particle system to add realistic fire and smoke effects to a scene, such as a burning building or a campfire.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>fluid simulation</summary>
+                        <div>
+                            <p><strong>Description:</strong> A simulation system for creating realistic fluid effects, such as water or lava.</p>
+                            <p><strong>Example Usage:</strong> Use fluid simulation to create a realistic river or waterfall, adjusting the settings to achieve the desired look and behavior.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>cloth simulation</summary>
+                        <div>
+                            <p><strong>Description:</strong> A simulation system for creating realistic cloth movements and interactions.</p>
+                            <p><strong>Example Usage:</strong> Use cloth simulation to animate a character's cape or clothing, allowing it to move and react realistically to wind or movement.</p>
+                        </div>
+                    </details>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <h2>Topology</h2>
+    <p><strong>Description:</strong> Topology refers to the layout and organization of polygons and vertices in a 3D model. Proper topology is crucial for ensuring that a model deforms correctly during animation, can be textured efficiently, and is optimized for rendering.</p>
+    <p><strong>Why It's Important:</strong> Good topology allows for smooth deformations, proper UV mapping, and efficient rendering. Bad topology can lead to issues such as:</p>
+    <ul>
+        <li><strong>Unwanted Deformations:</strong> Models may deform in unnatural ways during animation due to poorly placed edge loops or poles.</li>
+        <li><strong>Texture Stretching:</strong> Irregular topology can cause texture maps to stretch or compress unevenly, resulting in visible artifacts.</li>
+        <li><strong>Performance Issues:</strong> Excessive or unnecessary polygons can slow down rendering and increase file size.</li>
+    </ul>
+    <p><strong>Real-World Problems:</strong> For example, in a character animation, poor topology might result in a character's face stretching unnaturally when they smile, or in a game, it might cause visual glitches or performance drops.</p>
+    <h2>Blender Modes</h2>
+    <ul>
+        <li>
+            <details>
+                <summary>Object Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> The default mode for manipulating objects in a scene. In Object Mode, you can move, rotate, scale, and organize objects, but you cannot edit the vertices of the objects.</p>
+                    <p><strong>Example Usage:</strong> Use Object Mode to arrange and position various elements of your scene, such as placing characters and props in the environment.</p>
+                </div>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Edit Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> Allows you to edit the vertices, edges, and faces of a mesh object. This is the primary mode for modeling and making detailed changes to a 3D model.</p>
+                    <p><strong>Example Usage:</strong> Switch to Edit Mode to adjust the shape of a character model, add new edge loops, or modify the mesh topology.</p>
+                </div>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Sculpt Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> A mode for high-resolution modeling, where you can use various brushes to sculpt and detail your model as if it were clay.</p>
+                    <p><strong>Example Usage:</strong> Use Sculpt Mode to add intricate details to a character's face or body, refining the surface with sculpting tools.</p>
+                </div>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>UV Editing Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> A mode specifically for unwrapping and editing UV maps. It allows you to adjust how textures are applied to a 3D model.</p>
+                    <p><strong>Example Usage:</strong> Switch to UV Editing Mode to unwrap a model’s UVs and align them to a texture, ensuring that the texture maps correctly onto the 3D surface.</p>
+                </div>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Texture Paint Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> A mode for painting textures directly onto a 3D model, allowing for detailed and custom texture creation.</p>
+                    <p><strong>Example Usage:</strong> Use Texture Paint Mode to paint custom textures on your model, such as adding details or creating unique surface patterns.</p>
+                </div>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Weight Paint Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> A mode for painting vertex weights, which is used for skinning and rigging to influence how the mesh deforms with bones.</p>
+                    <p><strong>Example Usage:</strong> Use Weight Paint Mode to adjust how a character's mesh deforms when the armature (rig) is moved, ensuring smooth and realistic movements.</p>
+                </div>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Pose Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> A mode for posing and animating rigged characters. It allows you to adjust the position of bones and set up keyframes for animations.</p>
+                    <p><strong>Example Usage:</strong> Switch to Pose Mode to position the bones of a character rig and create keyframes for animation sequences.</p>
+                </div>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Particle Edit Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> A mode for editing and grooming particles, used for systems like hair and fur.</p>
+                    <p><strong>Example Usage:</strong> Use Particle Edit Mode to comb and style hair particles on a character, adjusting their appearance and behavior.</p>
+                </div>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Grease Pencil Mode</summary>
+                <div>
+                    <p><strong>Description:</strong> A mode for drawing and editing 2D sketches directly in the 3D viewport, used for annotations, storyboarding, and 2D animation.</p>
+                    <p><strong>Example Usage:</strong> Switch to Grease Pencil Mode to draw and animate 2D elements within a 3D scene, such as creating animation sketches or adding notes to your model.</p>
+                </div>
+            </details>
+        </li>
+    </ul>
+</div>
 <h1>do this now</h1>
 
 <p>
