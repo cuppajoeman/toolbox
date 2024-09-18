@@ -2,26 +2,30 @@
     Git submodules provide a way to consider any repository as a versioned "package" that can be included in any other git repo.
 </p>
 
-<h1>gotcha's</h1>
-<ul>
-    <li>When you clone a repository git will <b>not</b> automatically clone in the contents of any submodules, but it will clone an empty directory with the name of that repository, in order to actually get the contents of those submodules you have to do the following</li>
-    <div class="code-file" data-file-name="clone_submodule_contents.sh"></div>
-    <li>You'll notice that in order to get the contents of your submodules that it's a composite command:</li>
+<h1>clone a repo that has submodules</h1>
 
-    <ul>
-        <li>git submodule init: to initialize your local configuration file</li>
-        <li>git submodule update: to fetch all the data from that project and check out the appropriate commit listed in your superproject</li>
-    </ul>
-    <li>
-        Better yet, if you haven't yet cloned the repository you can do all the above at once with:
-    </li>
-    <pre>
-        <code>
-            git clone --recursive URL
-        </code>
-    </pre>
+<pre>
+    <code>
+        git clone --recurse-submodules -j8 git://github.com/foo/bar.git
+    </code>
+</pre>
 
-</ul>
+<p>
+    Note: -j8 is an optional performance optimization that became available in version 2.8, and fetches up to 8 submodules at a time in parallel — see man git-clone
+</p>
+
+<h1>clone in repositories after cloning a repo</h1>
+
+<p>
+    When you clone a repository git will <b>not</b> automatically clone in the contents of any submodules, but it will clone an empty directory with the name of that repository, in order to actually get the contents of those submodules you have to do the following
+</p>
+
+<pre>
+    <code>
+        git submodule init
+        git submodule update
+    </code>
+</pre>
 
 <h1>mistakes</h1>
 
