@@ -1,0 +1,71 @@
+
+<section>
+    <p>
+        Hungarian Notation is a naming convention where the name of a variable or function includes a prefix that denotes its type or intended usage. This convention was designed to help programmers quickly identify the type and purpose of a variable by reading its name.
+    </p>
+</section>
+
+<section>
+    <h2>Hungarian Notation in C++</h2>
+    <p>
+        In C++, Hungarian Notation involves prefixing variable names with letters that indicate their type. This can be particularly useful in large codebases or when working with languages that do not provide explicit type information.
+    </p>
+</section>
+
+<section>
+    <h2>Common Prefixes</h2>
+    <p>
+        Here are some common prefixes used in Hungarian Notation, along with examples of how they might be used in C++:
+    </p>
+    <ul>
+        <li><strong>Integer:</strong> Prefix with <code>i</code> (e.g., <code>iCount</code>, <code>iIndex</code>)</li>
+        <li><strong>Float:</strong> Prefix with <code>f</code> (e.g., <code>fTemperature</code>, <code>fValue</code>)</li>
+        <li><strong>String:</strong> Prefix with <code>str</code> (e.g., <code>strName</code>, <code>strAddress</code>)</li>
+        <li><strong>Boolean:</strong> Prefix with <code>b</code> (e.g., <code>bIsActive</code>, <code>bFlag</code>)</li>
+        <li><strong>Pointer:</strong> Prefix with <code>p</code> (e.g., <code>pNode</code>, <code>pBuffer</code>)</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Member Attributes Prefix</h2>
+    <p>
+        In addition to the standard prefixes, Hungarian Notation often includes a special prefix for member variables in classes. This prefix is <code>m</code>, standing for "member". It is used to distinguish member variables from local variables and function parameters.
+    </p>
+    <p>
+        For example, in a class definition, member variables might be named as follows:
+    </p>
+    <ul>
+        <li><code>m_iCount</code> - An integer member variable, where <code>m</code> indicates it's a member of the class.</li>
+        <li><code>m_strName</code> - A string member variable, with <code>m</code> indicating its class scope.</li>
+        <li><code>m_bIsActive</code> - A boolean member variable, where <code>m</code> shows it's a class attribute.</li>
+    </ul>
+    <p>
+        Using the <code>m</code> prefix helps avoid naming conflicts and makes it clear that these variables are part of the class's internal state.
+    </p>
+</section>
+
+<section>
+    <h2>Examples in C++</h2>
+    <p>
+        Here are some examples of variables using Hungarian Notation in C++:
+    </p>
+    <ul>
+        <li><code>int iCount = 0;</code> - The <code>i</code> prefix indicates an integer type, and <code>Count</code> describes its purpose.</li>
+        <li><code>float fTemperature = 25.0f;</code> - The <code>f</code> prefix indicates a float type, and <code>Temperature</code> describes its usage.</li>
+        <li><code>std::string strName = "Alice";</code> - The <code>str</code> prefix indicates a string type, and <code>Name</code> describes the variable.</li>
+        <li><code>bool bIsActive = true;</code> - The <code>b</code> prefix indicates a boolean type, and <code>IsActive</code> describes the state.</li>
+        <li><code>int* pNode = nullptr;</code> - The <code>p</code> prefix indicates a pointer type, and <code>Node</code> describes what it points to.</li>
+        <li><code>class MyClass { int m_iCount; std::string m_strName; bool m_bIsActive; };</code> - Member variables with <code>m</code> prefix to indicate they are class attributes.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Modern Usage and Alternatives</h2>
+    <p>
+        While Hungarian Notation was popular in the past, modern C++ practices often favor more descriptive naming conventions and explicit type information provided by the language. Many developers now prefer using clear, descriptive variable names without type prefixes.
+    </p>
+    <p>
+        Modern C++ supports features like type inference and strong type systems, which can reduce the need for Hungarian Notation. Instead, focus on meaningful variable names and use comments to clarify purpose when necessary.
+    </p>
+</section>
+

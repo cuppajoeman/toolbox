@@ -118,3 +118,15 @@
         <li>ex) unload the shotgun data, maybe you need to draw hud elements now</li>
     </ul>
 </ul>
+
+<h1>a list of stuff that might be happening if you're stuck</h1>
+
+<h2>ERROR 1281 in glEnableVertexAttribArray</h2>
+
+<p>
+    This usually occurs when there was a problem when trying to enable a vertex attribute, and most of the time that's what this is, but this bug plagued me on one or two evenings before I realized the second way you can get this error.
+</p>
+
+<p>
+    You can also get this error if a vertex attribute is never used anywhere in your shader program, for me I had commented out using texture data, and then my texture coordinate vertex attribute stopped working, be sure that the vertex attributes you're binding are actually being used in the code, or else you may get this error.
+</p>
