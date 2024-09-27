@@ -1,0 +1,63 @@
+{
+    "date_format": "%Y-%m-%d %I:%M%p",
+    "num_days_lookahead": 28,
+    "plot_style": "dark_background",
+    "figure_size": [
+        8.8,
+        4
+    ],
+    "stem_color": "tab:red",
+    "marker_color": "w",
+    "marker_face_color": "b",
+    "output_file": "timeline.png",
+    "name_date_tuples": [
+        [
+            "csc317 A2",
+            "2024-09-24 11:00pm"
+        ],
+        [
+            "csc317 A3",
+            "2024-10-01 11:00pm"
+        ],
+        [
+            "csc317 A4",
+            "2024-10-08 11:00pm"
+        ],
+        [
+            "csc317 A4",
+            "2024-10-22 11:00pm"
+        ],
+        [
+            "csc320 A1",
+            "2024-10-03 11:00pm"
+        ],
+        [
+            "csc320 A2",
+            "2024-10-24 11:00pm"
+        ],
+        [
+            "csc320 M1",
+            "2024-11-15 8:00pm"
+        ],
+        [
+            "csc317 M1",
+            "2024-11-16 11:00am"
+        ],
+        [
+            "mat327 T1",
+            "2024-11-17 7:00am"
+        ],
+        [
+            "csc317 M2",
+            "2024-12-03 11:00am"
+        ],
+        [
+            "mat327 H3",
+            "2024-09-24 11:00pm"
+        ],
+        [
+            "mat327 H4",
+            "2024-10-01 11:00pm"
+        ]
+    ]
+}
