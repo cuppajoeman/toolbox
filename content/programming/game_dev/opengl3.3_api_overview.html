@@ -69,6 +69,22 @@
     <li><strong>glActiveTexture</strong>(<em>GLenum texture</em>): Specifies the active texture unit.</li>
 </ul>
 <p><strong>Use case:</strong> When using multiple textures in a shader, texture units are used to assign textures to different slots, which can be sampled in the shader.</p>
+<pre>
+    <code>
+GLuint texture_map;
+glGenTextures(1, &texture_map);
+glBindTexture(GL_TEXTURE_2D, texture_map);
+
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fbo_width, fbo_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+glBindTexture(GL_TEXTURE_2D, 0);
+    </code>
+</pre>
 
 <h2>6. Drawing</h2>
 <h3>6.1 Primitive Drawing</h3>
