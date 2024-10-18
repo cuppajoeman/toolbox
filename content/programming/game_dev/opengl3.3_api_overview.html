@@ -201,10 +201,14 @@ glBindTexture(GL_TEXTURE_2D, texId1);
 </details>
 <p>OpenGL allows multiple textures to be bound at once, each to a different texture unit:</p>
 <ul>
-    <li><strong>glActiveTexture</strong>(<em>GLenum texture</em>): Specifies the active texture unit.</li>
+    <li><strong>glActiveTexture</strong>(<em>GLenum texture</em>): Specifies the active texture unit, this occurs within the context of an active texture unit, when not specified this is usually <code>GL_TEXTURE0</code></li>
 </ul>
 <p><strong>Use case:</strong> When using multiple textures in a shader, texture units are used to assign textures to different slots, which can be sampled in the shader.</p>
-
+<p class="warning">
+    You can get by without understanding texture units, but it will catch up to you, for example the example above when we talked about regular textures showed code that seemed to never use texture units but still works,
+    this is because by default the shader uniform varaible of the sampler is the value 0, moreover when you bind a texture usually <code>GL_TEXTURE0</code> is already bound, and thus it just so happens that by chance that
+    the uniform is the correct matching value, and the texture shows up, but if you then bind a different texture it will overwrite it and you might start getting confused, so better to understand texture units sooner rather than later.
+</p>
 
 <h2>6. Drawing</h2>
 <h3>6.1 Primitive Drawing</h3>
