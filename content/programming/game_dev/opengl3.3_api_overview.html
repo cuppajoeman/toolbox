@@ -1,0 +1,119 @@
+<h2>1. Introduction to OpenGL</h2>
+<p>OpenGL (Open Graphics Library) is a cross-platform API for rendering 2D and 3D vector graphics. The API is used to interact with a GPU, allowing developers to create graphics programs, primarily for real-time rendering in games, simulations, and other visualizations.</p>
+
+<h2>2. Context Creation</h2>
+<p>OpenGL requires a context to function, which is typically created by a windowing library such as GLFW, SDL, or native platform APIs. OpenGL context holds the state that affects rendering and is necessary for OpenGL commands to work.</p>
+
+<h2>3. OpenGL Shading Language (GLSL)</h2>
+<h3>3.1 Shaders</h3>
+<p>OpenGL uses shaders written in GLSL for programmable rendering. The main types of shaders are:</p>
+<ul>
+    <li><strong>Vertex Shader:</strong> Processes vertex data and applies transformations.</li>
+    <li><strong>Fragment Shader:</strong> Computes the color and other attributes for each fragment (pixel).</li>
+</ul>
+
+<h3>3.2 Shader Compilation</h3>
+<p>Shaders are written in GLSL and must be compiled and linked into a program object:</p>
+<ul>
+    <li><strong>glCreateShader:</strong> Creates a new shader object.</li>
+    <li><strong>glShaderSource:</strong> Loads the shader source code.</li>
+    <li><strong>glCompileShader:</strong> Compiles the shader source.</li>
+    <li><strong>glCreateProgram:</strong> Creates a new program object.</li>
+    <li><strong>glAttachShader:</strong> Attaches a compiled shader to the program.</li>
+    <li><strong>glLinkProgram:</strong> Links all attached shaders into an executable.</li>
+    <li><strong>glUseProgram:</strong> Activates the shader program.</li>
+</ul>
+
+<h2>4. Buffers</h2>
+<h3>4.1 Vertex Buffer Object (VBO)</h3>
+<p>A VBO stores vertex data in GPU memory:</p>
+<ul>
+    <li><strong>glGenBuffers:</strong> Generates buffer object names.</li>
+    <li><strong>glBindBuffer:</strong> Binds a buffer to a target (e.g., GL_ARRAY_BUFFER).</li>
+    <li><strong>glBufferData:</strong> Creates and initializes buffer object's data store.</li>
+</ul>
+
+<h3>4.2 Element Buffer Object (EBO)</h3>
+<p>An EBO stores indices for drawing with vertex array objects:</p>
+<ul>
+    <li><strong>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ...):</strong> Binds the EBO to the array buffer.</li>
+</ul>
+
+<h3>4.3 Vertex Array Object (VAO)</h3>
+<p>VAOs store state related to vertex attribute configuration:</p>
+<ul>
+    <li><strong>glGenVertexArrays:</strong> Generates VAO object names.</li>
+    <li><strong>glBindVertexArray:</strong> Binds the VAO for use.</li>
+    <li><strong>glVertexAttribPointer:</strong> Specifies the layout of the vertex data.</li>
+    <li><strong>glEnableVertexAttribArray:</strong> Enables a generic vertex attribute array.</li>
+</ul>
+
+<h2>5. Texturing</h2>
+<h3>5.1 Texture Creation</h3>
+<p>Textures are used to map images onto geometric surfaces:</p>
+<ul>
+    <li><strong>glGenTextures:</strong> Generates texture object names.</li>
+    <li><strong>glBindTexture:</strong> Binds a texture to a target (e.g., GL_TEXTURE_2D).</li>
+    <li><strong>glTexImage2D:</strong> Specifies a 2D texture image.</li>
+    <li><strong>glTexParameteri:</strong> Sets texture parameters (e.g., wrapping, filtering).</li>
+</ul>
+
+<h3>5.2 Texture Units</h3>
+<p>OpenGL allows multiple textures to be bound at once, each to a different texture unit:</p>
+<ul>
+    <li><strong>glActiveTexture:</strong> Specifies the active texture unit.</li>
+</ul>
+
+<h2>6. Drawing</h2>
+<h3>6.1 Primitive Drawing</h3>
+<p>OpenGL supports various drawing primitives such as points, lines, and triangles:</p>
+<ul>
+    <li><strong>glDrawArrays:</strong> Renders primitives from array data.</li>
+    <li><strong>glDrawElements:</strong> Renders primitives using indices.</li>
+</ul>
+
+<h2>7. Framebuffers</h2>
+<h3>7.1 Default Framebuffer</h3>
+<p>By default, OpenGL renders to a window provided by the OS.</p>
+
+<h3>7.2 Framebuffer Object (FBO)</h3>
+<p>FBOs allow off-screen rendering for post-processing, shadow maps, etc.:</p>
+<ul>
+    <li><strong>glGenFramebuffers:</strong> Generates FBO object names.</li>
+    <li><strong>glBindFramebuffer:</strong> Binds the FBO.</li>
+    <li><strong>glFramebufferTexture2D:</strong> Attaches a texture to the FBO.</li>
+    <li><strong>glCheckFramebufferStatus:</strong> Checks if the FBO is complete.</li>
+</ul>
+
+<h2>8. State Management</h2>
+<h3>8.1 Enabling and Disabling Capabilities</h3>
+<p>OpenGL has many state variables that control rendering behavior:</p>
+<ul>
+    <li><strong>glEnable:</strong> Enables a feature (e.g., GL_DEPTH_TEST, GL_BLEND).</li>
+    <li><strong>glDisable:</strong> Disables a feature.</li>
+    <li><strong>glDepthFunc:</strong> Specifies the depth comparison function.</li>
+    <li><strong>glBlendFunc:</strong> Specifies the blending function.</li>
+</ul>
+
+<h2>9. Cleanup</h2>
+<p>Once OpenGL objects (like buffers, shaders, textures, and programs) are no longer needed, they should be deleted:</p>
+<ul>
+    <li><strong>glDeleteBuffers:</strong> Deletes buffer objects.</li>
+    <li><strong>glDeleteTextures:</strong> Deletes texture objects.</li>
+    <li><strong>glDeleteProgram:</strong> Deletes shader programs.</li>
+    <li><strong>glDeleteShader:</strong> Deletes shader objects.</li>
+    <li><strong>glDeleteVertexArrays:</strong> Deletes VAO objects.</li>
+</ul>
+
+<h2>10. Error Handling</h2>
+<p>OpenGL provides error checking functions:</p>
+<ul>
+    <li><strong>glGetError:</strong> Returns error codes (e.g., GL_NO_ERROR, GL_INVALID_ENUM).</li>
+</ul>
+
+<h2>11. OpenGL Versions and Extensions</h2>
+<p>OpenGL versions introduce new features, and extensions allow additional functionalities beyond the core API:</p>
+<ul>
+    <li><strong>glGetString:</strong> Queries version, vendor, and extension information.</li>
+    <li><strong>glGetIntegerv:</strong> Retrieves specific OpenGL state values (e.g., maximum texture size).</li>
+</ul>
