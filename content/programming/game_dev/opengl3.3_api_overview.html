@@ -61,14 +61,48 @@
     <li><strong>glTexImage2D</strong>(<em>GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *pixels</em>): Specifies a 2D texture image.</li>
     <li><strong>glTexParameteri</strong>(<em>GLenum target, GLenum pname, GLint param</em>): Sets texture parameters (e.g., wrapping, filtering).</li>
 </ul>
+<div>
+  <details>
+    <summary>what kind of targets are there?</summary>
+    <h3>1. GL_TEXTURE_2D</h3>
+    <p><strong>Description:</strong> Represents a 2D texture with width and height (e.g., an image or texture used in most 3D applications).</p>
+    <p><strong>Usage Example:</strong> Standard texture for mapping on a 3D model surface.</p>
+    <pre><code>glBindTexture(GL_TEXTURE_2D, textureID);</code></pre>
+    
+    <h3>2. GL_TEXTURE_1D</h3>
+    <p><strong>Description:</strong> Represents a 1D texture, which has only a width (e.g., a gradient or color ramp).</p>
+    <p><strong>Usage Example:</strong> Rarely used in modern applications.</p>
+    <pre><code>glBindTexture(GL_TEXTURE_1D, textureID);</code></pre>
+    
+    <h3>3. GL_TEXTURE_3D</h3>
+    <p><strong>Description:</strong> Represents a 3D texture, which has width, height, and depth. Useful for volume textures.</p>
+    <p><strong>Usage Example:</strong> Used in volumetric rendering, like for simulating fog or 3D data fields.</p>
+    <pre><code>glBindTexture(GL_TEXTURE_3D, textureID);</code></pre>
+    
+    <h3>4. GL_TEXTURE_CUBE_MAP</h3>
+    <p><strong>Description:</strong> Represents a cube map texture, which consists of six square 2D textures arranged into a cube. Useful for environment mapping, reflections, and skyboxes.</p>
+    <p><strong>Usage Example:</strong> Used for reflective surfaces like water or mirrors.</p>
+    <pre><code>glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);</code></pre>
+    
+    <h3>5. GL_TEXTURE_RECTANGLE</h3>
+    <p><strong>Description:</strong> Represents a non-power-of-two texture (i.e., dimensions don't have to be powers of 2). Texture coordinates are not normalized, meaning they map directly to pixel coordinates.</p>
+    <p><strong>Usage Example:</strong> Used for special cases where non-power-of-two textures are needed.</p>
+    <pre><code>glBindTexture(GL_TEXTURE_RECTANGLE, textureID);</code></pre>
+    
+    <h3>6. GL_TEXTURE_2D_ARRAY</h3>
+    <p><strong>Description:</strong> Represents an array of 2D textures stacked together. Each element in the array is a 2D texture.</p>
+    <p><strong>Usage Example:</strong> Used for texture atlases or handling multiple textures in a single uniform.</p>
+    <pre><code>glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);</code></pre>
+    
+    <h3>7. GL_TEXTURE_BUFFER</h3>
+    <p><strong>Description:</strong> A buffer texture, which allows you to use a buffer object's data (like a vertex buffer) as a texture. This is useful for reading large amounts of data directly into a shader.</p>
+    <p><strong>Usage Example:</strong> For large data sets like particle systems.</p>
+    <pre><code>glBindTexture(GL_TEXTURE_BUFFER, textureID);</code></pre>
+  </details>
+</div>
+
 <p><strong>Use case:</strong> When applying textures to objects, you'll first create a texture, bind it to the correct target, load the texture image, and set parameters for how it should be applied.</p>
 
-<h3>5.2 Texture Units</h3>
-<p>OpenGL allows multiple textures to be bound at once, each to a different texture unit:</p>
-<ul>
-    <li><strong>glActiveTexture</strong>(<em>GLenum texture</em>): Specifies the active texture unit.</li>
-</ul>
-<p><strong>Use case:</strong> When using multiple textures in a shader, texture units are used to assign textures to different slots, which can be sampled in the shader.</p>
 <pre>
     <code>
 GLuint texture_map;
@@ -85,6 +119,14 @@ glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fbo_width, fbo_height, 0, GL_RGBA, GL_UN
 glBindTexture(GL_TEXTURE_2D, 0);
     </code>
 </pre>
+
+<h3>5.2 Texture Units</h3>
+<p>OpenGL allows multiple textures to be bound at once, each to a different texture unit:</p>
+<ul>
+    <li><strong>glActiveTexture</strong>(<em>GLenum texture</em>): Specifies the active texture unit.</li>
+</ul>
+<p><strong>Use case:</strong> When using multiple textures in a shader, texture units are used to assign textures to different slots, which can be sampled in the shader.</p>
+
 
 <h2>6. Drawing</h2>
 <h3>6.1 Primitive Drawing</h3>
