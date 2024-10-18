@@ -121,6 +121,84 @@ glBindTexture(GL_TEXTURE_2D, 0);
 </pre>
 
 <h3>5.2 Texture Units</h3>
+<p>
+    One way to think about texture units are as picture frames on a wall somewhere, the picture frames are futuristic, and have options, 
+    for example if you slide a picture into a picture frame and it doesn't take up the full frame, then you can choose options for that 
+    picture frame so that it either repeats the image or tries to extend it in a certain direction, the picture frames support different types of images (texture targets), 
+    with their own custom options.
+</p>
+<p>
+    Now drawing the textures is like an art exhibit, at first you have a bunch of empty frames, so we go up to a certain frame <code>glActiveTexture(GL_TEXTURE0)</code>, slide our art into it 
+    <code>glBindTexture(GL_TEXTURE_2D, texture_map);</code>, in this context shaders are like the art buyers, they go around and sample (bind the texture unit number to the sampler) 
+    the artwork then they select what art they like and buy it (draw it), now that they own the art they can do anything they want with it
+</p>
+<details>
+    <summary>more on this whole process</summary>
+    <h2>Texture Target</h2>
+<p>Texture targets refer to the different types of textures (2D, 3D, etc.). You can bind multiple textures, one of each type, to the same texture unit. For example:</p>
+<pre>
+glBindTexture(GL_TEXTURE_2D, texId1);
+glBindTexture(GL_TEXTURE_3D, texId2);
+</pre>
+<p>Both <code>texId1</code> and <code>texId2</code> are bound to the same texture unit, as they are bound to different targets. It is recommended to bind different textures to different texture units to avoid confusion.</p>
+
+<h2>Texture Object</h2>
+<p>Texture objects are created with <code>glGenTextures()</code> and bound with <code>glBindTexture()</code>. A texture object contains:</p>
+<ul>
+    <li>Texture data.</li>
+    <li>State for sampling the texture, such as filtering attributes set with <code>glTexParameteri()</code>.</li>
+    <li>Information about the texture format/type specified with the data.</li>
+</ul>
+
+<h2>Texture Unit</h2>
+<p>Texture units allow multiple textures to be bound at once, supporting multi-texturing. You use <code>glActiveTexture()</code> to specify the active texture unit. For example:</p>
+<pre>
+glActiveTexture(GL_TEXTURE3);
+glBindTexture(GL_TEXTURE_2D, texId);
+</pre>
+<p>This binds <code>texId</code> to texture unit 3.</p>
+
+<h2>Sampler Object</h2>
+<p>Sampler objects, introduced in OpenGL 3.3, decouple texture data from sampling parameters. This allows one texture to be sampled with different parameters (e.g., LINEAR and NEAREST) in the same shader without needing multiple copies of the texture data.</p>
+
+<h2>Texture View</h2>
+<p>Texture views, available in OpenGL 4.3, decouple raw texture data from its format. This allows the same texture data to be used with different formats.</p>
+
+<h2>Connecting Textures to Shaders</h2>
+<p>To connect textures to shaders, texture units bridge shaders and texture objects. A shader samples from texture units using sampler uniform variables.</p>
+
+<h3>Example</h3>
+<p>If "MyFirstTexture" is a sampler variable in the shader, this code associates it with texture unit 3:</p>
+<pre>
+GLint loc = glGetUniformLocation(prog, "MyFirstTexture");
+glUniform1i(loc, 3);
+</pre>
+<p>Then, bind the texture object to the texture unit:</p>
+<pre>
+glActiveTexture(GL_TEXTURE3);
+glBindTexture(GL_TEXTURE_2D, texId);
+</pre>
+<p>The shader will sample from the texture bound to unit 3.</p>
+
+<h3>Multi-Texturing Example</h3>
+<p>For two textures, using texture units 0 and 1:</p>
+<pre>
+glUseProgram(prog);
+
+GLint loc = glGetUniformLocation(prog, "MyFirstTexture");
+glUniform1i(loc, 0);
+loc = glGetUniformLocation(prog, "MySecondTexture");
+glUniform1i(loc, 1);
+
+glActiveTexture(GL_TEXTURE0);
+glBindTexture(GL_TEXTURE_2D, texId0);
+glActiveTexture(GL_TEXTURE1);
+glBindTexture(GL_TEXTURE_2D, texId1);
+</pre>
+
+<p>The shader will read data from the textures plugged into the corresponding texture units.</p>
+
+</details>
 <p>OpenGL allows multiple textures to be bound at once, each to a different texture unit:</p>
 <ul>
     <li><strong>glActiveTexture</strong>(<em>GLenum texture</em>): Specifies the active texture unit.</li>
