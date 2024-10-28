@@ -1,7 +1,11 @@
 <p>
     Here's how I setup cpp for development on windows
 </p>
-
+<h1>Compiler</h1>
+<p>
+    For compatilbility reasons I usually recommend using msvc which will come with microsoft visual studio this also comes with the benefit of conan having many pre-built packages for msvc. Alternately you can use <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-gcc?repo=ucrt64">gcc</a>, <code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>
+</p>
+<h1>Building Setup</h1>
 <ul>
     <li>
         download <a href="https://www.msys2.org/">msys2</a>
@@ -25,9 +29,7 @@
             pacman -S mingw-w64-ucrt-x86_64-python-conan
         </code>
     </pre>
-    <p>
-        Install an editor: pacman -S mingw-w64-ucrt-x86_64-neovim
-    </p>
+
     <p>
         After downloading the above be sure to generate a conan profile with <code>conan profile detect</code>
     </p>
@@ -39,19 +41,18 @@
             pacman -S mingw-w64-ucrt-x86_64-cmake
         </code>
     </pre>
-    <li>
-        download a compiler, for compatilbility reasons I usually recommend using msvc which will come with microsoft visual studio, alternately you can use <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-gcc?repo=ucrt64">gcc</a>, <code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>
-    </li>
+
+</ul>
+<h1>Editor Setup</h1>
+<p>
+    Install an editor: pacman -S mingw-w64-ucrt-x86_64-neovim
+</p>
+<h1>If there are problems building</h1>
     <p>
-        Also if cmake wants to use Mingw Makefiles then make sure you have <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-make">make</a>
+        If cmake wants to use Mingw Makefiles then make sure you have <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-make">make</a>
     </p>
     <pre>
         <code>
             pacman -S mingw-w64-ucrt-x86_64-make
         </code>
     </pre>
-    <p>
-        You should now be setup to start compiling, if you want an editor you can grab neovim
-    </p>
-</ul>
-
