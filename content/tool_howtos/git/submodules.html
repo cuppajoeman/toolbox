@@ -27,6 +27,14 @@
     </code>
 </pre>
 
+alternatively if you know that it recursively contains more submodules
+
+<pre>
+    <code>
+        git submodule update --init --recursive
+    </code>
+</pre>
+
 <h2>git pulling in submodules</h2>
 <p>
     Suppose you're in a submodule that contains more submodules, currently <code>git status</code> tells you that there are no changes at all, now you run git pull in that submodule and there are updates, namely the updates update the references to a few of the submodules, this can occur when someone has updated the versions of the submodules elsewhere and you are just getting those changes.
