@@ -74,6 +74,32 @@ git submodule update
 
 <h1>mistakes</h1>
 
+<h2>ssh submodules, github organizations and collaborators</h2>
+
+<p>
+    When adding submodules from an organization using ssh links, then there comes a problem that people who are not part of the organization will not be able to clone in submodules as they do not have access for ssh as only collaborators can do this (even with public repositories). One fix to this is to add people as collaborators to the organization, but eventually adding everyone to an organization just so they can clone in the submodules becomes a little unwieldy. Here's a way we can fix this:
+</p>
+
+<ul>
+    <li>
+        If you haven't added your submodule yet, add it regularly using the methods described above, eg <code>git submodule add git@github.com:username/repo.git path/to/submodule</code>
+    </li>
+    <li>
+        Now edit <code>.gitmodules</code> to look like this
+    </li>
+    <pre>
+        <code>
+[submodule "path/to/submodule"]
+    path = path/to/submodule
+    url = git@github.com:username/repo.git
+    pushUrl = https://github.com/username/repo.git
+        </code>
+    </pre>
+    <li>
+        Then you can run <code>git submodule sync --recursive</code> to apply the <code>.gitmodules</code> configuration to your local <code>.git/config</code>
+    </li>
+</ul>
+
 <h2>HEAD detached from 54b9bf8</h2>
 
 <p>
