@@ -1,7 +1,11 @@
 <p>
     Here's how I setup cpp for development on windows
 </p>
-
+<h1>Compiler</h1>
+<p>
+    For compatilbility reasons I usually recommend using msvc which you can get by downloading <a href="https://visualstudio.microsoft.com/vs/features/cplusplus/">microsoft visual studio</a> this also comes with the benefit of conan having many pre-built packages for msvc. Alternately you can use <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-gcc?repo=ucrt64">gcc</a>, <code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>
+</p>
+<h1>Building Setup</h1>
 <ul>
     <li>
         download <a href="https://www.msys2.org/">msys2</a>
@@ -36,24 +40,21 @@
             pacman -S mingw-w64-ucrt-x86_64-cmake
         </code>
     </pre>
-    <li>
-        download a compiler, I usually get <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-gcc?repo=ucrt64">gcc</a>
-    </li>
-    <pre>
-        <code>
-            pacman -S mingw-w64-ucrt-x86_64-gcc
-        </code>
-    </pre>
+
+</ul>
+<h1>Others</h1>
+<p>
+    Install an editor: pacman -S mingw-w64-ucrt-x86_64-neovim or something like Zed: https://zed.dev/docs/development/windows
+</p>
+<p>
+    Install python <code>pacman -S mingw-w64-ucrt-x86_64-python-conan</code>
+</p>
+<h1>If there are problems building</h1>
     <p>
-        Also if cmake wants to use Mingw Makefiles then make sure you have <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-make">make</a>
+        If cmake wants to use Mingw Makefiles then make sure you have <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-make">make</a>
     </p>
     <pre>
         <code>
             pacman -S mingw-w64-ucrt-x86_64-make
         </code>
     </pre>
-    <p>
-        You should now be setup to start compiling, if you want an editor you can grab neovim
-    </p>
-</ul>
-

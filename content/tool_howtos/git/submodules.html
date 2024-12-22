@@ -27,7 +27,78 @@
     </code>
 </pre>
 
+alternatively if you know that it recursively contains more submodules
+
+<pre>
+    <code>
+        git submodule update --init --recursive
+    </code>
+</pre>
+
+<h2>git pulling in submodules</h2>
+<p>
+    Suppose you're in a submodule that contains more submodules, currently <code>git status</code> tells you that there are no changes at all, now you run git pull in that submodule and there are updates, namely the updates update the references to a few of the submodules, this can occur when someone has updated the versions of the submodules elsewhere and you are just getting those changes.
+</p>
+<p>
+    What usually appears is something like this:
+</p>
+
+<pre>
+    <code>
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   build_notifier (new commits)
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+    </code>
+</pre>
+
+<p>
+    This may seem confusing, but just know that even though it says that there are changes, the changes are not from you editing files, its just that when you git pulled it changed the reference to the git submodule to the new version, and since your local version still contains the old copy, there is a diff being generated. To fix this run:
+</p>
+<pre>
+    <code>
+git submodule update
+    </code>
+</pre>
+
+<p>
+    Don't read these command as magic incantations to solve all your problems, for further understanding run <code>man git submodule</code>
+</p>
+
 <h1>mistakes</h1>
+
+<h2>ssh submodules, github organizations and collaborators</h2>
+
+<p>
+    When adding submodules from an organization using ssh links, then there comes a problem that people who are not part of the organization will not be able to clone in submodules as they do not have access for ssh as only collaborators can do this (even with public repositories). One fix to this is to add people as collaborators to the organization, but eventually adding everyone to an organization just so they can clone in the submodules becomes a little unwieldy. Here's a way we can fix this:
+</p>
+
+<ul>
+    <li>
+        If you haven't added your submodule yet, add it regularly using the methods described above, eg <code>git submodule add git@github.com:username/repo.git path/to/submodule</code>
+    </li>
+    <li>
+        Now edit <code>.gitmodules</code> to look like this
+    </li>
+    <pre>
+        <code>
+[submodule "path/to/submodule"]
+    path = path/to/submodule
+    url = git@github.com:username/repo.git
+    pushUrl = https://github.com/username/repo.git
+        </code>
+    </pre>
+    <li>
+        Then you can run <code>git submodule sync --recursive</code> to apply the <code>.gitmodules</code> configuration to your local <code>.git/config</code>
+    </li>
+</ul>
 
 <h2>HEAD detached from 54b9bf8</h2>
 

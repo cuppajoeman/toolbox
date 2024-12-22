@@ -44,6 +44,9 @@
                         <div>
                             <p><strong>Description:</strong> Allows you to cut into geometry.</p>
                             <p><strong>Example Usage:</strong> Use the knife tool to add new edges to a mesh by cutting across existing faces.</p>
+                            <ul>
+                                <li><a href="https://blender.stackexchange.com/questions/8955/cut-straight-lines-with-knife-tool">cut straight lines</a></li>
+                            </ul>
                         </div>
                     </details>
                 </li>
@@ -53,6 +56,15 @@
                         <div>
                             <p><strong>Description:</strong> Making edges and corners smoother.</p>
                             <p><strong>Example Usage:</strong> Apply bevel to the edges of a box to make the edges rounded and less harsh.</p>
+                        </div>
+                    </details>
+                </li>
+                <li>
+                    <details>
+                        <summary>subdivide</summary>
+                        <div>
+                            <p><strong>Description:</strong> Split the faces of a 3D mesh into smaller faces, increasing the mesh's detail and smoothness.</p>
+                            <p><strong>Example Usage:</strong> Use subdivide to add detail to a low-poly model by breaking each face into smaller sections, enabling smoother shapes and more refined edits.</p>
                         </div>
                     </details>
                 </li>
@@ -401,6 +413,12 @@
     </p>
 </fieldset>
 
+<h1>texture painting</h1>
+
+<p>
+    If you want a pixel perfect stroke do this: Untick Anti-Aliasing under Advanced. Change Falloff to Constant. Change Image Texture node Interpolation to Closest. 
+</p>
+
 <h1>using the cursor</h1>
 
 <p>
@@ -434,6 +452,10 @@
     A common use case is to cut a circular object into something, to do this create a circle, then go into edit mode on the object you want to cut into and then select your circle as well, and then use <b>knife project</b>. After doing the cut you can delete faces.
 </p>
 
+<h1>splitting existing geometry</h1>
+<p>
+    Suppose you have some edge and you want to open them up as if you had a box cutter, then follow <a href="https://blender.stackexchange.com/questions/205653/cut-mesh-into-two-objects-along-selected-edge">this</a>
+</p>
 
 <fieldset>
     <legend><h1>subtracting one object from another</h1></legend>
@@ -521,12 +543,21 @@
 
 </fieldset>
 
+<h2>specific objects</h2>
+<ul>
+    <li><a href="https://www.youtube.com/watch?v=hLygo9CCUs8">pillow</a></li>
+</ul>
+
 <h2>rigging and animation</h2>
 
 <ul>
+    <li><a href="https://blender.stackexchange.com/questions/171107/rename-action-in-blender-2-8">rename an animation</a></li>
+    <li><a href="https://blender.stackexchange.com/questions/241308/is-it-possible-to-change-the-parent-of-a-bone-mid-animation">change parent of a bone mid animation</a></li>
+    <li><a href="https://www.youtube.com/watch?v=saWUIoVaqjc">low poly character rigging</a></li>
     <li>https://www.youtube.com/watch?v=4z7G4TyKE9g</li>
     <li>https://www.youtube.com/watch?v=mJycDNmHtkg</li>
     <li>https://www.youtube.com/watch?v=9xAumJRKV6A</li>
+    <li><a href="https://www.youtube.com/watch?v=e-g10ntbiJM">fingers</a></li>
 </ul>
 
 

@@ -1,22 +1,48 @@
-<p>
-    Here's how I setup cpp for development on mac
-</p>
+<h1>Installing Git</h1>
 
+<h2>Xcode</h2>
+<p>Apple ships a binary package of Git with <a href="https://developer.apple.com/xcode/">Xcode</a>.</p>
 
-<ul>
-    <li>
-        download brew
-    </li>
-    <li>
-        if you plan on using neovim with colors, probably get a better terminal like <code>kitty</code>
-    </li>
-    <li>
-        if you plan on using neovim with colors, probably get a better terminal like <code>kitty</code> with <code>brew install kitty</code>
-    </li>
-    <li>
-        get conan, a package manager for cpp packages <code>brew install conan</code>
-    </li>
-    <li>
-       get cmake  
-    </li>
-</ul>
+<h2>Homebrew</h2>
+<p>Install <a href="https://brew.sh/">homebrew</a> if you don't already have it, then:</p>
+<pre><code>brew install git</code></pre>
+
+<h1>Install Conan</h1>
+
+<h2>Python (Recommended as python is needed)</h2>
+<pre><code>pip install conan</code></pre>
+
+<h2>Homebrew</h2>
+<pre><code>brew install conan</code></pre>
+
+<h2>Adding a Profile</h2>
+<p>Once Conan is installed create a profile:</p>
+<pre><code>conan profile detect</code></pre>
+
+<h1>Install CMake</h1>
+<pre><code>brew install cmake</code></pre>
+
+<h1>Setting up SSH Connection</h1>
+
+<h2>Generate a new SSH Key</h2>
+<p>Run the command below with your GitHub email:</p>
+<pre><code>ssh-keygen -t ed25519 -C "your_email@example.com"</code></pre>
+
+<h1>GitHub</h1>
+
+<h2>Clone Target Repo</h2>
+<pre><code>git clone --recurse-submodules -j8 git://github.com/foo/bar.git</code></pre>
+<p><strong>Note:</strong> -j8 is an optional performance optimization that became available in version 2.8, and fetches up to 8 submodules at a time in parallel — see <code>man git-clone</code>.</p>
+
+<h1>Installing and Building Files</h1>
+<p>On a fresh pull from GitHub, run the following in the root directory:</p>
+<pre><code>conan install . --build=missing</code></pre>
+
+<p>Use CMake to build the files with:</p>
+<pre><code>cmake --preset conan-release</code></pre>
+<pre><code>cmake --build --preset conan-release</code></pre>
+
+<p>Now you can run the build:</p>
+<pre><code>./mwe_mac-example</code></pre>
+
+<p>Shoutout to <a href="https://www.michochieng.com/">Mich</a> for putting this together</p>
