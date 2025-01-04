@@ -2,5 +2,7 @@
   Sometimes in files I want to run operations on a bunch of numbers such as adding an offset to all numbers maching a regex, to do this you can run a command like this
 </p>
 <pre>
-  <code>:%s/"x":\(\d\+\)/"x":\=1024-submatch(1)/g</code>
+  <code>
+    :%s/\v"x":(\d+)/\="\"x\":".(1024-submatch(1))/g
+  </code>
 </pre>
