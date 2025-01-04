@@ -1,0 +1,21 @@
+<p>
+  With many things in programming concepts will seem foreign and you may not even understand why certain constructs exist. Usually the reason why you don't understand yet is that you haven't gotten yourself into enough situations that arise from more code piling up over time. For me an example of this was namespaces, here's why you should use them.
+</p>
+
+<p>
+  Suppose you're working in <code>main.cpp</code> and you're starting to import more and more files, around the 20 file import mark you might start looking at functions, and thinking what does that do again? You might think that this means your function naming skills need improvement, but usually this is not the case, as when you name your functions in their own file, your context is focused on this piece of functionality, so in that context the function name is fine, the problem starts to creep in when you import many files because it's mixing the context of multiple files, and now those namings might not uniquely identify the function.
+</p>
+
+<h2>example</h2>
+<p>
+  One example of this would be if you have a <code>SoundBank</code> system which stores sounds and can play them back to you, you have a function called `reset_bank`, and that makes sense in the context of the sound bank, moreover it would redundant to call this function <code>sound_bank_reset_bank</code> so you move on, and import <code>sound_bank.hpp</code> into <code>main.cpp</code>.
+</p>
+<p>
+  You're working on a river scene and you are setting up some objects that are by the water, after the animation is done you need to remove all the objects from the river bank, so you make the function <code>clear_bank</code>, so you move on and import this function into <code>main.cpp</code>. But now in main you have <code>reset_bank</code> and <code>clear_bank</code>, if those are class members then you're probably fine, but if they're regular old functions, then it will probably take you a second to resolve this "collision" via their signature, but never the less the more files you import the more "context collisions" you start to get. 
+</p>
+<p>
+  To recap, member functions to classes are easily differentiable so long as the base varaible of the class is named well, regular old functions are somewhat easily differentiable, so long as there are not many files that use words that having different meaning in different contexts, they can be further differentiated by their signature as long as the variables being passed in are named well. In any case if you have an IDE or another system like a language server by going to definition you can clear up all confusion. 
+</p>
+<p>
+  While all of the above is true, being able to look at code and know what it does instantly without having to goto definition and poke around has value, also knowing where something exists helps keep a programmer sane, for me at least if there are functions and I need to use goto definition to figure out where it came from usually means that you don't know the codebase that well yet and make me feel less confident about my next move. While namespaces are not necessary they help stop these context collsions on regular old functions because you immediately know what context the function lives in without having to verify the signature and also help me feel more confident about the code.
+</p>
