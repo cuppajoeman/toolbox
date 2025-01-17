@@ -1,14 +1,17 @@
-    <h1>OpenGL Texture Units and Samplers</h1>
-    <p>When using multiple textures in a shader, you need to bind each texture to a different texture unit. Each texture unit acts as a slot where you can attach a texture, and you will need to ensure that your shader can sample from each texture unit accordingly.</p>
+<h1>OpenGL Texture Units and Samplers</h1>
 
-    <h2>Example: Drawing a Crate with Diffuse and Specular Maps</h2>
-    <p>Let's expand on the example of drawing a crate with both a diffuse map (base color) and a specular map (shininess). Here’s how you would handle this in OpenGL:</p>
+<p>Before getting started here I recommend reading <a href="https://math.hws.edu/graphicsbook/c6/s4.html">this article</a> as well if you're still confused.</p>
 
-    <h3>1. Load and Bind Textures</h3>
-    <p>You need to load your textures (diffuse and specular) and bind them to different texture units. For this example, we'll use texture units <code>GL_TEXTURE0</code> for the diffuse map and <code>GL_TEXTURE1</code> for the specular map.</p>
+<p>As mentioned <b>the texture unit is the processor; the texture object holds the data that is processed</b> and for each image you want to use in your shader you need a texture unit, and thus you need to bind each texture to a different texture unit. Each texture unit acts as a slot where you can attach a texture, and you will need to ensure that your shader can sample from each texture unit accordingly.</p>
 
-    <h4>Load Textures</h4>
-    <pre><code>#include &lt;stb_image.h&gt;
+<h2>Example: Drawing a Crate with Diffuse and Specular Maps</h2>
+<p>Let's expand on the example of drawing a crate with both a diffuse map (base color) and a specular map (shininess). Here’s how you would handle this in OpenGL:</p>
+
+<h3>1. Load and Bind Textures</h3>
+<p>You need to load your textures (diffuse and specular) and bind them to different texture units. For this example, we'll use texture units <code>GL_TEXTURE0</code> for the diffuse map and <code>GL_TEXTURE1</code> for the specular map.</p>
+
+<h4>Load Textures</h4>
+<pre><code>#include &lt;stb_image.h&gt;
 
 // Load diffuse texture
 GLuint diffuseTexture;
