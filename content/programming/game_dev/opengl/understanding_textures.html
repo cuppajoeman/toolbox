@@ -56,6 +56,7 @@ glBindTexture(GL_TEXTURE_2D, diffuseTexture);
 glActiveTexture(GL_TEXTURE1);
 glBindTexture(GL_TEXTURE_2D, specularTexture);
 </code></pre>
+<div class="warning">note that if you don't do the above it'll probably be the case that one of the images will load up, this is because the default value is usually 0 in the sampler and so it grabs whatever is in that texture unit, and so things might just happen to work out out of chance</div>
 
     <h3>2. Set Up Shader Program</h3>
     <p>Compile and link your shader program:</p>
