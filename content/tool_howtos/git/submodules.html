@@ -72,6 +72,17 @@ git submodule update
     Don't read these command as magic incantations to solve all your problems, for further understanding run <code>man git submodule</code>
 </p>
 
+<h2>going deep</h2>
+<p>
+    By default most of the git submodule commands only operate one layer deep, so for example if you're in a git directory which has submodules which themselves contain submodules, then running git submodule update won't updated the nested submodules, so in that case run this:
+</p>
+
+<pre>
+    <code>
+git submodule update --init --recursive
+    </code>
+</pre>
+
 <h1>mistakes</h1>
 
 <h2>ssh submodules, github organizations and collaborators</h2>
