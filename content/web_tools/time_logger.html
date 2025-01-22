@@ -1,5 +1,6 @@
 <h1>Timer Logger</h1>
-<div class="timer" style="font-size: 3rem; margin-bottom: 20px;">00:00:00</div>
+<div class="timer" style="font-size: 3rem; margin-bottom: 10px;">00:00:00.000</div>
+<div class="status" style="font-size: 1.5rem; margin-bottom: 20px;">Status: <span id="timer-status" style="color: red;">Stopped</span></div>
 <p>Press <strong>Space</strong> to start/stop and log times. Press <strong>Enter</strong> to stop the timer.</p>
 <div class="log" style="margin-top: 20px; font-size: 1.2rem;">
     <h2>Logged Times:</h2>
@@ -11,29 +12,35 @@
     let startTime;
     let isRunning = false;
     const timerDisplay = document.querySelector('.timer');
+    const statusDisplay = document.getElementById('timer-status');
     const logList = document.getElementById('time-log');
 
-    // Format time in HH:MM:SS
+    // Format time in HH:MM:SS.mmm
     function formatTime(ms) {
         const totalSeconds = Math.floor(ms / 1000);
         const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
         const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
         const seconds = String(totalSeconds % 60).padStart(2, '0');
-        return `${hours}:${minutes}:${seconds}`;
+        const milliseconds = String(ms % 1000).padStart(3, '0');
+        return `${hours}:${minutes}:${seconds}.${milliseconds}`;
     }
 
     // Start the timer
     function startTimer() {
         startTime = Date.now();
+        statusDisplay.textContent = "Running";
+        statusDisplay.style.color = "green";
         timerInterval = setInterval(() => {
             const elapsed = Date.now() - startTime;
             timerDisplay.textContent = formatTime(elapsed);
-        }, 1000);
+        }, 10); // Update every 10 milliseconds for smooth display
     }
 
     // Stop the timer
     function stopTimer() {
         clearInterval(timerInterval);
+        statusDisplay.textContent = "Stopped";
+        statusDisplay.style.color = "red";
     }
 
     // Log the current time
