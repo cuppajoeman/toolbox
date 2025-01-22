@@ -1,0 +1,65 @@
+<h1>Timer Logger</h1>
+<div class="timer" style="font-size: 3rem; margin-bottom: 20px;">00:00:00</div>
+<p>Press <strong>Space</strong> to start/stop and log times. Press <strong>Enter</strong> to stop the timer.</p>
+<div class="log" style="margin-top: 20px; font-size: 1.2rem;">
+    <h2>Logged Times:</h2>
+    <ul id="time-log" style="list-style-type: none; padding: 0;"></ul>
+</div>
+
+<script>
+    let timerInterval;
+    let startTime;
+    let isRunning = false;
+    const timerDisplay = document.querySelector('.timer');
+    const logList = document.getElementById('time-log');
+
+    // Format time in HH:MM:SS
+    function formatTime(ms) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(totalSeconds % 60).padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+    // Start the timer
+    function startTimer() {
+        startTime = Date.now();
+        timerInterval = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            timerDisplay.textContent = formatTime(elapsed);
+        }, 1000);
+    }
+
+    // Stop the timer
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    // Log the current time
+    function logTime() {
+        const elapsed = Date.now() - startTime;
+        const formattedTime = formatTime(elapsed);
+        const listItem = document.createElement('li');
+        listItem.textContent = formattedTime;
+        logList.appendChild(listItem);
+    }
+
+    // Handle keyboard input
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+            event.preventDefault(); // Prevent scrolling on Space key
+            if (!isRunning) {
+                startTimer();
+                isRunning = true;
+            } else {
+                logTime();
+            }
+        } else if (event.code === 'Enter') {
+            if (isRunning) {
+                stopTimer();
+                isRunning = false;
+            }
+        }
+    });
+</script>
