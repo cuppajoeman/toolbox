@@ -1,0 +1,65 @@
+<p>
+  We'll be talking about looping in programming, not just your usually for loops that complete their task quite quickly and move along, but while loops that come together together to form an interactive program which exists over time.
+</p>
+
+<h2>fixed frequency loops (FFL)</h2>
+
+<p>
+  We say that a while loop is <b>running at a frequency F Hz</b> if each iteration of the while loop takes approximately 1 / F seconds to complete on each iteration. Additionally we will call a loop which runs at a frequency a <b>fixed frequency loop (FFL)</b>
+</p>
+
+<p>
+  If you just make an empty `while (true)` loop and run it, it will start running at a frequency which is less than the max possible frequency which would be the clock speed of your CPU, additionally at this speed there will not be much room for anyting else to be run on the cpu, and thus by using other programs on your computer the rate of this loop will reduce. 
+</p>
+
+<p>
+  If we want to have a for loop where we can designate its frequency then we need some logic to do so.
+</p>
+
+<h2>sleep based FFLs (SBFFL)</h2>
+<p>
+  These loops manage to run at a frequency by having a target frequency F Hz, then computing P = 1 / F which is the duration in seconds of one cycle, then running the loop, and measuring how long that took, and suppose it took X seconds, then the remaining time budget is given by P - X, and so long as that value is positive, then we sleep for P - X seconds.
+</p>
+<p class="warning">
+  While sleep based loops are nice, most of the time you will not be wanting to sleep, if you're making an interactive program and you are rendering things you'll probably be wanting to iterate at least as fast as the monitors refresh rate as you're taking advantage of their hardware to the fullest degree. Additionally a downfall of SBFFLs are that you cannot really have multiple systems running at frequencies concurrently unless you start using multithreading for your program, you usually want to use multithreading when the processing of your program would benefit from this and not just because you need multiple subsystems running at different rates, so we introduce a new type of loop.
+</p>
+<h2>time accumulating FFLs (TAFFL)</h2>
+<p>
+  A time accumulating FFL is a loop which attempts to run at a fixed frequency by mesuring time deltas since last time the code was reached and if the amount of time exceeds P, then the loops body is run. From the get go this implies that a TAFFL requires a supporting outer while loop, and there will be restrictions on the outer loop.
+</p>
+<p>
+  Another benefit to TAFFLs are that you can run multiple of them at once without having to use multiple threads, they are also easy to implement they just know when the last time they were called, and if you try to call it from the outer loop the body only runs if the time exceeds the period.
+</p>
+<h3>outer loop must run faster</h3>
+<p>
+  The first restriction on the outer loop of a TAFFL is that it should be running at a frequency that is greater than the inner loop, for example if the outer loop is running at 1Hz, and the TAFFL is supposed to run at 2Hz, we have a problem because a TAFFL only gets the chance to run its code at the rate that the outer loops body is iterated, therefore the TAFFL will run at 1Hz. 
+</p>
+
+<h3>loops aren't perfect</h3>
+<p>
+<b>Eventually Collision Rule (ECR)</b>: Given two frequencies which are different, then in theory they will eventually tick at the same time, the reason this is true is because on a computer we can only represent rational numbers, and thus we multiply each side by the lcm of the denominators and obtain an integer ratio and then use the lcm of those ratios to determine when the two frequencies will collide.
+</p>
+<p class="warning">
+  When working with real loops on computers and not theoretical frequencies, ECR becomes even more prevalent, when given two frequencies which are identical, but are run in two different loops, each of which counts its time independently, its most likely the case that the two loops will drift and eventually tick at the same time, in general when we have our loops we just have to be in the mindset that they are not perfect but will be doing their best, and having these types of issues
+</p>
+
+<h3>outer loop determines accuracy</h3>
+<p>
+  Coming back to TAFFLs, another restriction is that the outer loops frequency determines how accurate your TAFFL will be. So suppose the outer loop runs at frequency X Hz and the TAFFL wants to run at frequency Y Hz, based on ECR, there will be a point in time at which the outer loop will iterate right before the TAFFL would have iterated, so suppose that the TAFFL would have iterated at time T, but we check the TAFFLs condition at time T - epsilon where epsilon is a small number, then the condition is false, but now we have to wait a duration of 1 / X which is the period of the outer loop, and then the TAFFL will not call its body until 1 / Y + 1 / X, when it should call it every 1 / Y seconds. The take away here is that a TAFFL will run its logic at the requested frequency with error at most the period of the outer loop (the duration of one extra outer loop iteration)
+</p>
+<p>
+  One way to slightly improve accuracy is to compare how much error running the TAFFLE body right now would induce vs running it next tick, if the current amount of time since the last TAFFL iteration is given by A, and the period of the TAFFL is P = 1 / Y, then if the amount of time is closer to the period as compared to amount of time since the last TAFFLE on the next iteration which is given by A + the amount of time that the outer loop takes (1 / X), that is: abs(P - A) < abs(A + (1/X) - P), we should just iterate on this iteration rather than waiting until the next iteration, then cuts down on the maximum error bringing it to (1/X) / 2. 
+</p>
+<p>
+  Because the outer loop determines the error of the TAFFLE, and the maximum error is given by 1 / X, then in order to minimize the error an easy way to do so is to simply increase X and make the outer loop run faster, in a usual TAFFLE setup you use a SBFFL on the outer loop which runs alot faster than the inner loop so that the error is minimal, and then inside the outer loop you can put as many TAFFLE based systems as you need.
+</p>
+<h3>paying time forward for more accuracy</h3>
+<p>
+  As mentioned, TAFFLE based loops compute the time since the last time they iterated and then if this exceeds the period, it runs the logic, but suppose the period of the TAFFL is given by P, and then the amount of time since the last iteration is A, if A > P, then if we simply reset A to 0 after we run the logic, then our lateness A - P will not be accounted for making the loop run slower than we requested, thus in order fix this slower than requested problem, for the next iteration we need ot make sure that we remove the late time, so that we want to make sure that we run the next loop if under the following condition.
+</p>
+<p>
+   First we denote the new amount of time since the last iteration (denoted by CA for current amount of time), and the amount of time waited on the last iteration as LA, then our condition on the current iteration to run the TAFFL body is if (CA > (P - (LA - P)) <=> CA > 2P - LA. This equation makes it so that if we were late on the last iteration we need to be early on the next iteration allow us to not be so slow.
+</p>
+<p class="todo">
+  I feel like there are more intricacies to how paying time forward works, but I'm simply not sure.
+</p>
