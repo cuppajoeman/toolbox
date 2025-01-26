@@ -1,51 +1,57 @@
+<p>
+    A bit (short for binary digit) is the smallest unit of data in a computer. It can represent a 0 or 1, forming the basis of binary code. A byte consists of 8 bits and is used to represent a single character, such as a letter or a symbol. For example, the letter 'A' in ASCII is stored as one byte.
+</p>
+
+<h2>size abbreviations</h2>
 <ul>
-    <li>A bit (short for binary digit) is the smallest unit of data in a computer. It can represent a 0 or 1, forming the basis of binary code.</li>
-    <li>A byte consists of 8 bits and is used to represent a single character, such as a letter or a symbol. For example, the letter 'A' in ASCII is stored as one byte.</li>
-    <li>Data sizes and their approximate values:
-      <ul>
-          <li>
-              1 Kilobyte (KB): 1,000 bytes<br>
-              1 Kibibyte (KiB): 1,024 bytes
-          </li>
-          <li>
-              1 Megabyte (MB): 1,000 Kilobytes (KB)<br>
-              1 Mebibyte (MiB): 1,024 Kibibytes (KiB)
-          </li>
-          <li>
-              1 Gigabyte (GB): 1,000 Megabytes (MB)<br>
-              1 Gibibyte (GiB): 1,024 Mebibytes (MiB)
-          </li>
-          <li>
-              1 Terabyte (TB): 1,000 Gigabytes (GB)<br>
-              1 Tebibyte (TiB): 1,024 Gibibytes (GiB)
-          </li>
-          <li>
-              1 Petabyte (PB): 1,000 Terabytes (TB)<br>
-              1 Pebibyte (PiB): 1,024 Tebibytes (TiB)
-          </li>
-      </ul>
-    </li>
-    <li>Mibibytes (MiB) vs Megabytes (MB):
-        <ul>
-            <li>A byte size is called decmial when it is a power of 10, and binary when it is a power of two</li>
-            <li>Note that sequential byte sizes are defined in terms of a constant multiple of the previous byte size, and that we only define a kilobyte in terms of regular old bytes, then the next size megabyte 1000 kilobytes, since a kebibyte is a binary size, then we define the next sequential binary byte size as 1024 = 2^10 kebibytes</li>
-            <li>For each type of byte it has the form WXYZbyte where WXYZ are stand-in variables for the actual characters such as WXYZ = mega etc... given a decimal byte size of the form WXYZbyte, then its decimal counterpart is given by WXbibyte</li>
-            <li>The decimal system (base 10) is used by manufacturers to simplify sizes for general users.</li>
-            <li>The binary system (base 2) aligns with how computers process data and is used in operating systems and memory specifications.</li>
-        </ul>
-    </li>
-    <li>Common C++ data types and their typical sizes (may vary by system):
-        <ul>
-            <li>char: 1 byte (8 bits).</li>
-            <li>short: 2 bytes (16 bits).</li>
-            <li>int: 4 bytes (32 bits).</li>
-            <li>long: 4 or 8 bytes (32 or 64 bits, depending on the system).</li>
-            <li>long long: 8 bytes (64 bits).</li>
-            <li>float: 4 bytes (32 bits).</li>
-            <li>double: 8 bytes (64 bits).</li>
-            <li>bool: 1 byte (8 bits).</li>
-        </ul>
-    </li>
-    <li>The difference between decimal and binary measurements exists because decimal prefixes (e.g., kilo, mega) are standard in the SI system, while binary prefixes (e.g., kibi, mebi) are used in computing for precision.</li>
+  <li>
+      1 Kilobyte (KB): 1,000 bytes, 10^3 bytes<br>
+      1 Kibibyte (KiB): 1,024 bytes, 2^10 bytes
+  </li>
+  <li>
+      1 Megabyte (MB): 1,000 Kilobytes (KB), 10^6 bytes<br>
+      1 Mebibyte (MiB): 1,024 Kibibytes (KiB), 2^20 bytes 
+  </li>
+  <li>
+      1 Gigabyte (GB): 1,000 Megabytes (MB), 10^9 bytes<br>
+      1 Gibibyte (GiB): 1,024 Mebibytes (MiB), 2^30 bytes
+  </li>
+  <li>
+      1 Terabyte (TB): 1,000 Gigabytes (GB), 10^12 bytes<br>
+      1 Tebibyte (TiB): 1,024 Gibibytes (GiB), 10^40 bytes
+  </li>
+  <li>
+      1 Petabyte (PB): 1,000 Terabytes (TB), 10^15<br>
+      1 Pebibyte (PiB): 1,024 Tebibytes (TiB), 10^50
+  </li>
 </ul>
 
+<h2>why there are two different size names (one with the i and one without, eg MiB vs MB)</h2>
+<ul>
+    <li>A byte size is called decmial when it is a power of 10, and binary when it is a power of two</li>
+    <li>Note that sequential byte sizes are defined in terms of a constant multiple of the previous byte size, and that we only define a kilobyte in terms of regular old bytes, then the next size megabyte 1000 kilobytes, since a kebibyte is a binary size, then we define the next sequential binary byte size as 1024 = 2^10 kebibytes</li>
+    <li>For each type of byte it has the form WXYZbyte where WXYZ are stand-in variables for the actual characters such as WXYZ = mega etc... given a decimal byte size of the form WXYZbyte, then its decimal counterpart is given by WXbibyte</li>
+    <li>The decimal system (base 10) is used by manufacturers to simplify sizes for general users.</li>
+    <li>The binary system (base 2) aligns with how computers process data and is used in operating systems and memory specifications.</li>
+</ul>
+<p class="note">
+    The difference between decimal and binary measurements exists because decimal prefixes (e.g., kilo, mega) are standard in the SI system, while binary prefixes (e.g., kibi, mebi) are used in computing for precision.
+</p>
+
+<h2>wait there is another naming convention? (MB vs Mb)</h2>
+<p>
+    Yes there is, when you specify a lowercase b the size is measured in bits rather than in bytes, a common use of this is measured on the network, for example I just tested my internet speed and it was measured at 97 Mbps so that means 
+</p>    
+
+
+<h3>Common C++ data types and their typical sizes (may vary by system)</h3>
+<ul>
+    <li>char: 1 byte (8 bits).</li>
+    <li>short: 2 bytes (16 bits).</li>
+    <li>int: 4 bytes (32 bits).</li>
+    <li>long: 4 or 8 bytes (32 or 64 bits, depending on the system).</li>
+    <li>long long: 8 bytes (64 bits).</li>
+    <li>float: 4 bytes (32 bits).</li>
+    <li>double: 8 bytes (64 bits).</li>
+    <li>bool: 1 byte (8 bits).</li>
+</ul>
