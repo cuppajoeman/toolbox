@@ -83,6 +83,14 @@ git submodule update --init --recursive
     </code>
 </pre>
 
+To do this on each submodule in your project run 
+
+<pre>
+    <code>
+git submodule foreach --recursive 'git submodule update --init --recursive'
+    </code>
+</pre>
+
 <h1>mistakes</h1>
 
 <h2>ssh submodules, github organizations and collaborators</h2>
