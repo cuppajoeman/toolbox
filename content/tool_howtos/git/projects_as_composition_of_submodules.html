@@ -58,3 +58,13 @@ Note: <i>when writing code as a composition submodules I've never encountered a 
 Root repository commit:
 - Commit: "Updated submodules to include fixes and improvements: logging utility, data processing algorithm, and UI framework"
 </pre>
+
+<h2>updating an outdated project</h2>
+<p>
+    Since your submodules are isolated pieces of code that do one thing well, then you should be able to update any submodule to improve the behavior of it in your system or to get new features that have been added, in an old project you may want to do an overhaul, if that's the case then run this
+</p>
+<pre>
+    <code>
+git submodule foreach --recursive 'git checkout main && git pull'
+    </code>
+</pre>
