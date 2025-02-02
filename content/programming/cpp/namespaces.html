@@ -19,3 +19,11 @@
 <p>
   While all of the above is true, being able to look at code and know what it does instantly without having to goto definition and poke around has value, also knowing where something exists helps keep a programmer sane, for me at least if there are functions and I need to use goto definition to figure out where it came from usually means that you don't know the codebase that well yet and make me feel less confident about my next move. While namespaces are not necessary they help stop these context collsions on regular old functions because you immediately know what context the function lives in without having to verify the signature and also help me feel more confident about the code.
 </p>
+
+<h2>completion</h2>
+<p>
+  Another good reason is autocompletion, when you have a file which as functions defined without a namespace, then when you include that file the only way you'll know what functions are available is by starting to type a character and it so happens to match the first character of one of the functiosn and then you would get an autocomplete prompt for that function, while most of the time you can guess the first character of a functions sometimes you can't and that's frustrating because then you have to go to the header file and then find the function and then come back. 
+</p>
+<p>
+  When you use namespaces completions get better because you type the name of the namespace and then you will automatically be able to see all the relevant functions, which is a nice speedup.
+</p>
