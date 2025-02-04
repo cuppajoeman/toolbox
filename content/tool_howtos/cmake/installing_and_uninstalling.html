@@ -1,0 +1,89 @@
+<p>
+  Installing programs with cmake is a little daunting at first until you get started, right now I create a <code>CMakeLists.txt</code> like this:
+</p>
+
+<pre>
+  <code>
+cmake_minimum_required(VERSION 3.10)
+project(my_program)
+
+add_executable(${PROJECT_NAME} main.cpp)
+
+option(BUILD_FOR_INSTALL "Set if the program is being built for installation" OFF)
+target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_FOR_INSTALL=${BUILD_FOR_INSTALL})
+
+# Install the executable
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+
+# Install the entire assets directory
+install(DIRECTORY assets/ DESTINATION share/${PROJECT_NAME}/assets)
+
+# Add uninstall target
+if(EXISTS "${CMAKE_SOURCE_DIR}/cmake_uninstall.cmake")
+  include("${CMAKE_SOURCE_DIR}/cmake_uninstall.cmake")
+else()
+  configure_file(
+    "${CMAKE_SOURCE_DIR}/cmake_uninstall.cmake.in"
+    "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake"
+    @ONLY
+  )
+  add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake"
+  )
+endif()
+  </code>
+</pre>
+
+<p>
+  Then in the project root next to the <code>CMakeLists.txt</code> I have <code>cmake_uninstall.cmake.in</code>
+</p>
+
+<pre>
+  <code>
+if(NOT DEFINED CMAKE_INSTALL_PREFIX)
+  set(CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "Install path prefix" FORCE)
+endif()
+
+# Uninstall all installed files
+file(READ "${CMAKE_BINARY_DIR}/install_manifest.txt" INSTALL_FILES)
+string(REPLACE "\n" ";" INSTALL_FILES ${INSTALL_FILES})
+
+foreach(FILE ${INSTALL_FILES})
+  string(STRIP ${FILE} FILE)  # Remove leading/trailing whitespace
+  if(EXISTS ${FILE})
+    message(STATUS "Removing file: ${FILE}")
+    file(REMOVE ${FILE})
+  else()
+    message(WARNING "File does not exist: ${FILE}")
+  endif()
+endforeach()
+
+  </code>
+</pre>
+
+<h2>building for development</h2>
+<pre>
+  <code>
+sudo cmake -S . -B build
+sudo cmake --build build
+./build/my_program
+  </code>
+</pre>
+
+<h2>installing</h2>
+
+<pre>
+  <code>
+cmake -S . -B build -DBUILD_FOR_INSTALL=ON
+sudo cmake --build build
+sudo cmake --install build
+my_program
+  </code>
+</pre>
+
+<h2>uninstalling</h2>
+<pre>
+  <code>
+sudo cmake --build build/ --target uninstall
+  </code>
+</pre>
