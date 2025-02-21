@@ -1,0 +1,25 @@
+<p>
+  We'll define the scope of a variable to be how many lines in the codebase it is legal to modify the memory associated with that variable. The reason that this is a good metric is that when the scope of a variable is larger it actually implies that your code is more susceptible to bugs, the reasoning is that the greater the scope the greater chance you will break down and want to simply modify the memory of a variable because it is easy to do, when you make this easy choice, you then can lose track of what parts of the code modify the interal state of the variable, causing bugs where you have to explicitly search for the usage of that variable, as it will not be present in the signature of that function most of the time.
+</p>
+
+<p>
+  To help understand that definition a little better, then lets go through some examples, the first example is if your code base is small and will never get larger than having variables whose scope is the entire program is not really a big deal because for any variable HMLCMM(v) is a small number.
+</p>
+
+<p>
+  So the scope of a variable really only matters when the scope is large, which can only ever happen in complex and large projects, so assume we are in the context of a large project already having 2000+ lines of code.
+</p>
+
+<p>
+  When you make a global variable this is only a bad thing because it scope is the entire project which is bad because it would allow you to at any moment modify that variable anywhere and then not be able to figure out what modifies what in the code leading to bad bugs. 
+</p>
+
+<h1>solutions</h1>
+
+<p>
+  Ok, so having large scope is bad, how do we fix it? The first approach is to pass everything by reference into the functions that need it, but then in your `main` function it implies that you'll have to create all of your variables there, which can also be a pain.
+</p>
+
+<p>
+  The only solution is to create classes whose only pupose is to encapsulate the required data to do something and make some if its members private
+</p>
