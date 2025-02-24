@@ -1,0 +1,103 @@
+<p>
+  The way perspective works is completely defined by the physical way the eye works, an idealized view of how it works is a pinhole camera, light can only go through the pinhole if the direction of the light gets through the hole, if you think about it hard enough you can see that a cone of light gets accepted through the hole. This means that when you see something it's because the object is within this invisible cone, if it wasn't then the light from it could not have entered the hole.
+</p>
+
+<h1>tape spin</h1>
+
+<p>
+  Now suppose we get a piece of straight black tape with length 100m, and then walk forward while placing it onto the ground in a straight line, we then place a near ball at 50m and then a far ball at 100m on the tape and we return back to the origin, if we then turn 180 degrees so that the tape is behind us and then start slowing doing a 360 rotaiton at a uniform rotation speed, then we will first see the far ball appear, then the near ball appear, then the near ball disappear and then the far ball disapear. 
+</p>
+
+<p>
+  The reason this makes sense is that the back of the cone has larger cross sections, and so the part of the tape that is further away from the camera will intersect with the cone before the closer part of the tape. 
+</p>
+
+<h1>tape train</h1>
+<p>
+  Now we run the same experiment but this time we are on a train, perpendicular to the tracks we put out lines of tape with equal spacing, and again put near balls at 50m and far balls at 100m on each piece of tape. If we then look out the window of the train while it is in motion, we will see near balls whizzing by but far balls slowly moving by, so why is this the case?
+</p>
+<p>
+  If we stare straight out the window, then when the tape is right between our eyes the near and far ball will be lined up, if we focus on this exact piece of tape, and we go to an earlier point of time , then the angle between our gaze and the piece of tape will be given by some angle theta because straight lines obtaine some slope when forced into a cone, then the perceived distance from our gaze line to the near ball is given by sin(theta) * 50, and the distance from our gaze line to the far ball is given by sin(theta) * 100 (they form right angle triangles when the ball point is projected onto the gaze line), thus as the train moves at a constant speed, in order for the blue and red ball to hit the gaze line at the same time, it must be that the far ball must move slower than the red ball, so that they get there at the same time. In reality from the point of view of the train both balls are moving at the same speed relative to it, its only in the perspective view that the illusion of different speed is seen.
+</p>
+<p>
+  Also note that if we attached a further ball at 150m on each tape, but then used a telescope, then we can make the far ball take the role of the near ball and the further ball take the role of the far ball, so long as the duration of the far spent within the telescope cone is equal to the duration that the near ball spent within our optical cone. An equal duration is also equivalent to the cross section of the cone that that ball is associated with being the same as the one in the other situation.
+</p>
+
+<h1>rotating with different fovs</h1>
+<p>
+  Now suppose we are in the middle of a room on a spinning chair, with tape lines eminiating from the spinning chair and going out to the edge of the room (suppose it is a circular room), on each tape line we have a near ball, a mid ball and a far ball, on at 25, 50, 75 meters on each tape. 
+</p>
+<p>
+  As noted in the last example if we spin in our chair at a fixed rate then the the near ball moves fastest, the mid ball in the middle, and the far ball the slowest. One line of reasoning we had for this is that for each distance, we can take a cross section of the view cone and check the diameter of the circle obtained. We can explicitly determine this suppose we have a fov of 90, then, from the center gaze line to the edge of the cone it has an angle of 90/2 = 45 degrees, then we can determine the radius of the cross section of the cone as follows
+</p>
+
+<pre>
+                                                                                           
+                                                                    --|                  
+                                                                ---/  |                  
+                                                             --/      |                  
+                                                         ---/         |                  
+          tan(x) = opp / adj                          --/             |                  
+                                                   --/                |                  
+                                               ---/                   |                  
+                                            --/                       |                  
+                                        ---/                          |                  
+                                     --/                              |   opp (want to know)               
+                                 ---/                                 |                  
+                              --/                                     |                  
+                          ---/                                        |                  
+                       --/                                            |                  
+                   ---/                                               |                  
+                --/                                                   |                  
+             --/  \                                                   |                  
+         ---/      \  theta/2                                         |                  
+      --/          |                                                  |                  
+  ---/             /                                                  |                  
+-/--------------------------------------------------------------------|             
+
+				adj (known)
+</pre>
+
+<p>
+  Therefore we can deduce opp = tan(theta/2) * adj, so then the end to end diameter of that cross section would be twice this length. Thus the diameter of the cross section of the cone associated with 25meters out (the near ball) is given by tan(45) * 25 * 2, the mid ball is at 50m  so so its cross section diameter is tan(45) * 50 * 2, and the far ball has tan(45) * 75 * 2. If we only focus on the near and mid ball, then we see that the associated diameter of the near ball is half the size of the diameter of the mid ball, so it will appear as though the near ball is moving at twice the rate as the mid ball and the mid ball moves at a rate 2/3 of the far ball.
+</p>
+
+<h1>accounting for a chaning fov</h1>
+
+<p>
+  Now suppose we grab a telescope which has a fov of 30 degrees and start looking around the room with that, if before we were spinning around the room at 1 rotation per section, then now when we look around the room each ball appear to be moving much faster, this is because the cross section that each cone was associated with has been decreased by some factor, for example, now the associated diameter of the near ball at 25 meters is given by tan(15) * 25 * 2, which is a smaller value, meaning that the duration that it will stay in view is now shorter, meaning that it must travel faster enter and exit our view. 
+</p>
+<p>
+  Specifically if we are rotating at 1rotation per section, then the near ball will enter the view and then exit over a druation of tan(15) * 25 * 2 seconds which comes from the equation (rotation_speed * duration_in_view = distance <=> duration_in_view = distance / rotation_speed) (note this is technically off by a bit because the ball would be moving on the edge of a sphere, but good enough for now I think)
+</p>
+
+<p>
+  So how much slower will we have to rotate in order to make it appear as though all the objects are moving at the original speed? Well if we speed up our rotation by 2, then the duration that an object stays within view is halved. Therefore since our diameter has been scaled by a factor of tan(15) / tan(45) (also note that tan(45) = 1 and tan(30) = 0.57...) then we must decrease our rotation speed as it's gotten smaller, and specifically we must decrease our rotation speed exactly multiplying it by tan(30) / tan(45), as then the equation (duration_in_view = distance / rotation_speed) equates to (tan(15) * 25 * 2  / (tan(15) / tan(45))) = tan(45) * 25 * 2 meaning that the duration in view is back to equalling what is was before, therefore we have deduced the general equation to how the rotation speed needs to be modified. 
+</p>
+
+<h1>how to change sensitivity when you change fov</h1>
+<p>
+  All of the above was theoretical talk which helps us clearly think about the problem without the extra baggage of being in the context of a virtual game that runs on a computer, but all the theory that we discussed works on the computer too, sitting in a room and spinning on a chair is you looking around the 3d world in the game, instead of a viewing cone we have a frustrum, but all the same logic still holds, thus based on the equations discussed above we have this implementation:
+</p>
+
+<pre>
+  <code>
+
+#include &lt;cmath&gt; // For std::tan and M_PI
+
+float compute_new_sensitivity(float original_sensitivity, float original_fov, float new_fov) {
+    float original_fov_rad = original_fov * (M_PI / 180.0f);
+    float new_fov_rad = new_fov * (M_PI / 180.0f);
+
+    float half_original_fov = original_fov_rad / 2.0f;
+    float half_new_fov = new_fov_rad / 2.0f;
+
+    float tan_half_original_fov = std::tan(half_original_fov);
+    float tan_half_new_fov = std::tan(half_new_fov);
+
+    float new_sensitivity = original_sensitivity * (tan_half_new_fov / tan_half_original_fov);
+
+    return new_sensitivity;
+}
+  </code>
+</pre>
