@@ -1,0 +1,8 @@
+<p>
+  On windows be sure to do:
+</p>
+<pre>
+  <code>
+    conan install . -c:h "joltphysics/*":tools.cmake.cmaketoolchain:extra_variables='{"FLOATING_POINT_EXCEPTIONS_ENABLED": "OFF"}' --build="joltphysics/*"
+  </code>
+</pre>
