@@ -4,3 +4,6 @@
 <p class="note">
     Note that if an object does not use an any dynamically allocoated memory then <code>sizeof</code> returns what you expect, otherwise it will require you to manually deduce the memory footprint of that object. This explains why you can have a c style array and sizeof will return the actualy memory footprint but the same on vector will not.
 </p>
+<p>
+    Specifically the equation for the memory footprint accounting for both memory stored on the stack and heap is <code>sizeof(T) + size_of_owned_memory_on_heap</code>.
+</p>
