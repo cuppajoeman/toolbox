@@ -1,0 +1,16 @@
+<p>
+  When reading the code of programmers who understand the given language better, it's a great idea to learn from what they do. At the same time, I don't like blindly doing what others are doing without understanding why. Today, we'll be looking at why using <code>size_t</code> for indices into arrays is a good idea. 
+</p> 
+<q>
+  <code>std::size_t</code> can store the maximum size of a theoretically possible object of any type (including arrays). 
+</q> 
+<p class="warning">
+  As <a href="sizeof_vs_owned_memory.html">previously mentioned</a>, <code>sizeof(T)</code> is not the size we're talking about here. Instead, we mean the total amount of memory owned by the object, which includes both the stack and heap memory, i.e., its entire memory footprint. Let's call that <code>mem_fp(obj)</code>. Therefore, we can say that <code>mem_fp(obj) &lt;= max_size(size_t)</code>.
+</p>
+<h1>Why it's used for indexing</h1> 
+<p>
+  If you write a for loop like this: <code>for (int i = 0; i &lt; vec.size(); ++i)</code>, the type of <code>i</code> is <code>int</code>, and the other is <code>size_t</code>. This means a type conversion needs to occur, which is not ideal because conversions can introduce inefficiencies or errors, such as potential loss of data when converting from larger to smaller types.
+</p> 
+<p>
+  Additionally, some systems can hold more data in memory during program execution, which is the difference between 32-bit and 64-bit platforms. Due to this, <code>size_t</code> is used to represent the size of any object in memory, as it is platform-dependent and is guaranteed to be large enough to do so. Since any vector, regardless of its <code>mem_fp</code>, is an object, it is guaranteed that <code>size_t</code> can represent its <code>mem_fp</code>. Specifically, we have an equation for <code>mem_fp(v)</code>, where <code>v</code> is a <code>std::vector&lt;T&gt;</code>, which is given by <code>mem_fp(v) = v.size() * mem_fp(T)</code>. This implies that <code>v.size() &lt;= mem_fp(v)</code> (where equality only holds true when <code>mem_fp(T) = 1</code>). Since any valid index would be an element in the range <code>0, ..., v.size() - 1 &lt; max_size(size_t)</code>, it is guaranteed that no matter what index is computed, it will be a valid element of <code>size_t</code>. </p> <p> Because of the above paragraph, if you were to just use <code>int</code> or <code>unsigned int</code>, it's possible that the largest value of those types might not be able to reach the last index without overflowing because <code>int</code> and <code>unsigned int</code> may not be large enough to hold the maximum possible size of a large array, leading to overflow or undefined behavior. This is why <code>size_t</code> is preferred.
+  </p>
