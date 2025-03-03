@@ -1,3 +1,6 @@
 <p>
     In C++, <code>sizeof(T)</code> only gives the size of the type T itself, including the size of its members and pointers, but it does not account for dynamically allocated memory or resources managed outside the object (such as heap-allocated memory pointed to by pointers). Therefore if you want to know how much memory is being used up by an object you cannot rely on <code>sizeof</code>
 </p>
+<p class="note">
+    Note that if an object does not use an any dynamically allocoated memory then <code>sizeof</code> returns what you expect, otherwise it will require you to manually deduce the memory footprint of that object. This explains why you can have a c style array and sizeof will return the actualy memory footprint but the same on vector will not.
+</p>
