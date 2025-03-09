@@ -83,10 +83,11 @@ function generateFunction() {
         return;
     }
     
-    let undeclared_variables = extractUndeclaredVariables(code);
+    // Extract both declared and undeclared variables
+    let { undeclaredVariables } = extractUndeclaredVariables(code); // Destructure to get undeclaredVariables
 
     // Add 'T &' in front of each undeclared variable for parameters
-    let parameters = undeclared_variables.map(variable => `T &${variable}`).join(", ");
+    let parameters = undeclaredVariables.map(variable => `T &${variable}`).join(", ");
     console.log("Function Parameters:", parameters);
 
     // Wrap the code inside a function
