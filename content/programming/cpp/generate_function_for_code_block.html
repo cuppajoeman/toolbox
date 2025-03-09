@@ -13,21 +13,31 @@
 function extractUndeclaredVariables(cppCode) {
   // Regular expression to match variable declarations in C++
   const varRegex =
-    /\b(?:int|float|double|char|bool|long|short|unsigned|signed|std::string|const|auto|void)\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:\s*=\s*[^;]*)?\s*;/g;
+    /\b(?:int|float|double|char|bool|long|short|unsigned|signed|std::string|const|auto|void|T)\s+(?:\*&?|\s*)([a-zA-Z_][a-zA-Z0-9_]*)(?:\s*=\s*[^;]*)?\s*(?:;|\()/g;
 
   // Regular expression to capture object-like variable usages (e.g., k.v, obj.func())
   const objRegex = /\b([a-zA-Z_][a-zA-Z0-9_]*)\.(\w+)/g; // Capture k.v or obj.func()
-  
+
   // Regular expression to capture function calls and arguments (e.g., g.h(i, k))
   const functionCallRegex = /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(([^)]*)\)/g; // Capture function calls and arguments
+
+  // Regular expression to capture range-based for loop variable declarations (e.g., for (const auto &i : is))
+  const rangeForRegex =
+    /\bfor\s*\(\s*(?:const\s+)?auto\s*&\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:/g;
 
   let declaredVariables = new Set();
   let usedVariables = new Set();
   let match;
 
-  // Find all declared variables in the code (including 'auto')
+  // Find all declared variables in the code (including 'auto' and other types, and reference types)
   while ((match = varRegex.exec(cppCode)) !== null) {
     declaredVariables.add(match[1]); // Add variable name to declared variables
+  }
+
+  // Find all range-based for loop variables (e.g., for (const auto &i : is))
+  while ((match = rangeForRegex.exec(cppCode)) !== null) {
+    console.log(match[1]);
+    declaredVariables.add(match[1]); // Add the loop variable (e.g., "i") to declared variables
   }
 
   // Find all object-like variable usages (e.g., k.v) and add the base object name to usedVariables
@@ -55,9 +65,11 @@ function extractUndeclaredVariables(cppCode) {
     }
   });
 
-  return undeclaredVariables; // Return a list of undeclared variables
+  return {
+    undeclaredVariables: undeclaredVariables, // Return a list of undeclared variables
+    declaredVariables: Array.from(declaredVariables), // Return a list of declared variables
+  };
 }
-
 
 function generateFunction() {
     let functionName = document.getElementById("function_name").value.trim();
