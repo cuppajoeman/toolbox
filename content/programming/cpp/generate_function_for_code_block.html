@@ -1,0 +1,77 @@
+<label>Function Name:</label>
+<input style="width: 100%; margin: 10px 0; padding: 8px;" type="text" id="function_name" placeholder="Enter function name">
+
+<label>C++ Code:</label>
+<textarea style="width: 100%; margin: 10px 0; padding: 8px;" id="cpp_code" rows="10" placeholder="Paste your C++ code here"></textarea>
+
+<button onclick="generateFunction()">Generate Function</button>
+
+<h3>Generated Function:</h3>
+<pre id="output"></pre>
+
+<script>
+function extractUndeclaredVariables(cppCode) {
+  // Regular expression to match variable declarations in C++
+  const varRegex =
+    /\b(?:int|float|double|char|bool|long|short|unsigned|signed|std::string|const|auto|void)\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:\s*=\s*[^;]*)?\s*;/g;
+  
+  // Regular expression to capture variable usage inside an object (e.g., k.v)
+  const objRegex = /\b([a-zA-Z_][a-zA-Z0-9_]*)\.(\w+)\s*\(/g; // Match obj.func() calls
+  const variableUsageRegex = /\b([a-zA-Z_][a-zA-Z0-9_]*)\.(\w+)/g; // Capture k.v or obj.func()
+
+  let declaredVariables = new Set();
+  let usedVariables = new Set();
+  let match;
+
+  // Find all declared variables in the code
+  while ((match = varRegex.exec(cppCode)) !== null) {
+    declaredVariables.add(match[1]); // Add variable name to declared variables
+  }
+
+  // Find all object method calls like obj.func() and add the object name to usedVariables
+  while ((match = objRegex.exec(cppCode)) !== null) {
+    usedVariables.add(match[1]); // Add object name (e.g., "obj" from obj.func())
+  }
+
+  // Find all object-like variable usages (e.g., k.v) and add the object name to usedVariables
+  while ((match = variableUsageRegex.exec(cppCode)) !== null) {
+    usedVariables.add(match[1]); // Add the base object name (e.g., "k" from k.v)
+  }
+
+  // Find all used variables that were not declared
+  const undeclaredVariables = [];
+  usedVariables.forEach(variable => {
+    if (!declaredVariables.has(variable)) {
+      undeclaredVariables.push(variable);
+    }
+  });
+
+  return undeclaredVariables; // Return a list of undeclared variables
+}
+
+
+function generateFunction() {
+    let functionName = document.getElementById("function_name").value.trim();
+    let code = document.getElementById("cpp_code").value;
+
+    console.log("Function Name:", functionName);  // Debugging input
+    console.log("Original Code:", code);  // Debugging input
+
+    if (!functionName) {
+        alert("Please enter a function name.");
+        return;
+    }
+    
+    let undeclared_variables = extractUndeclaredVariables(code);
+
+    // Add 'T &' in front of each undeclared variable for parameters
+    let parameters = undeclared_variables.map(variable => `T &${variable}`).join(", ");
+    console.log("Function Parameters:", parameters);
+
+    // Wrap the code inside a function
+    let generatedCode = `void ${functionName}(${parameters}) {\n${code.trim()}\n}`;
+    console.log("Generated Code:", generatedCode);
+
+    document.getElementById("output").textContent = generatedCode;
+}
+</script>
