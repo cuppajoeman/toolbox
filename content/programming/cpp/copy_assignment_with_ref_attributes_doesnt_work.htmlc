@@ -1,0 +1,180 @@
+
+<p>If you ever make a class or struct that has a member reference, there are important things you need to know.</p>
+
+<p>Consider the following working code:</p>
+
+<pre>
+<code>
+class X {
+public:
+    int val;  
+    X(int val_param) : val(val_param) {}
+};
+
+int main() {
+   int i = 0, j = 1; 
+   X x(i);
+   X y(j);
+   x = y;
+   return 0;
+}
+</code>
+</pre>
+
+<p>This works because the compiler automatically generates a member-wise copy assignment operator. That would look something like this:</p>
+
+<pre>
+<code>
+X&amp; operator=(const X&amp; other) {
+    this-&gt;val = other.val;
+    return *this;
+}
+</code>
+</pre>
+
+<p>The copy assignment simply copies <code>val</code> from <code>other</code> into <code>this-&gt;val</code>, which is valid.</p>
+
+<h2>The Problem with References</h2>
+
+<p>Now consider a small change where <code>X</code> has a reference to an <code>int</code>:</p>
+
+<pre>
+<code>
+#include &amp;lt;vector&amp;gt;
+
+class X {
+public:
+    int&amp; ref;  
+    X(int&amp; ref_param) : ref(ref_param) {}
+};
+
+int main() {
+   int i = 0, j = 1; 
+   X x(i);
+   X y(j);
+   x = y;
+   return 0;
+}
+</code>
+</pre>
+
+<p>If the compiler were to generate a copy assignment operator for this version, it would look like this:</p>
+
+<pre>
+<code>
+X&amp; operator=(const X&amp; other) {
+    this-&gt;ref = other.ref;  // Error: References cannot be reassigned!
+    return *this;
+}
+</code>
+</pre>
+
+<p>This fails because references cannot be reassigned after they are initialized. The reference <code>this-&gt;ref</code> is permanently bound to whatever <code>int</code> it was initialized with and cannot be redirected to another <code>int</code>.</p>
+
+<h2>Issues with std::vector</h2>
+
+<p>If you don't catch this issue early, more problems will arise, especially when using <code>std::vector</code>. Consider this:</p>
+
+<pre>
+<code>
+#include &amp;lt;vector&amp;gt;
+
+class X {
+public:
+    int&amp; ref;  
+    X(int&amp; ref_param) : ref(ref_param) {}
+};
+
+int main() {
+   int i = 5; 
+   X x(i);
+   std::vector&amp;lt;X&amp;gt; mcs;
+   mcs.push_back(x);
+   mcs.erase(mcs.begin());
+   return 0;
+}
+</code>
+</pre>
+
+<p>Here’s why this is a problem:</p>
+
+<ol>
+<li><code>mcs.push_back(x)</code> attempts to copy <code>x</code> into the vector. But since <code>X</code> has a reference member, this can cause unexpected behavior, especially if the reference goes out of scope.</li>
+<li><code>mcs.erase(mcs.begin())</code> triggers a shift in elements, invoking the copy assignment operator, which we already established is ill-formed.</li>
+</ol>
+
+<h2>Solutions</h2>
+
+<h3>Use Pointers Instead of References</h3>
+
+<pre>
+<code>
+#include &amp;lt;vector&amp;gt;
+
+class X {
+public:
+    int* ptr;  
+    X(int&amp; ref_param) : ptr(&amp;ref_param) {}
+    
+    X&amp; operator=(const X&amp; other) {
+        this-&gt;ptr = other.ptr;  // Reassigning pointer is valid
+        return *this;
+    }
+};
+
+int main() {
+   int i = 5, j = 10;
+   X x(i);
+   X y(j);
+   x = y;  // Now works, as we are just copying a pointer
+
+   std::vector&amp;lt;X&amp;gt; mcs;
+   mcs.push_back(x);
+   mcs.erase(mcs.begin()); // Now safe
+
+   return 0;
+}
+</code>
+</pre>
+
+<p>Now, <code>ptr</code> can be reassigned, avoiding the reference issue. However, you must ensure that the pointed-to object remains valid.</p>
+
+<h3>Use std::reference_wrapper</h3>
+
+<pre>
+<code>
+#include &amp;lt;vector&amp;gt;
+#include &amp;lt;functional&amp;gt;
+
+class X {
+public:
+    std::reference_wrapper&amp;lt;int&amp;gt; ref;  
+    X(int&amp; ref_param) : ref(ref_param) {}
+};
+
+int main() {
+   int i = 5, j = 10;
+   X x(i);
+   X y(j);
+   x = y;  // Works because reference_wrapper can be reassigned
+
+   std::vector&amp;lt;X&amp;gt; mcs;
+   mcs.push_back(x);
+   mcs.erase(mcs.begin()); // Now safe
+
+   return 0;
+}
+</code>
+</pre>
+
+<p>This approach allows you to store references without encountering reassignment errors.</p>
+
+<h2>Conclusion</h2>
+
+<p>When using references in a class, be mindful of:</p>
+
+<ul>
+<li>The compiler-generated copy assignment operator will not work if your class contains a reference.</li>
+<li>Using references in <code>std::vector</code> can lead to subtle issues due to element shifting and reassignments.</li>
+<li>Prefer using <strong>pointers</strong> or <strong><code>std::reference_wrapper</code></strong> when you need reassignable references.</li>
+</ul>
