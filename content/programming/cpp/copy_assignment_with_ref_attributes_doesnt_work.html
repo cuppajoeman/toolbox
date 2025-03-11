@@ -1,10 +1,11 @@
-
 <p>If you ever make a class or struct that has a member reference, there are important things you need to know.</p>
 
 <p>Consider the following working code:</p>
 
 <pre>
 <code>
+#include &lt;vector&gt;
+
 class X {
 public:
     int val;  
@@ -25,14 +26,14 @@ int main() {
 
 <pre>
 <code>
-X&amp; operator=(const X&amp; other) {
-    this-&gt;val = other.val;
+X& operator=(const X& other) {
+    this->val = other.val;
     return *this;
 }
 </code>
 </pre>
 
-<p>The copy assignment simply copies <code>val</code> from <code>other</code> into <code>this-&gt;val</code>, which is valid.</p>
+<p>The copy assignment simply copies <code>val</code> from <code>other</code> into <code>this->val</code>, which is valid.</p>
 
 <h2>The Problem with References</h2>
 
@@ -40,12 +41,12 @@ X&amp; operator=(const X&amp; other) {
 
 <pre>
 <code>
-#include &amp;lt;vector&amp;gt;
+#include &lt;vector&gt;
 
 class X {
 public:
-    int&amp; ref;  
-    X(int&amp; ref_param) : ref(ref_param) {}
+    int& ref;  
+    X(int& ref_param) : ref(ref_param) {}
 };
 
 int main() {
@@ -62,14 +63,14 @@ int main() {
 
 <pre>
 <code>
-X&amp; operator=(const X&amp; other) {
-    this-&gt;ref = other.ref;  // Error: References cannot be reassigned!
+X& operator=(const X& other) {
+    this->ref = other.ref;  // Error: References cannot be reassigned!
     return *this;
 }
 </code>
 </pre>
 
-<p>This fails because references cannot be reassigned after they are initialized. The reference <code>this-&gt;ref</code> is permanently bound to whatever <code>int</code> it was initialized with and cannot be redirected to another <code>int</code>.</p>
+<p>This fails because references cannot be reassigned after they are initialized. The reference <code>this->ref</code> is permanently bound to whatever <code>int</code> it was initialized with and cannot be redirected to another <code>int</code>.</p>
 
 <h2>Issues with std::vector</h2>
 
@@ -77,18 +78,18 @@ X&amp; operator=(const X&amp; other) {
 
 <pre>
 <code>
-#include &amp;lt;vector&amp;gt;
+#include &lt;vector&gt;
 
 class X {
 public:
-    int&amp; ref;  
-    X(int&amp; ref_param) : ref(ref_param) {}
+    int& ref;  
+    X(int& ref_param) : ref(ref_param) {}
 };
 
 int main() {
    int i = 5; 
    X x(i);
-   std::vector&amp;lt;X&amp;gt; mcs;
+   std::vector&lt;X&gt; mcs;
    mcs.push_back(x);
    mcs.erase(mcs.begin());
    return 0;
@@ -105,19 +106,19 @@ int main() {
 
 <h2>Solutions</h2>
 
-<h3>Use Pointers Instead of References</h3>
+<h3>1. Use Pointers Instead of References</h3>
 
 <pre>
 <code>
-#include &amp;lt;vector&amp;gt;
+#include &lt;vector&gt;
 
 class X {
 public:
     int* ptr;  
-    X(int&amp; ref_param) : ptr(&amp;ref_param) {}
+    X(int& ref_param) : ptr(&ref_param) {}
     
-    X&amp; operator=(const X&amp; other) {
-        this-&gt;ptr = other.ptr;  // Reassigning pointer is valid
+    X& operator=(const X& other) {
+        this->ptr = other.ptr;  // Reassigning pointer is valid
         return *this;
     }
 };
@@ -128,7 +129,7 @@ int main() {
    X y(j);
    x = y;  // Now works, as we are just copying a pointer
 
-   std::vector&amp;lt;X&amp;gt; mcs;
+   std::vector&lt;X&gt; mcs;
    mcs.push_back(x);
    mcs.erase(mcs.begin()); // Now safe
 
@@ -139,17 +140,17 @@ int main() {
 
 <p>Now, <code>ptr</code> can be reassigned, avoiding the reference issue. However, you must ensure that the pointed-to object remains valid.</p>
 
-<h3>Use std::reference_wrapper</h3>
+<h3>2. Use std::reference_wrapper</h3>
 
 <pre>
 <code>
-#include &amp;lt;vector&amp;gt;
-#include &amp;lt;functional&amp;gt;
+#include &lt;vector&gt;
+#include &lt;functional&gt;
 
 class X {
 public:
-    std::reference_wrapper&amp;lt;int&amp;gt; ref;  
-    X(int&amp; ref_param) : ref(ref_param) {}
+    std::reference_wrapper&lt;int&gt; ref;  
+    X(int& ref_param) : ref(ref_param) {}
 };
 
 int main() {
@@ -158,7 +159,7 @@ int main() {
    X y(j);
    x = y;  // Works because reference_wrapper can be reassigned
 
-   std::vector&amp;lt;X&amp;gt; mcs;
+   std::vector&lt;X&gt; mcs;
    mcs.push_back(x);
    mcs.erase(mcs.begin()); // Now safe
 
