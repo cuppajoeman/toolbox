@@ -1,0 +1,21 @@
+<p>
+  A deform bone is a bone that directly influences the mesh based on weight painting. In contrast, a mechanical bone does not deform the mesh but is primarily used for inverse kinematics (IK). Typically, mechanical bones are used with IK to control the position of deform bones. However, directly rotating mechanical bones can cause issues due to constraints. To avoid breaking the inverse kinematics system, we use the rotation of the deform bone instead. This allows us to modify the mesh's rotation without disrupting the IK setup.
+</p>
+
+<h1>example</h1>
+
+<p>
+  Imagine you have a forearm rig where the hand is controlled by an inverse kinematics (IK) setup. In this case, the forearm bone (a mechanical bone) is not directly deforming the mesh; instead, it is constrained by IK to follow the position of the hand controller.
+</p>
+
+<p>
+  Now, if you try to manually rotate the forearm bone, things will break down. This is because IK constraints dictate the bone's position and orientation based on the hand's position, making it difficult to apply rotation manually.
+</p>
+
+<p>
+  To solve this, we introduce a separate deform bone for the forearm, which is responsible for rotating the mesh. Instead of rotating the mechanical bone, we rotate the deform bone. Since the deform bone is weight-painted to affect the mesh but is not constrained by IK, this allows us to rotate the forearm visually without interfering with the IK system.
+</p>
+
+<p>
+  In short, the mechanical bone handles IK, while the deform bone allows manual rotation of the forearm without breaking the rig.
+</p>
