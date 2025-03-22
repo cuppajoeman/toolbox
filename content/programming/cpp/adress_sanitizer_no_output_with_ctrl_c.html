@@ -1,0 +1,39 @@
+<p>
+  Suppose you have the following code, which has a clear memory leak, and you build it with adress sanitizer, if you hit ctrl-c you won't get any output from it, we'll explore why and how to fix this situation.
+</p>
+
+<pre>
+  <code>
+#include <iostream>
+
+int main() {
+    malloc(100);
+    while (true) {
+    }
+}
+
+  </code>
+</pre>
+
+<p>
+  The reason you don't see AddressSanitizer (ASan) reports when you terminate the program with Ctrl+C is that ASan reports memory leaks only when the program exits normally. When you send a SIGINT (Ctrl+C), the program terminates abruptly, and ASan doesn't get a chance to run its leak detection. We can fix this by handling the interrupt signal with a signal handler to exit gracefully, thus seeing the asan results:
+</p>
+
+<pre>
+  <code>
+#include <iostream>
+#include <csignal>
+#include <cstdlib>
+
+void handle_signal(int) {
+    std::exit(1);  // Clean exit triggers ASan
+}
+
+int main() {
+    malloc(100);  // Memory leak
+    std::signal(SIGINT, handle_signal);  // Handle Ctrl+C
+    while (true) {}  // Infinite loop
+}
+
+  </code>
+</pre>
