@@ -1,0 +1,32 @@
+<p>
+  I was building an external library called jolt physics, I got an error that was hard to debug because I didn't have enough knowledge about my tools I was getting that <code>_mm_cvtss_f32</code> was not defined and saw that it mentioned something called <code>-msse4.1</code> I read about what that is and apparently it's a CPU extension for those cpus that support it <a href="https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions">sse</a>
+</p>
+
+<p>
+  Apparently my cpu supports it which I checked by seeing what optimizaitons my gcc had:
+</p>
+
+<pre>
+  <code>
+$ gcc -Q --help=target | grep msse4.1
+  -msse4.1                              [disabled]
+  </code>
+</pre>
+
+<p>
+  You can just pass the <code>-msse4.1</code> flag to gcc when compiling to turn it on, but I use <code>conan</code> for package management, so I had to do update my conan profile to something like this: 
+</p>
+
+<pre>
+  <code>
+...
+
+[conf]
+tools.build:cflags=["-msse4.1"]
+tools.build:cxxflags=["-msse4.1"]
+  </code>
+</pre>
+
+<p>
+  By default you cannot simply just do a <code>conan install . --profile=debug</code> as that will not rebuild all your packages, in order to do that I had to run <code>conan install . --profile=debug --build=*</code>
+</p>
