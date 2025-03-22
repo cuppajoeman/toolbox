@@ -1,0 +1,18 @@
+<h2>Difference Between Forced Termination and <code>std::exit(1)</code></h2>
+
+<h3>1. Forced Termination</h3>
+<ul>
+    <li>Occurs when a process is killed externally or internally via functions like <code>std::terminate()</code>, <code>abort()</code>, or sending a signal like <code>SIGKILL</code>.</li>
+    <li>Bypasses normal cleanup routines (e.g., destructors of objects with automatic storage duration are not called).</li>
+    <li>Can be abrupt and may leave resources (files, memory) in an inconsistent state.</li>
+</ul>
+
+<h3>2. <code>std::exit(1)</code></h3>
+<ul>
+    <li>Terminates the program but ensures normal cleanup occurs, such as calling static/global destructors and flushing buffered output.</li>
+    <li>Does not return to the caller but allows registered exit handlers (<code>atexit()</code>) to run.</li>
+    <li>Returns an exit status (1 in this case) to indicate an error, which can be captured by the calling process.</li>
+</ul>
+
+<h3>Summary</h3>
+<p>Forced termination is abrupt and may skip cleanup, while <code>std::exit(1)</code> allows for orderly shutdown with proper cleanup.</p>
