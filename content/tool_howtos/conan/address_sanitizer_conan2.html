@@ -11,5 +11,15 @@ tools.build:sharedlinkflags=["-fsanitize=address"]
 </pre>
 
 <p>
-  If it still doesn't work try a <code>conan install . --profile=debug --build=*</code>, you can also try removing your build dir.
+  Additionally if you're not yet familiar with the idea of the package id which is something documented in the conan docs than you should get the hange of what that is, pretty much given different settings for when a package is built, you it will generate a different package id, the reason this is important is that if there is already a matching package with the same id then conan will re-use it in other projects instead of re-building that binary.
 </p>
+
+<p>
+  Settings in the [conf] section of your profile by default do not contribute to the id, and thus after making the above modifications to your profile and you trigger a build, nothing will be rebuilt because it still thinks you're requesting the same package, when in reality you want that package built with the sanitization. If you just want a quick way around this you just have to trigger a rebuilt of everything via <code>--build=*</code> at the end of your <code>conan install</code>, but this will not be a good idea if you want a longstanding approach that supports a build with and without sanitization, thus we should add the following to our <code>.conan2/global.conf</code>
+</p>
+
+<pre>
+  <code>
+tools.info.package_id:confs=["tools.build:cflags", "tools.build:cxxflags", "tools.build:exelinkflags", "tools.build:sharedlinkflags"]
+  </code>
+</pre>
