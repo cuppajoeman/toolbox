@@ -1,0 +1,10 @@
+<pre>
+  <code>
+vim.api.nvim_create_user_command('NamedTerminal', function(opts)
+  vim.cmd('terminal bash \\#' .. opts.args)
+end, { nargs = 1 })
+
+-- Map <leader>nt to the NamedTerminal command
+vim.api.nvim_set_keymap('n', '<leader>nt', ':NamedTerminal ', { desc = 'open a terminal with a specified name', noremap = true, silent = false })
+  </code>
+</pre>
