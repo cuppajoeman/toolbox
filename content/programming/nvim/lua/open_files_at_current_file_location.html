@@ -1,9 +1,30 @@
 <pre>
   <code>
 -- Open files relative to the directory the current file lives in
-vim.api.nvim_set_keymap('n', '<Leader>ce', ':e <C-R>=expand("%:p:h") . "/"<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>ct', ':tabe <C-R>=expand("%:p:h") . "/"<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>cs', ':split <C-R>=expand("%:p:h") . "/"<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>cv', ':vsplit <C-R>=expand("%:p:h") . "/"<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+  'n',
+  '<Leader>ce',
+  ':e <C-R>=expand("%:p:h") . "/"<CR>',
+  { desc = '[e]dit a file in the [c]urrent files directory', noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+  'n',
+  '<Leader>ct',
+  ':tabe <C-R>=expand("%:p:h") . "/"<CR>',
+  { desc = 'open a new [t]ab of a file in the [c]urrent files directory', noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+  'n',
+  '<Leader>cs',
+  ':split <C-R>=expand("%:p:h") . "/"<CR>',
+  { desc = 'open a [s]plit of a file in the [c]urrent files directory', noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+  'n',
+  '<Leader>cv',
+  ':vsplit <C-R>=expand("%:p:h") . "/"<CR>',
+  { desc = 'open a [v]ertical split of a file in the [c]urrent files directory', noremap = true, silent = true }
+)
+
   </code>
 </pre>
