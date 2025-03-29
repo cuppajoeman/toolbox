@@ -1,5 +1,8 @@
 <pre>
   <code>
+
+-- This works because we escape the hash symbol to add make a bash comment
+-- the comment doesn't do anything but vim picks it up in the name of the terminal
 vim.api.nvim_create_user_command('NamedTerminal', function(opts)
   vim.cmd('terminal bash \\#' .. opts.args)
 end, { nargs = 1 })
