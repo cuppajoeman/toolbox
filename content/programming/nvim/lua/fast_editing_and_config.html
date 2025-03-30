@@ -1,10 +1,12 @@
 <pre>
   <code>
 -- Write to file quickly
-vim.api.nvim_set_keymap('n', '<leader>w', ':w!<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>w', ':w!<CR>', { noremap = true, silent = true })
+
 -- Edit Neovim configuration file
-vim.api.nvim_set_keymap('n', '<leader>ve', ':e $MYVIMRC<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>ve', ':e $MYVIMRC<CR>', { noremap = true, silent = true })
+
 -- Source (reload) Neovim configuration file
-vim.api.nvim_set_keymap('n', '<leader>vs', ':source $MYVIMRC<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>vs', ':source $MYVIMRC<CR>', { noremap = true, silent = true })
   </code>
 </pre>
