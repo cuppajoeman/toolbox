@@ -1,0 +1,46 @@
+<p>
+  Once your code editing efficiency has gone over a certain point, then you start looking for the next thing to make your sessions better, one of the biggest hidden costs is having to setup your terminals for each different task you want to do then you can hook into this logic. What I do is I create a file of the form <code>stuff_here_autostart.vim</code> 
+</p>
+
+<pre>
+  <code>
+call feedkeys(":terminal bash \\#building \<CR>", 'n')
+call feedkeys("i cd ../scripts/precompiled_html_generation; source venv/bin/activate; ./continuous_build.sh \<CR>", 'n')
+call feedkeys("\<C-\>\<C-n>", 'n')
+
+call feedkeys(":terminal bash \\#genlink \<CR>", 'n')
+call feedkeys("i cd ../scripts/openmath_cli; source venv/bin/activate; py generate_knowledge_link.py \<CR>", 'n')
+call feedkeys("\<C-\>\<C-n>", 'n')
+
+call feedkeys(":terminal bash \\#gendiv \<CR>", 'n')
+call feedkeys("i cd ../scripts/openmath_cli; source venv/bin/activate; py generate_knowledge_div.py \<CR>", 'n')
+call feedkeys("\<C-\>\<C-n>", 'n')
+  </code>
+</pre>
+
+<p>
+  This file will creates terminals, by default if you run <code>:terminal</code> it will automatically start bash, but in our case we override this and run <code>bash #terminal_name_here</code> this starts a nvim terminal and also launches bash with a comment that does nothing, the reason for the comment is that the first command run will be the name of the buffer and you can use that name to fuzzy find the terminal that you need.
+</p>
+
+<p>
+  What we will do now is that we will assume that such an autostart file will exist in the root directory where you start nvim, and then make nvim check for this file on start and run it automatically. So you can add this to your <code>init.lua</code>:
+</p>
+
+<pre>
+  <code>
+local function source_autostart_vim()
+  local root_dir = vim.fn.getcwd() -- Get the root directory where Neovim was started
+  local pattern = root_dir .. '/*_autostart.vim'
+  local files = vim.fn.glob(pattern, false, true) -- Find matching files
+
+  if #files > 0 then
+    vim.cmd('source ' .. files[1]) -- Source the first matching file
+  end
+end
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = source_autostart_vim,
+})
+
+  </code>
+</pre>
