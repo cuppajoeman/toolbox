@@ -1,0 +1,23 @@
+<p>Recall that when iterating movement we have the following where <code>v<sub>i</sub></code> is the new velocity after the <code>i</code>th iteration, <code>a</code> is acceleration, <code>f</code> is friction, and <code>v<sub>init</sub></code> is the initial velocity:</p>
+
+<pre><code>v₁ = (v<sub>init</sub> + a · dt) · f  
+v₂ = (v₁ + a · dt) · f  
+v₃ = (v₂ + a · dt) · f</code></pre>
+
+<p>Expanding, we get:</p>
+<pre><code>v₃ = (((v<sub>init</sub> + a · dt) · f + a · dt) · f + a · dt) · f  
+  = v<sub>init</sub> · f³ + dt · a · (f³ + f² + f)</code></pre>
+
+<p>And in general, we can prove the general form:</p>
+<pre><code>vₙ = v<sub>init</sub> · fⁿ + dt · a · ∑<sup>n</sup><sub>k=1</sub> fᵏ</code></pre>
+
+<p>Using the geometric series formula:</p>
+<pre><code>∑<sup>n</sup><sub>k=1</sub> fᵏ = (f(1 - fⁿ)) / (1 - f), &nbsp;&nbsp;for f ≠ 1</code></pre>
+
+<p>Thus,</p>
+<pre><code>vₙ = v<sub>init</sub> · fⁿ + dt · a · (f(1 - fⁿ)) / (1 - f)</code></pre>
+
+<p>So after <code>n</code> iterations, the velocity is given by the above. And when <code>n → ∞</code>, assuming <code>0 ≤ f &lt; 1</code>, then <code>fⁿ → 0</code>, and we get the steady-state velocity:</p>
+
+<pre><code>lim<sub>n→∞</sub> vₙ = dt · a · f / (1 - f)</code></pre>
+
