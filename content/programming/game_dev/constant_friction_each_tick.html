@@ -1,0 +1,34 @@
+<p>
+  If you do <code>v = v * f</code> on each game loop, then friction will apply more at 120Hz vs 60Hz — a common error caused by frame rate dependent physics.
+</p>
+
+<p>
+  This happens because friction is applied every frame, so higher frame rates result in more frequent applications, making objects slow down more quickly. For example, at 120Hz, velocity gets multiplied by <code>f</code> twice as often as at 60Hz, which leads to different behavior depending on the frame rate.
+</p>
+
+<p>
+  To fix this, make friction time-dependent by converting it into an <strong>exponential decay</strong> based on delta time. If <code>f</code> is the fraction of velocity retained per second (e.g., <code>f = 0.98</code> means 98% retained each second), apply it like this:
+</p>
+
+<pre><code>float decay = pow(friction_per_second, delta_time);
+velocity *= decay;
+</code></pre>
+
+<p>
+  This ensures that regardless of whether you're running at 30Hz, 60Hz, or 240Hz, the effect of friction over one second is consistent.
+</p>
+
+<h3>When to Use Linear vs. Exponential Decay</h3>
+
+<ul>
+  <li>
+    <strong>Use linear decay</strong> (i.e., <code>value -= rate * delta_time</code>) when applying a force or rate of change that should remain constant per second, such as gravity or acceleration.
+  </li>
+  <li>
+    <strong>Use exponential decay</strong> (i.e., <code>value *= pow(factor, delta_time)</code>) when applying a percentage-based effect over time, such as friction, damping, or drag that continuously scales down a value.
+  </li>
+</ul>
+
+<p>
+  Choosing the right type of decay ensures that your game's behavior stays consistent across different hardware and frame rates.
+</p>
