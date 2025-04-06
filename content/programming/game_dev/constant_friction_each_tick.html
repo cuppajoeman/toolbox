@@ -15,8 +15,48 @@ velocity *= decay;
 </code></pre>
 
 <p>
-  This ensures that regardless of whether you're running at 30Hz, 60Hz, or 240Hz, the effect of friction over one second is consistent.
+  The motivation for using a power function here is based on how delta time adds up over the course of a second. Suppose we're running at 120Hz. Then over one second, we will have applied this update 120 times with each frame's <code>delta_time = 1/120</code>. So the velocity will be updated as:
 </p>
+
+<pre><code>v = v * f^dt_1 * f^dt_2 * ... * f^dt_120</code></pre>
+
+<p>
+  Because multiplication of exponentiated constants with the same base is equivalent to raising the base to the sum of the exponents, and since:
+</p>
+
+<pre><code>dt_1 + dt_2 + ... + dt_120 ≈ 1</code></pre>
+
+<p>
+  we get:
+</p>
+
+<pre><code>v = v * f^1 = v * f</code></pre>
+
+<p>
+  So after one second, exactly one iteration of friction has been applied, regardless of the frame rate. This makes friction frame rate independent.
+</p>
+
+<p>
+  However, you might notice that everything feels much more "slippery" now. That’s because in the old configuration, friction was being applied 120 times per second (at 120Hz), while in the new configuration it’s effectively applied once per second. To match the old feel, you need to adjust your friction value.
+</p>
+
+<p>
+  If your old per-frame friction value was <code>f_old</code> (e.g., 0.998), then over one second at 120Hz you were doing:
+</p>
+
+<pre><code>v = v * f_old^120</code></pre>
+
+<p>
+  So to preserve the same amount of friction when switching to the new delta-time-based method, compute:
+</p>
+
+<pre><code>friction_per_second = pow(f_old, 120);</code></pre>
+
+<p>
+  and then use:
+</p>
+
+<pre><code>velocity *= pow(friction_per_second, delta_time);</code></pre>
 
 <h3>When to Use Linear vs. Exponential Decay</h3>
 
@@ -30,5 +70,5 @@ velocity *= decay;
 </ul>
 
 <p>
-  Choosing the right type of decay ensures that your game's behavior stays consistent across different hardware and frame rates.
+  Choosing the right type of decay ensures that your game's behavior stays consistent across different hardware and frame rates, while also preserving the feel of your physics.
 </p>
