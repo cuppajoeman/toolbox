@@ -1,0 +1,89 @@
+<h1>Understanding Static Linking with Conan</h1>
+
+<p>
+  When working with C++ projects, Conan is a powerful package manager that automates dependency management, but how it handles static linking can feel a bit magical. Let’s break it down and demystify the process.
+</p>
+
+<h2>What Happens During <code>conan install</code>?</h2>
+<p>
+  When you run <code>conan install</code>, Conan:
+</p>
+<ol>
+  <li>Resolves dependencies listed in your <code>conanfile.py</code> or <code>conanfile.txt</code>.</li>
+  <li>Downloads prebuilt binaries from remotes (like ConanCenter) if they match your profile.</li>
+  <li>Builds from source if necessary and stores the result in the local Conan cache.</li>
+  <li>Generates build info and configuration files (like <code>conan_toolchain.cmake</code>).</li>
+</ol>
+
+<h2>How Does Static Linking Work?</h2>
+<p>
+  Static linking means combining your code with the library code at compile time. If a Conan package is built as a static library, it produces a <code>.a</code> file (on Unix-like systems) or <code>.lib</code> file (on Windows). This file:
+</p>
+<ul>
+  <li>Contains compiled object files (.o files)</li>
+  <li>Is not executable (no <code>main()</code>)</li>
+  <li>Is linked into your final <code>.exe</code> during compilation</li>
+</ul>
+<p>
+  Once linked, the contents of the <code>.a</code> file are baked into your final executable — which is why you don’t need the static library present at runtime.
+</p>
+
+<h2>Static vs Shared Summary</h2>
+<table border="1" cellpadding="6">
+  <tr>
+    <th>File Type</th>
+    <th>Built by Conan?</th>
+    <th>Needed at Runtime?</th>
+    <th>Contains <code>main()</code>?</th>
+    <th>Use Case</th>
+  </tr>
+  <tr>
+    <td><code>.a</code></td>
+    <td>✅</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>Linked into final executable</td>
+  </tr>
+  <tr>
+    <td><code>.so</code>/<code>.dll</code></td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>❌</td>
+    <td>Dynamically loaded at runtime</td>
+  </tr>
+  <tr>
+    <td><code>.exe</code></td>
+    <td>❌ (your code builds it)</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>Final application binary</td>
+  </tr>
+</table>
+
+<h2>Why Macro Consistency Matters</h2>
+<p>
+  Static libraries are compiled with a specific set of macros and flags. If your application code includes headers from the static library but uses a different set of macros, things can go wrong.
+</p>
+<p>For example:</p>
+<pre><code>// header
+#ifdef USE_COOL_FEATURE
+void cool_feature();
+#else
+void fallback_feature();
+#endif
+</code></pre>
+<p>
+  If the library was built with <code>USE_COOL_FEATURE</code> defined, but your code doesn't define it, the linker will look for <code>fallback_feature()</code> — which doesn’t exist in the static lib. This causes linker errors or worse: subtle runtime bugs.
+</p>
+
+<h2>Best Practices to Avoid Macro Mismatches</h2>
+<ul>
+  <li>Use the same macro definitions as the library was built with.</li>
+  <li>Let Conan manage flags and definitions using <code>conan_toolchain.cmake</code>.</li>
+  <li>Inspect Conan package options using <code>conan inspect &lt;package-ref&gt;</code>.</li>
+  <li>If you use your own build scripts, make sure to apply the generated macros manually.</li>
+</ul>
+
+<p>
+  Proper understanding of static linking and build configuration is essential to avoid hard-to-debug issues. With Conan, most of this can be automated — as long as your macros and profiles are consistent.
+</p>
