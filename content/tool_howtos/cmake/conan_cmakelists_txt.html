@@ -1,0 +1,14 @@
+<pre>
+  <code>
+cmake_minimum_required(VERSION 3.10)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+project(change_me)
+
+add_executable(${PROJECT_NAME} main.cpp)
+
+# replace these with what conan gives
+find_package(Jolt)
+target_link_libraries(${PROJECT_NAME} Jolt::Jolt)
+  </code>
+</pre>
