@@ -1,0 +1,37 @@
+<h2>1. Include Header</h2>
+<pre><code>#include &lt;unordered_map&gt;</code></pre>
+
+<h2>2. Declaration</h2>
+<pre><code>std::unordered_map&lt;KeyType, ValueType&gt; map_name;</code></pre>
+
+<h2>3. Insertion</h2>
+<pre><code>
+map_name[key] = value;
+map_name.insert({key, value});
+</code></pre>
+
+<h2>4. Access Value</h2>
+<pre><code>ValueType val = map_name[key];</code></pre>
+
+<h2>5. Check if Key Exists</h2>
+<pre><code>
+if (map_name.find(key) != map_name.end()) {
+  // Key exists
+}
+</code></pre>
+
+<h2>6. Erase an Element</h2>
+<pre><code>map_name.erase(key);</code></pre>
+
+<h2>7. Iterate Through Elements</h2>
+<pre><code>
+for (const auto&amp; pair : map_name) {
+  std::cout &lt;&lt; pair.first &lt;&lt; ": " &lt;&lt; pair.second &lt;&lt; std::endl;
+}
+</code></pre>
+
+<h2>8. Size and Empty Check</h2>
+<pre><code>
+map_name.size();     // Returns number of elements
+map_name.empty();    // Returns true if empty
+</code></pre>
