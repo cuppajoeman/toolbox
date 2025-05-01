@@ -1,0 +1,61 @@
+
+<h2>SERVER RENTING INFO:</h2>
+<p>
+  The easiest way to rent a server is via serveme (using the link below):
+</p>
+<p>
+  For serveme, go to the website <a href="https://na.serveme.tf/">https://na.serveme.tf/</a>, input the information it asks, and click save to reserve your server. The most important info is the time slot (2 hours max and can only reserve a server less than 3 hours in advance), the map, the config (whether 5cp or koth), and the server location. Most commonly used locations are Chicago or Dallas (if it helps the ping of your team), alternating to Kansas servers if neither are available (avoid LA servers). If the server location has the tag "SDR" before the location (mostly for chicago), this means the easiest way to access server commands is on the serveme website (more info on rcon is down below).
+</p>
+
+<h2>RCON COMMANDS AND INFO:</h2>
+<p>
+  Before typing in any of these, make sure you have entered the rcon password into console once you are on the server (ex. rcon_password alsdfnakjdsnfKK)
+</p>
+<p>
+  If you know the exact name of the map, skip to last line:<br>
+  To find the name of the map, in console, type but DON'T execute "map cp_gullywash" without the quotes to find the exact name of the map file you should play on. You can also look at the map list for the season that I posted in discord. For example, snakewater has the suffix _final1
+</p>
+<p>
+  Finally, to change the map, simply type the following command without parentheses:<br>
+  <code>rcon changelevel (exact map name)</code><br>
+  For example, <code>rcon changelevel cp_snakewater_final1</code>
+</p>
+
+<p>
+  If the server config (such as whitelist, winlimit, or timelimit) is not setup properly, use the appropriate command below to correctly set the config:<br>
+  5cp scrims: <code>rcon exec rgl_6s_5cp_scrim</code><br>
+  5cp matches:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Half 1: <code>rcon exec rgl_6s_5cp_match_half1</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Half 2: <code>rcon exec rgl_6s_5cp_match_half2</code><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Golden Cap (If neither team has won 5 total rounds between both halves): <code>rcon exec rgl_6s_5cp_gc</code><br>
+  Koth scrims: <code>rcon exec rgl_6s_koth_scrim</code><br>
+  Koth matches: <code>rcon exec rgl_6s_koth</code>
+</p>
+
+<h3>Specific rcon commands:</h3>
+<p>
+  To change the total game length (in case you need to shorten it because you have another scrim in less than 30 minutes):<br>
+  <code>rcon mp_timelimit (minutes)</code><br>
+  (Don't forget to change the timelimit back for the second scrim, as long as you are playing 5cp, using <code>rcon mp_timelimit 30</code>). If you are playing Koth, use <code>rcon mp_timelimit 0</code>, which will remove the timelimit because the gamemode has a time limit built in
+</p>
+<p>
+  To change the amount of rounds required to end the half (and subsequently allow logs to be uploaded), such as if the other team leaves or you need to start a new scrim with another team, use the command:<br>
+  <code>rcon mp_winlimit (number of rounds)</code><br>
+  Make sure this number is below or equal to the higher amount of rounds a team has won. If neither team has won a round, simply use <code>rcon mp_timelimit 1</code>. Also, don't forget to change this back to the proper number of rounds for the next scrim (<code>rcon mp_winlimit 5</code> when playing on 5cp)
+</p>
+<p>
+  If you need to get rid of players who won't leave the server, type:<br>
+  <code>status</code><br>
+  Then, select the number under the "userid" category corresponding to the player<br>
+  Lastly, type (without parentheses):<br>
+  <code>rcon kickid (userid)</code>
+</p>
+<p>
+  If the player still won't leave, type:<br>
+  <code>rcon banid (userid)</code>
+</p>
+<p>
+  If this doesn't work, change the server password and kick them by typing:<br>
+  <code>rcon sv_password (newPassword)</code>
+</p>
+
