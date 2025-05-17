@@ -1,0 +1,21 @@
+<p>If you've made a terminal program on Linux, then sometimes you want to use that program from any directory on the system. The concept of making this happen is usually called <strong>"installing a program."</strong></p>
+
+<p>Once you build your executable, you can move it to a directory that's in your system's <code>PATH</code>. A common location for user-installed programs is:</p>
+
+<pre><code>sudo install -m 755 fibber /usr/local/bin/fibber</code></pre>
+
+<p>The <code>install</code> command is used instead of <code>mv</code> because:</p>
+
+<ul>
+  <li>It ensures the file is copied with correct permissions (<code>-m 755</code> sets it as executable).</li>
+  <li>It checks if the destination file already exists and will safely overwrite it only if permitted.</li>
+  <li>It avoids accidentally removing or corrupting existing programs by mistake.</li>
+</ul>
+
+<p>The above command makes sure that the executable you're trying to create doesn't already exist in a critical system directory <strong>without your awareness</strong>, and it handles setting executable permissions properly.</p>
+
+<p>To uninstall the program, we run the following command:</p>
+
+<pre><code>sudo rm /usr/local/bin/fibber</code></pre>
+
+<p>This simply removes the executable from the system-wide binary directory, effectively uninstalling the program.</p>
