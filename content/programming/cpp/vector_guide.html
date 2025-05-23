@@ -1,35 +1,35 @@
-<h2>1. Include Header</h2>
+<h2>Include Header</h2>
 <pre><code>#include &lt;vector&gt;</code></pre>
 
-<h2>2. Declaration</h2>
+<h2>Declaration</h2>
 <pre><code>std::vector&lt;Type&gt; vec_name;</code></pre>
 
-<h2>3. Insertion</h2>
+<h2>Insertion</h2>
 <pre><code>
 vec_name.push_back(value);                      // Add to end
 vec_name.insert(vec_name.begin() + index, value);  // Insert at position
 </code></pre>
 
-<h2>4. Access Element</h2>
+<h2>Access Element</h2>
 <pre><code>
 Type val = vec_name[index];         // Direct access
 Type val = vec_name.at(index);      // Bounds-checked access
 </code></pre>
 
-<h2>5. Check if Empty</h2>
+<h2>Check if Empty</h2>
 <pre><code>
 if (vec_name.empty()) {
   // Vector is empty
 }
 </code></pre>
 
-<h2>6. Erase Element</h2>
+<h2>Erase Element</h2>
 <pre><code>
 vec_name.erase(vec_name.begin() + index);  // Remove at index
 vec_name.clear();                          // Remove all elements
 </code></pre>
 
-<h2>7. Iterate Through Elements</h2>
+<h2>Iterate Through Elements</h2>
 <pre><code>
 for (const auto&amp; val : vec_name) {
   std::cout &lt;&lt; val &lt;&lt; std::endl;
@@ -45,14 +45,23 @@ for (auto it = vec.rbegin(); it != vec.rend(); ++it) {
   </code>
 </pre>
 
-<h2>8. Size and Capacity</h2>
+<h2>Reverse the order of a Vector</h2>
+
+<pre>
+  <code>
+std::reverse(vec.begin(), vec.end());
+  </code>
+</pre>
+
+
+<h2>Size and Capacity</h2>
 <pre><code>
 vec_name.size();        // Number of elements
 vec_name.capacity();    // Allocated storage capacity
 vec_name.resize(new_size); // Resize vector
 </code></pre>
 
-<h2>9. Other Useful Functions</h2>
+<h2>Other Useful Functions</h2>
 <pre><code>
 vec_name.front();       // First element
 vec_name.back();        // Last element
