@@ -36,6 +36,15 @@ for (const auto&amp; val : vec_name) {
 }
 </code></pre>
 
+<p>In reverse order:</p>
+<pre>
+  <code>
+for (auto it = vec.rbegin(); it != vec.rend(); ++it) {
+    std::cout << *it << " ";
+}
+  </code>
+</pre>
+
 <h2>8. Size and Capacity</h2>
 <pre><code>
 vec_name.size();        // Number of elements
