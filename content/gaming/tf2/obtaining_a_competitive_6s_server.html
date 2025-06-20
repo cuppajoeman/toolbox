@@ -18,6 +18,9 @@
 <h2>🔐 RCON BASICS</h2>
 <p>Set RCON password (once per session):</p>
 <pre><code>rcon_password YOUR_PASSWORD</code></pre>
+<p>
+  rcon is required as it authorizes you to run any commands, if you don't do this you cannot change any server settings, so you must run the rcon password before you do anything below.
+</p>
 
 <h2>🗺️ MAP COMMANDS</h2>
 <p>Change to a map:</p>
@@ -54,17 +57,22 @@
 <h2>⏱️ TIME AND ROUND LIMITS</h2>
 
 <h3>Change Game Length</h3>
+<p>I don't normally use these commands.</p>
 <ul>
   <li>Default (5cp): <code>rcon mp_timelimit 30</code></li>
   <li>Koth (no time limit): <code>rcon mp_timelimit 0</code></li>
   <li>Short scrim (e.g. 15 min): <code>rcon mp_timelimit 15</code></li>
 </ul>
 
-<h3>Change Round Limit</h3>
+<h3>Change Round Limit (Use this to end a current match that's happening)</h3>
 <ul>
   <li>Default: <code>rcon mp_winlimit 5</code></li>
   <li>Quick end: <code>rcon mp_winlimit 1</code></li>
 </ul>
+
+<p>
+  The above command only ends the map early if any team has scored at least one round, otherwise to end it, I recommend just using the changelevel command back to the same map.
+</p>
 
 <h2>👢 PLAYER MANAGEMENT</h2>
 
