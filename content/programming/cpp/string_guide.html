@@ -1,7 +1,7 @@
-<h2>1. Include Header</h2>
+<h2>Include Header</h2>
 <pre><code>#include &lt;string&gt;</code></pre>
 
-<h2>2. Declaration</h2>
+<h2>Declaration</h2>
 <pre><code>
 std::string str1;                      // Empty string
 std::string str2 = "Hello";           // Initialize with literal
@@ -9,46 +9,46 @@ std::string str3("World");            // Constructor form
 std::string str4(5, 'x');             // "xxxxx"
 </code></pre>
 
-<h2>3. String Concatenation</h2>
+<h2>String Concatenation</h2>
 <pre><code>
 std::string result = str1 + str2;     // Combine strings
 str1 += " more";                      // Append to existing string
 </code></pre>
 
-<h2>4. Access Characters</h2>
+<h2>Access Characters</h2>
 <pre><code>
 char ch = str1[index];                // Direct access
 char ch = str1.at(index);             // Bounds-checked access
 </code></pre>
 
-<h2>5. Slice / Substring</h2>
+<h2>Slice / Substring</h2>
 <pre><code>
 std::string sub = str1.substr(start_index);           // From index to end
 std::string sub = str1.substr(start_index, length);   // Substring with length
 </code></pre>
 
-<h2>6. Remove Characters</h2>
+<h2>Remove Characters</h2>
 <pre><code>
 str1.pop_back();                      // Remove last character
 str1.erase(index, count);            // Remove count chars from index
 str1.clear();                         // Clear entire string
 </code></pre>
 
-<h2>7. Check if Empty</h2>
+<h2>Check if Empty</h2>
 <pre><code>
 if (str1.empty()) {
-  // String is empty
+    // String is empty
 }
 </code></pre>
 
-<h2>8. Iterate Through Characters</h2>
+<h2>Iterate Through Characters</h2>
 <pre><code>
 for (char c : str1) {
-  std::cout &lt;&lt; c &lt;&lt; std::endl;
+    std::cout &lt;&lt; c &lt;&lt; std::endl;
 }
 </code></pre>
 
-<h2>9. Size and Capacity</h2>
+<h2>Size and Capacity</h2>
 <pre><code>
 str1.size();                          // Number of characters
 str1.length();                        // Same as size()
@@ -56,42 +56,71 @@ str1.capacity();                      // Allocated memory
 str1.resize(new_size);               // Resize string
 </code></pre>
 
-<h2>10. Reverse String</h2>
+<h2>Reverse String</h2>
 <pre><code>
 #include &lt;algorithm&gt;
+
 std::reverse(str1.begin(), str1.end());
 </code></pre>
 
-<h2>11. Find Substring or Character</h2>
+<h2>Find Substring or Character</h2>
 <pre><code>
 std::size_t pos = str1.find("sub");
 if (pos != std::string::npos) {
-  // Found at position `pos`
+    // Found at position `pos`
 }
 </code></pre>
 
-<h2>12. Replace Substring</h2>
+<h2>Replace Substring</h2>
 <pre><code>
 str1.replace(pos, len, "new_sub");   // Replace len characters at pos
 </code></pre>
 
-<h2>13. Compare Strings</h2>
+<h2>Compare Strings</h2>
 <pre><code>
 if (str1 == str2) {
-  // Strings are equal
+    // Strings are equal
 }
 if (str1 &lt; str2) {
-  // Lexicographically less
+    // Lexicographically less
 }
 </code></pre>
 
-<h2>14. Convert to C-style String</h2>
+<h2>Convert to C-style String</h2>
 <pre><code>
 const char* c_str = str1.c_str();    // Null-terminated C-string
 </code></pre>
 
-<h2>15. Construct from C-string</h2>
+<h2>Construct from C-string</h2>
 <pre><code>
 std::string str("abc");              // From literal
 std::string str(cstr, length);       // From char array with length
+</code></pre>
+
+<h2>Split String on Delimiter</h2>
+<pre><code>
+#include &lt;vector&gt;
+#include &lt;sstream&gt;
+
+std::vector&lt;std::string&gt; split(const std::string& s, char delimiter) {
+    std::vector&lt;std::string&gt; tokens;
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delimiter)) {
+        tokens.push_back(item);
+    }
+    return tokens;
+}
+</code></pre>
+
+<h2>Trim Whitespace</h2>
+<pre><code>
+#include &lt;algorithm&gt;
+#include &lt;cctype&gt;
+
+std::string trim(const std::string& s) {
+    auto start = std::find_if_not(s.begin(), s.end(), ::isspace);
+    auto end = std::find_if_not(s.rbegin(), s.rend(), ::isspace).base();
+    return (start &lt; end) ? std::string(start, end) : "";
+}
 </code></pre>
