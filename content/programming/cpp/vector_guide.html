@@ -1,4 +1,4 @@
-<h2>Include Header</h2>
+h2>Include Header</h2>
 <pre><code>#include &lt;vector&gt;</code></pre>
 
 <h2>Declaration</h2>
@@ -37,28 +37,22 @@ for (const auto&amp; val : vec_name) {
 </code></pre>
 
 <p>In reverse order:</p>
-<pre>
-  <code>
+<pre><code>
 for (auto it = vec.rbegin(); it != vec.rend(); ++it) {
-    std::cout << *it << " ";
+  std::cout &lt;&lt; *it &lt;&lt; " ";
 }
-  </code>
-</pre>
+</code></pre>
 
 <h2>Reverse the order of a Vector</h2>
-
-<pre>
-  <code>
+<pre><code>
 std::reverse(vec.begin(), vec.end());
-  </code>
-</pre>
-
+</code></pre>
 
 <h2>Size and Capacity</h2>
 <pre><code>
-vec_name.size();        // Number of elements
-vec_name.capacity();    // Allocated storage capacity
-vec_name.resize(new_size); // Resize vector
+vec_name.size();            // Number of elements
+vec_name.capacity();        // Allocated storage capacity
+vec_name.resize(new_size);  // Resize vector
 </code></pre>
 
 <h2>Other Useful Functions</h2>
@@ -68,11 +62,41 @@ vec_name.back();        // Last element
 vec_name.pop_back();    // Remove last element
 </code></pre>
 
-<h2>10. Check if Element Exists</h2> <pre><code> #include &lt;algorithm&gt;
+<h2>10. Check if Element Exists</h2>
+<pre><code>#include &lt;algorithm&gt;
 
 if (std::find(vec_name.begin(), vec_name.end(), value) != vec_name.end()) {
-// Element found
+  // Element found
 } else {
-// Element not found
+  // Element not found
 }
+</code></pre>
+
+<h2>11. Ways to Construct a Vector</h2>
+<pre><code>
+// Empty vector
+std::vector&lt;int&gt; v1;
+
+// Vector with 5 default-initialized ints (0)
+std::vector&lt;int&gt; v2(5);
+
+// Vector with 5 elements, each initialized to 42
+std::vector&lt;int&gt; v3(5, 42);
+
+// Copy constructor
+std::vector&lt;int&gt; v4 = v3;
+
+// Move constructor
+std::vector&lt;int&gt; v5 = std::move(v3);
+
+// Construct from initializer list
+std::vector&lt;int&gt; v6 = {1, 2, 3, 4, 5};
+
+// Construct from array
+int arr[] = {10, 20, 30};
+std::vector&lt;int&gt; v7(std::begin(arr), std::end(arr));
+
+// Construct from iterators
+std::vector&lt;int&gt; source = {5, 6, 7};
+std::vector&lt;int&gt; v8(source.begin(), source.end());
 </code></pre>
