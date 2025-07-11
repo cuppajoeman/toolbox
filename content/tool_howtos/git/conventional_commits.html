@@ -1,5 +1,5 @@
 <p>
-    When working conventional commits v1.0.0, there are a few situations that might need thinking about.
+    When working <a href="https://www.conventionalcommits.org/en/v1.0.0/">conventional commits v1.0.0</a>, there are a few situations that might need thinking about.
 </p>
 
 <h2>multiple scopes</h2>
@@ -18,3 +18,34 @@ Potentially in the future there will be a way to specify this with (networking, 
 <p>
     If you simply use submodules as organization tools for your own code which you can <a href="/tool_howtos/git/submodules.html">read about here</a>, then follow that page as a guide, and simply use conventional commits applied to the method of committing there.
 </p>
+
+<hr>
+
+<h1>Quick examples</h1>
+<ul>
+<li><code>feat: new feature</code></li>
+    <li><code>fix(scope): bug in scope</code></li>
+    <li><code>feat!: breaking change</code> / <code>feat(scope)!: rework API</code></li>
+    <li><code>chore(deps): update dependencies</code></li>
+</ul>
+
+<h1>Commit types</h1>
+<ul>
+    <li><code>build</code>: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)</li>
+    <li><code>ci</code>: Changes to CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)</li>
+    <li><b><code>chore</code></b>: Changes which don't change source code or tests, e.g. changes to the build process, auxiliary tools, libraries</li>
+    <li><code>docs</code>: Documentation only changes</li>
+    <li><b><code>feat</code></b>: A new feature</li>
+    <li><b><code>fix</code></b>: A bug fix</li>
+    <li><code>perf</code>: A code change that improves performance</li>
+    <li><code>refactor</code>: A code change that neither fixes a bug nor adds a feature</li>
+    <li><code>revert</code>: Revert something</li>
+    <li><code>style</code>: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)</li>
+    <li><code>test</code>: Adding missing tests or correcting existing tests</li>
+</ul>
+
+<h1>Reminders</h1>
+<ul>
+    <li>Put a newline before extended commit body</li>
+    <li>More details at <b><a href="https://www.conventionalcommits.org/">conventionalcommits.org</a></b></li>
+</ul>
