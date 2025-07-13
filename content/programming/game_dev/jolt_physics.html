@@ -1,8 +1,52 @@
 <p>
-  On windows be sure to do:
+  On windows I had to do this:
 </p>
 <pre>
   <code>
     conan install . -c:h "joltphysics/*":tools.cmake.cmaketoolchain:extra_variables='{"FLOATING_POINT_EXCEPTIONS_ENABLED": "OFF"}' --build="joltphysics/*"
   </code>
 </pre>
+
+<hr>
+<p>
+  just testing below
+</p>
+<pre>
+  <code>
+    conan install . -c:h "joltphysics/*":tools.cmake.cmaketoolchain:extra_variables='{"PROFILER_IN_DEBUG_AND_RELEASE": "ON"}' --build="joltphysics/*"
+  </code>
+</pre>
+<hr>
+<p>
+  On linux when I want to get the debug renderer working I do the following, first in my conan default profile I put this: 
+</p>
+<pre>
+  <code>
+[settings]
+arch=x86_64
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu17
+compiler.libcxx=libstdc++11
+compiler.version=14
+os=Linux
+
+[conf]
+tools.build:cflags=["-msse4.1"]
+tools.build:cxxflags=["-msse4.1"]
+joltphysics/*:tools.cmake.cmaketoolchain:extra_variables={"DEBUG_RENDERER_IN_DEBUG_AND_RELEASE": "ON", "CPP_RTTI_ENABLED": "ON"}
+  </code>
+</pre>
+<p>
+  I turn <code>DEBUG_RENDERER_IN_DEBUG_AND_RELEASE</code>` on because I am usually building in release mode and so I since I want the debug renderer in release mode. Now also I usually use RTTI in my code and when I don't have this setting on I get compiler errors: <code>CPP_RTTI_ENABLED</code>. Also I get this error sometimes
+</p>
+<pre>
+  <code>
+Version mismatch, make sure you compile the client code with the same Jolt version and compiler definitions!
+Mismatching define JPH_DEBUG_RENDERER.
+Aborted (core dumped)
+  </code>
+</pre>
+<p>
+  This happens because the library was built with with <pre>JPH_DEBUG_RENDERER</pre> defined whereas our client code when compiled doesn't have it defined, initially I tried fixing this by just dropping this in <code>main.cpp</code>, <code>#define JPH_DEBUG_RENDERER</code> but that doesn't fix it, instead putting this in my <code>CMakeLists.txt</code> made it work: <code>add_definitions(-DJPH_DEBUG_RENDERER)</code>
+</p>

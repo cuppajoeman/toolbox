@@ -1,0 +1,24 @@
+<p>
+  On linux I like to make software midi devices and I usually want bitwig to see that as input but it doesn't, here's a session where I was able to get it to work:
+</p>
+
+<pre>
+   <code>
+cjm@cjm-desktop:~/projects/anchor_system_organization/c-keyboard$ sudo modprobe snd_virmidi midi_devs=1
+cjm@cjm-desktop:~/projects/anchor_system_organization/c-keyboard$ ./build/c-keyboard 
+
+APIs
+  API #0: unspecified / default
+  API #2: ALSA
+  API #3: Jack
+
+Choose an API number: 2
+
+Would you like to open a virtual output port? [y/N] n
+  Output port #0: Midi Through:Midi Through Port-0 14:0
+  Output port #1: Virtual Raw MIDI 3-0:VirMIDI 3-0 28:0
+
+Choose a port number: 1
+
+   </code>
+</pre>

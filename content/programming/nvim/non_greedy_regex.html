@@ -1,0 +1,8 @@
+<h2>Non-Greedy Matching in Vim</h2>
+<p>In Vim, when using regular expressions, it's often useful to make matches non-greedy. This means the pattern will match as little text as possible rather than as much as possible.</p>
+<p>Instead of using <code>.*</code> which is greedy and matches as much as possible, use <code>.\{-}</code> which is non-greedy and stops at the first opportunity.</p>
+<p>Example:</p>
+<pre><code>%s/=".\{-}"/=""</code></pre>
+<p>This replaces everything between quotes, but only up to the first closing quote, not the last one.</p>
+<p>See <code>:help non-greedy</code> for more information.</p>
+

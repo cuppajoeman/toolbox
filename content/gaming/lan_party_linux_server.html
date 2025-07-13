@@ -1,0 +1,23 @@
+<p>
+  Recently I had a client server game where the server ran on linux, I had just installed endeavor OS and I wanted to connect my windows computer to it to play.
+</p>
+
+<p>
+  I was using KDE at the time and when I turned off wifi and plugged in the ethernet it compained because it couldn't get an ip address and there wasn't any internet, I had to open the gui network panel, select the connection and go configure, I went to IPv6 and changed method to ignore, and for IPv4 I changed method to Link-Local, which stopped it from dropping the connection like before.
+</p>
+<p>
+  Additionally after doing that and I was able to get the ip address of the linux machine by running <code>ip -4 addr show</code> and inspected what the inet was for the ethernet device. After that I used that ip address to connect to the server on the client.
+</p>
+<p>
+  Even then things still didn't work properly, additionally I had to open the port on the server for this to work, I think you can use UFW if its available on your system, but for me it wasn't and instead I had <code>firewalld</code> and the way I set that up was by running: 
+</p>
+<pre>
+  <code>
+sudo firewall-cmd --permanent --add-port=7777/tcp
+sudo firewall-cmd --permanent --add-port=7777/udp
+sudo firewall-cmd --reload
+  </code>
+</pre>
+<p>
+  I used 7777 because that's what my game uses, but you can replace it with whatever you want, also I used tcp and udp as we send both types of messages over the network in the game.
+</p>

@@ -1,0 +1,74 @@
+<p>
+  If you do <code>v = v * f</code> on each game loop, then friction will apply more at 120Hz vs 60Hz — a common error caused by frame rate dependent physics.
+</p>
+
+<p>
+  This happens because friction is applied every frame, so higher frame rates result in more frequent applications, making objects slow down more quickly. For example, at 120Hz, velocity gets multiplied by <code>f</code> twice as often as at 60Hz, which leads to different behavior depending on the frame rate.
+</p>
+
+<p>
+  To fix this, make friction time-dependent by converting it into an <strong>exponential decay</strong> based on delta time. If <code>f</code> is the fraction of velocity retained per second (e.g., <code>f = 0.98</code> means 98% retained each second), apply it like this:
+</p>
+
+<pre><code>float decay = pow(friction_per_second, delta_time);
+velocity *= decay;
+</code></pre>
+
+<p>
+  The motivation for using a power function here is based on how delta time adds up over the course of a second. Suppose we're running at 120Hz. Then over one second, we will have applied this update 120 times with each frame's <code>delta_time = 1/120</code>. So the velocity will be updated as:
+</p>
+
+<pre><code>v = v * f^dt_1 * f^dt_2 * ... * f^dt_120</code></pre>
+
+<p>
+  Because multiplication of exponentiated constants with the same base is equivalent to raising the base to the sum of the exponents, and since:
+</p>
+
+<pre><code>dt_1 + dt_2 + ... + dt_120 ≈ 1</code></pre>
+
+<p>
+  we get:
+</p>
+
+<pre><code>v = v * f^1 = v * f</code></pre>
+
+<p>
+  So after one second, exactly one iteration of friction has been applied, regardless of the frame rate. This makes friction frame rate independent.
+</p>
+
+<p>
+  However, you might notice that everything feels much more "slippery" now. That’s because in the old configuration, friction was being applied 120 times per second (at 120Hz), while in the new configuration it’s effectively applied once per second. To match the old feel, you need to adjust your friction value.
+</p>
+
+<p>
+  If your old per-frame friction value was <code>f_old</code> (e.g., 0.998), then over one second at 120Hz you were doing:
+</p>
+
+<pre><code>v = v * f_old^120</code></pre>
+
+<p>
+  So to preserve the same amount of friction when switching to the new delta-time-based method, compute:
+</p>
+
+<pre><code>friction_per_second = pow(f_old, 120);</code></pre>
+
+<p>
+  and then use:
+</p>
+
+<pre><code>velocity *= pow(friction_per_second, delta_time);</code></pre>
+
+<h3>When to Use Linear vs. Exponential Decay</h3>
+
+<ul>
+  <li>
+    <strong>Use linear decay</strong> (i.e., <code>value -= rate * delta_time</code>) when applying a force or rate of change that should remain constant per second, such as gravity or acceleration.
+  </li>
+  <li>
+    <strong>Use exponential decay</strong> (i.e., <code>value *= pow(factor, delta_time)</code>) when applying a percentage-based effect over time, such as friction, damping, or drag that continuously scales down a value.
+  </li>
+</ul>
+
+<p>
+  Choosing the right type of decay ensures that your game's behavior stays consistent across different hardware and frame rates, while also preserving the feel of your physics.
+</p>

@@ -1,0 +1,54 @@
+<p>
+  A common idea I see online is that a great programmer is someone who fully understands the codebase they’re working on. Given a new feature, they can assess its feasibility, know what other parts of the system it will affect, and provide a solid estimate of how long it will take to implement.
+</p>
+
+<p>
+  This idea is often paired with another: that understanding a large codebase is a monumental task. It’s said to take years of effort, requiring a person to hold a massive amount of context in their head at once to be effective.
+</p>
+
+<p>
+  While it's true that the more context you carry in your mind, the more effectively you can problem-solve, I strongly disagree with the idea that you *must* hold the entire context of a codebase in your head to do anything meaningful.
+</p>
+
+<p>
+  Here’s the reality of working in codebases:
+</p>
+
+<ul>
+  <li>You may spend long, focused stretches working in one area of the code, building up a strong internal context that allows you to move quickly and confidently.</li>
+  <li>But inevitably, you’ll step away—whether due to shifts in motivation, switching projects, or simply finishing a feature set and moving on.</li>
+  <li>When you return after a break, that internal context has faded. It takes time to ramp back up. On day one, you might make no progress at all, or only small changes. It may take days to regain full velocity.</li>
+  <li>In the worst cases, you come back and can’t remember why anything was written the way it was. You end up refactoring heavily just to understand what's going on before you can make meaningful progress.</li>
+</ul>
+
+<p>
+  This problem is even worse in large teams or companies. Often, codebases are written by developers who spend 6+ hours per day immersed in the system. They don’t *need* to make things obvious to others, because the context is fresh and ever-present. This creates a false sense of stability and speed, but it leads to major issues down the line:
+</p>
+
+<ul>
+  <li>People move to new projects or leave the company altogether, taking all that implicit knowledge with them.</li>
+  <li>New developers are left with little to no documentation, struggling to understand decisions, functionality, and dependencies.</li>
+  <li>Significant time is wasted rediscovering intentions, reverse engineering behavior, or rewriting/refactoring to recover lost understanding.</li>
+</ul>
+
+<p>
+  I think the example of working at a company that writes code is the most extreme case but I'm just using it to illustrate the point. This still happens in your own personal code and any other place code exists.
+</p>
+
+---
+
+<p><strong>My stance:</strong></p>
+
+<p>
+  I believe that we shouldn’t design systems that depend on a developer holding the entire context of the codebase in their brain. Instead, I advocate for baking context directly into the code itself with good comments, clear structure, and highly descriptive names for variables, functions, and modules.
+</p>
+
+<p>
+  This practice reduces the time needed to re-absorb context after a break and lowers the barrier to entry for others who may work in the codebase in the future. It turns implicit knowledge into explicit cues within the code, making it more resilient to change and turnover.
+</p>
+
+<p>
+  My motto is simple: <strong>Code should be self-explanatory, not memory-dependent.</strong> A good codebase isn’t one that only its creator can understand—it’s one that anyone can pick up, ramp into, and work with easily, regardless of how much time they’ve spent with it in the past.
+</p>
+
+</p>
