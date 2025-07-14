@@ -1,0 +1,9 @@
+<p>
+  By default when I need to re-use code over and over, <a href="/tool_howtos/git/projects_as_composition_of_submodules.html">I use submodules</a>. Sometimes there will be situations where submodules are overkill, for example in a project where I know I wont need to re-use the code over and over but maybe in only up to 3 places, then I do something like this.
+</p>
+
+<p>
+  The first thought is to just use symlinks, but symlinks may vary per operating system platform, but something that always works is just copying the files to where they need to be, when they are updated then you just re-copy and clobber the exsting files to get the update out, this will work on all platforms, so here's how we can do that.
+</p>
+
+<div class="code-file" data-file-name="copy_symlinks.py"></div>
