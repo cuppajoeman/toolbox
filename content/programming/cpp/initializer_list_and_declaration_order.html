@@ -1,0 +1,77 @@
+<p>
+  In C++, class member variables are initialized in the order they are declared in the class, 
+  not in the order they appear in the constructor's initializer list. This can lead to subtle bugs, 
+  especially when one member depends on another during construction.
+</p>
+
+<h2>Key Rule</h2>
+<p>
+  Regardless of the order used in the constructor's initializer list, the compiler initializes 
+  the members in the order they are declared in the class.
+</p>
+
+<h2>Example: Incorrect Assumption</h2>
+<pre>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Example {
+  std::string first;
+  std::string second;
+
+public:
+  Example()
+      : second("Derived from: " + first), first("Initialized First") {
+      std::cout &lt;&lt; "first: " &lt;&lt; first &lt;&lt; "\n";
+      std::cout &lt;&lt; "second: " &lt;&lt; second &lt;&lt; "\n";
+  }
+};
+
+int main() {
+  Example ex;
+  return 0;
+</pre>
+
+<p>
+  <strong>Output:</strong><br>
+  first: Initialized First<br>
+  second: Derived from: 
+</p>
+
+<p>
+  Even though <code>first</code> is listed after <code>second</code> in the initializer list, it is still initialized 
+  before <code>second</code> because it appears first in the class definition. As a result, 
+  <code>second</code> uses the default (empty) value of <code>first</code> when constructing its own value.
+</p>
+
+<h2>Corrected Version</h2>
+<pre>
+class Example {
+  std::string second;
+  std::string first;
+
+public:
+  Example()
+      : second("Derived from: " + first), first("Initialized First") {}
+};
+</pre>
+
+<p>
+  In this corrected version, <code>first</code> is declared after <code>second</code> in the class, 
+  so it is initialized after <code>second</code> — still wrong!
+  To truly fix the issue, you must either:
+</p>
+<ul>
+  <li>Reorder the declarations to place <code>first</code> before <code>second</code>, and</li>
+  <li>Ensure the constructor uses initializer list in the same logical order for clarity.</li>
+</ul>
+
+<h2>Takeaway</h2>
+<p>
+  Always remember: C++ initializes class members in the order of declaration, not the initializer list order.
+  This means the safest approach is to:
+</p>
+<ul>
+  <li>Declare members in dependency order</li>
+  <li>Match the constructor initializer list order with the declaration order</li>
+</ul>

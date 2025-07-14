@@ -1,0 +1,19 @@
+<p>
+  The biggest time saver out there.
+</p>
+
+<pre>
+  <code>
+function! SwitchBuffer()
+  let buffers = filter(range(1, bufnr('$')), 'buflisted(v:val)')
+  let names = map(buffers, 'bufname(v:val) == "" ? "[No Name]" : bufname(v:val)')
+  let choices = map(range(len(buffers)), 'v:val + 1 . ". " . names[v:val]')
+  let choice = inputlist(choices)
+  if choice > 0 && choice <= len(buffers)
+    execute "buffer " . buffers[choice - 1]
+  endif
+endfunction
+
+command! IB call SwitchBuffer()
+  </code>
+</pre>
