@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>beautiful sauce movies</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; /* no page scroll */
+    }
+    body {
+      background: url('viewing_experience.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    #main-container {
+      height: 100%;
+      display: flex;
+      justify-content: center; /* center the video */
+      align-items: center;
+      padding: 0 5vw;
+      box-sizing: border-box;
+      position: relative;
+    }
+    #video-container {
+      width: 560px;
+      height: 315px;
+      flex-shrink: 0;
+      background: black; /* subtle black behind iframe */
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      z-index: 1;
+    }
+    #video-player {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    /* Position playlist absolutely on the right side */
+    #playlist-container {
+      position: absolute;
+      right: 5vw;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 320px;
+      max-height: 80vh;
+      overflow-y: auto;
+      border: 2px dashed red;
+      box-shadow: 0 0 10px red;
+    }
+    .watched {
+      color: purple;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div id="main-container">
+    <div id="video-container">
+      <iframe
+        id="video-player"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        allowfullscreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      ></iframe>
+    </div>
+
+    <div id="playlist-container">
+      <h2>movies</h2>
+      <table id="video-table">
+        <thead>
+          <tr><th>Title</th><th>Watch</th></tr>
+        </thead>
+        <tbody>
+          <!-- rows auto-generated -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    /*
+    To generate your list of anchors go to the page of the playlist and then paste this into the javascript console:
+
+    [...document.querySelectorAll('ytd-playlist-video-renderer')].map(renderer => {
+      const anchor = renderer.querySelector('a#video-title');
+      if (anchor) {
+        const title = anchor.textContent.trim();
+        const href = anchor.getAttribute('href');
+        const match = href.match(/\/watch\?v=([^&]+)/);
+        if (match) {
+          const cleanUrl = 'https://www.youtube.com/watch?v=' + match[1];
+          return `<a href="${cleanUrl}">${title}</a>`;
+        }
+      }
+    }).filter(Boolean).forEach(a => console.log(a));
+
+    Then copy all messages and paste the output here.
+    */
+
+    const rawAnchors = `
+<a href="https://www.youtube.com/watch?v=-pWqSez_Jec">sentry on mid</a>
+<a href="https://www.youtube.com/watch?v=0Y_V4us1acA">soldier to med drop</a>
+<a href="https://www.youtube.com/watch?v=10VJ3aTtbVY">med kill somehow</a>
+<a href="https://www.youtube.com/watch?v=3D59sKIsuv8">3 good rockets</a>
+<a href="https://www.youtube.com/watch?v=7PekjcMWYq8">process med drop</a>
+<a href="https://www.youtube.com/watch?v=A5WPFvU043A">med drop</a>
+<a href="https://www.youtube.com/watch?v=CW6_CaOCBZ4">bush kill</a>
+<a href="https://www.youtube.com/watch?v=EWWJQExDxV8">i dont care to mg to capper timer</a>
+<a href="https://www.youtube.com/watch?v=K4S-UP9dhLU">flying airshot</a>
+<a href="https://www.youtube.com/watch?v=LBUM9wW_6l4">solo slapdown</a>
+<a href="https://www.youtube.com/watch?v=MbXt972qWkE">racing last push</a>
+<a href="https://www.youtube.com/watch?v=NV9jiNxRB7s">two kills i dont deserve</a>
+<a href="https://www.youtube.com/watch?v=X3zWBfzhocs">med kill</a>
+<a href="https://www.youtube.com/watch?v=XeXQ-TOfbqk">after death med kill</a>
+<a href="https://www.youtube.com/watch?v=YXCT_36Lq4s">above plat rocket med kill</a>
+<a href="https://www.youtube.com/watch?v=YcqAqBE_G50">swag mid</a>
+<a href="https://www.youtube.com/watch?v=a3q9Q1_ZKko">get the stickies off</a>
+<a href="https://www.youtube.com/watch?v=aOOThttDzgU">scout airshot jumpscare</a>
+<a href="https://www.youtube.com/watch?v=cW2iVyq930U">scout med drop demo</a>
+<a href="https://www.youtube.com/watch?v=dDvhjCPk6DY">above the head airshot</a>
+<a href="https://www.youtube.com/watch?v=kFxsq2wWQCI">med drop with scout</a>
+<a href="https://www.youtube.com/watch?v=kPj88VSbDGM">med scout bomb</a>
+<a href="https://www.youtube.com/watch?v=l3gAaxpZwb0">market garden</a>
+<a href="https://www.youtube.com/watch?v=lait0S7zaPI">triple airshot</a>
+<a href="https://www.youtube.com/watch?v=nuqOgTYHvH8">trigger control</a>
+<a href="https://www.youtube.com/watch?v=oKWRx-6u2_s">roof airshot</a>
+<a href="https://www.youtube.com/watch?v=oqs-t9CeYYs">blind airshot</a>
+<a href="https://www.youtube.com/watch?v=p9AYrlgGZ1A">mg salvage</a>
+<a href="https://www.youtube.com/watch?v=vTvX0an5U1E">mg to airshot</a>
+<a href="https://www.youtube.com/watch?v=xV5yNaNHM6U">med 3 rocket</a>
+    `;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const tableBody = document.querySelector('#video-table tbody');
+      const anchorRegex = /<a\s+href="https:\/\/www\.youtube\.com\/watch\?v=([^"&]+)[^"]*">([^<]+)<\/a>/g;
+      let match;
+
+      while ((match = anchorRegex.exec(rawAnchors)) !== null) {
+        const videoId = match[1];
+        const title = match[2];
+
+        const tr = document.createElement('tr');
+        const titleTd = document.createElement('td');
+        titleTd.textContent = title;
+
+        const watchTd = document.createElement('td');
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = 'Play';
+        link.style.cursor = 'pointer';
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          document.getElementById('video-player').src = `https://www.youtube.com/embed/${videoId}`;
+          link.classList.add('watched');
+        });
+
+        watchTd.appendChild(link);
+        tr.appendChild(titleTd);
+        tr.appendChild(watchTd);
+
+        tableBody.appendChild(tr);
+      }
+    });
+  </script>
+</body>
+</html>
