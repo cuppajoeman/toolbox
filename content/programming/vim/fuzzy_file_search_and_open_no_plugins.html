@@ -1,0 +1,39 @@
+<p>
+  Sometimes I just want to be able to get to files faster and I don't want a whole plugin infrastructure, so we make this:
+</p>
+
+<pre>
+  <code>
+function! FuzzyFindFile()
+  let l:files = split(system("find . -type f"), "\n")
+  let l:query = input("Search for file: ")
+
+  " Filter matches
+  let l:matches = filter(l:files, 'v:val =~ l:query')
+
+  " If only one match, open it
+  if len(l:matches) == 1
+    execute 'edit' fnameescape(l:matches[0])
+    return
+  endif
+
+  " Let user select one from matches
+  if len(l:matches) > 1
+    echo "Matching files:"
+    for i in range(len(l:matches))
+      echo i . ": " . l:matches[i]
+    endfor
+    let l:choice = input("Select file number: ")
+    if l:choice =~ '^\d\+$' && l:choice < len(l:matches)
+      execute 'edit' fnameescape(l:matches[l:choice])
+    endif
+  else
+    echo "No matching files."
+  endif
+endfunction
+
+" Map it to <Leader>f
+nnoremap <silent> <Leader>f :call FuzzyFindFile()<CR>
+
+  </code>
+</pre>
