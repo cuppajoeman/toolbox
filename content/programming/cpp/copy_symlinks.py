@@ -9,7 +9,7 @@ def parse_symlink_file(symlink_file_path):
             if '->' not in line or line.startswith('#') or not line:
                 continue
             src, dst = map(str.strip, line.split('->', 1))
-            mappings[src] = dst
+            mappings.setdefault(src, []).append(dst)
     return mappings
 
 def copy_and_clobber(src_dir, dst_dir):
@@ -22,15 +22,16 @@ def copy_and_clobber(src_dir, dst_dir):
 def main(source_root, symlink_file_path):
     mappings = parse_symlink_file(symlink_file_path)
 
-    for subdir, target_path in mappings.items():
+    for subdir, target_paths in mappings.items():
         full_src_path = os.path.join(source_root, subdir)
-        full_dst_path = os.path.abspath(target_path)
 
         if not os.path.isdir(full_src_path):
             print(f"Warning: source directory does not exist: {full_src_path}")
             continue
 
-        copy_and_clobber(full_src_path, full_dst_path)
+        for target_path in target_paths:
+            full_dst_path = os.path.abspath(target_path)
+            copy_and_clobber(full_src_path, full_dst_path)
 
 if __name__ == "__main__":
     import argparse
