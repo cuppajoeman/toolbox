@@ -1,0 +1,79 @@
+
+<p>Multiline Git commit messages are used to provide more context and detail beyond a short summary. They are particularly useful in collaborative projects and when changes are non-trivial.</p>
+
+<h2>Structure</h2>
+<ul>
+  <li><strong>Subject Line</strong>: A brief summary of the change (max ~50 characters).</li>
+  <li><strong>Blank Line</strong>: A blank line between the subject and body is required.</li>
+  <li><strong>Body</strong>: A more detailed explanation (wrapped at ~72 characters per line is common).</li>
+  <li><strong>Footer</strong> (optional): Tags like <code>Fixes:</code>, <code>Refs:</code>, or <code>Reviewed-by:</code>.</li>
+</ul>
+
+<h2>Example 1: Prevent racing of requests</h2>
+<pre>
+fix: prevent racing of requests
+
+Introduce a request id and a reference to latest request. Dismiss
+incoming responses other than from latest request.
+
+Remove timeouts which were used to mitigate the racing issue but are
+obsolete now.
+
+Reviewed-by: Z
+Refs: #123
+</pre>
+
+<h2>Example 2: Add retry logic to network requests</h2>
+<pre>
+feat: add retry logic for network requests
+
+Retries failed HTTP requests up to 3 times with exponential backoff.
+Handles temporary network errors more gracefully.
+
+Ref: #234
+Reviewed-by: Alice &lt;alice@example.com&gt;
+</pre>
+
+<h2>Example 3: Refactor authentication system</h2>
+<pre>
+refactor: simplify authentication flow
+
+The login process has been updated to use the new session management
+API. This makes the code cleaner and more testable. Legacy token code
+was removed.
+
+BREAKING CHANGE: old `AuthToken` API is no longer supported.
+
+Reviewed-by: Bob
+</pre>
+
+<h2>Example 4: Fix crash on empty input</h2>
+<pre>
+fix: crash when input is empty
+
+Guarded against null or empty values in the parser, which previously
+caused a segmentation fault under certain edge cases.
+
+Fixes: #89
+</pre>
+
+<h2>How to Write Multiline Commit Messages</h2>
+<p>You can write multiline commit messages using:</p>
+<pre>
+git commit
+# Then your editor will open. Write subject, body, and footer there.
+</pre>
+<p>Or from the command line with <code>-m</code> used multiple times:</p>
+<pre>
+git commit -m "fix: crash when input is empty" \
+          -m "Guarded against null or empty values..." \
+          -m "Fixes: #89"
+</pre>
+
+<h2>Tips</h2>
+<ul>
+  <li>Be concise but informative.</li>
+  <li>Use imperative mood (e.g., "Fix bug", not "Fixed bug").</li>
+  <li>Use bullet points or paragraphs for longer explanations.</li>
+  <li>Always leave the second line blank after the subject line.</li>
+</ul>
