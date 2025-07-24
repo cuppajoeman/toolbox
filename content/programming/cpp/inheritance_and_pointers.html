@@ -1,0 +1,97 @@
+<p>
+  In C++, inheritance lets you define relationships between classes — where a derived class extends the behavior of a base class. But if you're working with objects polymorphically, you'll need to use pointers or references. This article explains why that's necessary, and why defining destructors properly is crucial.
+</p>
+
+<h2>Object Slicing: The Core Problem</h2>
+
+<p>
+  Consider the following base and derived classes:
+</p>
+
+<pre><code>class Base {
+public:
+    virtual std::string type() const { return "Base"; }
+};
+
+class Derived : public Base {
+public:
+    std::string type() const override { return "Derived"; }
+};</code></pre>
+
+<p>Now try this:</p>
+
+<pre><code>Derived d;
+Base b = d;
+std::cout &lt;&lt; b.type(); // prints "Base"</code></pre>
+
+<p>
+  Even though <code>d</code> is a <code>Derived</code> object, the assignment <code>Base b = d</code> causes <strong>object slicing</strong>. Only the <code>Base</code> portion of <code>d</code> is copied into <code>b</code>, and the <code>Derived</code> part is sliced off. As a result, virtual function dispatch no longer works as expected.
+</p>
+
+<h2>How to Avoid Slicing</h2>
+
+<p>Use pointers or references:</p>
+
+<pre><code>Derived d;
+Base* ptr = &d;
+std::cout &lt;&lt; ptr-&gt;type(); // prints "Derived"
+
+Base& ref = d;
+std::cout &lt;&lt; ref.type(); // also prints "Derived"</code></pre>
+
+<p>
+  Both of these examples avoid copying the object. Instead, they access the original <code>Derived</code> instance through a <code>Base</code> pointer or reference. Now virtual methods behave as expected — this is called <strong>dynamic dispatch</strong>.
+</p>
+
+<h2>Why Use <code>std::shared_ptr</code>?</h2>
+
+<p>
+  In modern C++, smart pointers like <code>std::shared_ptr</code> or <code>std::unique_ptr</code> are preferred over raw pointers to manage object lifetimes safely:
+</p>
+
+<pre><code>std::shared_ptr&lt;Base&gt; ptr = std::make_shared&lt;Derived&gt;();
+std::cout &lt;&lt; ptr-&gt;type(); // prints "Derived"</code></pre>
+
+<p>
+  <code>shared_ptr</code> ensures that the object remains alive as long as anyone is using it, preventing memory leaks and dangling pointers.
+</p>
+
+<h2>Why Define a Virtual Destructor?</h2>
+
+<p>
+  If you're using a base class pointer to delete a derived object, you <strong>must declare the base class destructor as virtual</strong>. Otherwise, only the base part will be destroyed — leading to memory leaks or undefined behavior.
+</p>
+
+<pre><code>class Base {
+public:
+    virtual ~Base() {}
+};
+
+class Derived : public Base {
+public:
+    ~Derived() {
+        std::cout &lt;&lt; "Derived destroyed\n";
+    }
+};</code></pre>
+
+<p>Now this works correctly:</p>
+
+<pre><code>Base* b = new Derived();
+delete b; // calls both Base and Derived destructors</code></pre>
+
+<p>
+  Without a virtual destructor, <code>Derived</code>'s destructor would never be called.
+</p>
+
+<h2>Summary</h2>
+
+<ul>
+  <li><strong>Object slicing</strong> occurs when copying a derived object into a base object by value.</li>
+  <li>Use <strong>pointers or references</strong> to preserve polymorphic behavior.</li>
+  <li>Use <code>shared_ptr</code> or <code>unique_ptr</code> to manage object lifetimes safely.</li>
+  <li>Always make base class destructors <strong>virtual</strong> if the class is intended for inheritance.</li>
+</ul>
+
+<p>
+  By following these principles, you’ll ensure correct and safe use of inheritance in C++.
+</p>
