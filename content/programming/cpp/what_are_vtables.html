@@ -1,0 +1,108 @@
+
+<p>
+  In C++, polymorphism is commonly achieved using <code>virtual</code> functions. But how does the compiler implement this mechanism under the hood? The answer is usually a <strong>vtable</strong>, or virtual table. This article explains what vtables are, how they work, and why they're important for polymorphism in C++.
+</p>
+
+<h2>What is a VTable?</h2>
+
+<p>
+  A <strong>vtable</strong> is an internal lookup table created by the compiler to support dynamic dispatch of virtual functions. It holds pointers to the virtual functions of a class, allowing the correct function implementation to be called at runtime based on the object's actual type.
+</p>
+
+<p>
+  In simpler terms, the vtable lets C++ decide which version of a virtual function to call — even when using a pointer or reference to a base class.
+</p>
+
+<h2>Why Do We Need VTables?</h2>
+
+<p>
+  Consider this example:
+</p>
+
+<pre><code>class Base {
+public:
+  virtual void greet() { std::cout &lt;&lt; "Hello from Base\n"; }
+};
+
+class Derived : public Base {
+public:
+  void greet() override { std::cout &lt;&lt; "Hello from Derived\n"; }
+};
+
+void say_hello(Base* b) {
+  b-&gt;greet();
+}
+
+int main() {
+  Derived d;
+  say_hello(&amp;d);
+  return 0;
+}
+</code></pre>
+
+<p>
+  Without vtables, the call to <code>b-&gt;greet()</code> inside <code>say_hello</code> would always invoke <code>Base::greet()</code>, because the pointer type is <code>Base*</code> — the compiler resolves function calls at compile time.
+</p>
+
+<p>
+  Vtables allow the call to dispatch dynamically at runtime to <code>Derived::greet()</code> because the actual object pointed to is a <code>Derived</code>, not just a <code>Base</code>.
+</p>
+
+<h2>How VTables Work Under the Hood</h2>
+
+<p>
+  Although vtable implementation details vary across compilers, the general idea is:
+</p>
+
+<ul>
+  <li>Each polymorphic class (i.e., a class with virtual functions) has a static vtable — an array of function pointers, one per virtual function.</li>
+  <li>Each object of that class stores a hidden pointer (called the <em>vptr</em>) pointing to its class's vtable.</li>
+  <li>When a virtual function is called on an object, the call is resolved by looking up the function pointer in the vtable via the object's vptr, then invoking that function.</li>
+</ul>
+
+<p>Here’s a rough visualization:</p>
+
+<pre><code>Object memory layout:
++----------------+
+| vptr ---------&gt; +---------------------+
++----------------+  | &lt;VTable for Derived&gt;    |
+                    +---------------------+
+                    | &lt;ptr to Derived::greet&gt;  |
+                    | &lt;ptr to other virtual fns&gt; |
+                    +---------------------+
+</code></pre>
+
+<h2>Example Walkthrough</h2>
+
+<p>For the classes above:</p>
+
+<ul>
+  <li><strong>Base:</strong> has a vtable with one entry pointing to <code>Base::greet</code>.</li>
+  <li><strong>Derived:</strong> has a vtable with one entry overridden to point to <code>Derived::greet</code>.</li>
+  <li>An object of <code>Derived</code> contains a <code>vptr</code> pointing to <code>Derived</code>'s vtable.</li>
+</ul>
+
+<p>At runtime, when <code>b-&gt;greet()</code> is called and <code>b</code> points to a <code>Derived</code> object, the program:</p>
+
+<ol>
+  <li>Uses <code>b</code>'s <code>vptr</code> to get <code>Derived</code>'s vtable.</li>
+  <li>Looks up the function pointer for <code>greet()</code> in the vtable.</li>
+  <li>Calls <code>Derived::greet()</code>.</li>
+</ol>
+
+<h2>Important Notes</h2>
+
+<ul>
+  <li>Vtables are an implementation detail — the C++ standard does not require compilers to use them, but all mainstream compilers do.</li>
+  <li>Each polymorphic class usually has its own unique vtable.</li>
+  <li>Each object of such a class has a hidden <code>vptr</code> pointer added by the compiler, which you don't see in your C++ code.</li>
+  <li>Multiple inheritance and virtual inheritance introduce more complex vtable structures.</li>
+</ul>
+
+<h2>Summary</h2>
+
+<blockquote>
+  The vtable is the core mechanism behind C++'s support for runtime polymorphism. It allows virtual functions to behave correctly according to the actual object type, enabling powerful and flexible object-oriented designs.
+</blockquote>
+
+<p>Understanding vtables can help you better grasp how C++ works under the hood and why certain features behave the way they do.</p>
