@@ -1,14 +1,12 @@
-<p>
-  In C++, inheritance lets you define relationships between classes — where a derived class extends the behavior of a base class. But if you're working with objects polymorphically, you'll need to use pointers or references. This article explains why that's necessary, and why defining destructors properly is crucial.
-</p>
+  <p>
+    In C++, inheritance enables derived classes to extend or override behavior from a base class. But to use inheritance correctly — especially when dealing with polymorphism — you must use pointers or references, not values. This article explains why object slicing occurs, why destructors should be virtual, and how smart pointers help manage lifetimes.
+  </p>
 
-<h2>Object Slicing: The Core Problem</h2>
+  <h2>Object Slicing: What It Really Means</h2>
 
-<p>
-  Consider the following base and derived classes:
-</p>
+  <p>Consider the following classes:</p>
 
-<pre><code>class Base {
+  <pre><code>class Base {
 public:
     virtual std::string type() const { return "Base"; }
 };
@@ -16,82 +14,114 @@ public:
 class Derived : public Base {
 public:
     std::string type() const override { return "Derived"; }
+    std::string derived_info = "extra";
 };</code></pre>
 
-<p>Now try this:</p>
+  <p>Now do this:</p>
 
-<pre><code>Derived d;
+  <pre><code>Derived d;
 Base b = d;
 std::cout &lt;&lt; b.type(); // prints "Base"</code></pre>
 
-<p>
-  Even though <code>d</code> is a <code>Derived</code> object, the assignment <code>Base b = d</code> causes <strong>object slicing</strong>. Only the <code>Base</code> portion of <code>d</code> is copied into <code>b</code>, and the <code>Derived</code> part is sliced off. As a result, virtual function dispatch no longer works as expected.
-</p>
+  <p>
+    Although <code>d</code> is a <code>Derived</code> object, the assignment <code>Base b = d</code> performs a <strong>copy</strong> into a <code>Base</code> object. This invokes the <code>Base</code> copy constructor, which only copies the <code>Base</code> portion of <code>d</code>. Everything defined in <code>Derived</code> — data and overrides — is <strong>sliced off</strong>.
+  </p>
 
-<h2>How to Avoid Slicing</h2>
+  <p>
+    This is called <strong>object slicing</strong>. After slicing, the object is just a pure <code>Base</code>, and virtual dispatch no longer works as expected.
+  </p>
 
-<p>Use pointers or references:</p>
+  <h2>How to Avoid Slicing</h2>
 
-<pre><code>Derived d;
+  <p>Use a pointer or reference to access the object:</p>
+
+  <pre><code>Derived d;
 Base* ptr = &d;
 std::cout &lt;&lt; ptr-&gt;type(); // prints "Derived"
 
 Base& ref = d;
 std::cout &lt;&lt; ref.type(); // also prints "Derived"</code></pre>
 
-<p>
-  Both of these examples avoid copying the object. Instead, they access the original <code>Derived</code> instance through a <code>Base</code> pointer or reference. Now virtual methods behave as expected — this is called <strong>dynamic dispatch</strong>.
-</p>
+  <p>
+    These avoid copying entirely. Instead, they access the original <code>Derived</code> object polymorphically. Thanks to the virtual table (vtable), method calls like <code>type()</code> are dispatched at runtime to the appropriate override.
+  </p>
 
-<h2>Why Use <code>std::shared_ptr</code>?</h2>
+  <h2>Why Use <code>std::shared_ptr</code> or <code>std::unique_ptr</code>?</h2>
 
-<p>
-  In modern C++, smart pointers like <code>std::shared_ptr</code> or <code>std::unique_ptr</code> are preferred over raw pointers to manage object lifetimes safely:
-</p>
+  <p>
+    Raw pointers work, but they come with manual lifetime management. Smart pointers solve that:
+  </p>
 
-<pre><code>std::shared_ptr&lt;Base&gt; ptr = std::make_shared&lt;Derived&gt;();
-std::cout &lt;&lt; ptr-&gt;type(); // prints "Derived"</code></pre>
+  <pre><code>std::shared_ptr&lt;Base&gt; b = std::make_shared&lt;Derived&gt;();
+std::cout &lt;&lt; b-&gt;type(); // prints "Derived"</code></pre>
 
-<p>
-  <code>shared_ptr</code> ensures that the object remains alive as long as anyone is using it, preventing memory leaks and dangling pointers.
-</p>
+  <p>
+    <code>shared_ptr</code> ensures the object is kept alive as long as needed, preventing memory leaks and dangling pointers. Similarly, <code>unique_ptr</code> provides exclusive ownership with automatic destruction.
+  </p>
 
-<h2>Why Define a Virtual Destructor?</h2>
+  <h2>Why the Base Class Needs a Virtual Destructor</h2>
 
-<p>
-  If you're using a base class pointer to delete a derived object, you <strong>must declare the base class destructor as virtual</strong>. Otherwise, only the base part will be destroyed — leading to memory leaks or undefined behavior.
-</p>
+  <p>Consider this:</p>
 
-<pre><code>class Base {
+  <pre><code>class Base {
 public:
-    virtual ~Base() {}
+    ~Base() { std::cout &lt;&lt; "Base destroyed\n"; }
 };
 
 class Derived : public Base {
 public:
-    ~Derived() {
-        std::cout &lt;&lt; "Derived destroyed\n";
-    }
-};</code></pre>
+    ~Derived() { std::cout &lt;&lt; "Derived destroyed\n"; }
+};
 
-<p>Now this works correctly:</p>
+Base* b = new Derived();
+delete b; // Only Base::~Base() runs!
+</code></pre>
 
-<pre><code>Base* b = new Derived();
-delete b; // calls both Base and Derived destructors</code></pre>
+  <p>
+    This code has a bug. Since <code>Base</code>'s destructor is <em>not virtual</em>, deleting via a <code>Base*</code> only calls <code>Base</code>'s destructor. <code>Derived</code>'s destructor is skipped entirely.
+  </p>
 
-<p>
-  Without a virtual destructor, <code>Derived</code>'s destructor would never be called.
-</p>
+  <p>
+    This is dangerous: <code>Derived</code> may hold resources like heap allocations or file handles that need to be cleaned up. Skipping its destructor can cause leaks or undefined behavior.
+  </p>
 
-<h2>Summary</h2>
+  <h3>Correct Version:</h3>
 
-<ul>
-  <li><strong>Object slicing</strong> occurs when copying a derived object into a base object by value.</li>
-  <li>Use <strong>pointers or references</strong> to preserve polymorphic behavior.</li>
-  <li>Use <code>shared_ptr</code> or <code>unique_ptr</code> to manage object lifetimes safely.</li>
-  <li>Always make base class destructors <strong>virtual</strong> if the class is intended for inheritance.</li>
-</ul>
+  <pre><code>class Base {
+public:
+    virtual ~Base() { std::cout &lt;&lt; "Base destroyed\n"; }
+};
 
-<p>
-  By following these principles, you’ll ensure correct and safe use of inheritance in C++.
-</p>
+class Derived : public Base {
+public:
+    ~Derived() { std::cout &lt;&lt; "Derived destroyed\n"; }
+};
+
+Base* b = new Derived();
+delete b; // Calls both Derived and Base destructors
+</code></pre>
+
+  <p>
+    By making the destructor virtual, the call to <code>delete b;</code> uses the vtable to determine the correct destructor sequence, ensuring both destructors run in the correct order.
+  </p>
+
+  <h2>Why This Works: Static vs Dynamic Dispatch</h2>
+
+  <ul>
+    <li><strong>Assignment:</strong> <code>Base b = d;</code> triggers a <code>Base</code> copy constructor. The compiler doesn't see or copy the <code>Derived</code> part.</li>
+    <li><strong>Virtual calls:</strong> only resolve dynamically through <code>Base*</code> or <code>Base&</code>. You need a vtable, which requires virtual methods.</li>
+    <li><strong>Destruction:</strong> if the destructor isn't virtual, <code>delete base_ptr</code> won't look up the correct derived destructor at runtime.</li>
+  </ul>
+
+  <h2>Summary</h2>
+
+  <ul>
+    <li><strong>Object slicing</strong> happens when assigning a derived object to a base object by value — only the base part is kept.</li>
+    <li>Use <strong>pointers or references</strong> to access polymorphic objects without slicing.</li>
+    <li><strong>Smart pointers</strong> like <code>shared_ptr</code> or <code>unique_ptr</code> simplify and safeguard object lifetime management.</li>
+    <li>Always declare the <strong>base class destructor as virtual</strong> if you intend to use inheritance. Otherwise, deleting via base pointers is unsafe.</li>
+  </ul>
+
+  <p>
+    These practices ensure inheritance works as intended and avoids subtle, dangerous bugs.
+  </p>
