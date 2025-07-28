@@ -1,4 +1,4 @@
-h2>Include Header</h2>
+<h2>Include Header</h2>
 <pre><code>#include &lt;vector&gt;</code></pre>
 
 <h2>Declaration</h2>
@@ -62,7 +62,7 @@ vec_name.back();        // Last element
 vec_name.pop_back();    // Remove last element
 </code></pre>
 
-<h2>10. Check if Element Exists</h2>
+<h2>Check if Element Exists</h2>
 <pre><code>#include &lt;algorithm&gt;
 
 if (std::find(vec_name.begin(), vec_name.end(), value) != vec_name.end()) {
@@ -72,7 +72,7 @@ if (std::find(vec_name.begin(), vec_name.end(), value) != vec_name.end()) {
 }
 </code></pre>
 
-<h2>11. Ways to Construct a Vector</h2>
+<h2>Ways to Construct a Vector</h2>
 <pre><code>
 // Empty vector
 std::vector&lt;int&gt; v1;
@@ -99,4 +99,29 @@ std::vector&lt;int&gt; v7(std::begin(arr), std::end(arr));
 // Construct from iterators
 std::vector&lt;int&gt; source = {5, 6, 7};
 std::vector&lt;int&gt; v8(source.begin(), source.end());
+</code></pre>
+
+<h2>Filter a Vector</h2>
+<p>To create a filtered vector based on some property of the elements, use <code>std::copy_if</code> or C++20 <code>std::ranges::copy_if</code>. Here are two examples:</p>
+
+<p><strong>C++11 and later:</strong></p>
+<pre><code>#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+std::vector&lt;int&gt; original = {1, 2, 3, 4, 5, 6};
+std::vector&lt;int&gt; filtered;
+
+std::copy_if(original.begin(), original.end(), std::back_inserter(filtered),
+             [](int x) { return x % 2 == 0; });  // Keep even numbers
+</code></pre>
+
+<p><strong>C++20 (with ranges):</strong></p>
+<pre><code>#include &lt;vector&gt;
+#include &lt;ranges&gt;
+
+std::vector&lt;int&gt; original = {1, 2, 3, 4, 5, 6};
+std::vector&lt;int&gt; filtered;
+
+std::ranges::copy_if(original, std::back_inserter(filtered),
+                    [](int x) { return x % 2 == 0; });  // Keep even numbers
 </code></pre>
