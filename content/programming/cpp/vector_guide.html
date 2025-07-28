@@ -125,3 +125,30 @@ std::vector&lt;int&gt; filtered;
 std::ranges::copy_if(original, std::back_inserter(filtered),
                     [](int x) { return x % 2 == 0; });  // Keep even numbers
 </code></pre>
+<h2>Join Two Vectors</h2>
+<p>To join or concatenate two vectors, you can use <code>std::insert</code> to append the contents of one vector to the end of another:</p>
+
+<pre><code>#include &lt;vector&gt;
+
+std::vector&lt;int&gt; v1 = {1, 2, 3};
+std::vector&lt;int&gt; v2 = {4, 5, 6};
+
+// Append v2 to v1
+v1.insert(v1.end(), v2.begin(), v2.end());
+</code></pre>
+
+<p>After this, <code>v1</code> contains <code>{1, 2, 3, 4, 5, 6}</code>.</p>
+
+<p>If you want to create a new vector that is the result of joining two vectors:</p>
+
+<pre><code>#include &lt;vector&gt;
+
+std::vector&lt;int&gt; v1 = {1, 2, 3};
+std::vector&lt;int&gt; v2 = {4, 5, 6};
+
+std::vector&lt;int&gt; joined;
+joined.reserve(v1.size() + v2.size());  // Optional, to improve performance
+
+joined.insert(joined.end(), v1.begin(), v1.end());
+joined.insert(joined.end(), v2.begin(), v2.end());
+</code></pre>
