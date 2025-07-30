@@ -1,0 +1,21 @@
+ <p>Paste multiple URLs below (one per line):</p>
+  <textarea id="links-input" rows="10" cols="50" placeholder="https://example.com&#10;https://google.com"></textarea>
+  <br /><br />
+  <button id="open-links-btn">Go</button>
+
+  <script>
+    document.getElementById('open-links-btn').addEventListener('click', () => {
+      const input = document.getElementById('links-input').value;
+      const links = input.split('\n').map(link => link.trim()).filter(link => link.length > 0);
+
+      links.forEach(link => {
+        // Validate URL format (basic)
+        try {
+          const url = new URL(link);
+          window.open(url.href, '_blank');
+        } catch (e) {
+          alert(`Invalid URL skipped: ${link}`);
+        }
+      });
+    });
+  </script>
