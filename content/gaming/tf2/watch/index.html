@@ -79,6 +79,14 @@
   </div>
 
   <script>
+
+
+function getUrlParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+
     /*
     To generate your list of anchors go to the page of the playlist and then paste this into the javascript console:
 
@@ -175,6 +183,11 @@
         tr.appendChild(watchTd);
 
         tableBody.appendChild(tr);
+      }
+     // ✅ Load video from URL param if present
+      const initialVideoId = getUrlParam('v');
+      if (initialVideoId) {
+        document.getElementById('video-player').src = `https://www.youtube.com/embed/${initialVideoId}`;
       }
     });
   </script>
