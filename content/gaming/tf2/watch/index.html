@@ -107,6 +107,8 @@ function getUrlParam(param) {
     */
 
     const rawAnchors = `
+<a href="https://www.youtube.com/watch?v=g_lEImm8qME">mge triple airshot</a>
+<a href="https://www.youtube.com/watch?v=5rORHO8Yt0w">mge sync into my airshot</a>
 <a href="https://www.youtube.com/watch?v=DZYNnZWFyrc">they tried to leave mg</a>
 <a href="https://www.youtube.com/watch?v=GBdW4m-_U8g">med drop out of 2 on process</a>
 <a href="https://www.youtube.com/watch?v=oUc1GISHVvw">snakewater med drop</a>
@@ -173,11 +175,21 @@ function getUrlParam(param) {
         link.href = '#';
         link.textContent = 'Play';
         link.style.cursor = 'pointer';
+
         link.addEventListener('click', e => {
           e.preventDefault();
-          document.getElementById('video-player').src = `https://www.youtube.com/embed/${videoId}`;
+          const videoPlayer = document.getElementById('video-player');
+          videoPlayer.src = `https://www.youtube.com/embed/${videoId}`;
+          
+          // Mark as watched
           link.classList.add('watched');
+          
+          // Update the URL parameter without reloading
+          const newUrl = new URL(window.location);
+          newUrl.searchParams.set('v', videoId);
+          history.replaceState(null, '', newUrl);
         });
+
 
         watchTd.appendChild(link);
         tr.appendChild(titleTd);
