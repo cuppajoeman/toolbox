@@ -1,0 +1,62 @@
+<main>
+  <h1 id="title">Next week schedule</h1>
+  <p id="current-day"></p>
+  <ul id="schedule-list"></ul>
+
+  <script>
+    // Finds the closest Monday on or before the given date
+    function getClosestMonday(date) {
+      const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const day = d.getDay(); // 0 = Sun, 1 = Mon, ...
+      // days since Monday: 0 for Monday, 1 for Tuesday, ..., 6 for Sunday
+      const daysSinceMonday = (day + 6) % 7;
+      d.setDate(d.getDate() - daysSinceMonday);
+      return d;
+    }
+
+    // Returns ordinal for day numbers (1st, 2nd, 3rd, 4th...)
+    function ordinal(n) {
+      const s = ["th", "st", "nd", "rd"], v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+
+    // Format a Date into: Weekday Month DayOrdinal (using America/New_York for month/weekday names)
+    function formatDayLabel(date) {
+      const opts = { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/New_York' };
+      // Use toLocaleDateString to get localized weekday/month/day (but replace numeric day with ordinal)
+      const parts = new Intl.DateTimeFormat('en-US', opts).formatToParts(date);
+      const weekday = parts.find(p => p.type === 'weekday')?.value || '';
+      const month = parts.find(p => p.type === 'month')?.value || '';
+      const dayNum = parts.find(p => p.type === 'day')?.value || '';
+      return `${weekday} ${month} ${ordinal(Number(dayNum))}`;
+    }
+
+    function generateSchedule() {
+      const now = new Date();
+      const currentDayLabel = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/New_York' }).format(now);
+      document.getElementById('current-day').textContent = `Current day: ${currentDayLabel}`;
+
+      const startMonday = getClosestMonday(now);
+
+      const scheduleList = document.getElementById('schedule-list');
+      scheduleList.innerHTML = '';
+
+      // times we want each day (as strings)
+      const times = ['7:30', '8:30', '9:30', '10:30'];
+
+      for (let i = 0; i < 7; ++i) {
+        const day = new Date(startMonday.getFullYear(), startMonday.getMonth(), startMonday.getDate() + i);
+        const dayLabel = formatDayLabel(day);
+
+        for (const t of times) {
+          const li = document.createElement('li');
+          li.textContent = `${dayLabel} @ ${t} EST`;
+          scheduleList.appendChild(li);
+        }
+      }
+    }
+
+    // Run on load
+    generateSchedule();
+  </script>
+</main>
