@@ -1,0 +1,37 @@
+<p>
+  Sometimes I want to be able to paste a sequence of messages, in order to facilitate this I have this script that I can paste into the console and I can iteratively paste everything I need.
+</p>
+
+<pre>
+  <code>
+  (() => {
+  const items = ["First text", "Second text", "Third text"]; // change this list
+  let index = 0;
+
+  async function copyNext() {
+    if (index < items.length) {
+      const textToCopy = items[index];
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        console.log(`✅ Copied: "${textToCopy}"`);
+        index++;
+      } catch (err) {
+        console.error("❌ Failed to copy:", err);
+      }
+    } else {
+      console.log("⚠️ No more items to copy!");
+    }
+  }
+
+  document.addEventListener("keydown", function handler(e) {
+    if (e.key === "Enter") {
+      e.preventDefault(); // avoid triggering site actions if possible
+      copyNext();
+    }
+  });
+
+  console.log("🚀 Clipboard helper ready. Press Enter to copy next item.");
+})();
+
+  </code>
+</pre>
