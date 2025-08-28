@@ -23,15 +23,19 @@
     }
   }
 
-  document.addEventListener("keydown", function handler(e) {
-    if (e.key === "Enter") {
-      e.preventDefault(); // avoid triggering site actions if possible
-      copyNext();
-    }
-  });
+  document.addEventListener(
+    "keydown",
+    function handler(e) {
+      if (e.key === "Enter") {
+        copyNext();
+      }
+    },
+    true // capture phase so it fires before Discord swallows the event
+  );
 
   console.log("🚀 Clipboard helper ready. Press Enter to copy next item.");
 })();
+
 
   </code>
 </pre>
