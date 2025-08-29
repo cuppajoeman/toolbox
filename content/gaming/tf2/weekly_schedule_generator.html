@@ -8,11 +8,20 @@
     function getClosestMonday(date) {
       const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       const day = d.getDay(); // 0 = Sun, 1 = Mon, ...
-      // days since Monday: 0 for Monday, 1 for Tuesday, ..., 6 for Sunday
+    
+      // distance to previous Monday
       const daysSinceMonday = (day + 6) % 7;
-      d.setDate(d.getDate() - daysSinceMonday);
+      // distance to next Monday
+      const daysUntilMonday = (8 - day) % 7;
+    
+      if (daysSinceMonday <= daysUntilMonday) {
+        d.setDate(d.getDate() - daysSinceMonday); // go back
+      } else {
+        d.setDate(d.getDate() + daysUntilMonday); // go forward
+      }
       return d;
     }
+
 
     // Returns ordinal for day numbers (1st, 2nd, 3rd, 4th...)
     function ordinal(n) {
