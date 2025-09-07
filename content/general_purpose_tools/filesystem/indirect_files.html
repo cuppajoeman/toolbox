@@ -1,0 +1,25 @@
+<p>
+  Git is good because it allows us to keep our code synchronized. Git is bad because it requires a decent amount of infrastructure to work, and creating a git repo for a single file seems wrong because the amount of infrastructure might be greater than the file itself.
+</p>
+
+<p>
+  Sometimes we just want a file to be synchronized to multiple places, that we we don't have to copy code, in this context we can make a tradeoff, these clones of the file are only view only mirrors to the real thing, additionally the require manual updating. This means that if we want to modify the real file we have to go to the place where it exists to change it. 
+</p>
+
+<p>
+  If you're ok with all the above, then indirect files might be good for you, the way this works is that if you want the file <code>flinks.py</code>, you create the file <code>flinks.py.ifile</code> and then you put the contents as follows:
+</p>
+
+<pre>
+  <code>
+URL=https://toolbox.cuppajoeman.com/general_purpose_tools/filesystem/flinks.py
+  </code>
+</pre>
+
+<p>
+  Then you run the <code>indirect_files.py</code> script on the directory in which that file exists (or any of its parent directories becuase it's recursive), and it will create the file that you're pointing to. The script looks like this: 
+</p>
+
+
+
+    <div class="code-file" data-file-name="indirect_files.py"></div>
