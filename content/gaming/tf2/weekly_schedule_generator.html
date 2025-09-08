@@ -22,7 +22,6 @@
       return d;
     }
 
-
     // Returns ordinal for day numbers (1st, 2nd, 3rd, 4th...)
     function ordinal(n) {
       const s = ["th", "st", "nd", "rd"], v = n % 100;
@@ -32,7 +31,6 @@
     // Format a Date into: Weekday Month DayOrdinal (using America/New_York for month/weekday names)
     function formatDayLabel(date) {
       const opts = { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/New_York' };
-      // Use toLocaleDateString to get localized weekday/month/day (but replace numeric day with ordinal)
       const parts = new Intl.DateTimeFormat('en-US', opts).formatToParts(date);
       const weekday = parts.find(p => p.type === 'weekday')?.value || '';
       const month = parts.find(p => p.type === 'month')?.value || '';
@@ -50,10 +48,10 @@
       const scheduleList = document.getElementById('schedule-list');
       scheduleList.innerHTML = '';
 
-      // times we want each day (as strings)
-      const times = ['7:30', '8:30', '9:30', '10:30'];
+      // only weekday times
+      const times = ['8:30', '9:30'];
 
-      for (let i = 0; i < 7; ++i) {
+      for (let i = 0; i < 5; ++i) { // 5 weekdays
         const day = new Date(startMonday.getFullYear(), startMonday.getMonth(), startMonday.getDate() + i);
         const dayLabel = formatDayLabel(day);
 
