@@ -1,0 +1,29 @@
+<p>Today I'm going to talk about serialization and something you need to understand while doing it. We're going to use a silly analogy which will help you get to grips with it faster.</p> 
+
+<p>For some reason there are humans inside boxes, and you have a saw (think of the magic trick where the magician saws through a person), except that you are not a magician and if you saw through the box where the person is you're actually going to cut them in half.</p> 
+
+<p>So now, if someone gives you a box with a person that perfectly fits inside I can tell you, there's a person in here, and all we have to do is open the front door of the box and there they are with no extra space perfectly inside. This type of situation is like when you have a buffer containing an integer and you can memcpy it directly into an int, because that's exactly what was inside.</p> 
+
+<p>For our next trick we'll talk about vectors, containing humans that are identical, that is a vector containing types which are not variably sized. In this case, if the box is perfectly sized to fit exactly 3 people fitted feet to head, then if we know how many people there are inside, we can simply measure the entire box, split it into 3, and then saw on the marks we just made, getting each human out safely. This is analogous to deserializing a vector of fixed-size types: we store the element count, then we can safely slice the buffer into equal-sized chunks for each element.</p> 
+
+<p>Now here's a situation where we can't make any progress. Suppose we have a human in a box which doesn't fit the person perfectly. We know that the person’s feet are touching the left of the box, but since we don't know their height, we cannot safely cut the box to their height because we do not know it, and trying would possibly kill the person. This situation represents storing a variably sized type in a buffer, that has more space than the instance of that type takes up. We cannot get the original object back out, because we cannot figure out which part it takes up.</p>
+
+ <p>Therefore the only possible way to cut the box to their height is if we knew their height beforehand. This tells us that for variably sized types, when instances of them are stored, we must also store their size. Only then can we safely extract the original object from the buffer.</p>
+
+ <p>This also relates to the vector example earlier. In that example we had a bunch of people (with identical height) in a big box each after each other foot to head. Once we know the size of the person in the box, since all others in the box were the same height, we can sequentially lop off sections of the box. Thus knowing the size of one human and how many there were allows us to extract them all safely.</p>
+
+<p>When we have a sequence of variably sized humans in a box that fits them perfectly, even knowing the number of humans in the box is not enough—we still need to know the size of each, or else we risk cutting into them. Thus, once we know the size of each person, all we have to do is slice the box into sub-boxes matching those sizes and pass each slice to the “saw” to extract the humans safely.</p>
+
+ <p><b>In technical terms, this means:</b></p> 
+
+
+<ul>
+  <li>When serializing fixed-size types (like integers, floats, or structs without dynamic memory), the type itself determines the size, so raw bytes alone are enough to reconstruct the object.</li> 
+  <li>When serializing sequences of fixed-size types, we must additionally store the element count, so the deserializer knows how many elements to read. The buffer can then be split into equal-sized slices for each element.</li> 
+  <li>For vectors that contain variably sized types, each inner instance must be prefixed with its size. Without this, the deserializer cannot know where one instance ends and the next begins.</li> 
+  <li>For a vector of variably sized types, this requires storing both the overall element count and the size of each individual element. During deserialization, the buffer is iterated over, reading each element’s size, slicing that portion of the buffer exactly, and passing the slice to the existing deserializer for that element.</li> 
+</ul> 
+
+<p>In other words, for variable-sized elements, serialization looks like this:</p>
+ <pre> [count] [size of element 0][element 0 bytes...] [size of element 1][element 1 bytes...] ... </pre> 
+<p>And the deserializer iterates over the buffer, creating exact slices for each element so that the existing “deserialize one object from exact buffer” functions can be reused safely. This preserves modularity while ensuring no data is lost or misread.Also to re-iterate we must also store the count, because we need to know how many times we need to look to read the size of the next element out of the buffer, if we didn't know this we might continue to look for it when it doesn't exist and get garbage, or not iterate enough losing out on data.</p>
