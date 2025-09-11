@@ -14,16 +14,19 @@
 
 <p>When we have a sequence of variably sized humans in a box that fits them perfectly, even knowing the number of humans in the box is not enough—we still need to know the size of each, or else we risk cutting into them. Thus, once we know the size of each person, all we have to do is slice the box into sub-boxes matching those sizes and pass each slice to the “saw” to extract the humans safely.</p>
 
- <p><b>In technical terms, this means:</b></p> 
-
+<p><b>In technical terms, this means:</b></p> 
 
 <ul>
   <li>When serializing fixed-size types (like integers, floats, or structs without dynamic memory), the type itself determines the size, so raw bytes alone are enough to reconstruct the object.</li> 
   <li>When serializing sequences of fixed-size types, we must additionally store the element count, so the deserializer knows how many elements to read. The buffer can then be split into equal-sized slices for each element.</li> 
-  <li>For vectors that contain variably sized types, each inner instance must be prefixed with its size. Without this, the deserializer cannot know where one instance ends and the next begins.</li> 
-  <li>For a vector of variably sized types, this requires storing both the overall element count and the size of each individual element. During deserialization, the buffer is iterated over, reading each element’s size, slicing that portion of the buffer exactly, and passing the slice to the existing deserializer for that element.</li> 
+  <li>For vectors that contain variably sized types, each inner instance must be prefixed with its size. <b>Without this, the deserializer cannot know where one instance ends and the next begins.</b></li> 
+  <li>For a vector of variably sized types, this requires storing both the overall element count and the size of each individual element. During deserialization, the buffer is iterated over, reading each element’s size, slicing that portion of the buffer exactly, and passing the slice to the existing deserializer for that element. <b>Without storing the size of each element, reconstruction of each element would be impossible.</b></li> 
+  <li><b>When serializing a class or struct:</b> each attribute is serialized in sequence. If the attribute is a fixed-size type, its bytes are directly written to the buffer. If the attribute is variably sized (like a string, vector of vectors, or custom dynamically sized object), its size must be stored in the buffer before the actual data. <b>Without this size information, the deserializer cannot know where the attribute's data ends, making reconstruction impossible.</b> During deserialization, this size is read first so that the exact number of bytes can be extracted for that attribute. This ensures that every attribute, whether fixed or variable in size, is reconstructed correctly.</li>
 </ul> 
 
 <p>In other words, for variable-sized elements, serialization looks like this:</p>
- <pre> [count] [size of element 0][element 0 bytes...] [size of element 1][element 1 bytes...] ... </pre> 
-<p>And the deserializer iterates over the buffer, creating exact slices for each element so that the existing “deserialize one object from exact buffer” functions can be reused safely. This preserves modularity while ensuring no data is lost or misread.Also to re-iterate we must also store the count, because we need to know how many times we need to look to read the size of the next element out of the buffer, if we didn't know this we might continue to look for it when it doesn't exist and get garbage, or not iterate enough losing out on data.</p>
+<pre> 
+[count] [size of element 0][element 0 bytes...] [size of element 1][element 1 bytes...] ... 
+</pre> 
+
+<p>During deserialization, the buffer is iterated over, creating exact slices for each element so that the existing “deserialize one object from exact buffer” functions can be reused safely. This preserves modularity while ensuring no data is lost or misread. Additionally, the overall count must be stored, because without it the deserializer wouldn't know how many elements to read. Reading too few elements would lose data, and reading too many could result in garbage data or buffer overruns.</p>
