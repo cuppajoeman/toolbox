@@ -49,9 +49,9 @@
       scheduleList.innerHTML = '';
 
       // only weekday times
-      const times = ['8:30', '9:30'];
+      const times = ['8:30', '9:30', '10:30'];
 
-      for (let i = 0; i < 5; ++i) { // 5 weekdays
+      for (let i = 0; i < 7; ++i) { // 7 days in a week
         const day = new Date(startMonday.getFullYear(), startMonday.getMonth(), startMonday.getDate() + i);
         const dayLabel = formatDayLabel(day);
 
