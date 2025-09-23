@@ -1,0 +1,6 @@
+<pre>
+  <code>
+    ffmpeg -f lavfi -i "color=c=black:s=1280x720:r=30:d=2565" -i audio.wav \
+  -shortest -c:v libx264 -c:a aac -b:a 192k -pix_fmt yuv420p output.mp4
+  </code>
+</pre>
