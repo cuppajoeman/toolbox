@@ -1,0 +1,17 @@
+<p>
+  I switch between hpp and cpp files all the time so having a quick way to do that is important to me.
+</p>
+
+<pre>
+  <code>
+" Function to switch to .hpp or .cpp
+function! SwitchExtension(newext)
+  let l:filename = expand("%:r") . "." . a:newext
+  execute "edit " . l:filename
+endfunction
+
+" Leader mappings
+nnoremap <leader>hh :call SwitchExtension("hpp")<CR>
+nnoremap <leader>cc :call SwitchExtension("cpp")<CR>
+  </code>
+</pre>
