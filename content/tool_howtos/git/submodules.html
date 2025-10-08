@@ -43,8 +43,18 @@ alternatively if you know that it recursively contains more submodules
 
 <pre><code>
 git submodule add &lt;URL&gt;
+cd newly_added_dir
 git submodule update --init --recursive
 </code></pre>
+
+<p>
+    For me I just automatically want to do this everytime, so you can add this bash alias to your .bashrc if you like:
+</p>
+<pre>
+    <code>
+alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && git submodule update --init --recursive; }; f'
+    </code>
+</pre>
 
 <h2>git pulling in submodules</h2>
 <p>
