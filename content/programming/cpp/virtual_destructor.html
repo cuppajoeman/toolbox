@@ -1,0 +1,54 @@
+<h1>Why a Virtual Destructor is Needed in C++</h1>
+
+<p>In C++, when you have a base class pointer pointing to a derived class object, deleting through the base pointer 
+can cause problems if the base class destructor is not <strong>virtual</strong>.</p>
+
+<h2>Example</h2>
+<pre>
+struct Base {
+  // No virtual destructor
+};
+
+struct Derived : public Base {
+  int* data;
+  ~Derived() {
+      delete data; // clean up allocated memory
+  }
+};
+
+Base* obj = new Derived();
+delete obj; // Problem! Only Base destructor is called
+</pre>
+
+<p>In this example, the <code>Derived</code> destructor is never called because the destructor in <code>Base</code> is not virtual. 
+As a result, any resources allocated by <code>Derived</code> (like <code>data</code>) are <strong>not freed</strong>, 
+causing a memory leak.</p>
+
+<h2>Solution: Virtual Destructor</h2>
+<pre>
+struct Base {
+  virtual ~Base() = default; // Virtual destructor ensures proper cleanup
+};
+
+struct Derived : public Base {
+  int* data;
+  ~Derived() {
+      delete data;
+  }
+};
+
+Base* obj = new Derived();
+delete obj; // Correct! Derived destructor is called first, then Base destructor
+</pre>
+
+<p>By marking the base class destructor as <code>virtual</code>:</p>
+<ul>
+    <li>C++ creates a <strong>vtable</strong> that stores the actual destructor to call.</li>
+    <li>Deleting a derived object through a base pointer will call the <strong>derived destructor first</strong>, 
+    then the base destructor.</li>
+    <li>All resources in the derived class are properly cleaned up, avoiding memory leaks.</li>
+</ul>
+
+<h2>Rule of Thumb</h2>
+<p>If a class has any virtual functions and is intended to be used polymorphically (deleted through a base pointer), 
+  its destructor should always be <strong>virtual</strong>.</p>
