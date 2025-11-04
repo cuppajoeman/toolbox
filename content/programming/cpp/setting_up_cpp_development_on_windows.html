@@ -37,6 +37,14 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
     </code>
 </pre>
+<p>
+    By default on my system when I run git commit, it brings up nano, and I'd prefer to use vim so I run this command:
+</p>
+<pre>
+    <code>
+git config --global core.editor "vim"
+    </code>
+</pre>
 <h3>setting up ssh keys for git and github</h3>
 <p>
     This is an optional step that I highly recommend, first open up msys2 and then run ssh-keygen, there is no need to enter a password (the logic here is that if someone is already able to login to your computer they can do nasty stuff, so only do a password if you need that second layer of protection). Then login to github and click your account and go to settings and go to the ssh keys section, now we're going to copy the public ssh key from your computer that you got from running ssh-keygen. To do this we print out the public key and copy it, for us we ran cat .ssh/id_ed25519.pub and then copied that key into the github add key interface (no title is required).
