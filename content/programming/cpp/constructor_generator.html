@@ -1,0 +1,76 @@
+    <h1>C++ Constructor Generator</h1>
+
+    <label>Class Name:</label><br>
+    <input type="text" id="className" placeholder="Class name" value="GameMode"/><br><br>
+
+    <label>Constructor Parameters:</label><br>
+    <textarea id="params" rows="10" cols="80">
+ToolboxEngine &tbx_engine;
+Physics &physics;
+SoundSystem &sound_system;
+meta_program::MetaProgram &mp;
+std::unordered_map<unsigned int, NonLocalClientCharacter> &client_id_to_non_local_character;
+const double &current_percentage_through_cycle;
+    </textarea><br><br>
+
+    <button onclick="generateConstructor()">Generate Constructor</button>
+
+    <h2>Output:</h2>
+    <pre id="output"></pre>
+
+    <h2>Example Usage:</h2>
+    <pre>
+ToolboxEngine tbx;
+Physics physics;
+SoundSystem sound;
+meta_program::MetaProgram mp;
+std::unordered_map<unsigned int, NonLocalClientCharacter> client_map;
+double cycle = 0.5;
+
+GameMode gameMode(tbx, physics, sound, mp, client_map, cycle);
+    </pre>
+
+    <h2>Expected Output:</h2>
+    <pre>
+GameMode(ToolboxEngine &tbx_engine,
+         Physics &physics,
+         SoundSystem &sound_system,
+         meta_program::MetaProgram &mp,
+         std::unordered_map<unsigned int, NonLocalClientCharacter> &client_id_to_non_local_character,
+         const double &current_percentage_through_cycle)
+    : tbx_engine(tbx_engine),
+      physics(physics),
+      sound_system(sound_system),
+      mp(mp),
+      client_id_to_non_local_character(client_id_to_non_local_character),
+      current_percentage_through_cycle(current_percentage_through_cycle)
+{}
+    </pre>
+
+    <script>
+        function generateConstructor() {
+            const paramsText = document.getElementById('params').value;
+            const className = document.getElementById('className').value || 'MyClass';
+            const lines = paramsText.split('\n')
+                                    .map(line => line.trim())
+                                    .filter(line => line.length > 0);
+
+            // Extract variable names
+            const variables = lines.map(line => {
+                // Remove trailing semicolon
+                const cleanLine = line.replace(/;$/, '');
+                // Split by space and take the last part as the variable name
+                const parts = cleanLine.split(' ');
+                return parts[parts.length - 1];
+          });
+
+            // Build constructor
+            let constructorCode = `${className}(${lines.join(',\n         ')})\n`;
+            if (variables.length > 0) {
+                constructorCode += `    : ${variables.map(v => `${v}(${v})`).join(',\n      ')}\n`;
+            }
+            constructorCode += `{}`;
+
+            document.getElementById('output').textContent = constructorCode;
+        }
+    </script>
