@@ -18,10 +18,12 @@ go_back_to_where_you_left_off.vim
 split_settings.vim
 search_settings.vim
 visual_info.vim
+folds.vim
 buffers.vim
 fuzzy_file_opening.vim
 resizing_windows.vim
-file_browser.vim"
+file_browser.vim
+"
 
 # If ~/.vimrc already exists, ask before overwriting
 if [ -f "$output" ]; then

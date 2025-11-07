@@ -37,4 +37,4 @@ function! FuzzyFindFile()
   endif
 endfunction
 
-nnoremap <leader>f :call FuzzyFindFile()<CR>
+nnoremap <leader>sf :call FuzzyFindFile()<CR>
