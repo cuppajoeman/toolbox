@@ -1,0 +1,38 @@
+<p>
+    When working with transparent objects in OpenGL, many developers run into unexpected visual issues.
+    The fundamental reason for this is how <strong>depth testing</strong> interacts with <strong>blending</strong>.
+</p>
+
+<p>
+    Depth testing is responsible for determining which fragments (pixels) are in front of others. 
+    However, when writing to the depth buffer, the depth test does not consider whether a fragment is transparent. 
+    Transparent parts are written to the depth buffer just like opaque ones. 
+    This can cause objects behind a transparent surface to be incorrectly discarded, 
+    even though they should be visible through the transparent parts.
+</p>
+
+<p>
+    For example, imagine a baseball coming towards a window. 
+    If you draw the baseball first and then the window, the transparent parts of the window may overwrite the baseball in the depth buffer. 
+    As a result, even though the baseball should be visible through the glass, it is not rendered correctly. 
+    Conversely, if you draw the window first and then the baseball, the baseball appears correctly through the transparent window.
+</p>
+
+<p>
+    The key insight is that we cannot rely solely on the depth buffer to handle transparency. 
+    This is also where blending becomes tricky: to ensure the windows correctly show the objects behind them, 
+    we need to manually <strong>sort transparent objects from furthest to nearest</strong> and draw them in that order.
+</p>
+
+<p>
+    While this approach works well for simple cases, it has limitations. 
+    Consider two planar quads rotated so that they form an "X" shape. 
+    There is always a part of each quad that is in front of the other. 
+    No matter how you order the draws, some fragments will be incorrectly occluded. 
+    In cases where transparent objects intersect or clip into each other, sorting alone cannot solve the problem.
+</p>
+
+<p>
+    To handle these complex scenarios correctly, we need <strong>order-independent transparency</strong> techniques, 
+    which allow transparent objects to be rendered accurately without relying on strict back-to-front ordering.
+</p>
