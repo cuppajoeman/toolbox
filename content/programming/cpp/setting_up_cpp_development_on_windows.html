@@ -3,70 +3,93 @@
 </p>
 <h1>Compiler</h1>
 <p>
-    For compatilbility reasons I usually recommend using msvc which you can get by downloading <a href="https://visualstudio.microsoft.com/vs/features/cplusplus/">microsoft visual studio</a> this also comes with the benefit of conan having many pre-built packages for msvc. Alternately you can use <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-gcc?repo=ucrt64">gcc</a>, <code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>
+    For compatilbility reasons I usually recommend using msvc which you can get by downloading <a href="https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022">microsoft visual studio build tools</a> (you can also get the entirety of visual studio, but that's much bigger) this also comes with the benefit of conan having many pre-built packages for msvc. Alternately you can use <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-gcc?repo=ucrt64">gcc</a>, <code>pacman -S mingw-w64-ucrt-x86_64-gcc</code>
+</p>
+<p>
+    If you prefer gcc, you'll have to wait until we install a program which installs gcc.
 </p>
 <h1>Building Setup</h1>
-<ul>
-    <li>
-        download <a href="https://www.msys2.org/">msys2</a>
-    </li>
-    <li>
-        use the URCT terminal profile, note that when you launch the terminal you will not be in the root of your base computers filesystem, instead you have to do <code>cd /c/Users/username</code> to get there
-    </li>
-    <li>
-        download <a href="https://packages.msys2.org/base/git">git</a> (note that you might already have git installed such as git bash on your computer, this is ok, this version won't conflict and is contained within the scope of your msys2 setup)
-    </li>
-    <pre>
-        <code>
-            pacman -S git
-        </code>
-    </pre>
-    <li>
-        download the <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-python-conan?repo=ucrt64">conan package manager</a> for cpp packages
-    </li>
-    <pre>
-        <code>
-            pacman -S mingw-w64-ucrt-x86_64-python-conan
-        </code>
-    </pre>
-    <p class="warning">
-        After downloading the above be sure to generate a conan profile with <code>conan profile detect</code>
-    </p>
-    <li>
-        download cmake <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-cmake">cmake</a> which is a build configuration generator, this allows you to setup a project to be built with specific settings while not having to have those settings stored in an operating system specific fasion, for example you can force your project to use c++23 without no matter what compiler you're using (apple-clang, mingw-gcc, gcc).
-    </li>
-    <pre>
-        <code>
-            pacman -S mingw-w64-ucrt-x86_64-cmake
-        </code>
-    </pre>
 
-</ul>
-<h1>Others</h1>
+<h2>Getting a terminal</h2>
 <p>
-    Install an editor: pacman -S mingw-w64-ucrt-x86_64-neovim or something like Zed: https://zed.dev/docs/development/windows
+    Download <a href="https://www.msys2.org/">msys2</a>, this is a terminal which will allow us to get conan which is the package manager we'll be using.
 </p>
 <p>
-    Install python <code>pacman -S mingw-w64-ucrt-x86_64-python-conan</code>
+    Use the URCT terminal profile, note that when you launch the terminal you will not be in the root of your base computers filesystem, instead you have to do <code>cd /c/Users/username</code> to get there
 </p>
-<h1>If there are problems building</h1>
-    <p>
-        If cmake wants to use Mingw Makefiles then make sure you have <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-make">make</a>
-    </p>
-    <pre>
-        <code>
-            pacman -S mingw-w64-ucrt-x86_64-make
-        </code>
-    </pre>
 
+<h2>Getting Git</h2>
+ <p>
+    Download <a href="https://packages.msys2.org/base/git">git</a> (note that you might already have git installed such as git bash on your computer, this is ok, this version won't conflict and is contained within the scope of your msys2 setup)
+</p>
+<pre>
+    <code>
+        pacman -S git
+    </code>
+</pre>
+<h3>configuring git</h3>
+<p>
+    Before you can push code, you'll need to configure your settings you run these two commands putting in your proper credentials (note that you don't have to use a real email if you don't want to)
+</p>
+<pre>
+    <code>
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+    </code>
+</pre>
+<p>
+    By default on my system when I run git commit, it brings up nano, and I'd prefer to use vim so I run this command:
+</p>
+<pre>
+    <code>
+git config --global core.editor "vim"
+    </code>
+</pre>
+<h3>setting up ssh keys for git and github</h3>
+<p>
+    This is an optional step that I highly recommend, first open up msys2 and then run ssh-keygen, there is no need to enter a password (the logic here is that if someone is already able to login to your computer they can do nasty stuff, so only do a password if you need that second layer of protection). Then login to github and click your account and go to settings and go to the ssh keys section, now we're going to copy the public ssh key from your computer that you got from running ssh-keygen. To do this we print out the public key and copy it, for us we ran cat .ssh/id_ed25519.pub and then copied that key into the github add key interface (no title is required).
+</p>
 
-<h1>setting up neovim</h1>
+<h2>Getting Conan</h2>
+<p>
+    Download the <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-python-conan?repo=ucrt64">conan package manager</a> for cpp packages
+</p>
+<pre>
+    <code>
+        pacman -S mingw-w64-ucrt-x86_64-python-conan
+    </code>
+</pre>
+<p class="warning">
+    After downloading the above be sure to generate a conan profile with <code>conan profile detect</code>
+</p>
+
+<h2>Getting CMake</h2>
+<p>
+    Download cmake <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-cmake">cmake</a> which is a build configuration generator, this allows you to setup a project to be built with specific settings while not having to have those settings stored in an operating system specific fasion, for example you can force your project to use c++23 without no matter what compiler you're using (apple-clang, mingw-gcc, gcc). TLDR conan most likely will need cmake installed to run.
+</p>
+<pre>
+    <code>
+        pacman -S mingw-w64-ucrt-x86_64-cmake
+    </code>
+</pre>
+
+<h1>Editing</h1>
+<p>
+    To edit your projects different editors dramatically increase in complexity due to their support of using cmake/conan. In my experience it's best to steer clear of Visual Studio and Visual Studio Code, because it's difficult and finnicky to configure the paths so that it recognizes the conan directory, but I hope someone can prove me wrong. Anyways, if you're new to programming then I recommend you get the clion editor by jetbrains which is a really heavy editor but will support you quite well when you're new.
+</p>
+
+<h2>CLion</h2>
+<p>
+    Download the program and get through the menus, you can select the non-commercial license. Once you have your conan project open it up, and move the compiler of your choice to become the default one in the toolchain menu, for us since we installed msvc we moved that to the first entry in the list. CLion will also probably make a default cmake profile called debug, we're only going to use the cmake profiles that conan generates so you can delete that one, we selected conan-default - conan-release for ours. You should then be able to run, build and have intellisense easily.
+</p>
+<h2>neovim</h2>
 <p>
     First setup your terminal with msys, the windows terminal is pretty nice: https://www.msys2.org/docs/terminals/
 </p>
 <pre>
     <code>
         pacman -S mingw-w64-ucrt-x86_64-neovim
+        # the following two are optional but get some configuration going
         pacman -S mingw-w64-ucrt-x86_64-ripgrep
         git clone https://github.com/nvim-lua/kickstart.nvim.git /c/Users/ccn/AppData/Local/nvim
     </code>
@@ -74,4 +97,22 @@
 <p>
     Then open nvim and type :Mason and get clangd and clang-format. Note that you'll have to make a build of your project using a gcc profile for conan to get clangd support.
 </p>
+
+<h1>other stuff</h1>|
+<h2>other useful packages</h2>
+<p>
+    Install python <code>pacman -S mingw-w64-ucrt-x86_64-python-conan</code>
+</p>
+
+<h2>If there are problems building</h2>
+<p>
+    If cmake wants to use Mingw Makefiles then make sure you have <a href="https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-make">make</a>
+</p>
+<pre>
+    <code>
+        pacman -S mingw-w64-ucrt-x86_64-make
+    </code>
+</pre>
+
+
 

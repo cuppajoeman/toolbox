@@ -1,0 +1,174 @@
+<p>
+  When I made this I was going slow and making sure I did things right, so probably watch this at x2 speed.
+</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cykHkrs9zR0?si=D7x2mkWups_1wvbj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<hr>
+Here's the mtl fixing script: 
+
+<pre>
+  <code>
+import os
+import sys
+import subprocess
+
+# Supported texture extensions
+TEXTURE_EXTS = [".tga", ".jpg", ".jpeg", ".png", ".dds", ".bmp", ".tiff", ".webp"]
+
+
+def fzf_select(options, mtl_name, dir_path):
+    """Run fzf to let the user pick a file, prefilled with the material's base name."""
+    file_root = os.path.basename(mtl_name)
+
+    print(f"\n🎨 Material: {mtl_name}")
+    print(f"   Directory: {dir_path}")
+
+    try:
+        result = subprocess.run(
+            ["fzf", "--prompt=Select texture: ", "--query", file_root],
+            input="\n".join(options),
+            capture_output=True,
+            text=True,
+        )
+        selected = result.stdout.strip()
+        return selected if selected else None
+    except FileNotFoundError:
+        print("❌ fzf not found. Please install it (e.g., 'sudo apt install fzf').")
+        sys.exit(1)
+
+
+def find_texture_file(base_name):
+    """Find or let user select a texture file for the given material path."""
+    dir_path = os.path.dirname(base_name)
+    file_root = os.path.basename(base_name)
+
+    if not os.path.isdir(dir_path):
+        return None
+
+    all_files = sorted(
+        [f for f in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, f))]
+    )
+
+    if not all_files:
+        print(f"⚠️ No files found in '{dir_path}' — skipping.")
+        return None
+
+    # 1. Try exact match first
+    preselect = None
+    for ext in TEXTURE_EXTS:
+        candidate = file_root + ext
+        if candidate in all_files:
+            preselect = candidate
+            break
+
+    # 2. If no exact match, show fzf
+    if preselect:
+        print(f"🔍 Found exact match: {preselect}")
+        return os.path.join(dir_path, preselect)
+
+    selected = fzf_select(all_files, base_name, dir_path)
+    if not selected:
+        print("   (No selection made — skipping)")
+        return None
+
+    return os.path.join(dir_path, selected)
+
+
+def insert_map_kd(tex_file, mtl_path, new_lines):
+    """Helper to insert texture line with clean spacing and relative path."""
+    if tex_file:
+        # Compute relative path from MTL directory
+        mtl_dir = os.path.dirname(mtl_path)
+        rel_path = os.path.relpath(tex_file, start=mtl_dir).replace("\\", "/")
+
+        # Ensure there's no extra blank line before the map_Kd
+        while new_lines and new_lines[-1].strip() == "":
+            new_lines.pop()
+        new_lines.append(f"map_Kd {rel_path}\n")
+        new_lines.append("\n")  # one clean blank line after
+
+
+def user_wants_skip(existing_path, mtl_name):
+    """Ask user if they want to skip this material when the existing texture is valid."""
+    print(f"\n🎨 Material: {mtl_name}")
+    print(f"   Existing map_Kd: {existing_path}")
+    choice = input("   File exists. Skip this material? [Y/n]: ").strip().lower()
+    return choice in ("", "y", "yes")
+
+
+def fix_mtl_file(mtl_path):
+    with open(mtl_path, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    new_lines = []
+    current_mtl = None
+    found_map_kd = False
+    existing_map_kd_path = None
+
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+
+        # Start of a new material
+        if stripped.startswith("newmtl "):
+            # Handle previous material before starting a new one
+            if current_mtl and not found_map_kd:
+                tex_file = find_texture_file(current_mtl)
+                insert_map_kd(tex_file, mtl_path, new_lines)
+
+            current_mtl = stripped.split(" ", 1)[1]
+            found_map_kd = False
+            existing_map_kd_path = None
+            new_lines.append(line)
+            continue
+
+        # Existing map_Kd — check file existence
+        if stripped.startswith("map_Kd"):
+            found_map_kd = True
+            existing_map_kd_path = stripped.split(" ", 1)[1]
+            mtl_dir = os.path.dirname(mtl_path)
+            abs_existing = os.path.join(mtl_dir, existing_map_kd_path)
+            abs_existing = os.path.normpath(abs_existing)
+
+            if os.path.isfile(abs_existing):
+                # Offer to skip this material
+                if user_wants_skip(existing_map_kd_path, current_mtl):
+                    new_lines.append(line)
+                    continue
+                else:
+                    print("   Updating texture via fzf...")
+                    tex_file = find_texture_file(current_mtl)
+                    insert_map_kd(tex_file, mtl_path, new_lines)
+                    continue
+            else:
+                # Invalid path — go find a replacement
+                print(f"⚠️ Missing texture: {existing_map_kd_path}")
+                tex_file = find_texture_file(current_mtl)
+                insert_map_kd(tex_file, mtl_path, new_lines)
+                continue
+
+        new_lines.append(line)
+
+    # Handle the last material (end of file case)
+    if current_mtl and not found_map_kd:
+        tex_file = find_texture_file(current_mtl)
+        insert_map_kd(tex_file, mtl_path, new_lines)
+
+    # Backup and overwrite
+    backup_path = mtl_path + ".bak"
+    os.rename(mtl_path, backup_path)
+    with open(mtl_path, "w", encoding="utf-8") as f:
+        f.writelines(new_lines)
+
+    print(f"\n✅ Fixed MTL saved to {mtl_path}")
+    print(f"   Backup created at {backup_path}")
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python fix_mtl_textures.py <path_to_mtl>")
+        sys.exit(1)
+
+    fix_mtl_file(sys.argv[1])
+
+  </code>
+</pre>

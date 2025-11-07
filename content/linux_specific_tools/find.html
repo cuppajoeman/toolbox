@@ -1,0 +1,47 @@
+<p>
+  The following command finds files or directories modified in the last 10 minutes
+  and asks before deleting each one.
+</p>
+
+<pre><code>find . -mmin -10 -ok rm -rf {} \;</code></pre>
+
+<h3>Explanation</h3>
+<ul>
+  <li><code>find .</code> searches recursively from the current directory.</li>
+  <li><code>-mmin -10</code> matches items modified within the last 10 minutes.</li>
+  <li><code>-ok rm -rf {} \;</code> prompts for confirmation before deleting each match.</li>
+</ul>
+
+<p>In plain English: find all files and folders changed in the last 10 minutes, and ask before deleting each one.</p>
+
+<h3>Other useful <code>find</code> usages</h3>
+
+<h4>1. Find files modified within the last day</h4>
+<pre><code>find . -type f -mtime -1</code></pre>
+
+<h4>2. Delete empty directories</h4>
+<pre><code>find . -type d -empty -delete</code></pre>
+
+<h4>3. Find large files (&gt;100 MB)</h4>
+<pre><code>find . -type f -size +100M -exec ls -lh {} +</code></pre>
+
+<h4>4. Find all .log files modified in the last hour</h4>
+<pre><code>find /var/log -name "*.log" -mmin -60</code></pre>
+
+<h4>5. Find files with insecure permissions (writable by others)</h4>
+<pre><code>find . -type f -perm /o+w</code></pre>
+
+<h4>6. Find and delete .tmp files older than 7 days</h4>
+<pre><code>find /tmp -name "*.tmp" -type f -mtime +7 -delete</code></pre>
+
+<h4>7. Find files containing a specific word</h4>
+<pre><code>find . -type f -name "*.cpp" -exec grep -H "TODO" {} +</code></pre>
+
+<h4>8. Find all symbolic links pointing to missing files</h4>
+<pre><code>find . -xtype l</code></pre>
+
+<h4>9. Find files owned by a specific user</h4>
+<pre><code>find /home -user ccn</code></pre>
+
+<h4>10. Find files newer than a reference file</h4>
+<pre><code>find . -newer reference_file.txt</code></pre>

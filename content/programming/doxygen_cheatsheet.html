@@ -1,0 +1,135 @@
+
+<h1>Doxygen commands cheatsheet</h1>
+<p>This page lists common Doxygen commands and brief descriptions. No styling — plain HTML only.</p>
+
+<h2>Comment block styles</h2>
+<ul>
+  <li><code>/** ... */</code> — Javadoc-style block comment.</li>
+  <li><code>/*! ... */</code> — Qt-style block comment.</li>
+  <li><code>/// ...</code> — Triple-slash single-line comment (C++-style).</li>
+  <li><code>//! ...</code> — Single-line Qt-style.</li>
+</ul>
+
+<h2>Basic tags</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Command</th><th>Usage</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>\file</code> / <code>@file</code></td><td><code>\file filename</code></td><td>Document the file (overrides file brief).</td></tr>
+    <tr><td><code>\brief</code> / <code>@brief</code></td><td><code>\brief Short description</code></td><td>Short one-line description shown in summaries.</td></tr>
+    <tr><td><code>\details</code> / <code>@details</code></td><td><code>\details Longer text...</code></td><td>Longer, detailed description.</td></tr>
+    <tr><td><code>\param</code> / <code>@param</code></td><td><code>\param[in] name Description</code></td><td>Describe function parameters. Direction specifiers: <code>in</code>, <code>out</code>, <code>in,out</code>.</td></tr>
+    <tr><td><code>\return</code> / <code>@return</code></td><td><code>\return Description</code></td><td>Describe return value.</td></tr>
+    <tr><td><code>\retval</code> / <code>@retval</code></td><td><code>\retval value Description</code></td><td>Document specific return values (enum or int codes).</td></tr>
+    <tr><td><code>\see</code> / <code>@see</code></td><td><code>\see OtherFunction</code></td><td>Reference another symbol or topic.</td></tr>
+    <tr><td><code>\note</code> / <code>@note</code></td><td><code>\note Important note</code></td><td>Small note shown in documentation.</td></tr>
+    <tr><td><code>\warning</code> / <code>@warning</code></td><td><code>\warning Dangerous</code></td><td>Display a warning callout.</td></tr>
+    <tr><td><code>\author</code> / <code>@author</code></td><td><code>\author Name</code></td><td>Author of the file or module.</td></tr>
+    <tr><td><code>\version</code> / <code>@version</code></td><td><code>\version 1.2</code></td><td>Version string.</td></tr>
+    <tr><td><code>\date</code> / <code>@date</code></td><td><code>\date 2025-10-13</code></td><td>Date associated with the documentation.</td></tr>
+    <tr><td><code>\deprecated</code> / <code>@deprecated</code></td><td><code>\deprecated Use NewFunction()</code></td><td>Marks API as deprecated and suggests alternatives.</td></tr>
+    <tr><td><code>\todo</code> / <code>@todo</code></td><td><code>\todo Implement this</code></td><td>List a TODO item to appear in the TODO list.</td></tr>
+  </tbody>
+</table>
+
+<h2>Grouping and modules</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Command</th><th>Example</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>\defgroup</code></td><td><code>\defgroup grpname "Group Title"</code></td><td>Create a named group/module.</td></tr>
+    <tr><td><code>\ingroup</code></td><td><code>\ingroup grpname</code></td><td>Assign a symbol to a group.</td></tr>
+    <tr><td><code>\addtogroup</code></td><td><code>\addtogroup grpname "Title"</code></td><td>Add subsequent documentation to the group.</td></tr>
+    <tr><td><code>\weakgroup</code></td><td><code>\weakgroup name</code></td><td>Create a group without showing it in module index (less common).</td></tr>
+  </tbody>
+</table>
+
+<h2>Sections & subsections (within comments)</h2>
+<ul>
+  <li><code>\section label Title</code> — top-level section.</li>
+  <li><code>\subsection label Title</code> — subsection.</li>
+  <li><code>\subsubsection label Title</code> — sub-subsection.</li>
+</ul>
+
+<h2>Formatting and inline markup</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead><tr><th>Markup</th><th>Example</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td><code>\c</code></td><td><code>\c value</code></td><td>Inline code or identifier.</td></tr>
+    <tr><td><code>\b</code></td><td><code>\b bold text</code></td><td>Bold text (simple emphasis).</td></tr>
+    <tr><td><code>\a</code></td><td><code>\a ampersand</code></td><td>Alternative emphasis (rare).</td></tr>
+    <tr><td><code>\em</code></td><td><code>\em emphasized</code></td><td>Emphasis / italics.</td></tr>
+    <tr><td><code>\verbatim</code></td><td><code>\verbatim ... \endverbatim</code></td><td>Preformatted block (no markup processing).</td></tr>
+    <tr><td><code>\code</code></td><td><code>\code ... \endcode</code></td><td>Formatted code block (supports syntax highlighting).</td></tr>
+    <tr><td><code>\f$ ... \f$</code></td><td><code>\f$ a^2 + b^2 = c^2 \f$</code></td><td>Inline mathematical formula (LaTeX-like).</td></tr>
+    <tr><td><code>\f[ ... \f]</code></td><td><code>\f[ E = mc^2 \f]</code></td><td>Displayed (block) math.</td></tr>
+    <tr><td><code>\n</code></td><td><code>Line1\nLine2</code></td><td>New line in some contexts.</td></tr>
+    <tr><td><code>\link ... \endlink</code></td><td><code>\link URL Text \endlink</code></td><td>Creates a link with text.</td></tr>
+    <tr><td><code>\a ref</code></td><td><code>See \ref other_func</code></td><td>Reference another documented symbol.</td></tr>
+  </tbody>
+</table>
+
+<h2>Special blocks</h2>
+<ul>
+  <li><strong>Example:</strong> <code>\code ... \endcode</code> or <code>\snippet file start_marker end_marker</code></li>
+  <li><strong>Inline formulas:</strong> <code>\f$ ... \f$</code> and block math <code>\f[ ... \f]</code>.</li>
+  <li><strong>HTML-only:</strong> <code>\htmlonly ... \endhtmlonly</code> — include raw HTML in output where supported.</li>
+  <li><strong>Man page:</strong> <code>\manonly ... \endmanonly</code></li>
+  <li><strong>LaTeX-only:</strong> <code>\latexonly ... \endlatexonly</code></li>
+</ul>
+
+<h2>Including images and files</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead><tr><th>Command</th><th>Example</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><code>\image</code></td><td><code>\image html figure.png "Caption"</code></td><td>Include an image; first argument is format (html, latex, rtf).</td></tr>
+    <tr><td><code>\include</code></td><td><code>\include file.txt</code></td><td>Include a file verbatim into the documentation.</td></tr>
+    <tr><td><code>\verbinclude</code></td><td><code>\verbinclude file.cpp</code></td><td>Include file as verbatim/code.</td></tr>
+    <tr><td><code>\snippet</code></td><td><code>\snippet source.cpp marker_start marker_end</code></td><td>Include a portion of a source file marked by special comments.</td></tr>
+  </tbody>
+</table>
+
+<h2>Cross-references and anchors</h2>
+<ul>
+  <li><code>\anchor name</code> — create a location you can <code>\ref</code> to.</li>
+  <li><code>\ref symbol</code> — link to another documented symbol.</li>
+  <li><code>\link url text \endlink</code> — create a link to an external URL with text.</li>
+</ul>
+
+<h2>Advanced / miscellaneous</h2>
+<ul>
+  <li><code>\cond</code> / <code>\endcond</code> — conditionally include text.</li>
+  <li><code>\if</code> / <code>\endif</code> — preprocessor-like conditional content.</li>
+  <li><code>\internal</code> / <code>\endinternal</code> — content only for internal documentation.</li>
+  <li><code>\addindex{term}</code> — add an entry to the index.</li>
+  <li><code>\dontinclude</code> — exclude a file region from inclusion.</li>
+  <li><code>\htmlonly</code>, <code>\latexonly</code>, <code>\rtfonly</code> — format-specific sections.</li>
+</ul>
+
+<h2>Examples (short)</h2>
+<pre>
+/**
+* \file example.h
+* \brief Example header
+*
+* Detailed description goes here.
+* \author Jane Doe
+* \date 2025-10-13
+*/
+
+/**
+* \brief Compute the sum
+* \param[in] a first value
+* \param[in] b second value
+* \return sum of a and b
+*/
+int add(int a, int b);
+</pre>
+
+<h2>Further reading</h2>
+<p>Refer to the official Doxygen manual for complete coverage and advanced features.</p>
+
+
+
