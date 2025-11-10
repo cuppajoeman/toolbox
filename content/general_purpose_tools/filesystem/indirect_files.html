@@ -3,11 +3,15 @@
 </p>
 
 <p>
-  Sometimes we just want a file to be synchronized to multiple places, that we we don't have to copy code, in this context we can make a tradeoff, these clones of the file are only view only mirrors to the real thing, additionally the require manual updating. This means that if we want to modify the real file we have to go to the place where it exists to change it. 
+  Sometimes we just want a file to be synchronized to multiple places, that we we don't have to copy code, in this context we can make a tradeoff, these clones of the file are only view only mirrors to the real thing, additionally they require manual updating. This means that if we want to modify the real file we have to go to the place where it exists to change it. 
 </p>
 
 <p>
-  If you're ok with all the above, then indirect files might be good for you, the way this works is that if you want the file <code>flinks.py</code>, you create the file <code>flinks.py.ifile</code> and then you put the contents as follows:
+  You might be lookin at this and thinking why do I need this when I can just use wget or curl to get the file. The reason is that whenever you have to do that you have to remember the link to the file, additionally whenever you want to update the file and get a newer version you again have to go and recall the url, by using indirect files, you store a file as its link and the system will automatically get that file and update it for you.
+</p>
+
+<p>
+  If you're ok with all the above, then indirect files might be good for you. The specific usage of it is that if you want the file <code>flinks.py</code>, you create the file <code>flinks.py.ifile</code> and then you put the contents as follows:
 </p>
 
 <pre>
@@ -15,11 +19,20 @@
 URL=https://toolbox.cuppajoeman.com/general_purpose_tools/filesystem/flinks.py
   </code>
 </pre>
+<i>the link can be any link to a file not just on github</i>
 
 <p>
   Then you run the <code>indirect_files.py</code> script on the directory in which that file exists (or any of its parent directories becuase it's recursive), and it will create the file that you're pointing to. The script looks like this: 
 </p>
 
+<div class="code-file" data-file-name="indirect_files.py"></div>
 
+<h2>other reasons you might use it</h2>
+<p>
+  If someone has a huge repo, and you only want one file out of it, then you can use ifiles for this purpose, because sometimes repos come with a bunch of extraneous data or files you don't actually want.
+</p>
 
-    <div class="code-file" data-file-name="indirect_files.py"></div>
+<h2>fit</h2>
+<p>
+  If you like this idea but are interested in how this could integrate with git so that the files are no longer read-only then check <a href="https://github.com/cuppajoeman/fit">this</a> out.
+</p>
