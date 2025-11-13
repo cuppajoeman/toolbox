@@ -114,5 +114,10 @@ git config --global core.editor "vim"
     </code>
 </pre>
 
+<hr>
+<h1>visual studio 18 2026</h1>
+<p>
+    For visual studio 18 2026 it requires cmake version 4.2 to be supported, due to that since msys2 only has version 3.3.0 of cmake then we cannot integrate visual studio 18 2026 with it. So we installed conan through the gui on windows, and then we installed cmake 4.2 through the gui, and then when we ran conan install . all packages had be rebuilt because there were no binaries yet stored for 195. And we got to a point where things didn't work because opus had a requirement on 4.1.2 of cmake because that's the largest available version on conancenter for cmake currently, and therefore since that doesn't have access to visual studio 18 2026, the compilation failed. Until 4.2 is uploaded to conancenter we cannot make progress.
+</p>
 
 
