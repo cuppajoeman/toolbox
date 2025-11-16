@@ -16,6 +16,9 @@ rename 's/^output_/newname_/' *.mp3
 <pre>
 rename -n 's/^output_/newname_/' *.mp3
 </pre>
+<p class="note">
+    If the rename command did nothing it probably means you have a different version, for me I had to run <code>rename output newname *.mp3</code> for it to work properly.
+</p>
 
 <h2>2. Using a Bash Loop</h2>
 <p>If <code>rename</code> is not available, you can use a simple bash loop:</p>
