@@ -1,0 +1,37 @@
+
+<p>Sometimes you have many files with similar names and want to rename them all at once. Here are two simple ways to do this on Linux.</p>
+
+<h2>1. Using <code>rename</code></h2>
+<p>The <code>rename</code> command allows you to rename multiple files using a pattern.</p>
+<p>Example: Rename files from <code>output_01.mp3</code> to <code>newname_01.mp3</code>:</p>
+<pre>
+rename 's/^output_/newname_/' *.mp3
+</pre>
+<p>Explanation:</p>
+<ul>
+    <li><code>s/^output_/newname_/</code> – replaces the prefix "output_" with "newname_".</li>
+    <li><code>*.mp3</code> – applies to all MP3 files in the current folder.</li>
+</ul>
+<p>You can test it first without renaming using:</p>
+<pre>
+rename -n 's/^output_/newname_/' *.mp3
+</pre>
+<p class="note">
+    If the rename command did nothing it probably means you have a different version, for me I had to run <code>rename output newname *.mp3</code> for it to work properly.
+</p>
+
+<h2>2. Using a Bash Loop</h2>
+<p>If <code>rename</code> is not available, you can use a simple bash loop:</p>
+<pre>
+for f in output_*.mp3; do
+mv "$f" "newname_${f#output_}"
+done
+</pre>
+<p>Explanation:</p>
+<ul>
+    <li><code>output_*.mp3</code> – matches all files starting with "output_".</li>
+    <li><code>${f#output_}</code> – removes the "output_" prefix from the filename.</li>
+    <li><code>mv</code> – renames the file.</li>
+</ul>
+
+<p>These methods allow you to quickly rename many files in Linux.</p>

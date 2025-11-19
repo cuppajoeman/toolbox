@@ -1,0 +1,118 @@
+
+<p>In C++, inheritance is often associated with runtime polymorphism through virtual functions. However, C++ also allows <strong>compile-time inheritance</strong> using templates. This approach can produce highly optimized code since all decisions are made at compile time, eliminating the overhead of virtual calls.</p>
+
+<h2>1. Using CRTP (Curiously Recurring Template Pattern)</h2>
+<p>The <strong>CRTP</strong> is a technique where a class template takes a derived class as a template parameter. This allows the base class to call methods of the derived class at compile time.</p>
+
+<pre><code>#include &lt;iostream&gt;
+
+template &lt;typename Derived&gt;
+class Base {
+public:
+    void interface() {
+        // Call derived implementation
+        static_cast&lt;Derived*&gt;(this)-&gt;implementation();
+    }
+};
+
+class Derived1 : public Base&lt;Derived1&gt; {
+public:
+    void implementation() {
+        std::cout &lt;&lt; "Derived1 implementation" &lt;&lt; std::endl;
+    }
+};
+
+class Derived2 : public Base&lt;Derived2&gt; {
+public:
+    void implementation() {
+        std::cout &lt;&lt; "Derived2 implementation" &lt;&lt; std::endl;
+    }
+};
+
+int main() {
+    Derived1 d1;
+    Derived2 d2;
+    d1.interface(); // prints "Derived1 implementation"
+    d2.interface(); // prints "Derived2 implementation"
+    return 0;
+}</code></pre>
+
+    <p>In this example:</p>
+    <ul>
+        <li><code>Base&lt;Derived&gt;</code> is a template base class.</li>
+        <li>The derived class passes itself as a template argument.</li>
+        <li>All calls to <code>implementation()</code> are resolved at compile time.</li>
+    </ul>
+
+    <h2>2. Using Concepts (C++20)</h2>
+    <p>C++20 introduced <strong>concepts</strong>, which allow you to constrain templates based on required properties or methods. This can also be used for compile-time polymorphism without virtual functions.</p>
+
+    <pre><code>#include &lt;iostream&gt;
+#include &lt;concepts&gt;
+
+struct Derived1 {
+    void implementation() { std::cout &lt;&lt; "Derived1 implementation" &lt;&lt; std::endl; }
+};
+
+struct Derived2 {
+    void implementation() { std::cout &lt;&lt; "Derived2 implementation" &lt;&lt; std::endl; }
+};
+
+// Define a concept that requires an 'implementation' method
+template &lt;typename T&gt;
+concept HasImplementation = requires(T t) {
+    { t.implementation() } -&gt; std::same_as&lt;void&gt;;
+};
+
+// Generic function constrained by concept
+template &lt;HasImplementation T&gt;
+void interface(T& obj) {
+    obj.implementation();
+}
+
+int main() {
+    Derived1 d1;
+    Derived2 d2;
+    interface(d1); // prints "Derived1 implementation"
+    interface(d2); // prints "Derived2 implementation"
+    return 0;
+}</code></pre>
+
+<p>Here:</p>
+<ul>
+    <li>The <code>HasImplementation</code> concept ensures that any type passed to <code>interface</code> has an <code>implementation()</code> method returning <code>void</code>.</li>
+    <li>No virtual functions are required, and the compiler can inline calls for maximum performance.</li>
+</ul>
+
+<h2>3. Comparison</h2>
+<table border="1">
+    <tr>
+        <th>Feature</th>
+        <th>CRTP</th>
+        <th>Concepts</th>
+    </tr>
+    <tr>
+        <td>Compile-Time Check</td>
+        <td>Yes</td>
+        <td>Yes</td>
+    </tr>
+    <tr>
+        <td>Ease of Use</td>
+        <td>Requires inheritance boilerplate</td>
+        <td>Flexible with any type matching the concept</td>
+    </tr>
+    <tr>
+        <td>Function Call</td>
+        <td>Member function call via base template</td>
+        <td>Free function template constrained by concept</td>
+    </tr>
+    <tr>
+        <td>Inlining</td>
+        <td>Possible</td>
+        <td>Possible</td>
+    </tr>
+</table>
+
+<h2>Conclusion</h2>
+<p>Compile-time inheritance in C++ can be achieved using CRTP or concepts. CRTP is suitable when you want a base class to provide common functionality, while concepts offer a more flexible approach, allowing compile-time polymorphism without inheritance. Both approaches avoid virtual function overhead, enabling highly optimized code.</p>
+<p>There's a better article here: https://www.fluentcpp.com/2020/09/11/replacing-crtp-static-polymorphism-with-concepts/</p>

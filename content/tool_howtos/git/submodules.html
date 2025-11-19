@@ -1,5 +1,5 @@
 <p>
-    Git submodules provide a way to consider any repository as a versioned "package" that can be included in any other git repo.
+    Git submodules provide a way to consider any repository as a versioned "package" that can be included in any other git repo. This provides you a way to re-use the same code in many different projects. The cost of this is understanding the ins and outs of submodules, and hopefully this page can be a guide for that.
 </p>
 
 <h1>clone a repo that has submodules</h1>
@@ -14,10 +14,24 @@
     Note: -j8 is an optional performance optimization that became available in version 2.8, and fetches up to 8 submodules at a time in parallel — see man git-clone
 </p>
 
-<h1>clone in repositories after cloning a repo</h1>
+<h1 id="setting_up_submodules_after_a_regular_git_clone">setting up submodules after a regular git clone</h1>
 
 <p>
-    When you clone a repository git will <b>not</b> automatically clone in the contents of any submodules, but it will clone an empty directory with the name of that repository, in order to actually get the contents of those submodules you have to do the following
+    If you did not follow the command above to clone a repository, and instead you did something like <code>git clone git://github.com/foo/bar.git</code>, then git will <b>not</b> automatically clone in the contents of any submodules, but it will clone an empty directory with the name of that repository, in order to actually get the contents of those submodules you have to do the following:
+</p>
+
+<pre>
+    <code>
+        git submodule update --init --recursive
+    </code>
+</pre>
+
+<p>
+    This will recursively initialize and update submodules.
+</p>
+
+<p>
+    Note that you might see elsewhere to use the following command, but we <b>do not</b> use the following command because it only initializes and then updates submodules found in the current git project and not recursive, so the command above works for all possible git repos whereas the one below does not.
 </p>
 
 <pre>
@@ -27,18 +41,10 @@
     </code>
 </pre>
 
-alternatively if you know that it recursively contains more submodules
-
-<pre>
-    <code>
-        git submodule update --init --recursive
-    </code>
-</pre>
-
 <h2>adding submodules</h2>
 
 <p>
-    By default you usually use the command <code>git submodule add &lt;URL&gt;</code>. But this command does not clone nested submodules inside the added submodule repository. To ensure all nested submodules are cloned and initialized, you need to run <code>git submodule update --init --recursive</code> after adding the submodule.
+    By default you usually use the command <code>git submodule add &lt;URL&gt;</code>. By default this command does not clone nested submodules inside the added submodule repository. To ensure all nested submodules are cloned and initialized, you need to run <code>git submodule update --init --recursive</code> after adding the submodule.
 </p>
 
 <pre><code>
@@ -52,18 +58,46 @@ git submodule update --init --recursive
 </p>
 <pre>
     <code>
-alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && git submodule update --init --recursive; }; f'
+alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && git submodule update --init --recursive; & cd .. }; f'
     </code>
 </pre>
 
-<h2>git pulling in submodules</h2>
-<p>
-    Suppose you're in a submodule that contains more submodules, currently <code>git status</code> tells you that there are no changes at all, now you run git pull in that submodule and there are updates, namely the updates update the references to a few of the submodules, this can occur when someone has updated the versions of the submodules elsewhere and you are just getting those changes.
-</p>
-<p>
-    What usually appears is something like this:
+<p class="note">
+    This alias defines a function and calls it immediately
 </p>
 
+<h2>how the active working directory effects git</h2>
+
+<p>
+    Suppose you have a project with these directories A/B/C. A is a regular git repository, B is a submodule, and C is another submodule (ie it's a submodule of B). Git behaves differently depending on what directory git is run from.
+</p>
+<p>
+    When you are in A, everything acts regularly, changes made to the actual sources files of A will be detected when you run git status, and changes to what commit the submodule B is being pointed to area also picked up. 
+</p>
+<p>
+    When you are in B, git acts as B was a regular git repository and so git status and all git commands run with respect to the B directory, so any changes made to A's source files are completely ignored, you are completely within the context of the B project. Also for any subpath of B which is not another submodule this context remains.
+</p>
+<p>
+    When you are in C, the same thing occurs again, but now within the context of C. The general logic is that the git command is run from the context of the first submodule encountered while going back up the file tree towards the base git project.
+</p>
+
+<h2>git pulling in a git directory with submodules</h2>
+
+<h3>the git pull introduces a new submodule</h3>
+<p>
+    If this happens the submodule will be left in the same state as if you did a regular clone, so refer to <a href="#setting_up_submodules_after_a_regular_git_clone">this section</a> for next steps.
+</p>
+<h3>the git pull updates an existing submodule</h3>
+<p>
+    Updates to submodules via git pulls just change which commit the submodule is pointing to in the git metadata. You then need to run git submodule update. Note that if the new commit introduces a new sub-submodule, ie a new submodule in that submodule, then a regular git submodule update will not go and grab that new submodule, and so you have to run <code>git submodule update --init --recursive</code> to initialize and then update those sub-submodules.
+</p>
+<h2>git pulling inside of a submodule (note this is different from the previous section)</h2>
+<p>
+    If you're in a git directory which contains a submodule, say you're in a directory D, and it contains a submodule S. Suppose you know that S has been updated externally and there are new commits, if you'd like to get these new changes in this project, then you would change directory to D/S and because the git context automatically changed to that of S, then you can run git pull and update to the newest commit.
+</p>
+<p>
+    Now you'll go back to the D directory and run git status, you'll see something like this:
+</p>
 <pre>
     <code>
 $ git status
@@ -71,26 +105,19 @@ On branch main
 Your branch is up to date with 'origin/main'.
 
 Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-        modified:   build_notifier (new commits)
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git restore &lt;file&gt;..." to discard changes in working directory)
+        modified:   S (new commits)
 
 no changes added to commit (use "git add" and/or "git commit -a")
 
     </code>
 </pre>
-
 <p>
-    This may seem confusing, but just know that even though it says that there are changes, the changes are not from you editing files, its just that when you git pulled it changed the reference to the git submodule to the new version, and since your local version still contains the old copy, there is a diff being generated. To fix this run:
+    This is telling you that the git metadata associated with the submodule S, has changed in that it is now pointing to a new commit, hence the (new commits) message, the pluaral is used because it needs to be a generic message. 
 </p>
-<pre>
-    <code>
-git submodule update
-    </code>
-</pre>
-
 <p>
-    Don't read these command as magic incantations to solve all your problems, for further understanding run <code>man git submodule</code>
+    All you have to do now is run git commit in D and now that will update the git repository to know that you are using the new version of the submodule S.
 </p>
 
 <h2>going deep</h2>

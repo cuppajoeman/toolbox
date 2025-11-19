@@ -1,0 +1,40 @@
+<p>
+    When working with transparent objects in OpenGL, many developers run into unexpected visual issues.
+    The fundamental reason for this is how <strong>depth testing</strong> interacts with <strong>blending</strong>.
+</p>
+
+<p>
+    Depth testing is responsible for determining which fragments (pixels) are in front of others. 
+    However, when writing to the depth buffer, the depth test does not consider whether a fragment is transparent. 
+    Transparent parts are written to the depth buffer just like opaque ones. 
+    This can cause objects behind a transparent surface to be incorrectly discarded, 
+    even though they should be visible through the transparent parts.
+</p>
+
+<p>
+    Imagine your in your home and someone is throwing a basball at your window.
+    If you draw the window first and then the baseball, then its the ball might not generate any fragments because opengl knows its covered by another object in the depth test so it'll look like theres nothing behind the window, which is very confusing. So in order to fix this you have to draw the baseball first and then the window so this doesn't occur.
+</p>
+
+<p>
+    The key insight is that we cannot rely solely on the depth buffer to handle transparency. 
+    This is also where blending becomes tricky: to ensure the windows correctly show the objects behind them, 
+    we need to manually <strong>sort transparent objects from furthest to nearest</strong> and draw them in that order.
+</p>
+
+<p>
+    While this approach works well for simple cases, it has limitations. 
+    Consider two planar quads rotated so that they form an "X" shape. 
+    There is always a part of each quad that is in front of the other. 
+    No matter how you order the draws, some fragments will be incorrectly occluded. 
+    In cases where transparent objects intersect or clip into each other, sorting alone cannot solve the problem.
+</p>
+
+<p>
+     The interactions we've mentioned so far have been between two disitnct objects, but even when treated as a single object this issue still arises for the same reason (even though only one draw call is required), and because of this if you import an aribtrary mesh that has transparency then you'll most likely run into this issue all the time. Additionally skinned and animated objects definitely have clipping and so there's no way to get around this "sorting" problem most of the time because there'd be too many things to sort, and it still doesn't get rid of the x shape quad problem.
+</p>
+
+<p>
+    To handle these complex scenarios correctly, we need <strong>order-independent transparency</strong> techniques, 
+    which allow transparent objects to be rendered accurately without relying on strict back-to-front ordering.
+</p>

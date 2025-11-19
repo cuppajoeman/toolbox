@@ -152,3 +152,92 @@ joined.reserve(v1.size() + v2.size());  // Optional, to improve performance
 joined.insert(joined.end(), v1.begin(), v1.end());
 joined.insert(joined.end(), v2.begin(), v2.end());
 </code></pre>
+
+
+<h2>Vector Constructors and Operations: When They Are Called</h2>
+<p>In C++, different vector operations can trigger different constructors (copy, move, or default), for the objects that it holds. Understanding this is important to avoid unnecessary copies, improve performance, and correctly manage resources.</p>
+<h3>1. Push Back</h3>
+<pre><code> std::vector<MyClass> vec; MyClass obj;
+
+// Copy version
+vec.push_back(obj); // Calls MyClass copy constructor
+
+// Move version (C++11+)
+vec.push_back(std::move(obj)); // Calls MyClass move constructor
+</code></pre>
+<p><strong>Note:</strong> Using <code>std::move</code> avoids copying large objects unnecessarily.</p>
+<h3>2. Insert</h3>
+<pre><code> 
+  vec.insert(vec.begin() + 2, obj); // Copy constructor called 
+  vec.insert(vec.begin() + 2, std::move(obj)); // Move constructor called </code></pre>
+<p>If inserting a range of elements, move constructors are used if available:</p>
+<pre><code> std::vector<MyClass> other = {...}; vec.insert(vec.end(), std::make_move_iterator(other.begin()), std::make_move_iterator(other.end())); // Moves elements from other </code></pre>
+<h3>3. Resize</h3>
+<pre><code> 
+  vec.resize(10); // Default constructor called for new elements 
+  vec.resize(10, obj); // Copy constructor called for new elements 
+</code></pre>
+<h3>4. Erase</h3>
+<pre><code> vec.erase(vec.begin() + 3); </code></pre>
+<p>When you erase an element from a vector, all elements after the erased element are **shifted left**. This triggers either:</p>
+<ul>
+  <li>Move constructor (if available and noexcept)</li>
+  <li>Copy constructor (if move is not available)</li>
+</ul>
+<p>For example, if <code>MyClass</code> has a move constructor, <code>erase</code> will use moves instead of copies to shift elements.</p>
+<h3>5. Copying a Vector</h3>
+<pre><code> std::vector<MyClass> vec2 = vec; // Copy constructor of MyClass called for each element </code></pre>
+<h3>6. Moving a Vector</h3>
+<pre><code> std::vector<MyClass> vec2 = std::move(vec); // Move constructor of vector is called // Individual MyClass move constructors are generally NOT called // because vector just transfers ownership of its internal buffer </code></pre>
+<h3>7. Emplace Operations</h3>
+<pre><code> vec.emplace_back(args...); // Constructs MyClass in-place (no copy or move) vec.emplace(vec.begin(), args...); // Constructs in-place at specific position </code></pre>
+<p><strong>Note:</strong> <code>emplace</code> avoids unnecessary construction and copying/moving by constructing elements directly inside the vector.</p>
+<h3>Summary Table</h3>
+<table>
+    <tr>
+        <th>Operation</th>
+        <th>Constructor Called</th>
+    </tr>
+    <tr>
+        <td>push_back(obj)</td>
+        <td>Copy constructor</td>
+    </tr>
+    <tr>
+        <td>push_back(std::move(obj))</td>
+        <td>Move constructor</td>
+    </tr>
+    <tr>
+        <td>insert(position, obj)</td>
+        <td>Copy constructor</td>
+    </tr>
+    <tr>
+        <td>insert(position, std::move(obj))</td>
+        <td>Move constructor</td>
+    </tr>
+    <tr>
+        <td>resize(new_size)</td>
+        <td>Default constructor for new elements</td>
+    </tr>
+    <tr>
+        <td>resize(new_size, obj)</td>
+        <td>Copy constructor for new elements</td>
+    </tr>
+    <tr>
+        <td>erase(position)</td>
+        <td>Move constructor (if available) for shifting elements</td>
+    </tr>
+    <tr>
+        <td>vector copy</td>
+        <td>Copy constructor for each element</td>
+    </tr>
+    <tr>
+        <td>vector move</td>
+        <td>Move constructor of vector; elements usually not moved</td>
+    </tr>
+    <tr>
+        <td>emplace / emplace_back</td>
+        <td>In-place constructor (no copy or move)</td>
+    </tr>
+</table>
+<p>Understanding these rules helps optimize performance, especially for classes with expensive copy operations like `IVPColor`.</p>
+

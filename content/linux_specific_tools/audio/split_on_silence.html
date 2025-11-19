@@ -1,5 +1,10 @@
 <p>
     Sometimes you have a sound file which is really an array of other sounds, breaking this apart is annoying, there are solutions to this outlined online, but no turnkey solutions, let's make a script which solves this:
 </p>
+<p class="note">You must have the linux command line tool bc (basic calculator) installed, for me that was pacman -S bc</p>
 
-<div class="code-file" data-file-name="split_on_silence.sh></div>
+<p>
+    When doing footsteps I found that this command gave me good results: <code>./split_on_silence.sh -i metal_footsteps.mp3 -m 0.25 -n 0.00005 -d 0.001</code>. We use -m 0.25 to allow for short audio segments to be extracted, we use -n 0.00005 because the higher that value was the more footsteps got collected into one, so the smaller the louder the "that is silence" threshold is. I used -d 0.001 to allow for a "silence period" to be very small because I was catching the end of the next step at the end of it until I made this value 0.001.
+</p>
+
+<div class="code-file" data-file-name="split_on_silence.sh"></div>
