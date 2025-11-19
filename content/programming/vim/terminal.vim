@@ -34,11 +34,12 @@ nnoremap <leader>td :TermInDir<CR>
 nnoremap <leader>tr :TDR<CR>
 
 " Key mappings for terminal mode
-" Get out of Terminal-Mode
-tnoremap <leader>t<Esc> <C-\><C-n>
 
 " Be able to hide the terminal
 noremap <leader>tq <C-w>:hide<CR>
 
 " Open a terminal in the current window
 noremap <leader>ter :call OpenTerminal()<CR>
+
+" exit terminal mode without breaking your pinky
+tnoremap <Esc><Esc> <C-\><C-n>

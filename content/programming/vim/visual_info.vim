@@ -11,6 +11,12 @@ set showmatch
 
 " highlight current line
 set cursorline
+hi CursorLine cterm=NONE ctermbg=236 ctermfg=NONE guibg=#3c3836
+
+" highlight current column
+set cursorcolumn
+" Optional: customize color
+hi CursorColumn cterm=NONE ctermbg=236 ctermfg=NONE guibg=#3c3836
 
 " faster redrawing
 set ttyfast

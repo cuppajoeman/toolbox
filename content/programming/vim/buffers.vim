@@ -35,4 +35,4 @@ function! FuzzyFindBuffer()
   endif
 endfunction
 
-nnoremap <leader>sb :call FuzzyFindBuffer()<CR>
+nnoremap <leader><leader> :call FuzzyFindBuffer()<CR>
