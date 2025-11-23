@@ -4,6 +4,14 @@ gcc -v --help 2> /dev/null | sed -n '/^ *-std=\([^<][^ ]\+\).*/ {s//\1/p}'
   </code>
 </pre>
 
+<p>
+  Note you can tag on a <code>| grep c++</code> or <code>| grep c</code> to get the standards supported by a particular langauge
+</p>
+
+<hr>
+
+<h1>Explanation</h1>
+
 <h2>Step 1: <code>gcc -v --help 2> /dev/null</code></h2>
 <ul>
     <li><code>gcc -v --help</code> prints a lot of information about GCC, including available command-line options.</li>
