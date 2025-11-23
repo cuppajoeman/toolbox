@@ -1,0 +1,60 @@
+<pre>
+  <code>
+gcc -v --help 2> /dev/null | sed -n '/^ *-std=\([^<][^ ]\+\).*/ {s//\1/p}'
+  </code>
+</pre>
+
+<h2>Step 1: <code>gcc -v --help 2> /dev/null</code></h2>
+<ul>
+    <li><code>gcc -v --help</code> prints a lot of information about GCC, including available command-line options.</li>
+    <li><code>2> /dev/null</code> redirects <strong>stderr</strong> to <code>/dev/null</code>. GCC prints help options to stderr, so this suppresses messages you don’t care about.</li>
+</ul>
+
+<h2>Step 2: <code>| sed -n '...'</code></h2>
+<ul>
+    <li>The pipe (<code>|</code>) sends GCC’s output to <code>sed</code>.</li>
+    <li><code>sed -n</code> disables the default printing behavior. Normally, <code>sed</code> prints every line after processing; <code>-n</code> tells it to print only when explicitly using <code>p</code>.</li>
+</ul>
+
+<h2>Step 3: The sed script</h2>
+<pre><code>/^ *-std=\([^<][^ ]\+\).*/ { s//\1/p }</code></pre>
+<h3>a) Pattern match: <code>^ *-std=\([^<][^ ]\+\).*</code></h3>
+<ul>
+    <li><code>^ *</code> → matches the start of the line followed by zero or more spaces.</li>
+    <li><code>-std=</code> → literally matches <code>-std=</code>.</li>
+    <li><code>\([^<][^ ]\+\)</code> → a <strong>capturing group</strong>:
+        <ul>
+            <li><code>[^<]</code> → matches any character except <code>&lt;</code>.</li>
+            <li><code>[^ ]\+</code> → matches one or more characters that are not a space.</li>
+        </ul>
+    </li>
+    <li><code>.*</code> → matches the rest of the line (any characters, zero or more).</li>
+</ul>
+<p>This pattern looks for lines like:</p>
+<pre><code>  -std=c++17
+-std=c++20</code></pre>
+<p>It avoids matches like <code>-std=&lt;something&gt;</code>.</p>
+
+<h3>b) Action block: <code>{ s//\1/p }</code></h3>
+<ul>
+    <li><code>s//\1/</code> → substitute the matched pattern with the first capture group <code>\1</code>.</li>
+    <li><code>p</code> → print the result.</li>
+</ul>
+<p>Effectively, it takes a line like:</p>
+<pre><code>  -std=c++17</code></pre>
+<p>and outputs:</p>
+<pre><code>c++17</code></pre>
+
+<h2>Summary</h2>
+<ul>
+    <li>The command extracts all <code>-std=</code> compiler versions that GCC supports.</li>
+    <li>It ignores entries starting with <code>&lt;</code>.</li>
+    <li>Outputs just the version strings like:</li>
+</ul>
+<pre><code>c++98
+c++03
+c++11
+c++14
+c++17
+c++20
+c++23</code></pre>
