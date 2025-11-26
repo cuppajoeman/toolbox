@@ -36,3 +36,7 @@ while (...) {
 <p>
   Suppose function fj has dynamic runtime (and that the rest had constant runtime) and that on iteration k, it took time tk and on iteration k+1 it took time t_(k+1) to execute, and lets suppose that t_(k+1) = t_k + a where a > 0. So on iteration k of the while loop function fi starts executing at wk + (t1 + ... + tk + ... + ti-1) and on iteration k+1 fi will start executing at wk + (t1 + ... + tk + a + ... + ti-1) the difference of these two times is exactly P + a, so the function fi is no longer being run at a constant rate. 
 </p>
+<h1>how you should use this info</h1>
+<p>
+  In general if you're making a system which is encompassed by a fixed frequency loop then try and put the dynamic runtime code near the bottom of the loop whenever possible, and keep the constant runtime functions near the top, when you do this it maximizes the number of lines which are not prefaced by a dynamic runtime function call meaning that it maximizes the number of functions which are run at a fixed rate within your loop, which is desirable.
+</p>
