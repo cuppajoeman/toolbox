@@ -1,0 +1,38 @@
+<p>
+  When you're writing code inside of the body of a fixed frequency loop, then just because it exists in the body doesn't mean it will be run at a fixed frequency. Formally here's the truth.
+</p>
+
+<p>
+  Suppose you have a loop which iterates at a fixed rate, and you have n functions f1, ..., fn and the loop body is of this form
+</p>
+
+<pre>
+  <code>
+while (...) {
+    f1(...)
+    f2(...)
+    ...
+    fn(...)
+}
+  </code>
+</pre>
+
+<p>
+  Then function fi will only run at a fixed rate if the functions f1, ..., fi-1 have constant runtime.
+</p>
+
+<hr>
+<p>
+  Since the outer loop runs at a fixed frequency F hz and period P = 1 / F. If the times that it iterates is at are the times w1, w2, w3, ... .So in general we know that wi+1 - wi = P.
+</p>
+<p>
+  Since each function f1, ..., fi-1 have constant runtime, then on each iteration each function will take duration t1, ..., ti-1 respectively, therefore function fi will be run at times w1 + (t1 + ... + ti-1), w2 + (t1 + ... + ti-1), w3 + (t1 + ... + ti-1), ... Therefore the difference between consecutive runs of the function fi is exactly (wi+1 - wi) = P, so fi is run at the constant frequency F.
+</p>
+
+<hr>
+<p>
+  Another way of seeing it, is that if one of f1, ..., fi-1 had a dynamic runtime. What I mean when I say constant vs dynamic runtime is that the duration of the function differs from iteration to iteration. An example of such a function is a sorting function which will run faster on inputs which are already pretty much sorted and take longer on those which are not. 
+</p>
+<p>
+  Suppose function fj has dynamic runtime (and that the rest had constant runtime) and that on iteration k, it took time tk and on iteration k+1 it took time t_(k+1) to execute, and lets suppose that t_(k+1) = t_k + a where a > 0. So on iteration k of the while loop function fi starts executing at wk + (t1 + ... + tk + ... + ti-1) and on iteration k+1 fi will start executing at wk + (t1 + ... + tk + a + ... + ti-1) the difference of these two times is exactly P + a, so the function fi is no longer being run at a constant rate. 
+</p>
