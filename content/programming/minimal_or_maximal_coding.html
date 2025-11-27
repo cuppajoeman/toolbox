@@ -1,0 +1,46 @@
+
+<p>
+    There is a method of programming that focuses on always creating the minimal working example (MWE) 
+    instead of building a solution that works in all possible cases. The idea behind this style of 
+    programming is simple: when you have a set of requirements, creating a system that only minimally 
+    meets those requirements allows you to reach a working solution much faster than if you created a 
+    system that meets those requirements plus additional, speculative features.
+</p>
+
+<p>
+    Many might think this approach reflects poorly on the programmer. For instance, if performance 
+    is not part of the requirements, your program might be inefficient. If your code is evaluated 
+    on criteria that were not part of the requirement set, it might appear "bad" from an external perspective. 
+    Similarly, there may be edge cases slightly outside the defined requirements that are not handled, 
+    which could make the code look sloppy to someone unaware of the original requirements.
+</p>
+
+<p>
+    From the perspective of a programmer, the priority is often to reach the goal as quickly as possible 
+    and then reassess. Sometimes you realize that the system meets the requirements, but the requirements 
+    themselves were not optimal and need adjustment. If your code was written in a rigid or overly extensible 
+    way from the start, making these modifications could be harder than if the system was intentionally minimal.
+</p>
+
+<p>
+    Fundamentally, the problem is not about choosing between quickly meeting requirements or writing extensible 
+    code. It is about understanding who is creating the requirements and why. If you simply receive requirements, 
+    implement a system, and report back, the speed-focused programmer will have an advantage if the requirements 
+    remain unchanged. In contrast, a programmer who invested in a highly extensible system might never get the 
+    chance to leverage that extensibility if the requirements do not change.
+</p>
+
+<p>
+    Understanding how and why requirements are generated provides insight into whether they are likely to change. 
+    Consider: is the person or committee setting the requirements familiar with the code or the language? Do they 
+    prototype and iterate ideas, or attempt to think ahead about all possibilities? By understanding the nature of 
+    the requirement source, you can make informed decisions about how to architect your code.
+</p>
+
+<p class="note">If you are the requirement source then the optimal strategy is usually this. You have your end goal which it a set of requirements for the program. Now produce a sequence of ever growing requirements that moves towards your goal, each transition to the next requirement set should be small and introduce a requirement that is satisfying to the programmer, thus creating a breadcrumb-like path to the end goal which keeps the programmer happy with the progress rather than nothing, nothing and then whump everything is done. </p>
+<p>
+    In general, if you lack information about how requirements change, it is wise to plan for some degree of change, 
+    but not excessively so. While no one can predict the future, assuming that requirements will remain static is 
+    rarely accurate. A minimal working example, with a modest allowance for future adjustments, is a safe and 
+    efficient strategy.
+</p>
