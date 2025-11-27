@@ -91,3 +91,56 @@
     <li><code>record</code> - Start recording the program's execution for replay.</li>
     <li><code>restore</code> - Restore the program's state from a previously recorded state.</li>
 </ul>
+
+<hr>
+
+<h2>Common Usage Patterns</h2>
+<ul>
+    <li><strong>Debugging Segmentation Faults:</strong>
+        <ol>
+            <li>Run the program: <code>run</code></li>
+            <li>If it crashes, check the backtrace: <code>backtrace</code> or <code>bt</code></li>
+            <li>Inspect local variables: <code>info locals</code> and function arguments: <code>info args</code></li>
+            <li>Examine memory at a pointer: <code>x/<format> <address></code> (e.g., <code>x/16xb ptr</code>)</li>
+        </ol>
+    </li>
+    <li><strong>Setting Conditional Breakpoints:</strong>
+        <ol>
+            <li>Break at a line or function only when a condition is true: <code>break <location> if <condition></code></li>
+            <li>Example: <code>break main.cpp:42 if x > 10</code></li>
+        </ol>
+    </li>
+    <li><strong>Inspecting Memory:</strong>
+        <ol>
+            <li>Examine memory at an address: <code>x/<num><format> <address></code></li>
+            <li>Format examples: <code>x/16xb</code> (16 bytes in hex), <code>x/8xw</code> (8 words in hex)</li>
+            <li>Print pointer contents recursively: <code>print *ptr</code></li>
+        </ol>
+    </li>
+    <li><strong>Debugging Loops:</strong>
+        <ol>
+            <li>Set a breakpoint inside the loop: <code>break <line></code></li>
+            <li>Use <code>commands <num></code> to run commands automatically when hitting a breakpoint (e.g., print a variable, continue)</li>
+        </ol>
+    </li>
+    <li><strong>Catch Exceptions or Signals:</strong>
+        <ol>
+            <li>Stop when a signal occurs: <code>handle SIGSEGV stop</code></li>
+            <li>Stop when a C++ exception is thrown: <code>catch throw</code></li>
+        </ol>
+    </li>
+    <li><strong>Debugging Multi-threaded Programs:</strong>
+        <ol>
+            <li>List threads: <code>info threads</code></li>
+            <li>Switch thread: <code>thread <num></code></li>
+            <li>Apply commands to all threads: <code>thread apply all bt</code></li>
+        </ol>
+    </li>
+    <li><strong>Logging and Automation:</strong>
+        <ol>
+            <li>Log GDB session to a file: <code>set logging on</code></li>
+            <li>Run a script of commands: <code>source script.gdb</code></li>
+        </ol>
+    </li>
+</ul>
+
