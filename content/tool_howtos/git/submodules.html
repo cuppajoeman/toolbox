@@ -40,6 +40,10 @@
         git submodule update
     </code>
 </pre>
+<h2>Why are init and update different commands</h2>
+<p>
+    The init commands makes a submodule "active", when a submodule is active, then by running update, it will actually go and get the contents of that repo. If you want the contents of all submodules then you'd always initialize everything and then run update. But if for some reason you only wanted a subset of all the submodules you'd first only initialize the ones that you want.
+</p>
 
 <h2>adding submodules</h2>
 
