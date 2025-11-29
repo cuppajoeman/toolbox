@@ -1,0 +1,11 @@
+<p>When watching videos from a remote source, by default it will try and use the highest possible quality for th video which is demandign on your cpu and wastes bandwidth.</p>
+<p>We're going to be looking at some configuration that does the following:</p>
+<ul>
+  <li>Picks the highest resolution (up to but not above 1080p).</li>
+  <li>Chooses 30fps or lower (since 60fps often leads to dropped frames and stutter on some computers).</li>
+  <li>Ignores the VP9 codec, which can be problematic on some setups.</li>
+</ul>
+
+<p>Example configuration for <code>mpv.conf</code>:</p>
+<pre><code>ytdl-format=bestvideo[height&lt;=?1080][fps&lt;=?30][vcodec!=?vp9]+bestaudio/best</code></pre>
+<p>If you want to limit playback to 720p then just change 1080 to 720</p>
