@@ -2,7 +2,7 @@
 
 <p>Once you build your executable, you can move it to a directory that's in your system's <code>PATH</code>. A common location for user-installed programs is /usr/local/bin, here is one way we can move it there:</p>
 
-<pre><code>sudo cp -i fibber /usr/local/bin/fibber</code></pre>
+<pre><code>sudo cp -i fibber /usr/local/bin/</code></pre>
 
 <p>
   The purpose of the -i flag here (which is interactive mode) is that it will warn you if you're going to overwrite a file. This is important because if its you're first time installing the program and you accidentally try to overwrite something like ls, it will warn you. On the other-hand if you're just updating the program, then you should be fine to overwrite, but be careful.
