@@ -21,6 +21,10 @@ while (...) {
   Then function fi will only run at a fixed rate if the functions f1, ..., fi-1 have constant runtime.
 </p>
 
+<p class=".note">
+    One thing that hasn't been mentioned but matters a lot is that suppose the outer loop has a period of P, but in order to run the functions, f1, ..., fn it only took duration D, where D &lt; P, then the outer loop will still waits until P has elapsed, this can be done by sleeping for the remaining duration. Throughout this analysis we will assume that its true that D &lt; P and that the outer loop dynamically sleeps for P - D before iterating again.
+</p>
+
 <hr>
 <p>
   Since the outer loop runs at a fixed frequency F hz and period P = 1 / F. If the times that it iterates is at are the times w1, w2, w3, ... .So in general we know that wi+1 - wi = P.
