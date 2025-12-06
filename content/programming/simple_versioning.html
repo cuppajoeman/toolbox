@@ -1,0 +1,20 @@
+<p> 
+  Semantic versioning is really only suitable for code APIs. It’s designed to communicate the cost of upgrading a package to programmers: if a release contains breaking changes, you may need to modify your code to ensure everything continues working. 
+</p> 
+<p> 
+  For user-facing software, this concept doesn’t translate directly. If you change the location of a button in a desktop app, the program still works; the user simply has to adjust to the change. Large interface or behavior changes can be considered “breaking” in a loose sense, but the impact is far less severe than in code APIs. 
+</p> 
+<p> 
+  The key takeaway is that versioning should reflect who or what consumes your system. Code is brittle and cannot easily handle breaking changes, so semantic versioning makes sense there. Humans, on the other hand, are more flexible and can adapt to changes with minimal disruption. 
+</p> 
+<p> 
+  For software designed for people, a simple approach is to use a unique timestamp as the version number for each release, paired with accompanying media that explains the update. Users can then decide whether or not to adopt the new version based on the provided information. 
+</p>
+<p>
+  So whenever it's time for a version I just go into my linux terminl and run:
+</p>
+<pre>
+  <code>
+date -u +"%Y.%m.%d.%H.%M.%S"
+  </code>
+</pre>
