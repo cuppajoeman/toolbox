@@ -1,6 +1,6 @@
+#!/usr/bin/env python3
 import os
 import shutil
-import sys
 
 FLINX_FILE = ".flinx"
 
@@ -15,14 +15,34 @@ def parse_symlink_file(symlink_file_path):
             mappings.setdefault(src, []).append(dst)
     return mappings
 
+def copy_and_clobber(src_path, dst_path):
+    """
+    Copy src_path to dst_path safely. Overwrites only if types match.
+    """
+    if os.path.exists(dst_path):
+        # Type mismatch
+        if os.path.isdir(src_path) and os.path.isfile(dst_path):
+            print(f"Warning: Cannot copy directory {src_path} over existing file {dst_path}, skipping.")
+            return
+        if os.path.isfile(src_path) and os.path.isdir(dst_path):
+            print(f"Warning: Cannot copy file {src_path} over existing directory {dst_path}, skipping.")
+            return
 
-def copy_and_clobber(src_dir, dst_dir):
-    if os.path.exists(dst_dir):
-        print(f"Clobbering existing directory: {dst_dir}")
-        shutil.rmtree(dst_dir)
-    print(f"Copying {src_dir} -> {dst_dir}")
-    shutil.copytree(src_dir, dst_dir)
+        print(f"Clobbering existing path: {dst_path}")
+        if os.path.isdir(dst_path):
+            shutil.rmtree(dst_path)
+        else:
+            os.remove(dst_path)
 
+    # Ensure parent directories exist
+    os.makedirs(os.path.dirname(dst_path), exist_ok=True)
+
+    if os.path.isdir(src_path):
+        shutil.copytree(src_path, dst_path)
+        print(f"Copied directory {src_path} -> {dst_path}")
+    else:
+        shutil.copy2(src_path, dst_path)
+        print(f"Copied file {src_path} -> {dst_path}")
 
 def main():
     cwd = os.getcwd()
@@ -35,17 +55,16 @@ def main():
     mappings = parse_symlink_file(flinx_file_path)
     base_dir = os.path.dirname(flinx_file_path)
 
-    for subdir, target_paths in mappings.items():
-        full_src_path = os.path.join(base_dir, subdir)
+    for subpath, target_paths in mappings.items():
+        full_src_path = os.path.join(base_dir, subpath)
 
-        if not os.path.isdir(full_src_path):
-            print(f"Warning: source directory does not exist: {full_src_path}")
+        if not os.path.exists(full_src_path):
+            print(f"Warning: source path does not exist: {full_src_path}")
             continue
 
         for target_path in target_paths:
             full_dst_path = os.path.abspath(target_path)
             copy_and_clobber(full_src_path, full_dst_path)
-
 
 if __name__ == "__main__":
     main()
