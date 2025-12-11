@@ -40,6 +40,9 @@ joltphysics/*:tools.cmake.cmaketoolchain:extra_variables={"DEBUG_RENDERER_IN_DEB
 <p>
   I turn <code>DEBUG_RENDERER_IN_DEBUG_AND_RELEASE</code>` on because I am usually building in release mode and so I since I want the debug renderer in release mode. Now also I usually use RTTI in my code and when I don't have this setting on I get compiler errors: <code>CPP_RTTI_ENABLED</code>. Also I get this error sometimes
 </p>
+<p>
+  Note that the option for -msse4.1 that was put into place because my compiler had issues inlining  __ms_dp_ps
+</p>
 <pre>
   <code>
 Version mismatch, make sure you compile the client code with the same Jolt version and compiler definitions!
