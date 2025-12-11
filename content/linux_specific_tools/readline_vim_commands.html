@@ -1,0 +1,111 @@
+<p>
+  I've been using <code>set -o vi</code> for a while but didn't realize its full potential for a while.
+</p>
+
+
+<table border="1" cellspacing="0" cellpadding="6">
+  <tr>
+    <th>Key</th>
+    <th>Function</th>
+    <th>Description</th>
+  </tr>
+
+  <tr><td>Ctrl-d</td><td>rl_vi_eof_maybe</td><td>Signals EOF if line is empty, otherwise deletes char.</td></tr>
+  <tr><td>Ctrl-e</td><td>rl_emacs_editing_mode</td><td>Switch to Emacs editing mode.</td></tr>
+  <tr><td>Ctrl-g</td><td>rl_abort</td><td>Cancel current operation; beep.</td></tr>
+  <tr><td>Ctrl-h</td><td>rl_backward_char</td><td>Move cursor left one character.</td></tr>
+  <tr><td>Ctrl-j</td><td>rl_newline</td><td>Accept line (like Enter).</td></tr>
+  <tr><td>Ctrl-k</td><td>rl_kill_line</td><td>Delete from cursor to end of line.</td></tr>
+  <tr><td>Ctrl-l</td><td>rl_clear_screen</td><td>Clear and redraw the screen.</td></tr>
+  <tr><td>Ctrl-m</td><td>rl_newline</td><td>Accept line.</td></tr>
+  <tr><td>Ctrl-n</td><td>rl_get_next_history</td><td>Next line in history.</td></tr>
+  <tr><td>Ctrl-p</td><td>rl_get_previous_history</td><td>Previous line in history.</td></tr>
+  <tr><td>Ctrl-q</td><td>rl_quoted_insert</td><td>Insert next typed character literally.</td></tr>
+  <tr><td>Ctrl-r</td><td>rl_reverse_search_history</td><td>Search backward in history.</td></tr>
+  <tr><td>Ctrl-s</td><td>rl_forward_search_history</td><td>Search forward in history.</td></tr>
+  <tr><td>Ctrl-t</td><td>rl_transpose_chars</td><td>Swap previous two characters.</td></tr>
+  <tr><td>Ctrl-u</td><td>rl_unix_line_discard</td><td>Delete everything before cursor.</td></tr>
+  <tr><td>Ctrl-v</td><td>rl_quoted_insert</td><td>Insert next key literally.</td></tr>
+  <tr><td>Ctrl-w</td><td>rl_vi_unix_word_rubout</td><td>Delete previous word.</td></tr>
+  <tr><td>Ctrl-y</td><td>rl_yank</td><td>Paste last killed text.</td></tr>
+  <tr><td>Ctrl-_</td><td>rl_vi_undo</td><td>Undo last edit.</td></tr>
+
+  <tr><td>SPACE</td><td>rl_forward_char</td><td>Move cursor right.</td></tr>
+  <tr><td>#</td><td>rl_insert_comment</td><td>Insert comment marker and accept line.</td></tr>
+  <tr><td>$</td><td>rl_end_of_line</td><td>Move to end of line.</td></tr>
+  <tr><td>%</td><td>rl_vi_match</td><td>Jump to matching bracket.</td></tr>
+  <tr><td>&amp;</td><td>rl_vi_tilde_expand</td><td>Expand ~ in filename contexts.</td></tr>
+  <tr><td>*</td><td>rl_vi_complete</td><td>Vi-style completion.</td></tr>
+  <tr><td>+</td><td>rl_get_next_history</td><td>Next history entry.</td></tr>
+  <tr><td>,</td><td>rl_vi_char_search</td><td>Repeat last character search backward.</td></tr>
+  <tr><td>-</td><td>rl_get_previous_history</td><td>Previous history entry.</td></tr>
+  <tr><td>.</td><td>rl_vi_redo</td><td>Repeat last change.</td></tr>
+  <tr><td>/</td><td>rl_vi_search</td><td>Search forward.</td></tr>
+
+  <tr><td>0</td><td>rl_beg_of_line</td><td>Move to beginning of line.</td></tr>
+  <tr><td>1–9</td><td>rl_vi_arg_digit</td><td>Set numeric argument prefix.</td></tr>
+
+  <tr><td>;</td><td>rl_vi_char_search</td><td>Repeat last f/F/t/T search.</td></tr>
+  <tr><td>=</td><td>rl_vi_complete</td><td>Complete word.</td></tr>
+  <tr><td>?</td><td>rl_vi_search</td><td>Search backward.</td></tr>
+
+  <tr><td>A</td><td>rl_vi_append_eol</td><td>Append at end of line.</td></tr>
+  <tr><td>B</td><td>rl_vi_prev_word</td><td>Move backward by word.</td></tr>
+  <tr><td>C</td><td>rl_vi_change_to</td><td>Change text to end of motion.</td></tr>
+  <tr><td>D</td><td>rl_vi_delete_to</td><td>Delete text to motion.</td></tr>
+  <tr><td>E</td><td>rl_vi_end_word</td><td>Move to end of word.</td></tr>
+  <tr><td>F</td><td>rl_vi_char_search</td><td>Find character backward.</td></tr>
+  <tr><td>G</td><td>rl_vi_fetch_history</td><td>Go to history line N.</td></tr>
+  <tr><td>I</td><td>rl_vi_insert_beg</td><td>Insert at beginning of line.</td></tr>
+  <tr><td>N</td><td>rl_vi_search_again</td><td>Repeat last search (same direction).</td></tr>
+  <tr><td>P</td><td>rl_vi_put</td><td>Paste text after cursor.</td></tr>
+  <tr><td>R</td><td>rl_vi_replace</td><td>Enter replace mode.</td></tr>
+  <tr><td>S</td><td>rl_vi_subst</td><td>Substitute entire line (delete + insert).</td></tr>
+  <tr><td>T</td><td>rl_vi_char_search</td><td>Search before character backward.</td></tr>
+  <tr><td>U</td><td>rl_revert_line</td><td>Undo all changes to line.</td></tr>
+  <tr><td>W</td><td>rl_vi_next_word</td><td>Move forward by word.</td></tr>
+  <tr><td>X</td><td>rl_vi_rubout</td><td>Delete previous character.</td></tr>
+  <tr><td>Y</td><td>rl_vi_yank_to</td><td>Yank (copy) text to motion.</td></tr>
+
+  <tr><td>\</td><td>rl_vi_complete</td><td>Complete word.</td></tr>
+  <tr><td>^</td><td>rl_vi_first_print</td><td>Move to first non-whitespace character.</td></tr>
+  <tr><td>_</td><td>rl_vi_yank_arg</td><td>Insert last argument from previous command.</td></tr>
+  <tr><td>`</td><td>rl_vi_goto_mark</td><td>Jump to mark.</td></tr>
+
+  <tr><td>a</td><td>rl_vi_append_mode</td><td>Append after cursor.</td></tr>
+  <tr><td>b</td><td>rl_vi_prev_word</td><td>Back one word.</td></tr>
+  <tr><td>c</td><td>rl_vi_change_to</td><td>Change text until motion.</td></tr>
+  <tr><td>d</td><td>rl_vi_delete_to</td><td>Delete until motion.</td></tr>
+  <tr><td>e</td><td>rl_vi_end_word</td><td>Move to end of current word.</td></tr>
+  <tr><td>f</td><td>rl_vi_char_search</td><td>Find character forward.</td></tr>
+  <tr><td>h</td><td>rl_backward_char</td><td>Move left.</td></tr>
+  <tr><td>i</td><td>rl_vi_insert_mode</td><td>Enter insert mode.</td></tr>
+  <tr><td>j</td><td>rl_get_next_history</td><td>Move down in history.</td></tr>
+  <tr><td>k</td><td>rl_get_previous_history</td><td>Move up in history.</td></tr>
+  <tr><td>l</td><td>rl_forward_char</td><td>Move right.</td></tr>
+  <tr><td>m</td><td>rl_vi_set_mark</td><td>Set a mark.</td></tr>
+  <tr><td>n</td><td>rl_vi_search_again</td><td>Repeat search forward.</td></tr>
+  <tr><td>p</td><td>rl_vi_put</td><td>Paste before cursor.</td></tr>
+  <tr><td>r</td><td>rl_vi_change_char</td><td>Replace a single character.</td></tr>
+  <tr><td>s</td><td>rl_vi_subst</td><td>Substitute characters (delete + insert).</td></tr>
+  <tr><td>t</td><td>rl_vi_char_search</td><td>Search until before character.</td></tr>
+  <tr><td>u</td><td>rl_vi_undo</td><td>Undo last edit.</td></tr>
+  <tr><td>w</td><td>rl_vi_next_word</td><td>Move forward one word.</td></tr>
+  <tr><td>x</td><td>rl_vi_delete</td><td>Delete character under cursor.</td></tr>
+  <tr><td>y</td><td>rl_vi_yank_to</td><td>Yank text defined by motion.</td></tr>
+
+  <tr><td>|</td><td>rl_vi_column</td><td>Move to specified column.</td></tr>
+  <tr><td>~</td><td>rl_vi_change_case</td><td>Toggle case of character.</td></tr>
+</table>
+
+<p>
+  Also if you like seeing the current mode don't forget to put <code>set show-mode-in-prompt on</code> into /etc/inputrc or ~/.inputrc
+</p>
+
+
+
+
+<a href="https://cgit.git.savannah.gnu.org/cgit/readline.git/tree/vi_keymap.c?h=devel">source</a>
+<a href="https://www.gnu.org/software/bash/manual/html_node/Commands-For-Text.html">commands for text</a>
+
+
