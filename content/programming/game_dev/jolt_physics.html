@@ -41,7 +41,7 @@ joltphysics/*:tools.cmake.cmaketoolchain:extra_variables={"DEBUG_RENDERER_IN_DEB
   I turn <code>DEBUG_RENDERER_IN_DEBUG_AND_RELEASE</code>` on because I am usually building in release mode and so I since I want the debug renderer in release mode. Now also I usually use RTTI in my code and when I don't have this setting on I get compiler errors: <code>CPP_RTTI_ENABLED</code>. Also I get this error sometimes
 </p>
 <p>
-  Note that the option for -msse4.1 that was put into place because my compiler had issues inlining  __ms_dp_ps
+  Note that the option for -msse4.1 that was put into place because my compiler had issues inlining  __ms_dp_ps. After I added the -msse4.1 option to my profile I had to delete the build folder and re-run cmake, also I added the cflags even though i was compiling c++ at the same time so one of those two things fixed it.
 </p>
 <pre>
   <code>
