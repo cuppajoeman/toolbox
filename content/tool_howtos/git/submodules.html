@@ -91,6 +91,10 @@ alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && g
 <p>
     If this happens the submodule will be left in the same state as if you did a regular clone, so refer to <a href="#setting_up_submodules_after_a_regular_git_clone">this section</a> for next steps.
 </p>
+<h3>the git pull deletes an existing submodule</h3>
+<p>
+    When this occurs git will try to remove the submodules directory but usually warns that it cannot because its not empty, after pulling you'll have to manually remove that submodules directory.
+</p>
 <h3>the git pull updates an existing submodule</h3>
 <p>
     Updates to submodules via git pulls just change which commit the submodule is pointing to in the git metadata. You then need to run git submodule update. Note that if the new commit introduces a new sub-submodule, ie a new submodule in that submodule, then a regular git submodule update will not go and grab that new submodule, and so you have to run <code>git submodule update --init --recursive</code> to initialize and then update those sub-submodules.
