@@ -93,7 +93,7 @@ alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && g
 </p>
 <h3>the git pull deletes an existing submodule</h3>
 <p>
-    When this occurs git will try to remove the submodules directory but usually warns that it cannot because its not empty, after pulling you'll have to manually remove that submodules directory.
+    When this occurs git will try to remove the submodules directory but usually warns that it cannot because its not empty, after pulling you'll have to manually remove that submodules directory. Instead of manually deleting these old submodules we can rely on git clean, so you can run <code>git clean -nd</code>, n means dry run and d means directories as well, and make sure all looks well and then run <code>git clean -fd</code> to delete it all. 
 </p>
 <h3>the git pull updates an existing submodule</h3>
 <p>
