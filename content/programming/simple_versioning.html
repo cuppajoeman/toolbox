@@ -18,3 +18,120 @@
 date -u +"%Y.%m.%d.%H.%M.%S"
   </code>
 </pre>
+
+<h1>a better spec</h1>
+
+<p>
+The core problem with semantic versioning is that it collapses many independent kinds of change into a single linear number. A major version bump signals a “breaking change”, but that breakage is conditional: it only applies if you rely on the specific surface area that changed. Consumers are therefore forced to manually investigate every major upgrade, even when the subset of behavior they care about is entirely unaffected.
+</p>
+
+<p>
+This makes major versions a pessimistic signal. They encode the <em>worst possible</em> compatibility outcome, not the <em>actual</em> outcome for a given consumer. As a result, automation stops at major boundaries and human intervention is required even when no meaningful incompatibility exists.
+</p>
+
+<h2>Version identifiers</h2>
+
+<p>
+Each release is identified by a monotonically increasing, globally unique timestamp:
+</p>
+
+<pre>
+<code>
+YYYY.MM.DD.HH.MM.SS (UTC)
+</code>
+</pre>
+
+<p>
+These identifiers encode ordering only. They carry no semantic meaning. All upgrade decisions are delegated to an update system that reasons about changes relative to consumer-defined requirements.
+</p>
+
+<h2>The update system</h2>
+
+<p>
+  A conforming implementation must provide an update system (a program or service) capable of evaluating upgrades between versions. From the consumer’s point of view, this system is the only interface they interact with. The internal mechanisms by which it detects, infers, or reasons about change are explicitly out of scope for this specification.
+</p>
+
+<p>
+  The update system defines which properties it is capable of tracking. Only properties that are actively tracked by the update system can be used as requirements or guarantees.
+</p>
+
+<h2>Consumer requirements</h2>
+
+<p>
+  A consumer supplies a set of requirements describing what must remain true across upgrades. However, a requirement is only valid if the update system explicitly tracks the corresponding property.
+</p>
+
+<p>
+  By default, the update system is required to track and guarantee <em>API compatibility</em> only. All other properties are optional and must be explicitly supported.
+</p>
+
+<p>
+If a consumer cares about a property that is not tracked (for example runtime performance, memory usage, or latency), the consumer must request that the update system provide tracking and guarantees for that property. Until such tracking exists, no guarantees are implied.
+</p>
+
+<p>
+Examples of consumer requirements include:
+</p>
+
+<ul>
+  <li>Preserve compatibility with existing code (API stability)</li>
+  <li>Allow breaking API changes</li>
+  <li>Prevent runtime regressions (if runtime is tracked)</li>
+  <li>Prevent increases in memory usage (if memory usage is tracked)</li>
+</ul>
+
+<h2>Tracked properties and continuity</h2>
+
+<p>
+Tracked properties are not assumed to be permanent. If the update system tracks a property for some versions and later stops tracking it, then all subsequent versions provide <em>no guarantee</em> for that property.
+</p>
+
+<p>
+In such cases, consumers that depend on the property must treat the last version for which the property was tracked as the highest safe upgrade point, unless they explicitly choose to waive that requirement.
+</p>
+
+<p>
+The absence of tracking is equivalent to the absence of a guarantee.
+</p>
+
+<h2>Upgrade evaluation</h2>
+
+<p>
+  In order to update a given package without manual interention, the update system evaluates versions in chronological order and determines the highest version that satisfies the consumer’s declared requirements.
+</p>
+
+<p>
+  Evaluation stops immediately before the first version that would violate a requirement, either due to a detected change or due to the loss of tracking for a required property.
+</p>
+
+<h2>Properties and guarantees</h2>
+
+<p>
+  For properties that cannot be fully inferred automatically, producers may optionally provide explicit guarantees for specific releases. These guarantees are only meaningful if the update system recognizes and tracks the corresponding property.
+</p>
+
+<p>
+  If a guarantee is absent, withdrawn, or no longer tracked, no assumption is made about that property in future versions.
+</p>
+
+<h2>Upgrade policies</h2>
+
+<p>
+  Consumers define upgrade policies in terms of requirements rather than version numbers. Examples:
+</p>
+
+<ul>
+  <li>Update to the newest version that preserves API compatibility</li>
+  <li>Update to the newest version before any runtime regression occurs</li>
+  <li>Always update to latest, ignoring all guarantees</li>
+</ul>
+
+<p>
+  Version numbers are no longer decision points. They are merely coordinates in time.
+</p>
+
+<h2>Summary</h2>
+
+<p>
+  This specification replaces semantic versioning’s coarse, producer-centric signals with a consumer-centric upgrade system. Versions encode order, not meaning. Meaning is supplied by consumer requirements, constrained by what the update system actually tracks, and enforced automatically. Guarantees exist only where tracking exists, and disappear when tracking disappears.
+</p>
