@@ -166,6 +166,25 @@ git submodule foreach --recursive 'git submodule update --init --recursive'
     </code>
 </pre>
 
+<h2>getting the newest version of all submodules</h2>
+<p>
+    Sometimes you'll have an old project and just want to update all submodules to their newest versions, in order to do this you'll have to run this command:
+</p>
+<pre>
+    <code>
+git submodule foreach --recursive '
+  if [ "$sm_path" != "." ]; then
+    git checkout main
+    git pull
+    git submodule update --init --recursive
+  fi
+'
+    </code>
+</pre>
+<p>
+     What this is doing is that it's iterating through each submodule, checking out the main branch because usually they are not sitting at head, but instead a specific commit, using git pull to get any changes and then updating their own submodules recursively. sm_path is the current submodule directory that we are iterating over, and thus you can see that we avoid iterating over the root directory, this is because if we were to run git submodule update within the root directory it will set all the versions of every included submodule back to the current version that's currently stored in the .gitmodules file, which is not what we want because those are the old versions.
+</p>
+
 <h1>mistakes</h1>
 
 <h2>ssh submodules, github organizations and collaborators</h2>
