@@ -3,7 +3,7 @@ syntax on
 " enable filetype plugins and indentation
 filetype plugin indent on
 
-"color desert
+color habamax
 set number
 set relativenumber
 set showcmd

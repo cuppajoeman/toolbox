@@ -1,6 +1,19 @@
 " Use marker-based folding
-set foldmethod=marker
-set foldmarker=startfold,endfold
+set foldmethod=syntax
+
+" show the first line of the fold, then the count of folded lines
+" the reason we do this is so that indentation doesn't get disrupted by adding
+" fold texte before the line contents.
+set foldtext=CustomFoldText()
+
+function! CustomFoldText()
+" get the first line of the fold
+let line_text = getline(v:foldstart)
+" number of folded lines
+let line_count = v:foldend - v:foldstart + 1
+" compose the fold text: content first, then summary
+return line_text . '  [+ ' . line_count . ' lines]'
+endfunction
 
 " Function to create a fold with comment markers
 function! CreateFoldMarkers()

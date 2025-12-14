@@ -1,5 +1,5 @@
 " Function to open a terminal in the current window
-function! OpenTerminal()
+function! OpenTerminalInCurrentWindow()
   " Open a terminal window in the current window
   execute 'terminal ++curwin'
 endfunction
@@ -11,7 +11,7 @@ function! OpenTerminalInCurrentDir()
   " Change the working directory to the current file's directory
   execute 'cd ' . l:dir
   " Open a terminal window in the current window
-  call OpenTerminal()
+  call OpenTerminalInCurrentWindow()
 endfunction
 
 " Function to run ranger in the current window
@@ -39,7 +39,7 @@ nnoremap <leader>tr :TDR<CR>
 noremap <leader>tq <C-w>:hide<CR>
 
 " Open a terminal in the current window
-noremap <leader>ter :call OpenTerminal()<CR>
+noremap <leader>ter :call OpenTerminalInCurrentWindow()<CR>
 
 " exit terminal mode without breaking your pinky
 tnoremap <Esc><Esc> <C-\><C-n>

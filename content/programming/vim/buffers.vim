@@ -36,3 +36,11 @@ function! FuzzyFindBuffer()
 endfunction
 
 nnoremap <leader><leader> :call FuzzyFindBuffer()<CR>
+
+ 
+
+" by default vim doesn't let you switch buffers when there are unsaved
+" changes, which is a problem because sometimes we're half way through a
+" change and want to go to a new file for a second to cross reference
+" something but vim won't let us do that so we turn on hidden
+set hidden

@@ -23,6 +23,9 @@ buffers.vim
 fuzzy_file_opening.vim
 resizing_windows.vim
 file_browser.vim
+terminal.vim
+statusline.vim
+per_dir_vimrc.vim
 "
 
 # If ~/.vimrc already exists, ask before overwriting
