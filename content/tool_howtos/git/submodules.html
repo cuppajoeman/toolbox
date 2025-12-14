@@ -37,8 +37,13 @@ git submodule update --init --recursive
 </pre>
 
 <p>
-    If you use this a lot then you can add this to your .bashrc <code>alias git-subupdate='f() { git submodule update --init --recursive "$@"; }; f'</code>
+    If you use this a lot then you can add this to your .bashrc:
 </p>
+<pre>
+    <code>
+alias git-subupdate='git submodule update --init --recursive'
+    </code>
+</pre>
 
 <p>
     This will recursively initialize and update submodules.
