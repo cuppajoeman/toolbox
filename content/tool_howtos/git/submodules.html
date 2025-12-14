@@ -14,6 +14,16 @@
     Note: -j8 is an optional performance optimization that became available in version 2.8, and fetches up to 8 submodules at a time in parallel — see man git-clone
 </p>
 
+<p>
+    If you tend to use this command a lot then you can create the following in your <code>.bashrc</code>
+</p>
+
+<pre>
+    <code>
+alias git-clone-recursive='f() { git clone --recurse-submodules -j8 "$@"; }; f'
+    </code>
+</pre>
+
 <h1 id="setting_up_submodules_after_a_regular_git_clone">setting up submodules after a regular git clone</h1>
 
 <p>
@@ -62,7 +72,7 @@ git submodule update --init --recursive
 </p>
 <pre>
     <code>
-alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && git submodule update --init --recursive; & cd .. }; f'
+alias git-clone-recursive='f() { git clone --recurse-submodules -j8 "$@"; }; f'
     </code>
 </pre>
 
