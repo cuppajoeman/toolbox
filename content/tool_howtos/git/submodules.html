@@ -32,9 +32,13 @@ alias git-clone-recursive='f() { git clone --recurse-submodules -j8 "$@"; }; f'
 
 <pre>
     <code>
-        git submodule update --init --recursive
+git submodule update --init --recursive
     </code>
 </pre>
+
+<p>
+    If you use this a lot then you can add this to your .bashrc <code>alias git-subupdate='f() { git submodule update --init --recursive "$@"; }; f'</code>
+</p>
 
 <p>
     This will recursively initialize and update submodules.
@@ -72,7 +76,7 @@ git submodule update --init --recursive
 </p>
 <pre>
     <code>
-alias git-clone-recursive='f() { git clone --recurse-submodules -j8 "$@"; }; f'
+alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && git submodule update --init --recursive; & cd .. }; f'
     </code>
 </pre>
 
