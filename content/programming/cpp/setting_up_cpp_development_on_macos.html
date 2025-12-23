@@ -65,14 +65,17 @@
 <pre>
   <code>
     sudo port install python311
-    sudo port install py311-pip
+    sudo port select --set python python311
+    
     sudo port install pipx
     pipx ensurepath
     pipx install conan
-    sudo port install neovim
+
     sudo port install cmake
+
+    
+    sudo port install neovim
     sudo port install btop
     sudo port install kitty
-    sudo port install clang-17
   </code>
 </pre>
