@@ -89,6 +89,36 @@ alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && g
     This alias defines a function and calls it immediately
 </p>
 
+<h2>(new commits) should be (different commit)</h2>
+<p>
+    The usage of (new commit) in git message is confusing consider this:
+</p>
+<pre>
+    <code>
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   conan_utils (new commits)
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(ins)[ccn@ccn-20k5s16a25 scripts]$ cd conan_utils/
+(ins)[ccn@ccn-20k5s16a25 conan_utils]$ git status
+On branch main
+Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+
+nothing to commit, working tree clean
+    </code>
+</pre>
+
+<p>
+    Note that here it says that there is a new commit, but that commit is actually an old commit. So you have to keep this in mind, new doesn't mean new, it just means that the current commit that a submodule is at is different than the one stored in .gitmodules.
+</p>
+
 <h2>how the active working directory effects git</h2>
 
 <p>
