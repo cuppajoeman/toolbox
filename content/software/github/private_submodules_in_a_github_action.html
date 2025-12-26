@@ -1,0 +1,42 @@
+<p>
+  When using github actions with private submodules, you will most likely run into the following issue when you try and clone recursively:
+</p>
+<pre>
+  <code>
+  Cloning into 'D:/a/instagib/instagib/client/assets/sounds/announcer'...
+  remote: Repository not found.
+  Error: fatal: repository 'https://github.com/frag-z/announcer.git/' not found
+  Error: fatal: clone of 'git@github.com:frag-z/announcer.git' into submodule path 'D:/a/instagib/instagib/client/assets/sounds/announcer' failed  </code>
+</pre>
+<p>
+  This is occuring because the runner is unable to clone that repository as it doesn't even know that the repo exists as it's private. Eventually github should just make the work out of the box, but it doesn't and so we need a way to deal with this. I've seen a lot of discussion about using PATs (Personal Access Tokens), but saw people struggling, and I wanted to have a simpler solution. 
+</p>
+
+<h1>High Level Solution</h1>
+<ul>
+  <li>Create a new github account which is going to be our "bot" that only has read access</li>
+  <li>Register an ssh key with that account, and store its private ssh key as a secret in the repo (you can do it org wide if you have a premium account, I don't)</li>
+  <li>Use that ssh key during the checkout so that we can clone the private submodules</li>
+</ul>
+
+<h1>Make a github bot account</h1>
+<p>
+  A github bot account is like an account which only has read access to repos in the organization (I'm assuming you're using an org because doing this on a single repo uses a subset of the following solution). Create the account and add it to your organization, go to your organizations settings and then got to roles, and assign the read only role to the bot. 
+</p>
+
+<h1>Create the ssh key</h1>
+<pre>
+  <code>
+    ssh-keygen -t ed25519 -f frag-z-bot
+  </code>
+</pre>
+
+<h2>Create the secret</h2>
+<p>
+  Go to your org or repo and then go to secrets and then repository secret and then add the private part of the ssh key you generated as a secret for the bot. I named mine <code>frag_z_bot_ssh_key</code>
+</p>
+
+<h2>Checking out</h2>
+<p>
+  When checking out you just have to specify that the ssh key via the secret and then you should be able to do it.
+</p>
