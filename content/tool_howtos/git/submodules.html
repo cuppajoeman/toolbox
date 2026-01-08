@@ -281,76 +281,193 @@ import shutil
 import subprocess
 from pathlib import Path
 import configparser
+import sys
+import textwrap
 
-def get_repo_root():
-    result = subprocess.run(['git', 'rev-parse', '--show-toplevel'],
-                            stdout=subprocess.PIPE, text=True, check=True)
+
+def get_repo_root(path):
+    """
+    Returns the root of the git repository containing `path`.
+    Raises CalledProcessError if `path` is not in a git repo.
+    """
+    result = subprocess.run(
+        ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=True,
+    )
     return Path(result.stdout.strip())
 
+
 def parse_gitmodules(repo_root):
-    config = configparser.ConfigParser()
-    gitmodules_path = repo_root / '.gitmodules'
+    """
+    Parses .gitmodules from the given repo root.
+    Returns a dict: { "path/to/submodule" : "https://url.git" }
+    """
+    gitmodules_path = repo_root / ".gitmodules"
     if not gitmodules_path.exists():
         return {}
 
+    config = configparser.ConfigParser()
     config.read(gitmodules_path)
-    submodules = {}
 
+    submodules = {}
     for section in config.sections():
         if not section.startswith("submodule"):
             continue
+
         path = config[section].get("path")
         url = config[section].get("url")
         if path and url:
             submodules[path] = url
+
     return submodules
 
+
+def confirm(prompt):
+    """Ask the user for yes/no confirmation."""
+    while True:
+        response = input(f"{prompt} [y/n]: ").strip().lower()
+        if response in ("y", "yes"):
+            return True
+        elif response in ("n", "no"):
+            return False
+        else:
+            print("Please enter 'y' or 'n'.")
+
+
 def copy_directory_with_submodules(src, dst):
-    repo_root = get_repo_root()
-    submodules = parse_gitmodules(repo_root)
+    """
+    Copies SRC into DST, preserving directory structure.
+
+    - DST must exist and be a git repository
+    - Existing files in DST are NOT overwritten
+    - Skips .git folders in source
+    - Submodule directories from SRC are skipped during copy
+    - Submodules are re-added into DST using `git submodule add`
+    """
 
     src = Path(src).resolve()
     dst = Path(dst).resolve()
 
+    # Validate source
+    if not src.exists() or not src.is_dir():
+        raise RuntimeError(f"Source directory does not exist: {src}")
+
+    # Validate destination
+    if not dst.exists() or not dst.is_dir():
+        raise RuntimeError(f"Destination directory does not exist: {dst}")
+
+    try:
+        dst_repo_root = get_repo_root(dst)
+    except subprocess.CalledProcessError:
+        raise RuntimeError(f"Destination directory is not a git repository: {dst}")
+
+    print("Copy operation summary")
+    print(f"  Source:      {src}")
+    print(f"  Destination: {dst} (git repo: {dst_repo_root})\n")
+
+    # Detect submodules if SRC is a git repo
+    try:
+        src_repo_root = get_repo_root(src)
+        submodules = parse_gitmodules(src_repo_root)
+        if submodules:
+            print("Detected submodules in source:")
+            for path, url in submodules.items():
+                print(f"  {path} -> {url}")
+    except subprocess.CalledProcessError:
+        submodules = {}
+        print("Source is not a git repository. No submodules will be detected.")
+
+    # Confirm with the user
+    if not confirm("Do you want to continue with the copy operation?"):
+        print("Operation cancelled by user.")
+        sys.exit(0)
+
     submodules_to_add = []
 
+    # Walk the source tree
     for root, dirs, files in os.walk(src):
         rel_root = Path(root).relative_to(src)
         dst_root = dst / rel_root
 
-        # Check if any submodules exist at this level
+        # Skip .git folder in source
+        if ".git" in dirs:
+            dirs.remove(".git")
+
+        # Detect submodules at this level
         to_remove = []
         for d in dirs:
             full_path = (Path(root) / d).resolve()
-            rel_path = full_path.relative_to(repo_root).as_posix()
-            if rel_path in submodules:
-                dst_submodule_path = (dst / rel_root / d).relative_to(repo_root)
-                submodules_to_add.append((dst_submodule_path.as_posix(), submodules[rel_path]))
-                to_remove.append(d)
+            if submodules:
+                try:
+                    rel_path = full_path.relative_to(src_repo_root).as_posix()
+                except ValueError:
+                    continue
+                if rel_path in submodules:
+                    print(f"Detected submodule: {rel_path}")
+                    submodules_to_add.append(
+                        ((dst / rel_root / d).relative_to(dst_repo_root).as_posix(),
+                         submodules[rel_path])
+                    )
+                    to_remove.append(d)
 
-        # Prevent os.walk from descending into submodules
         for d in to_remove:
             dirs.remove(d)
 
-        # Copy files and dirs
-        os.makedirs(dst_root, exist_ok=True)
+        # Create destination directory
+        dst_root.mkdir(parents=True, exist_ok=True)
+
+        # Copy files (fail if already exists)
         for f in files:
             src_file = Path(root) / f
             dst_file = dst_root / f
+            if dst_file.exists():
+                raise RuntimeError(f"Refusing to overwrite existing file:\n  {dst_file}")
+            print(f"Copying {src_file} -> {dst_file}")
             shutil.copy2(src_file, dst_file)
 
-    # Re-add submodules
-    for rel_path, url in submodules_to_add:
-        print(f"Adding submodule: {url} -> {rel_path}")
-        subprocess.run(['git', 'submodule', 'add', url, rel_path], check=True)
+    # Add submodules
+    if submodules_to_add:
+        print("\nRe-adding submodules in destination repository:")
+        for rel_path, url in submodules_to_add:
+            print(f"  git submodule add {url} {rel_path}")
+            subprocess.run(["git", "-C", str(dst), "submodule", "add", url, rel_path], check=True)
 
-    print("✅ Done.")
+    print("\nCopy complete. No files were overwritten.")
+
+
+def print_usage_and_exit():
+    print(textwrap.dedent("""
+        Usage:
+          python copy_directory_with_submodules.py <SRC_DIR> <DST_DIR>
+
+        Arguments:
+          SRC_DIR
+            Path to the source directory to copy FROM. Can be any directory.
+            If it is a git repository, submodules will be detected and re-added in the destination.
+
+          DST_DIR
+            Path to the destination directory to copy INTO.
+            MUST already exist and MUST be a git repository.
+            Existing files will not be overwritten. Nothing will be deleted.
+
+        Behavior:
+          - Recursively copies all files and directories from source to destination
+          - Skips .git folders in source
+          - Skips submodule directories during regular file copy
+          - Re-adds detected submodules from source into destination
+
+        Example:
+          python copy_directory_with_submodules.py ../cpp_manual/ jai_manual/
+    """).strip())
+    sys.exit(1)
+
 
 if __name__ == "__main__":
-    import sys
     if len(sys.argv) != 3:
-        print("Usage: python copy_directory_with_submodules.py <src> <dst>")
-        sys.exit(1)
+        print_usage_and_exit()
 
     copy_directory_with_submodules(sys.argv[1], sys.argv[2])
 
