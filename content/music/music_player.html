@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Minimal MP3 Player</title>
+
+<style>
+body {
+    background: #111;
+    color: #ddd;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 10px;
+}
+
+#main {
+    display: flex;
+    gap: 10px;
+}
+
+#playlist {
+    width: 250px;
+    border: 1px solid #333;
+    overflow-y: auto;
+    max-height: 1000px;
+}
+
+#playlist div {
+    padding: 4px;
+    cursor: pointer;
+    border-bottom: 1px solid #222;
+}
+
+#playlist div.active {
+    background: #333;
+}
+
+#player {
+    flex: 1;
+}
+
+#controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0;
+}
+
+button, input, select {
+    background: #222;
+    color: #ddd;
+    border: 1px solid #444;
+}
+
+#progress {
+    width: 100%;
+}
+
+#time {
+    font-size: 12px;
+}
+
+#eq {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+#eq label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+canvas {
+    width: 100%;
+    height: 120px;
+    border: 1px solid #333;
+}
+</style>
+</head>
+<body>
+
+<div id="main">
+    <div id="playlist"></div>
+
+    <div id="player">
+        <h3 id="track_name">No track loaded</h3>
+
+        <audio id="audio"></audio>
+
+        <input type="range" id="progress" min="0" max="1" step="0.001" value="0">
+        <div id="time">0:00 / 0:00</div>
+
+        <div id="controls">
+            <button id="prev">⏮</button>
+            <button id="play">▶</button>
+            <button id="next">⏭</button>
+
+            <label>
+                Vol
+                <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+            </label>
+
+            <label>
+                Speed
+                <select id="rate">
+                    <option>0.5</option>
+                    <option>0.75</option>
+                    <option selected>1</option>
+                    <option>1.25</option>
+                    <option>1.5</option>
+                    <option>2</option>
+                </select>
+            </label>
+
+            <button id="repeat">Repeat: Off</button>
+            <button id="shuffle">Shuffle: Off</button>
+        </div>
+
+        <div id="eq">
+            <label>Low
+                <input type="range" min="-20" max="20" value="0" id="eq_low">
+            </label>
+            <label>Mid
+                <input type="range" min="-20" max="20" value="0" id="eq_mid">
+            </label>
+            <label>High
+                <input type="range" min="-20" max="20" value="0" id="eq_high">
+            </label>
+        </div>
+
+        <canvas id="viz" width="600" height="120"></canvas>
+    </div>
+</div>
+
+<script>
+const audio = document.getElementById("audio");
+const playlist_el = document.getElementById("playlist");
+const track_name = document.getElementById("track_name");
+const progress = document.getElementById("progress");
+const time_el = document.getElementById("time");
+
+const play_btn = document.getElementById("play");
+const next_btn = document.getElementById("next");
+const prev_btn = document.getElementById("prev");
+const volume = document.getElementById("volume");
+const rate = document.getElementById("rate");
+const repeat_btn = document.getElementById("repeat");
+const shuffle_btn = document.getElementById("shuffle");
+
+const canvas = document.getElementById("viz");
+const ctx = canvas.getContext("2d");
+
+let tracks = [];
+let index = 0;
+let repeat = false;
+let shuffle = false;
+
+/* ===============================
+   LOAD MP3 FILES
+   =============================== */
+fetch("playlist.json")
+  .then(r => r.json())
+  .then(data => {
+      tracks = data;
+      build_playlist();
+      if(tracks.length) load_track(0);
+  })
+  .catch(err => console.error("Failed to load playlist.json:", err));
+
+function build_playlist() {
+    playlist_el.innerHTML = "";
+    tracks.forEach((t, i) => {
+        const div = document.createElement("div");
+        div.textContent = t;
+        div.onclick = () => load_track(i);
+        playlist_el.appendChild(div);
+    });
+}
+
+function update_playlist_active() {
+    [...playlist_el.children].forEach((el, i) =>
+        el.classList.toggle("active", i === index)
+    );
+}
+
+function load_track(i) {
+    index = (i + tracks.length) % tracks.length;
+    audio.src = tracks[index];
+    track_name.textContent = tracks[index];
+    update_playlist_active();
+    audio.play();
+}
+
+/* ===============================
+   CONTROLS
+   =============================== */
+play_btn.onclick = () => {
+    audio.paused ? audio.play() : audio.pause();
+};
+
+next_btn.onclick = () => next_track();
+prev_btn.onclick = () => load_track(index - 1);
+
+volume.oninput = () => audio.volume = volume.value;
+rate.onchange = () => audio.playbackRate = rate.value;
+
+repeat_btn.onclick = () => {
+    repeat = !repeat;
+    repeat_btn.textContent = "Repeat: " + (repeat ? "On" : "Off");
+};
+
+shuffle_btn.onclick = () => {
+    shuffle = !shuffle;
+    shuffle_btn.textContent = "Shuffle: " + (shuffle ? "On" : "Off");
+};
+
+audio.onended = () => {
+    if (repeat) {
+        audio.currentTime = 0;
+        audio.play();
+    } else {
+        next_track();
+    }
+};
+
+function next_track() {
+    if (shuffle) {
+        load_track(Math.floor(Math.random() * tracks.length));
+    } else {
+        load_track(index + 1);
+    }
+}
+
+/* ===============================
+   PROGRESS BAR
+   =============================== */
+audio.ontimeupdate = () => {
+    if (audio.duration) {
+        progress.value = audio.currentTime / audio.duration;
+        time_el.textContent =
+            fmt(audio.currentTime) + " / " + fmt(audio.duration);
+    }
+};
+
+progress.oninput = () => {
+    if (audio.duration) {
+        audio.currentTime = progress.value * audio.duration;
+    }
+};
+
+function fmt(t) {
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+}
+
+/* ===============================
+   AUDIO + EQ + VISUALIZER
+   =============================== */
+const audio_ctx = new AudioContext();
+const src = audio_ctx.createMediaElementSource(audio);
+
+const eq_low = audio_ctx.createBiquadFilter();
+eq_low.type = "lowshelf";
+eq_low.frequency.value = 200;
+
+const eq_mid = audio_ctx.createBiquadFilter();
+eq_mid.type = "peaking";
+eq_mid.frequency.value = 1000;
+eq_mid.Q.value = 1;
+
+const eq_high = audio_ctx.createBiquadFilter();
+eq_high.type = "highshelf";
+eq_high.frequency.value = 4000;
+
+const analyser = audio_ctx.createAnalyser();
+analyser.fftSize = 256;
+
+src.connect(eq_low);
+eq_low.connect(eq_mid);
+eq_mid.connect(eq_high);
+eq_high.connect(analyser);
+analyser.connect(audio_ctx.destination);
+
+document.getElementById("eq_low").oninput = e => eq_low.gain.value = e.target.value;
+document.getElementById("eq_mid").oninput = e => eq_mid.gain.value = e.target.value;
+document.getElementById("eq_high").oninput = e => eq_high.gain.value = e.target.value;
+
+/* ===============================
+   VISUALIZER DRAW
+   =============================== */
+const data = new Uint8Array(analyser.frequencyBinCount);
+
+function draw() {
+    requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(data);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const w = canvas.width / data.length;
+    for (let i = 0; i < data.length; i++) {
+        const h = data[i] / 255 * canvas.height;
+        ctx.fillStyle = "#0f0";
+        ctx.fillRect(i * w, canvas.height - h, w - 1, h);
+    }
+}
+
+audio.onplay = () => {
+    audio_ctx.resume();
+    play_btn.textContent = "⏸";
+};
+
+audio.onpause = () => play_btn.textContent = "▶";
+
+draw();
+</script>
+
+</body>
+</html>
