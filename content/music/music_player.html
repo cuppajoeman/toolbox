@@ -13,6 +13,27 @@ body {
     padding: 10px;
 }
 
+#top-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+#track-input {
+    flex: 1;
+    padding: 8px;
+    background: #222;
+    color: #ddd;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+#load-track-btn {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
 #main {
     display: flex;
     gap: 10px;
@@ -82,6 +103,12 @@ canvas {
 </head>
 <body>
 
+<!-- TOP BAR FOR DIRECT TRACK INPUT -->
+<div id="top-bar">
+    <input type="text" id="track-input" placeholder="Enter track filename (e.g., melodies_from_mars_untitled_track_7.mp3)">
+    <button id="load-track-btn">Load & Play</button>
+</div>
+
 <div id="main">
     <div id="playlist"></div>
 
@@ -150,6 +177,9 @@ const rate = document.getElementById("rate");
 const repeat_btn = document.getElementById("repeat");
 const shuffle_btn = document.getElementById("shuffle");
 
+const track_input = document.getElementById("track-input");
+const load_track_btn = document.getElementById("load-track-btn");
+
 const canvas = document.getElementById("viz");
 const ctx = canvas.getContext("2d");
 
@@ -159,6 +189,14 @@ let repeat = false;
 let shuffle = false;
 
 /* ===============================
+   GET URL PARAMETER
+   =============================== */
+function get_url_param(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+}
+
+/* ===============================
    LOAD MP3 FILES
    =============================== */
 fetch("playlist.json")
@@ -166,7 +204,14 @@ fetch("playlist.json")
   .then(data => {
       tracks = data;
       build_playlist();
-      if(tracks.length) load_track(0);
+      
+      // Check for URL parameter first
+      const url_track = get_url_param("track");
+      if (url_track) {
+          load_track_by_name(url_track, true); // true = auto-play
+      } else if (tracks.length) {
+          load_track(0, false); // false = don't auto-play
+      }
   })
   .catch(err => console.error("Failed to load playlist.json:", err));
 
@@ -175,7 +220,7 @@ function build_playlist() {
     tracks.forEach((t, i) => {
         const div = document.createElement("div");
         div.textContent = t;
-        div.onclick = () => load_track(i);
+        div.onclick = () => load_track(i, true);
         playlist_el.appendChild(div);
     });
 }
@@ -186,13 +231,63 @@ function update_playlist_active() {
     );
 }
 
-function load_track(i) {
+function load_track(i, auto_play = true) {
     index = (i + tracks.length) % tracks.length;
     audio.src = tracks[index];
     track_name.textContent = tracks[index];
+    track_input.value = tracks[index]; // Update the input field
     update_playlist_active();
-    audio.play();
+    if (auto_play) {
+        audio.play();
+    }
 }
+
+/* ===============================
+   LOAD TRACK BY NAME
+   =============================== */
+function load_track_by_name(filename, auto_play = true) {
+    // First, check if it's in the playlist
+    const found_index = tracks.findIndex(t => 
+        t === filename || 
+        t.toLowerCase() === filename.toLowerCase() ||
+        t.endsWith(filename) ||
+        t.endsWith("/" + filename)
+    );
+    
+    if (found_index !== -1) {
+        // Track found in playlist
+        load_track(found_index, auto_play);
+    } else {
+        // Track not in playlist - add it temporarily and play
+        tracks.push(filename);
+        build_playlist();
+        load_track(tracks.length - 1, auto_play);
+    }
+    
+    // Update the input field
+    track_input.value = filename;
+}
+
+/* ===============================
+   TOP BAR CONTROLS
+   =============================== */
+load_track_btn.onclick = () => {
+    const filename = track_input.value.trim();
+    if (filename) {
+        load_track_by_name(filename, true);
+        // Update URL without reloading
+        const url = new URL(window.location);
+        url.searchParams.set("track", filename);
+        window.history.pushState({}, "", url);
+    }
+};
+
+// Allow pressing Enter in the input field
+track_input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        load_track_btn.click();
+    }
+});
 
 /* ===============================
    CONTROLS
