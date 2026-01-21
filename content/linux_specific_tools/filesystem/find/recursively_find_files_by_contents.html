@@ -35,7 +35,10 @@ grec() {
     local pattern="$1"
     local path="${2:-.}"
 
-    grep -RnwI --color=auto "$path" -e "$pattern"
+    grep -RnI --color=auto "$path" -e "$pattern"
 }
     </code>
 </pre>
+<p>
+    Note that I omitted w in the above command because a lot of the time we don't know what the full word is that we're looking for.
+</p>
