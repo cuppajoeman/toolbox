@@ -1,0 +1,46 @@
+
+
+<input id="input" type="text" placeholder="Enter characters">
+<button onclick="convert()">Convert</button>
+
+<p><strong>Result:</strong></p>
+<p id="output"></p>
+
+<script>
+function is_vowel(c) {
+    return "aeiou".includes(c.toLowerCase());
+}
+
+function is_consonant(c) {
+    return c.match(/[a-z]/i) && !is_vowel(c);
+}
+
+function convert() {
+    const input = document.getElementById("input").value;
+    let output = "";
+    let consonant_run = 0;
+
+    const vowels = ["a", "e", "i", "o", "u"];
+
+    for (let i = 0; i < input.length; i++) {
+        const c = input[i];
+
+        if (is_consonant(c)) {
+            consonant_run++;
+
+            // Insert a vowel if the consonant run gets too long
+            if (consonant_run >= 2) {
+                const vowel = vowels[consonant_run % vowels.length];
+                output += vowel;
+                consonant_run = 1;
+            }
+        } else {
+            consonant_run = 0;
+        }
+
+        output += c;
+    }
+
+    document.getElementById("output").textContent = output;
+}
+</script>
