@@ -1,5 +1,7 @@
 " Use marker-based folding
-set foldmethod=syntax
+" set foldmethod=syntax
+set foldmethod=marker
+set foldmarker=startfold,endfold
 
 " show the first line of the fold, then the count of folded lines
 " the reason we do this is so that indentation doesn't get disrupted by adding

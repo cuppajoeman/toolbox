@@ -1,7 +1,12 @@
-syntax on
+" syntax on
 
 " enable filetype plugins and indentation
 filetype plugin indent on
+
+
+" removing all of this
+" c - autowrap, r - autoinsert, o - comment leader
+autocmd FileType * setlocal formatoptions-=cro
 
 color habamax
 set number

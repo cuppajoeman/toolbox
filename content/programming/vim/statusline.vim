@@ -13,7 +13,7 @@ set statusline+=%m\ \|\
 set statusline+=%y\ \|\  
 
 " Search direction (FWD/BWD)
-set statusline+=%{v:searchforward\ ?\ 'FWD'\ :\ 'BWD'}\ \|\  
+set statusline+=%{v:searchforward\ ?\ 'sxndwn'\ :\ 'sxnup'}\ \|\  
 
 " Right-align the rest
 set statusline+=%=\ \|\  
