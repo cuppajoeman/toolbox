@@ -2,477 +2,535 @@
     Git submodules provide a way to consider any repository as a versioned "package" that can be included in any other git repo. This provides you a way to re-use the same code in many different projects. The cost of this is understanding the ins and outs of submodules, and hopefully this page can be a guide for that.
 </p>
 
+
 <h1>clone a repo that has submodules</h1>
 
-<pre>
+<details>
+  <summary>Details</summary>
+  <pre>
     <code>
         git clone --recurse-submodules -j8 git://github.com/foo/bar.git
     </code>
-</pre>
+    </pre>
+    
+    <p>
+        Note: -j8 is an optional performance optimization that became available in version 2.8, and fetches up to 8 submodules at a time in parallel — see man git-clone
+    </p>
+    
+    <p>
+        If you tend to use this command a lot then you can create the following in your <code>.bashrc</code>
+    </p>
+    
+    <pre>
+        <code>
+    alias git-clone-recursive='f() { git clone --recurse-submodules -j8 "$@"; }; f'
+        </code>
+    </pre>
+</details>
 
-<p>
-    Note: -j8 is an optional performance optimization that became available in version 2.8, and fetches up to 8 submodules at a time in parallel — see man git-clone
-</p>
 
-<p>
-    If you tend to use this command a lot then you can create the following in your <code>.bashrc</code>
-</p>
 
-<pre>
-    <code>
-alias git-clone-recursive='f() { git clone --recurse-submodules -j8 "$@"; }; f'
-    </code>
-</pre>
+
 
 <h1 id="setting_up_submodules_after_a_regular_git_clone">setting up submodules after a regular git clone</h1>
 
-<p>
-    If you did not follow the command above to clone a repository, and instead you did something like <code>git clone git://github.com/foo/bar.git</code>, then git will <b>not</b> automatically clone in the contents of any submodules, but it will clone an empty directory with the name of that repository, in order to actually get the contents of those submodules you have to do the following:
-</p>
-
-<pre>
-    <code>
-git submodule update --init --recursive
-    </code>
-</pre>
-
-<p>
-    If you use this a lot then you can add this to your .bashrc:
-</p>
-<pre>
-    <code>
-alias git-subupdate='git submodule update --init --recursive'
-    </code>
-</pre>
-
-<p>
-    This will recursively initialize and update submodules.
-</p>
-
-<p>
-    Note that you might see elsewhere to use the following command, but we <b>do not</b> use the following command because it only initializes and then updates submodules found in the current git project and not recursive, so the command above works for all possible git repos whereas the one below does not.
-</p>
-
-<pre>
-    <code>
-        git submodule init
-        git submodule update
-    </code>
-</pre>
-<h2>Why are init and update different commands</h2>
-<p>
-    The init commands makes a submodule "active", when a submodule is active, then by running update, it will actually go and get the contents of that repo. If you want the contents of all submodules then you'd always initialize everything and then run update. But if for some reason you only wanted a subset of all the submodules you'd first only initialize the ones that you want.
-</p>
-
-<h2>adding submodules</h2>
-
-<p>
-    By default you usually use the command <code>git submodule add &lt;URL&gt;</code>. By default this command does not clone nested submodules inside the added submodule repository. To ensure all nested submodules are cloned and initialized, you need to run <code>git submodule update --init --recursive</code> after adding the submodule.
-</p>
-
-<pre><code>
-git submodule add &lt;URL&gt;
-cd newly_added_dir
-git submodule update --init --recursive
-</code></pre>
-
-<p>
-    For me I just automatically want to do this everytime, so you can add this bash alias to your .bashrc if you like:
-</p>
-<pre>
-    <code>
-alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && git submodule update --init --recursive; & cd .. }; f'
-    </code>
-</pre>
-
-<p class="note">
-    This alias defines a function and calls it immediately
-</p>
-
-<h2>(new commits) should be (different commit)</h2>
-<p>
-    The usage of (new commit) in git message is confusing consider this:
-</p>
-<pre>
-    <code>
-$ git status
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-        modified:   conan_utils (new commits)
-
-no changes added to commit (use "git add" and/or "git commit -a")
-(ins)[ccn@ccn-20k5s16a25 scripts]$ cd conan_utils/
-(ins)[ccn@ccn-20k5s16a25 conan_utils]$ git status
-On branch main
-Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
-  (use "git pull" to update your local branch)
-
-nothing to commit, working tree clean
-    </code>
-</pre>
-
-<p>
-    Note that here it says that there is a new commit, but that commit is actually an old commit. So you have to keep this in mind, new doesn't mean new, it just means that the current commit that a submodule is at is different than the one stored in .gitmodules.
-</p>
-
-<h2>how the active working directory effects git</h2>
-
-<p>
-    Suppose you have a project with these directories A/B/C. A is a regular git repository, B is a submodule, and C is another submodule (ie it's a submodule of B). Git behaves differently depending on what directory git is run from.
-</p>
-<p>
-    When you are in A, everything acts regularly, changes made to the actual sources files of A will be detected when you run git status, and changes to what commit the submodule B is being pointed to area also picked up. 
-</p>
-<p>
-    When you are in B, git acts as B was a regular git repository and so git status and all git commands run with respect to the B directory, so any changes made to A's source files are completely ignored, you are completely within the context of the B project. Also for any subpath of B which is not another submodule this context remains.
-</p>
-<p>
-    When you are in C, the same thing occurs again, but now within the context of C. The general logic is that the git command is run from the context of the first submodule encountered while going back up the file tree towards the base git project.
-</p>
-
-<h2>git pulling in a git directory with submodules</h2>
-
-<h3>the git pull introduces a new submodule</h3>
-<p>
-    If this happens the submodule will be left in the same state as if you did a regular clone, so refer to <a href="#setting_up_submodules_after_a_regular_git_clone">this section</a> for next steps.
-</p>
-<h3>the git pull deletes an existing submodule</h3>
-<p>
-    When this occurs git will try to remove the submodules directory but usually warns that it cannot because its not empty, after pulling you'll have to manually remove that submodules directory. Instead of manually deleting these old submodules we can rely on git clean, so you can run <code>git clean -nd</code>, n means dry run and d means directories as well, and make sure all looks well and then run <code>git clean -fd</code> to delete it all. 
-</p>
-<h3>the git pull updates an existing submodule</h3>
-<p>
-    Updates to submodules via git pulls just change which commit the submodule is pointing to in the git metadata. You then need to run git submodule update. Note that if the new commit introduces a new sub-submodule, ie a new submodule in that submodule, then a regular git submodule update will not go and grab that new submodule, and so you have to run <code>git submodule update --init --recursive</code> to initialize and then update those sub-submodules.
-</p>
-<h2>git pulling inside of a submodule (note this is different from the previous section)</h2>
-<p>
-    If you're in a git directory which contains a submodule, say you're in a directory D, and it contains a submodule S. Suppose you know that S has been updated externally and there are new commits, if you'd like to get these new changes in this project, then you would change directory to D/S and because the git context automatically changed to that of S, then you can run git pull and update to the newest commit.
-</p>
-<p>
-    Now you'll go back to the D directory and run git status, you'll see something like this:
-</p>
-<pre>
-    <code>
-$ git status
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Changes not staged for commit:
-  (use "git add &lt;file&gt;..." to update what will be committed)
-  (use "git restore &lt;file&gt;..." to discard changes in working directory)
-        modified:   S (new commits)
-
-no changes added to commit (use "git add" and/or "git commit -a")
-
-    </code>
-</pre>
-<p>
-    This is telling you that the git metadata associated with the submodule S, has changed in that it is now pointing to a new commit, hence the (new commits) message, the pluaral is used because it needs to be a generic message. 
-</p>
-<p>
-    All you have to do now is run git commit in D and now that will update the git repository to know that you are using the new version of the submodule S.
-</p>
-
-<h2>going deep</h2>
-<p>
-    By default most of the git submodule commands only operate one layer deep, so for example if you're in a git directory which has submodules which themselves contain submodules, then running git submodule update won't updated the nested submodules, so in that case run this:
-</p>
-
-<pre>
-    <code>
-git submodule update --init --recursive
-    </code>
-</pre>
-
-To do this on each submodule in your project run 
-
-<pre>
-    <code>
-git submodule foreach --recursive 'git submodule update --init --recursive'
-    </code>
-</pre>
-
-<h2>getting the newest version of all submodules</h2>
-<p>
-    Sometimes you'll have an old project and just want to update all submodules to their newest versions, in order to do this you'll have to run this command:
-</p>
-<pre>
-    <code>
-git submodule foreach --recursive '
-  if [ "$sm_path" != "." ]; then
-    git checkout main
-    git pull
+<details>
+  <summary>Details</summary>
+    <p>
+        If you did not follow the command above to clone a repository, and instead you did something like <code>git clone git://github.com/foo/bar.git</code>, then git will <b>not</b> automatically clone in the contents of any submodules, but it will clone an empty directory with the name of that repository, in order to actually get the contents of those submodules you have to do the following:
+    </p>
+    
+    <pre>
+        <code>
     git submodule update --init --recursive
-  fi
-'
-    </code>
-</pre>
-<p>
-     What this is doing is that it's iterating through each submodule, checking out the main branch because usually they are not sitting at head, but instead a specific commit, using git pull to get any changes and then updating their own submodules recursively. sm_path is the current submodule directory that we are iterating over, and thus you can see that we avoid iterating over the root directory, this is because if we were to run git submodule update within the root directory it will set all the versions of every included submodule back to the current version that's currently stored in the .gitmodules file, which is not what we want because those are the old versions.
-</p>
+        </code>
+    </pre>
+    
+    <p>
+        If you use this a lot then you can add this to your .bashrc:
+    </p>
+    <pre>
+        <code>
+    alias git-subupdate='git submodule update --init --recursive'
+        </code>
+    </pre>
+    
+    <p>
+        This will recursively initialize and update submodules.
+    </p>
+    
+    <p>
+        Note that you might see elsewhere to use the following command, but we <b>do not</b> use the following command because it only initializes and then updates submodules found in the current git project and not recursive, so the command above works for all possible git repos whereas the one below does not.
+    </p>
+    
+    <pre>
+        <code>
+            git submodule init
+            git submodule update
+        </code>
+    </pre>
+
+    
+    <h2>Why are init and update different commands?</h2>
+    <p>
+        The init commands makes a submodule "active", when a submodule is active, then by running update, it will actually go and get the contents of that repo. If you want the contents of all submodules then you'd always initialize everything and then run update. But if for some reason you only wanted a subset of all the submodules you'd first only initialize the ones that you want.
+    </p>
+
+    
+</details>
+
+<h1>adding submodules</h1>
+
+<details>
+    <summary>Details</summary>
+    <p>
+        By default you usually use the command <code>git submodule add &lt;URL&gt;</code>. By default this command does not clone nested submodules inside the added submodule repository. To ensure all nested submodules are cloned and initialized, you need to run <code>git submodule update --init --recursive</code> after adding the submodule.
+    </p>
+    
+    <pre><code>
+    git submodule add &lt;URL&gt;
+    cd newly_added_dir
+    git submodule update --init --recursive
+    </code></pre>
+    
+    <p>
+        For me I just automatically want to do this everytime, so you can add this bash alias to your .bashrc if you like:
+    </p>
+    <pre>
+        <code>
+    alias git-subadd='f(){ git submodule add "$1" && cd "$(basename "$1" .git)" && git submodule update --init --recursive; & cd .. }; f'
+        </code>
+    </pre>
+    
+    <p class="note">
+        This alias defines a function and calls it immediately
+    </p>
+
+</details>
+
+<h1>(new commits) should be (different commit)</h1>
+
+<details>
+    <summary>Details</summary>
+    <p>
+        The usage of (new commit) in git message is confusing consider this:
+    </p>
+    <pre>
+        <code>
+    $ git status
+    On branch main
+    Your branch is up to date with 'origin/main'.
+    
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+            modified:   conan_utils (new commits)
+    
+    no changes added to commit (use "git add" and/or "git commit -a")
+    (ins)[ccn@ccn-20k5s16a25 scripts]$ cd conan_utils/
+    (ins)[ccn@ccn-20k5s16a25 conan_utils]$ git status
+    On branch main
+    Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
+      (use "git pull" to update your local branch)
+    
+    nothing to commit, working tree clean
+        </code>
+    </pre>
+    
+    <p>
+        Note that here it says that there is a new commit, but that commit is actually an old commit. So you have to keep this in mind, new doesn't mean new, it just means that the current commit that a submodule is at is different than the one stored in .gitmodules.
+    </p>
+
+</details>
+
+
+
+<h1>how the active working directory effects git</h1>
+<details>
+    <summary>Details</summary>
+    <p>
+        Suppose you have a project with these directories A/B/C. A is a regular git repository, B is a submodule, and C is another submodule (ie it's a submodule of B). Git behaves differently depending on what directory git is run from.
+    </p>
+    <p>
+        When you are in A, everything acts regularly, changes made to the actual sources files of A will be detected when you run git status, and changes to what commit the submodule B is being pointed to area also picked up. 
+    </p>
+    <p>
+        When you are in B, git acts as B was a regular git repository and so git status and all git commands run with respect to the B directory, so any changes made to A's source files are completely ignored, you are completely within the context of the B project. Also for any subpath of B which is not another submodule this context remains.
+    </p>
+    <p>
+        When you are in C, the same thing occurs again, but now within the context of C. The general logic is that the git command is run from the context of the first submodule encountered while going back up the file tree towards the base git project.
+    </p>
+</details>
+
+
+
+<h1>pulling in a git directory with submodules</h1>
+
+<details>
+    <summary>Details</summary>
+    <h3>the git pull introduces a new submodule</h3>
+    <p>
+        If this happens the submodule will be left in the same state as if you did a regular clone, so refer to <a href="#setting_up_submodules_after_a_regular_git_clone">this section</a> for next steps.
+    </p>
+    <h3>the git pull deletes an existing submodule</h3>
+    <p>
+        When this occurs git will try to remove the submodules directory but usually warns that it cannot because its not empty, after pulling you'll have to manually remove that submodules directory. Instead of manually deleting these old submodules we can rely on git clean, so you can run <code>git clean -nd</code>, n means dry run and d means directories as well, and make sure all looks well and then run <code>git clean -fd</code> to delete it all. 
+    </p>
+    <h3>the git pull updates an existing submodule</h3>
+    <p>
+        Updates to submodules via git pulls just change which commit the submodule is pointing to in the git metadata. You then need to run git submodule update. Note that if the new commit introduces a new sub-submodule, ie a new submodule in that submodule, then a regular git submodule update will not go and grab that new submodule, and so you have to run <code>git submodule update --init --recursive</code> to initialize and then update those sub-submodules.
+    </p>
+</details>
+
+
+<h1>git pulling inside of a submodule (note this is different from the previous section)</h1>
+<details>
+    <summary>Details</summary>
+    <p>
+        If you're in a git directory which contains a submodule, say you're in a directory D, and it contains a submodule S. Suppose you know that S has been updated externally and there are new commits, if you'd like to get these new changes in this project, then you would change directory to D/S and because the git context automatically changed to that of S, then you can run git pull and update to the newest commit.
+    </p>
+    <p>
+        Now you'll go back to the D directory and run git status, you'll see something like this:
+    </p>
+    <pre>
+        <code>
+    $ git status
+    On branch main
+    Your branch is up to date with 'origin/main'.
+    
+    Changes not staged for commit:
+      (use "git add &lt;file&gt;..." to update what will be committed)
+      (use "git restore &lt;file&gt;..." to discard changes in working directory)
+            modified:   S (new commits)
+    
+    no changes added to commit (use "git add" and/or "git commit -a")
+    
+        </code>
+    </pre>
+    <p>
+        This is telling you that the git metadata associated with the submodule S, has changed in that it is now pointing to a new commit, hence the (new commits) message, the pluaral is used because it needs to be a generic message. 
+    </p>
+    <p>
+        All you have to do now is run git commit in D and now that will update the git repository to know that you are using the new version of the submodule S.
+    </p>
+</details>
+
+<h1>submodule commands operate at one level of recursion</h1>
+<details>
+    <summary>Details</summary>
+    <p>
+        By default most of the git submodule commands only operate one layer deep, so for example if you're in a git directory which has submodules which themselves contain submodules, then running git submodule update won't updated the nested submodules, so in that case run this:
+    </p>
+    
+    <pre>
+        <code>
+    git submodule update --init --recursive
+        </code>
+    </pre>
+    
+    To do this on each submodule in your project run 
+    
+    <pre>
+        <code>
+    git submodule foreach --recursive 'git submodule update --init --recursive'
+        </code>
+    </pre>
+</details>
+
+        
+
+<h1>getting the newest version of all submodules</h1>
+
+<details>
+    <summary>Details</summary>
+    <p>
+        Sometimes you'll have an old project and just want to update all submodules to their newest versions, in order to do this you'll have to run this command:
+    </p>
+    <pre>
+        <code>
+    git submodule foreach --recursive '
+      if [ "$sm_path" != "." ]; then
+        git checkout main
+        git pull
+        git submodule update --init --recursive
+      fi
+    '
+        </code>
+    </pre>
+    <p>
+         What this is doing is that it's iterating through each submodule, checking out the main branch because usually they are not sitting at head, but instead a specific commit, using git pull to get any changes and then updating their own submodules recursively. sm_path is the current submodule directory that we are iterating over, and thus you can see that we avoid iterating over the root directory, this is because if we were to run git submodule update within the root directory it will set all the versions of every included submodule back to the current version that's currently stored in the .gitmodules file, which is not what we want because those are the old versions.
+    </p>
+
+</details>
 
 <h1>mistakes</h1>
 
-<h2>ssh submodules, github organizations and collaborators</h2>
-
-<p>
-    When adding submodules from an organization using ssh links, then there comes a problem that people who are not part of the organization will not be able to clone in submodules as they do not have access for ssh as only collaborators can do this (even with public repositories). One fix to this is to add people as collaborators to the organization, but eventually adding everyone to an organization just so they can clone in the submodules becomes a little unwieldy. Here's a way we can fix this:
-</p>
-
-<ul>
-    <li>
-        If you haven't added your submodule yet, add it regularly using the methods described above, eg <code>git submodule add git@github.com:username/repo.git path/to/submodule</code>
-    </li>
-    <li>
-        Now edit <code>.gitmodules</code> to look like this
-    </li>
+<details>
+    <summary>Details</summary>
+    <h2>ssh submodules, github organizations and collaborators</h2>
+    
+    <p>
+        When adding submodules from an organization using ssh links, then there comes a problem that people who are not part of the organization will not be able to clone in submodules as they do not have access for ssh as only collaborators can do this (even with public repositories). One fix to this is to add people as collaborators to the organization, but eventually adding everyone to an organization just so they can clone in the submodules becomes a little unwieldy. Here's a way we can fix this:
+    </p>
+    
+    <ul>
+        <li>
+            If you haven't added your submodule yet, add it regularly using the methods described above, eg <code>git submodule add git@github.com:username/repo.git path/to/submodule</code>
+        </li>
+        <li>
+            Now edit <code>.gitmodules</code> to look like this
+        </li>
+        <pre>
+            <code>
+    [submodule "path/to/submodule"]
+        path = path/to/submodule
+        url = git@github.com:username/repo.git
+        pushUrl = https://github.com/username/repo.git
+            </code>
+        </pre>
+        <li>
+            Then you can run <code>git submodule sync --recursive</code> to apply the <code>.gitmodules</code> configuration to your local <code>.git/config</code>
+        </li>
+    </ul>
+    
+    <h2>HEAD detached from 54b9bf8</h2>
+    
+    <p>
+        If you see that you are on a detached head, this means that you cannot commit any changes here, if you have uncommitted changes you can switch to main with <code>git checkout main</code>, if you do have committed changes then you have to do this:
+    </p>
     <pre>
         <code>
-[submodule "path/to/submodule"]
-    path = path/to/submodule
-    url = git@github.com:username/repo.git
-    pushUrl = https://github.com/username/repo.git
+    git switch -c temp-work
+    git switch main
+    git merge temp-work
+    git branch -d temp-work
         </code>
     </pre>
-    <li>
-        Then you can run <code>git submodule sync --recursive</code> to apply the <code>.gitmodules</code> configuration to your local <code>.git/config</code>
-    </li>
-</ul>
+    
+    <p>
+        To avoid this problem in the future, we have to realize why this usually occurs, it happens when you clone a repository and initialize its submodules such as by doing <code>git clone --recursive URL</code>, it makes sense that git puts every submodule at its respective commit, this is so that you can have reproducible behavior when you clone in submodules, but sometimes you know what you want the most up-to-date version of a submodule, in that case run this after the fact:
+    </p>
+    
+    <pre>
+        <code>
+            git submodule foreach --recursive git checkout main
+        </code>
+    </pre>
 
-<h2>HEAD detached from 54b9bf8</h2>
-
-<p>
-    If you see that you are on a detached head, this means that you cannot commit any changes here, if you have uncommitted changes you can switch to main with <code>git checkout main</code>, if you do have committed changes then you have to do this:
-</p>
-<pre>
-    <code>
-git switch -c temp-work
-git switch main
-git merge temp-work
-git branch -d temp-work
-    </code>
-</pre>
-
-<p>
-    To avoid this problem in the future, we have to realize why this usually occurs, it happens when you clone a repository and initialize its submodules such as by doing <code>git clone --recursive URL</code>, it makes sense that git puts every submodule at its respective commit, this is so that you can have reproducible behavior when you clone in submodules, but sometimes you know what you want the most up-to-date version of a submodule, in that case run this after the fact:
-</p>
-
-<pre>
-    <code>
-        git submodule foreach --recursive git checkout main
-    </code>
-</pre>
-
-<h2>copying a directory with submodules</h2>
-
-<p>
-    In a Git repository, I have a subdirectory (e.g., client/) that contains a mix of regular files and nested submodules. I want to duplicate this entire directory to a new location within the same repository (e.g., single_player/). However, simply copying the directory with cp doesn't properly register the submodules in the new location — Git doesn't update .gitmodules or .git/modules, and the new submodule paths aren't tracked. How can I correctly duplicate the directory and ensure that all nested submodules are properly re-added and recognized by Git in their new location?
-</p>
+</details>
 
 
-<pre>
-    <code>
-import os
-import shutil
-import subprocess
-from pathlib import Path
-import configparser
-import sys
-import textwrap
+<h1>copying a directory with submodules</h1>
 
+<details>
+    <summary>Details</summary>
 
-def get_repo_root(path):
-    """
-    Returns the root of the git repository containing `path`.
-    Raises CalledProcessError if `path` is not in a git repo.
-    """
-    result = subprocess.run(
-        ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        check=True,
-    )
-    return Path(result.stdout.strip())
-
-
-def parse_gitmodules(repo_root):
-    """
-    Parses .gitmodules from the given repo root.
-    Returns a dict: { "path/to/submodule" : "https://url.git" }
-    """
-    gitmodules_path = repo_root / ".gitmodules"
-    if not gitmodules_path.exists():
-        return {}
-
-    config = configparser.ConfigParser()
-    config.read(gitmodules_path)
-
-    submodules = {}
-    for section in config.sections():
-        if not section.startswith("submodule"):
-            continue
-
-        path = config[section].get("path")
-        url = config[section].get("url")
-        if path and url:
-            submodules[path] = url
-
-    return submodules
-
-
-def confirm(prompt):
-    """Ask the user for yes/no confirmation."""
-    while True:
-        response = input(f"{prompt} [y/n]: ").strip().lower()
-        if response in ("y", "yes"):
-            return True
-        elif response in ("n", "no"):
-            return False
-        else:
-            print("Please enter 'y' or 'n'.")
-
-
-def copy_directory_with_submodules(src, dst):
-    """
-    Copies SRC into DST, preserving directory structure.
-
-    - DST must exist and be a git repository
-    - Existing files in DST are NOT overwritten
-    - Skips .git folders in source
-    - Submodule directories from SRC are skipped during copy
-    - Submodules are re-added into DST using `git submodule add`
-    """
-
-    src = Path(src).resolve()
-    dst = Path(dst).resolve()
-
-    # Validate source
-    if not src.exists() or not src.is_dir():
-        raise RuntimeError(f"Source directory does not exist: {src}")
-
-    # Validate destination
-    if not dst.exists() or not dst.is_dir():
-        raise RuntimeError(f"Destination directory does not exist: {dst}")
-
-    try:
-        dst_repo_root = get_repo_root(dst)
-    except subprocess.CalledProcessError:
-        raise RuntimeError(f"Destination directory is not a git repository: {dst}")
-
-    print("Copy operation summary")
-    print(f"  Source:      {src}")
-    print(f"  Destination: {dst} (git repo: {dst_repo_root})\n")
-
-    # Detect submodules if SRC is a git repo
-    try:
-        src_repo_root = get_repo_root(src)
-        submodules = parse_gitmodules(src_repo_root)
-        if submodules:
-            print("Detected submodules in source:")
-            for path, url in submodules.items():
-                print(f"  {path} -> {url}")
-    except subprocess.CalledProcessError:
+    <p>
+        In a Git repository, I have a subdirectory (e.g., client/) that contains a mix of regular files and nested submodules. I want to duplicate this entire directory to a new location within the same repository (e.g., single_player/). However, simply copying the directory with cp doesn't properly register the submodules in the new location — Git doesn't update .gitmodules or .git/modules, and the new submodule paths aren't tracked. How can I correctly duplicate the directory and ensure that all nested submodules are properly re-added and recognized by Git in their new location?
+    </p>
+    
+    
+    <pre>
+        <code>
+    import os
+    import shutil
+    import subprocess
+    from pathlib import Path
+    import configparser
+    import sys
+    import textwrap
+    
+    
+    def get_repo_root(path):
+        """
+        Returns the root of the git repository containing `path`.
+        Raises CalledProcessError if `path` is not in a git repo.
+        """
+        result = subprocess.run(
+            ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+        return Path(result.stdout.strip())
+    
+    
+    def parse_gitmodules(repo_root):
+        """
+        Parses .gitmodules from the given repo root.
+        Returns a dict: { "path/to/submodule" : "https://url.git" }
+        """
+        gitmodules_path = repo_root / ".gitmodules"
+        if not gitmodules_path.exists():
+            return {}
+    
+        config = configparser.ConfigParser()
+        config.read(gitmodules_path)
+    
         submodules = {}
-        print("Source is not a git repository. No submodules will be detected.")
-
-    # Confirm with the user
-    if not confirm("Do you want to continue with the copy operation?"):
-        print("Operation cancelled by user.")
-        sys.exit(0)
-
-    submodules_to_add = []
-
-    # Walk the source tree
-    for root, dirs, files in os.walk(src):
-        rel_root = Path(root).relative_to(src)
-        dst_root = dst / rel_root
-
-        # Skip .git folder in source
-        if ".git" in dirs:
-            dirs.remove(".git")
-
-        # Detect submodules at this level
-        to_remove = []
-        for d in dirs:
-            full_path = (Path(root) / d).resolve()
+        for section in config.sections():
+            if not section.startswith("submodule"):
+                continue
+    
+            path = config[section].get("path")
+            url = config[section].get("url")
+            if path and url:
+                submodules[path] = url
+    
+        return submodules
+    
+    
+    def confirm(prompt):
+        """Ask the user for yes/no confirmation."""
+        while True:
+            response = input(f"{prompt} [y/n]: ").strip().lower()
+            if response in ("y", "yes"):
+                return True
+            elif response in ("n", "no"):
+                return False
+            else:
+                print("Please enter 'y' or 'n'.")
+    
+    
+    def copy_directory_with_submodules(src, dst):
+        """
+        Copies SRC into DST, preserving directory structure.
+    
+        - DST must exist and be a git repository
+        - Existing files in DST are NOT overwritten
+        - Skips .git folders in source
+        - Submodule directories from SRC are skipped during copy
+        - Submodules are re-added into DST using `git submodule add`
+        """
+    
+        src = Path(src).resolve()
+        dst = Path(dst).resolve()
+    
+        # Validate source
+        if not src.exists() or not src.is_dir():
+            raise RuntimeError(f"Source directory does not exist: {src}")
+    
+        # Validate destination
+        if not dst.exists() or not dst.is_dir():
+            raise RuntimeError(f"Destination directory does not exist: {dst}")
+    
+        try:
+            dst_repo_root = get_repo_root(dst)
+        except subprocess.CalledProcessError:
+            raise RuntimeError(f"Destination directory is not a git repository: {dst}")
+    
+        print("Copy operation summary")
+        print(f"  Source:      {src}")
+        print(f"  Destination: {dst} (git repo: {dst_repo_root})\n")
+    
+        # Detect submodules if SRC is a git repo
+        try:
+            src_repo_root = get_repo_root(src)
+            submodules = parse_gitmodules(src_repo_root)
             if submodules:
-                try:
-                    rel_path = full_path.relative_to(src_repo_root).as_posix()
-                except ValueError:
-                    continue
-                if rel_path in submodules:
-                    print(f"Detected submodule: {rel_path}")
-                    submodules_to_add.append(
-                        ((dst / rel_root / d).relative_to(dst_repo_root).as_posix(),
-                         submodules[rel_path])
-                    )
-                    to_remove.append(d)
+                print("Detected submodules in source:")
+                for path, url in submodules.items():
+                    print(f"  {path} -> {url}")
+        except subprocess.CalledProcessError:
+            submodules = {}
+            print("Source is not a git repository. No submodules will be detected.")
+    
+        # Confirm with the user
+        if not confirm("Do you want to continue with the copy operation?"):
+            print("Operation cancelled by user.")
+            sys.exit(0)
+    
+        submodules_to_add = []
+    
+        # Walk the source tree
+        for root, dirs, files in os.walk(src):
+            rel_root = Path(root).relative_to(src)
+            dst_root = dst / rel_root
+    
+            # Skip .git folder in source
+            if ".git" in dirs:
+                dirs.remove(".git")
+    
+            # Detect submodules at this level
+            to_remove = []
+            for d in dirs:
+                full_path = (Path(root) / d).resolve()
+                if submodules:
+                    try:
+                        rel_path = full_path.relative_to(src_repo_root).as_posix()
+                    except ValueError:
+                        continue
+                    if rel_path in submodules:
+                        print(f"Detected submodule: {rel_path}")
+                        submodules_to_add.append(
+                            ((dst / rel_root / d).relative_to(dst_repo_root).as_posix(),
+                             submodules[rel_path])
+                        )
+                        to_remove.append(d)
+    
+            for d in to_remove:
+                dirs.remove(d)
+    
+            # Create destination directory
+            dst_root.mkdir(parents=True, exist_ok=True)
+    
+            # Copy files (fail if already exists)
+            for f in files:
+                src_file = Path(root) / f
+                dst_file = dst_root / f
+                if dst_file.exists():
+                    raise RuntimeError(f"Refusing to overwrite existing file:\n  {dst_file}")
+                print(f"Copying {src_file} -> {dst_file}")
+                shutil.copy2(src_file, dst_file)
+    
+        # Add submodules
+        if submodules_to_add:
+            print("\nRe-adding submodules in destination repository:")
+            for rel_path, url in submodules_to_add:
+                print(f"  git submodule add {url} {rel_path}")
+                subprocess.run(["git", "-C", str(dst), "submodule", "add", url, rel_path], check=True)
+    
+        print("\nCopy complete. No files were overwritten.")
+    
+    
+    def print_usage_and_exit():
+        print(textwrap.dedent("""
+            Usage:
+              python copy_directory_with_submodules.py <SRC_DIR> <DST_DIR>
+    
+            Arguments:
+              SRC_DIR
+                Path to the source directory to copy FROM. Can be any directory.
+                If it is a git repository, submodules will be detected and re-added in the destination.
+    
+              DST_DIR
+                Path to the destination directory to copy INTO.
+                MUST already exist and MUST be a git repository.
+                Existing files will not be overwritten. Nothing will be deleted.
+    
+            Behavior:
+              - Recursively copies all files and directories from source to destination
+              - Skips .git folders in source
+              - Skips submodule directories during regular file copy
+              - Re-adds detected submodules from source into destination
+    
+            Example:
+              python copy_directory_with_submodules.py ../cpp_manual/ jai_manual/
+        """).strip())
+        sys.exit(1)
+    
+    
+    if __name__ == "__main__":
+        if len(sys.argv) != 3:
+            print_usage_and_exit()
+    
+        copy_directory_with_submodules(sys.argv[1], sys.argv[2])
+    
+        </code>
+    </pre>
 
-        for d in to_remove:
-            dirs.remove(d)
-
-        # Create destination directory
-        dst_root.mkdir(parents=True, exist_ok=True)
-
-        # Copy files (fail if already exists)
-        for f in files:
-            src_file = Path(root) / f
-            dst_file = dst_root / f
-            if dst_file.exists():
-                raise RuntimeError(f"Refusing to overwrite existing file:\n  {dst_file}")
-            print(f"Copying {src_file} -> {dst_file}")
-            shutil.copy2(src_file, dst_file)
-
-    # Add submodules
-    if submodules_to_add:
-        print("\nRe-adding submodules in destination repository:")
-        for rel_path, url in submodules_to_add:
-            print(f"  git submodule add {url} {rel_path}")
-            subprocess.run(["git", "-C", str(dst), "submodule", "add", url, rel_path], check=True)
-
-    print("\nCopy complete. No files were overwritten.")
-
-
-def print_usage_and_exit():
-    print(textwrap.dedent("""
-        Usage:
-          python copy_directory_with_submodules.py <SRC_DIR> <DST_DIR>
-
-        Arguments:
-          SRC_DIR
-            Path to the source directory to copy FROM. Can be any directory.
-            If it is a git repository, submodules will be detected and re-added in the destination.
-
-          DST_DIR
-            Path to the destination directory to copy INTO.
-            MUST already exist and MUST be a git repository.
-            Existing files will not be overwritten. Nothing will be deleted.
-
-        Behavior:
-          - Recursively copies all files and directories from source to destination
-          - Skips .git folders in source
-          - Skips submodule directories during regular file copy
-          - Re-adds detected submodules from source into destination
-
-        Example:
-          python copy_directory_with_submodules.py ../cpp_manual/ jai_manual/
-    """).strip())
-    sys.exit(1)
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print_usage_and_exit()
-
-    copy_directory_with_submodules(sys.argv[1], sys.argv[2])
-
-    </code>
-</pre>
+</details>
 
 
 
