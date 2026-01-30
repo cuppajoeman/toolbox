@@ -28,3 +28,5 @@ set ttyfast
 
 " show line/column number in status bar
 set ruler
+
+set scrolloff=999
