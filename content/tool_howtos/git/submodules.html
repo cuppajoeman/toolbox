@@ -182,6 +182,18 @@
     </p>
 </details>
 
+<h1>renaming a submodule</h1>
+
+<details>
+    <summary>Details</summary>
+    <p>
+        When you rename a submodule there are things you have to be aware of. Suppose you rename a submodule and in other repos it still exists with its old name. You would think that when you do a git pull in the other repos that the old directory would be removed and replaced with the new, but that doesn't occur. Instead the old one is left and the new one is just brought in without being initialized or updated. 
+    </p>
+    <p>
+        To deal with this you can just remove the old directory as it is no longer tracked by git and just thinks you have a new directory, when in reality that is just the old submodule with the old name. Next you can update your submodules as you've read about before which will get the files into the renamed submodule.
+    </p>
+</details>
+
 
 <h1>git pulling inside of a submodule (note this is different from the previous section)</h1>
 <details>
@@ -292,6 +304,22 @@
             Then you can run <code>git submodule sync --recursive</code> to apply the <code>.gitmodules</code> configuration to your local <code>.git/config</code>
         </li>
     </ul>
+
+    <h2>you forget to push in a submodule and then commit on the main repo</h2>
+    <p>
+        If you do this then nothing will seem wrong until you try and clone the main repo in a different context and in that case you might see a message like this: 
+    </p>
+    <pre>
+        <code>
+fatal: remote error: upload-pack: not our ref da3a12f4f01eb2a70490d749b290b6ddeed58919
+Errors during submodule fetch:
+        linear_algebra
+        </code>
+    </pre>
+
+    <p>
+        To fix this you just have to push that repo
+    </p>    
     
     <h2>HEAD detached from 54b9bf8</h2>
     
