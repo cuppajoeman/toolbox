@@ -53,7 +53,71 @@
 
 <p>As shown in the table, increasing the FPS decreases the frame time, which results in faster rendering of each frame. However, the improvements become less noticeable as FPS increases, especially beyond 60-120 FPS. For instance, going from 30 FPS to 60 FPS offers a clear improvement in smoothness, but going from 240 FPS to 300 FPS offers very little perceived difference, even though the frame time has decreased further.</p>
 
-<h2>Conclusion</h2>
-<p>While FPS is a useful metric, frame time is often a better indicator of how well a system is performing, especially in terms of consistency and smoothness. Frame time is linearly related to FPS, and understanding this relationship allows developers and users to focus on more meaningful performance metrics for an improved experience.</p>
-
-
+<h2>thinking in terms of frame time</h2>
+<p>
+    The reason why frame time is the better metric to think about is that you can map it directly to the logic that is running in the main loop. If the main loop consists of 4 different procedures each of which take time t1, t2, t3, t4, then we can determine which takes the longest and then make it run more efficiently.
+</p>
+<p>
+    Another reason why frame time is important, is that we can understand the following table.
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>Frame Time</th>
+            <th>FPS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>16 ms</td>
+            <td>62.5</td>
+        </tr>
+        <tr>
+            <td>6 ms</td>
+            <td>166.67</td>
+        </tr>
+        <tr>
+            <td>4 ms</td>
+            <td>250</td>
+        </tr>
+        <tr>
+            <td>3 ms</td>
+            <td>333.33</td>
+        </tr>
+        <tr>
+            <td>2 ms</td>
+            <td>500</td>
+        </tr>
+        <tr>
+            <td>1 ms (1000 μs)</td>
+            <td>1,000</td>
+        </tr>
+        <tr>
+            <td>500 μs</td>
+            <td>2,000</td>
+        </tr>
+        <tr>
+            <td>250 μs</td>
+            <td>4,000</td>
+        </tr>
+        <tr>
+            <td>100 μs</td>
+            <td>10,000</td>
+        </tr>
+        <tr>
+            <td>50 μs</td>
+            <td>20,000</td>
+        </tr>
+        <tr>
+            <td>10 μs</td>
+            <td>100,000</td>
+        </tr>
+        <tr>
+            <td>1 μs</td>
+            <td>1,000,000</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    A basic estimate of how long a single operation would take on a cpu could be 1 nanosecond, which is equal to a thousandth of a micro second, so if you had a program that just did 1000 basic operations which were all cache hits for the data involved, then you could get a frame rate of 1,000,000. 
+</p>
