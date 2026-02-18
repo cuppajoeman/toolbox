@@ -1,0 +1,17 @@
+<p>
+  You can have a global .gitignore file. If you use vim, then you should modify that so that in any project you ever do, git will not care about <code>.swp</code> files.
+</p>
+
+<code>~/.gitignore</code>
+<pre>
+  <code>
+# Matches Vim swap files like .filename.swp
+# .  - matches the leading dot Vim prepends to the original filename
+# *  - matches any characters (the original filename, e.g., "example.txt")
+# .sw - matches the literal swap file extension prefix
+# ?  - matches any single character (p, o, n, etc.)
+#       Vim uses .swp first, then falls back to .swo, .swn, etc.
+#       if a swap file already exists
+.*.sw?
+  </code>
+</pre>
