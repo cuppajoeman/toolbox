@@ -1,0 +1,88 @@
+<p>
+    Here's how to find and replace text across all files in a directory using sed:
+</p>
+<pre>
+    <code>
+find /path/to/dir -type f -exec sed -i 's/old_text/new_text/g' {} +
+    </code>
+</pre>
+
+<ul>
+    <li> find /path/to/dir -type f finds all regular files under the given directory recursively. </li>
+    <li> -exec ... {} + runs the command on all matched files. </li>
+    <li> sed -i edits files in place. </li>
+    <li> 's/old_text/new_text/g' substitutes all occurrences of old_text with new_text. The g flag means global (all occurrences per line, not just the first). </li>
+</ul>
+
+<p>
+    You can narrow it down to specific file types:
+</p>
+<pre>
+    <code>
+find /path/to/dir -type f -name "*.py" -exec sed -i 's/old_text/new_text/g' {} +
+    </code>
+</pre>
+
+<p>
+    Or exclude directories like .git:
+</p>
+<pre>
+    <code>
+find /path/to/dir -not -path '*/.git/*' -type f -exec sed -i 's/old_text/new_text/g' {} +
+    </code>
+</pre>
+
+<p>
+    If your text contains slashes, you can use a different delimiter:
+</p>
+<pre>
+    <code>
+find /path/to/dir -type f -exec sed -i 's|/old/path|/new/path|g' {} +
+    </code>
+</pre>
+
+<p>
+    To create a backup of each file before modifying it, pass an extension to -i:
+</p>
+<pre>
+    <code>
+find /path/to/dir -type f -exec sed -i.bak 's/old_text/new_text/g' {} +
+    </code>
+</pre>
+<p>
+    This creates a .bak copy of every file before making changes, so you can revert if something goes wrong.
+</p>
+
+<h2>doing this all the time</h2>
+<p>
+    If you do, then you should add this to your bashrc:
+</p>
+<pre>
+    <code>
+# find and replace across files recursively
+gsed() {
+    if [ "$#" -lt 2 ]; then
+        echo "usage: gsed OLD NEW [PATH] [FILE_PATTERN]"
+        return 1
+    fi
+
+    local old="\$1"
+    local new="\$2"
+    local path="${3:-.}"
+    local pattern="${4:-*}"
+
+    find "$path" -type f -name "$pattern" -not -path '*/.git/*' -exec sed -i "s|$old|$new|g" {} +
+}
+    </code>
+</pre>
+<p>
+    Now you can just run:
+</p>
+<pre>
+    <code>
+gsed old_text new_text /path/to/dir "*.py"
+    </code>
+</pre>
+<p>
+    Note that the pipe character | is used as the sed delimiter here so that slashes in your search or replacement text won't break anything.
+</p>
