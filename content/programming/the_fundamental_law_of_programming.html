@@ -1,0 +1,85 @@
+<h2>The Equation</h2>
+
+<p>
+R = (S * C) / D if G <= C
+<br>
+R = 0 if G > C
+</p>
+
+<h2>Variables</h2>
+
+<h3>R - Rate of Progress</h3>
+<p>The rate at which you make progress toward your goal. Unbounded. Higher is better.</p>
+
+<h3>S - Skill [0, 1]</h3>
+<table border="1" cellpadding="5">
+<tr><th>Value</th><th>Meaning</th></tr>
+<tr><td>0</td><td>Complete beginner. Never programmed before.</td></tr>
+<tr><td>0.3</td><td>Knows a language, can follow tutorials.</td></tr>
+<tr><td>0.5</td><td>Competent. Can build things independently.</td></tr>
+<tr><td>0.7</td><td>Senior level. Deep understanding of systems.</td></tr>
+<tr><td>1.0</td><td>Mastery. John Carmack. Eskil Steenberg.</td></tr>
+</table>
+
+<h3>C - Control [0, 1]</h3>
+<table border="1" cellpadding="5">
+<tr><th>Value</th><th>Meaning</th></tr>
+<tr><td>0</td><td>No control at all. A fixed output. A screenshot.</td></tr>
+<tr><td>0.2</td><td>Squarespace. Drag and drop. Tiny configuration surface.</td></tr>
+<tr><td>0.4</td><td>Raylib. Simple API, hides most decisions from you.</td></tr>
+<tr><td>0.6</td><td>Unity/Unreal. Lots of knobs but within a framework.</td></tr>
+<tr><td>0.8</td><td>Custom renderer. You own the architecture.</td></tr>
+<tr><td>1.0</td><td>Raw syscalls and GPU registers. Total control.</td></tr>
+</table>
+
+<h3>D - Difficulty (0, 1]</h3>
+<table border="1" cellpadding="5">
+<tr><th>Value</th><th>Meaning</th></tr>
+<tr><td>0.01</td><td>Press a button, thing happens.</td></tr>
+<tr><td>0.2</td><td>Raylib. DrawCube().</td></tr>
+<tr><td>0.5</td><td>Unity. Manageable but real learning curve.</td></tr>
+<tr><td>0.7</td><td>Custom renderer. Manual GPU memory management.</td></tr>
+<tr><td>0.9</td><td>Vulkan from scratch.</td></tr>
+<tr><td>1.0</td><td>Writing your own OS and graphics driver.</td></tr>
+</table>
+<p>Note: D is (0, 1] not [0, 1] because D = 0 would mean zero difficulty, giving infinite progress, which does not exist. There is always some friction.</p>
+
+<h3>G - Goal Complexity [0, 1]</h3>
+<table border="1" cellpadding="5">
+<tr><th>Value</th><th>Meaning</th></tr>
+<tr><td>0.1</td><td>Pong.</td></tr>
+<tr><td>0.3</td><td>Simple 3D game, few objects.</td></tr>
+<tr><td>0.5</td><td>Medium game, real scenes.</td></tr>
+<tr><td>0.7</td><td>Large open world, custom rendering.</td></tr>
+<tr><td>1.0</td><td>AAA engine, everything custom.</td></tr>
+</table>
+<p>A tool can only achieve goals where G <= C. If the goal exceeds the tool's control, your rate drops to zero. You cannot get there.</p>
+
+<h2>Examples</h2>
+
+<h3>Beginner using Raylib</h3>
+<p>S = 0.3, C = 0.4, D = 0.2, G = 0.1</p>
+<p>G <= C, so R = (0.3 * 0.4) / 0.2 = <strong>0.6</strong></p>
+
+<h3>Beginner using a Custom Renderer</h3>
+<p>S = 0.3, C = 0.8, D = 0.7, G = 0.1</p>
+<p>G <= C, so R = (0.3 * 0.8) / 0.7 = <strong>0.34</strong></p>
+<p>Raylib wins. The beginner moves faster despite having less control.</p>
+
+<h3>Expert building a large scene with Raylib</h3>
+<p>S = 0.9, C = 0.4, D = 0.2, G = 0.7</p>
+<p>G > C, so R = <strong>0</strong>. Cannot get there.</p>
+
+<h3>Expert building a large scene with a Custom Renderer</h3>
+<p>S = 0.9, C = 0.8, D = 0.7, G = 0.7</p>
+<p>G <= C, so R = (0.9 * 0.8) / 0.7 = <strong>1.03</strong>. Achievable.</p>
+
+<h2>Interpretation</h2>
+
+<p>In the beginning, S is low and G is low, so you maximize R by minimizing D. Pick the easiest tool.</p>
+
+<p>In the end, S is high and G is high, so you maximize R by maximizing C. Pick the tool that gives you the most control.</p>
+
+<blockquote>
+<p>"In the beginning you want results, in the end all you want is control." - Eskil Steenberg</p>
+</blockquote>
