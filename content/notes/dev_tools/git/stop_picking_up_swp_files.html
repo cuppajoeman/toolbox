@@ -1,17 +1,33 @@
+<h1>Ignore Vim Swap Files Everywhere</h1>
+
 <p>
-  You can have a global .gitignore file. If you use vim, then you should modify that so that in any project you ever do, git will not care about <code>.swp</code> files.
+    Vim swap files are editor noise. They should not show up as untracked files in every repository and submodule you touch.
 </p>
 
-<code>~/.gitignore</code>
-<pre>
-  <code>
-# Matches Vim swap files like .filename.swp
-# .  - matches the leading dot Vim prepends to the original filename
-# *  - matches any characters (the original filename, e.g., "example.txt")
-# .sw - matches the literal swap file extension prefix
-# ?  - matches any single character (p, o, n, etc.)
-#       Vim uses .swp first, then falls back to .swo, .swn, etc.
-#       if a swap file already exists
-.*.sw?
-  </code>
-</pre>
+<p>
+    The clean fix is to use a <a href="global_gitignore.html">global Git ignore file</a>.
+</p>
+
+<h2>Do This Once</h2>
+
+<pre><code>printf "\n# Vim swap files\n*.swp\n*.swo\n*.swx\n.*.sw?\n" >> ~/.gitignore_global
+git config --global core.excludesfile ~/.gitignore_global</code></pre>
+
+<h2>What This Catches</h2>
+
+<ul>
+    <li><code>.ellipsoid.jai.swp</code></li>
+    <li><code>foo.swp</code></li>
+    <li><code>foo.swo</code></li>
+    <li><code>.foo.swp</code></li>
+</ul>
+
+<h2>Check The Current Repo</h2>
+
+<pre><code>git status</code></pre>
+
+<p>
+    If the swap file was untracked, it should disappear from <code>git status</code>. If a swap file was already committed, global ignores will not hide it. Remove it from the index once:
+</p>
+
+<pre><code>git rm --cached path/to/file.swp</code></pre>

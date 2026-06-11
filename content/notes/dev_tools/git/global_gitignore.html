@@ -1,0 +1,32 @@
+<h1>Global Git Ignore</h1>
+
+<p>
+    A global Git ignore file is a machine-wide ignore list. Use it for files that are personal editor, OS, or tool noise, and that should not be tracked in any project you work on.
+</p>
+
+<p>
+    This is different from a project <code>.gitignore</code>. A project <code>.gitignore</code> belongs to the repository and documents files everyone on the project should ignore. A global ignore belongs to your machine and is for your personal environment.
+</p>
+
+<h2>Set One Up</h2>
+
+<pre><code>touch ~/.gitignore_global
+git config --global core.excludesfile ~/.gitignore_global</code></pre>
+
+<p>
+    Add ignore patterns to <code>~/.gitignore_global</code>. For example:
+</p>
+
+<pre><code># Vim swap files
+*.swp
+*.swo
+*.swx
+.*.sw?</code></pre>
+
+<h2>Check It</h2>
+
+<pre><code>git config --global --get core.excludesfile</code></pre>
+
+<p>
+    Global ignores only affect untracked files. If a file is already tracked, Git will keep tracking it until you remove it from the index with <code>git rm --cached</code>.
+</p>
