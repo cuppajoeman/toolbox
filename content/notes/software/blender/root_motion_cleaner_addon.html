@@ -1,0 +1,73 @@
+<h1>Root Motion Cleaner add-on for Blender</h1>
+
+<p>
+  This add-on removes selected X, Y, and Z movement from a root bone so an animation can play in place. It can clean either the currently active Action or every Action in the file.
+</p>
+
+<p>
+  In Blender, imported Mixamo motion may appear on a root bone such as <code>main</code>, or on the armature object's own <code>location</code> curves. The add-on supports both.
+</p>
+
+<h2>Files</h2>
+
+<ul>
+  <li>Add-on: <a href="blender_root_motion_cleaner_addon.py">blender_root_motion_cleaner_addon.py</a></li>
+  <li>Panel location: <code>3D View &gt; Sidebar &gt; Animation &gt; Root Motion Cleaner</code></li>
+  <li>Operator: <code>Clean Root Motion</code></li>
+</ul>
+
+<h2>Basic workflow</h2>
+
+<ol>
+  <li>Install and enable <code>blender_root_motion_cleaner_addon.py</code>.</li>
+  <li>Open the character file that contains the imported Actions.</li>
+  <li>Select the armature, or choose it in the add-on panel.</li>
+  <li>Set <code>Root Bone</code>. For the current Mixamo workflow this is usually <code>main</code>.</li>
+  <li>Choose <code>Active Action</code> or <code>All Actions</code>.</li>
+  <li>Choose which axes to remove: <code>X</code>, <code>Y</code>, <code>Z</code>.</li>
+  <li>Enable <code>Also Clean Object Location</code> if the armature object itself is moving through the scene.</li>
+  <li>Click <code>Clean Root Motion</code>.</li>
+</ol>
+
+<h2>Settings</h2>
+
+<ul>
+  <li><code>Armature</code>: the armature whose active Action should be used.</li>
+  <li><code>Root Bone</code>: the bone whose location curves should be flattened.</li>
+  <li><code>Scope</code>: clean only the active Action or all Actions in the file.</li>
+  <li><code>Mode</code>: choose whether to keep the first keyed value or force the value to zero.</li>
+  <li><code>X/Y/Z</code>: axes to flatten.</li>
+  <li><code>Also Clean Object Location</code>: also flatten the armature object's own location curves.</li>
+</ul>
+
+<h2>Keep First Frame vs Zero</h2>
+
+<p>
+  <code>Keep First Frame</code> is usually safer. It keeps the character's starting offset and removes movement away from that starting point.
+</p>
+
+<p>
+  <code>Zero</code> forces the selected root motion axes to <code>0</code>. This is useful when the starting offset itself is unwanted.
+</p>
+
+<h2>Active Action or all Actions</h2>
+
+<p>
+  Use <code>Active Action</code> when testing on one animation. Use <code>All Actions</code> after confirming the settings are correct. For a Mixamo batch-import file, <code>All Actions</code> is usually the intended final pass.
+</p>
+
+<h2>When to enable object location cleanup</h2>
+
+<p>
+  Some Mixamo imports store forward movement on the armature object, not the root bone. If cleaning the root bone does nothing, enable <code>Also Clean Object Location</code> and run the cleaner again.
+</p>
+
+<p>
+  In the current Mixamo workflow, the <code>main</code> bone may already be stationary while the object-level <code>location</code> curves carry the walking translation. In that case, object location cleanup is the part that makes the animation stationary.
+</p>
+
+<h2>Export notes</h2>
+
+<p>
+  The add-on edits the Action F-curves directly. After cleaning, the animation is ordinary Blender animation data and can be exported through glTF/FBX like any other Action.
+</p>
