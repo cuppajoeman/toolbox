@@ -1,0 +1,41 @@
+<section>
+    <h1>Blender Axes</h1>
+
+    <p>
+        Blender's native orientation is:
+    </p>
+
+    <ul>
+        <li><strong>Forward:</strong> <code>-Y</code></li>
+        <li><strong>Up:</strong> <code>Z</code></li>
+        <li><strong>Right:</strong> <code>X</code></li>
+    </ul>
+
+    <p>
+        The up axis is usually easy to remember because Blender's vertical axis is <code>Z</code>. The forward axis is the less obvious one: objects in Blender generally face along negative Y.
+    </p>
+
+    <h2>Export Settings</h2>
+
+    <p>
+        Export dialogs often show fields like <strong>Forward Axis</strong> and <strong>Up Axis</strong>. These settings are usually about converting Blender's coordinate system into the target format or engine's coordinate system.
+    </p>
+
+    <p>
+        So if an exporter defaults to something like:
+    </p>
+
+    <pre><code>Forward Axis: -Z
+Up Axis: Y</code></pre>
+
+    <p>
+        that does not mean Blender's own forward/up axes are <code>-Z</code> and <code>Y</code>. It means the exporter is transforming Blender's native orientation into the convention expected by the target.
+    </p>
+
+    <h2>Rule Of Thumb</h2>
+
+    <pre><code>Blender native:
+Forward = -Y
+Up      = Z
+Right   = X</code></pre>
+</section>

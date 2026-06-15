@@ -1,0 +1,76 @@
+<h1>Mixamo batch animation import workflow</h1>
+
+<p>
+  This workflow is for a Blender character that already has its real mesh and main armature, and a folder of Mixamo animation FBX files that contain armatures with animation data. The goal is to keep one character file and turn each Mixamo FBX into a reusable Blender Action on the existing armature.
+</p>
+
+<p>
+  The important assumption is that the character armature is in a T-pose rest pose before Mixamo animation data is applied. Mixamo animation downloads are authored against that T-pose assumption. If the character is in an A-pose rest pose, legs may still look acceptable, but arms often come in wrong because the local arm rotations are interpreted from the wrong rest orientation.
+</p>
+
+<h2>Files</h2>
+
+<ul>
+  <li>Add-on: <a href="mixamo_batch_action_importer.py">mixamo_batch_action_importer.py</a></li>
+  <li>Install location example: <code>%APPDATA%\Blender Foundation\Blender\5.1\scripts\addons\mixamo_batch_action_importer.py</code></li>
+  <li>Panel location: <code>3D View &gt; Sidebar &gt; Animation &gt; Mixamo Batch</code></li>
+</ul>
+
+<h2>Expected workflow</h2>
+
+<ol>
+  <li>Start with the character in Blender: mesh, armature, and weight painting already set up.</li>
+  <li>If the character is not in a T-pose rest pose, convert it first. See <a href="convert_a_pose_character_to_t_pose.html">Convert an A-pose character to T-pose</a>.</li>
+  <li>Export the character to FBX from Blender.</li>
+  <li>Upload that FBX to Mixamo.</li>
+  <li>Download the animations or animation pack from Mixamo using the default settings.</li>
+  <li>Open the original character file in Blender.</li>
+  <li>Select or choose the main armature in the add-on panel.</li>
+  <li>Choose the folder containing the Mixamo animation FBX files.</li>
+  <li>Run <code>Import Mixamo Actions</code>.</li>
+</ol>
+
+<h2>Recommended add-on settings</h2>
+
+<ul>
+  <li><code>Transfer Mode</code>: <code>Direct Copy Curves</code></li>
+  <li><code>Disable IK In Imported Actions</code>: enabled</li>
+  <li><code>Rename From Filename</code>: enabled</li>
+  <li><code>Mark Fake User</code>: enabled</li>
+  <li><code>Delete Temporary Imports</code>: enabled</li>
+  <li><code>Strip Mixamo Prefix</code>: enabled</li>
+  <li><code>Ignore *_end Bones</code>: enabled</li>
+  <li><code>Overwrite Existing Actions</code>: enabled when re-importing the same animation set</li>
+</ul>
+
+<h2>What the add-on does</h2>
+
+<ul>
+  <li>Imports each FBX in the selected folder.</li>
+  <li>Finds the temporary imported armature and its Action.</li>
+  <li>Creates a clean Action on the real selected armature.</li>
+  <li>Copies matching F-curves by bone name.</li>
+  <li>Ignores harmless terminal bones such as <code>*_end</code>.</li>
+  <li>Keys IK constraint influence to <code>0</code> inside the imported Action when <code>Disable IK In Imported Actions</code> is enabled.</li>
+  <li>Deletes the temporary imported armature and temporary source Action.</li>
+  <li>Keeps the final scene as one character armature plus many reusable Actions.</li>
+</ul>
+
+<h2>Why T-pose matters</h2>
+
+<p>
+  The add-on transfers animation primarily by bone name and local transform curves. That is simple and reliable when the source Mixamo armature and the target character armature have the same rest pose. If the target character is in A-pose, the arm bones start from a different local orientation, so the same animation curves rotate the arms from the wrong basis.
+</p>
+
+<p>
+  In practice, this can look like the legs working while the arms are twisted, lowered, or otherwise incorrect. The legs are often close enough between rigs, but arms can differ by 50 degrees or more between A-pose and T-pose.
+</p>
+
+<h2>Troubleshooting</h2>
+
+<ul>
+  <li>If the Action appears bound to <code>Armature.001</code>, the file probably contains leftover temporary Actions from an old import. Re-run from a clean character file with the current add-on.</li>
+  <li>If the character is stiff, make sure <code>Disable IK In Imported Actions</code> is enabled. IK constraints can override imported FK animation curves.</li>
+  <li>If legs work but arms are wrong, check whether the character's rest pose is A-pose instead of T-pose.</li>
+  <li>If an FBX imports with no Action, it may be a reference/startup FBX rather than an animation. The add-on can skip it.</li>
+</ul>

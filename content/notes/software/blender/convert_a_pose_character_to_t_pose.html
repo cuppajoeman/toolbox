@@ -1,0 +1,62 @@
+<h1>Convert an A-pose character to T-pose in Blender</h1>
+
+<p>
+  Use this when a rigged character is in an A-pose rest pose, but you need a T-pose rest pose for workflows such as Mixamo animation import. The key idea is to preserve the existing weight painting instead of rebinding with automatic weights.
+</p>
+
+<p>
+  Work on a duplicate file first. This changes the armature rest pose and bakes mesh positions, so it is rig surgery, not a harmless viewport pose.
+</p>
+
+<h2>Why this workflow exists</h2>
+
+<p>
+  If you simply pose the armature into a T-pose and run <code>Pose &gt; Apply &gt; Apply Pose as Rest Pose</code>, the skinned mesh may jump back or no longer match the intended shape. Applying the Armature modifier first freezes the mesh into the current posed shape, while keeping the existing vertex groups. Re-adding the Armature modifier afterward lets Blender reuse those vertex groups instead of generating new automatic weights.
+</p>
+
+<h2>Steps</h2>
+
+<ol>
+  <li>Save a copy of the Blender file.</li>
+  <li>Select the armature.</li>
+  <li>Go to <code>Pose Mode</code>.</li>
+  <li>Move the character from A-pose into T-pose by rotating the control bones.</li>
+  <li>Focus especially on clavicles, upper arms, lower arms, and hands.</li>
+  <li>Make the arms horizontal from the front view. Keep elbows and wrists as straight as the rig reasonably allows.</li>
+  <li>Go back to <code>Object Mode</code>.</li>
+  <li>Select the skinned mesh.</li>
+  <li>Apply the mesh's <code>Armature</code> modifier. This bakes the current T-pose shape into the mesh.</li>
+  <li>Select the armature again.</li>
+  <li>Go to <code>Pose Mode</code>.</li>
+  <li>Use <code>Pose &gt; Apply &gt; Apply Pose as Rest Pose</code>.</li>
+  <li>Go back to <code>Object Mode</code>.</li>
+  <li>Select the mesh.</li>
+  <li>Add a new <code>Armature</code> modifier.</li>
+  <li>Set the modifier's armature object to the existing armature.</li>
+</ol>
+
+<h2>Why the weight paint is preserved</h2>
+
+<p>
+  Applying the Armature modifier removes the live deformation modifier, but it normally leaves the mesh vertex groups intact. Those vertex groups are the weight paint data. When the Armature modifier is added back and pointed at the same armature, Blender uses the existing bone-named vertex groups again.
+</p>
+
+<p>
+  This avoids <code>Ctrl+P &gt; Armature Deform &gt; With Automatic Weights</code>, which can degrade or change the original weight painting.
+</p>
+
+<h2>Checks after conversion</h2>
+
+<ul>
+  <li>Select the mesh and confirm the vertex groups are still present.</li>
+  <li>Confirm the new Armature modifier points at the correct armature.</li>
+  <li>Move a few pose bones to make sure the mesh still deforms.</li>
+  <li>Check the front view: upper arms should be close to horizontal.</li>
+  <li>Save this as a new T-pose source file, not over the only copy of the original A-pose rig.</li>
+</ul>
+
+<h2>Common mistake</h2>
+
+<p>
+  Do not re-parent the mesh to the armature with automatic weights unless you are intentionally redoing the skinning. The point of this workflow is to keep the existing weight paint and only change the bind/rest pose.
+</p>
