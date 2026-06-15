@@ -1,0 +1,83 @@
+<h1>World Space UV add-on for Blender</h1>
+
+<p>
+  This add-on projects mesh UVs from world-space coordinates. The default mapping is <code>1 Blender meter = 1 UV unit</code>, which is useful when you want a material to keep a consistent real-world texture size across different objects.
+</p>
+
+<p>
+  Use this when regular UV unwraps or material Mapping node scale values make a texture appear too large, too small, or inconsistently tiled between objects.
+</p>
+
+<h2>Files</h2>
+
+<ul>
+  <li>Add-on: <a href="blender_world_space_uv_addon.py">blender_world_space_uv_addon.py</a></li>
+  <li>Panel location: <code>3D View &gt; Sidebar &gt; Tool &gt; World Space UV</code></li>
+  <li>Operator: <code>Apply World Space UVs</code></li>
+</ul>
+
+<h2>What it does</h2>
+
+<p>
+  For each selected mesh face, the add-on looks at the face normal and chooses a projection plane based on the dominant world axis. Then it writes UV coordinates from the vertices' world-space positions. This means the UVs are based on where the geometry exists in the scene, not on the current object scale or a hand-made unwrap.
+</p>
+
+<p>
+  At the default scale, a one meter span in the world becomes a one unit span in UV space. Increasing the scale makes the texture tile more. Decreasing the scale makes the texture larger.
+</p>
+
+<h2>Basic workflow</h2>
+
+<ol>
+  <li>Install and enable <code>blender_world_space_uv_addon.py</code>.</li>
+  <li>Select one or more mesh objects.</li>
+  <li>Open the sidebar with <code>N</code>.</li>
+  <li>Go to <code>Tool &gt; World Space UV</code>.</li>
+  <li>Choose whether to write to the active UV map or a named UV map.</li>
+  <li>Set <code>Scale</code>. Start with <code>1.0</code>.</li>
+  <li>Click <code>Apply World Space UVs</code>.</li>
+</ol>
+
+<h2>Settings</h2>
+
+<ul>
+  <li><code>Scale</code>: UV units per Blender meter. <code>1.0</code> means one meter equals one UV unit.</li>
+  <li><code>Write To</code>: choose <code>Active UV Map</code> or <code>Named UV Map</code>.</li>
+  <li><code>UV Map</code>: the UV map name used when writing to a named map. The default is <code>WorldSpaceUV</code>.</li>
+  <li><code>Make Active</code>: makes the generated UV map the active UV map.</li>
+  <li><code>Selected Objects Only</code>: applies to all selected mesh objects instead of only the active mesh.</li>
+  <li><code>Selected Faces Only</code>: in Edit Mode, applies only to selected faces.</li>
+</ul>
+
+<h2>Scale intuition</h2>
+
+<ul>
+  <li><code>Scale = 1.0</code>: one meter maps to one UV unit.</li>
+  <li><code>Scale = 0.5</code>: the texture appears twice as large.</li>
+  <li><code>Scale = 2.0</code>: the texture tiles twice as often.</li>
+</ul>
+
+<h2>Why this helps</h2>
+
+<p>
+  Some downloaded PBR materials are authored with Mapping node scale values, such as <code>3, 3, 1</code>. That can make a unit cube show a 3 by 3 texture pattern even when the cube's UVs look normal. World-space UVs move that scale decision into the mesh UVs instead: the material can stay simple, and the UVs decide how many real-world meters the texture covers.
+</p>
+
+<p>
+  This is especially useful for hard-surface assets, level pieces, walls, floors, crates, panels, and other objects where consistent texel density matters more than a custom hand-painted unwrap.
+</p>
+
+<h2>Limitations</h2>
+
+<ul>
+  <li>It is a projection tool, not a full unwrap tool.</li>
+  <li>Curved surfaces may show seams or directional changes where face normals switch projection axes.</li>
+  <li>It is best for boxy or planar hard-surface shapes.</li>
+  <li>For characters, organic models, decals, or hand-painted textures, a manual UV unwrap is usually better.</li>
+</ul>
+
+<h2>Export notes</h2>
+
+<p>
+  The add-on writes real mesh UV coordinates. Once applied, those UVs are regular Blender UVs and can be exported through formats such as glTF, assuming the exporter is configured to include mesh UV attributes.
+</p>
