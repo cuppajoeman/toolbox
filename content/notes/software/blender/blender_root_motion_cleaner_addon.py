@@ -139,7 +139,7 @@ class ROOTMOTIONCLEANER_Settings(bpy.types.PropertyGroup):
     include_object_motion: BoolProperty(
         name="Also Clean Object Location",
         description="Also flatten Action curves on the armature object's own location",
-        default=False,
+        default=True,
     )
 
 
@@ -177,14 +177,9 @@ class ROOTMOTIONCLEANER_OT_clean(bpy.types.Operator):
         total_curves = 0
         total_keys = 0
         cleaned_actions = 0
-        skipped_actions = 0
+        unchanged_actions = 0
 
         for action in actions:
-            if settings.scope == "ALL" and armature and armature.type == "ARMATURE":
-                if not action_has_slot_for_armature(action, armature):
-                    skipped_actions += 1
-                    continue
-
             changed_curves, changed_keys = clean_action_root_motion(
                 action,
                 settings.root_bone_name.strip(),
@@ -196,10 +191,12 @@ class ROOTMOTIONCLEANER_OT_clean(bpy.types.Operator):
                 cleaned_actions += 1
                 total_curves += changed_curves
                 total_keys += changed_keys
+            else:
+                unchanged_actions += 1
 
         self.report(
             {"INFO"},
-            f"Cleaned {cleaned_actions} Action(s), {total_curves} curve(s), {total_keys} key(s). Skipped {skipped_actions}.",
+            f"Cleaned {cleaned_actions} Action(s), {total_curves} curve(s), {total_keys} key(s). Unchanged {unchanged_actions}.",
         )
         return {"FINISHED"}
 

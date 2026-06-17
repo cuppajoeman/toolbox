@@ -1,10 +1,10 @@
 bl_info = {
-    "name": "Mixamo Batch Action Importer",
+    "name": "FBX Animation Combiner",
     "author": "Codex",
-    "version": (1, 0, 0),
+    "version": (1, 1, 0),
     "blender": (4, 0, 0),
-    "location": "View3D > Sidebar > Animation > Mixamo Batch",
-    "description": "Batch-import Mixamo FBX animation armatures as reusable Actions on an existing armature.",
+    "location": "View3D > Sidebar > Animation > FBX Combiner",
+    "description": "Combine a folder of compatible FBX animation files into one armature with many reusable Actions.",
     "category": "Animation",
 }
 
@@ -17,8 +17,6 @@ import bpy
 from mathutils import Matrix
 from bpy.props import (
     BoolProperty,
-    EnumProperty,
-    IntProperty,
     PointerProperty,
     StringProperty,
 )
@@ -45,7 +43,7 @@ class BatchLogger:
         if directory:
             os.makedirs(directory, exist_ok=True)
         self._file = open(self.filepath, "w", encoding="utf-8")
-        self.write(f"Mixamo Batch Action Importer log")
+        self.write(f"FBX Animation Combiner log")
         self.write(f"Started: {datetime.now().isoformat(timespec='seconds')}")
         self.write(f"Blend file: {bpy.data.filepath or '<unsaved>'}")
         self.write(f"Blender: {bpy.app.version_string}")
@@ -657,9 +655,7 @@ def import_fbx(filepath):
 
 
 def batch_import_mixamo_actions(settings, report_fn=print):
-    main_armature = settings.main_armature
-    if not main_armature or main_armature.type != "ARMATURE":
-        raise ValueError("Choose a valid main armature.")
+    main_armature = None
 
     folder = bpy.path.abspath(settings.folder)
     if not folder or not os.path.isdir(folder):
@@ -676,6 +672,7 @@ def batch_import_mixamo_actions(settings, report_fn=print):
         "actions_created": 0,
         "warnings": [],
         "errors": [],
+        "master_armature": "",
     }
 
     if not fbx_files:
@@ -683,9 +680,10 @@ def batch_import_mixamo_actions(settings, report_fn=print):
         return summary
 
     for filepath in fbx_files:
-        base_action_name = action_name_from_file(filepath) if settings.rename_from_filename else None
+        base_action_name = action_name_from_file(filepath)
         imported_objects = []
         imported_actions_to_remove = []
+        keep_imported_objects = False
 
         try:
             report_fn("")
@@ -714,79 +712,31 @@ def batch_import_mixamo_actions(settings, report_fn=print):
             report_fn(f"Chosen armature: {imported_armature.name!r}")
             report_fn(f"Imported action: {imported_action.name if imported_action else '<none>'}")
 
+            if main_armature is None:
+                main_armature = imported_armature
+                keep_imported_objects = True
+                summary["master_armature"] = main_armature.name
+                report_fn(f"Using first imported armature as master: {main_armature.name!r}")
+
             if not imported_action:
                 summary["errors"].append(f"{os.path.basename(filepath)}: imported armature has no Action")
                 report_fn("ERROR: imported armature has no Action")
                 continue
             imported_actions_to_remove.append(imported_action)
 
-            if not base_action_name:
-                base_action_name = imported_action.name or action_name_from_file(filepath)
-
             action_name = make_unique_action_name(base_action_name, settings.overwrite_existing)
             report_fn(f"Output action name: {action_name}")
             report_fn(f"Imported fcurve count: {action_fcurve_count(imported_action)}")
             report_fn(f"Main armature bone count: {len(main_armature.data.bones)}")
 
-            transfer_mode = getattr(settings, "transfer_mode", "COPY")
-            bake_sample_step = getattr(settings, "bake_sample_step", 1)
-
-            if transfer_mode == "REST_CORRECTED":
-                new_action, warnings = rest_corrected_action(
-                    imported_armature,
-                    imported_action,
-                    main_armature,
-                    action_name,
-                    strip_prefixes=settings.strip_mixamo_prefix,
-                    ignore_end_bones=settings.ignore_end_bones,
-                    fake_user=settings.mark_fake_user,
-                    sample_step=bake_sample_step,
-                )
-                report_fn(
-                    f"Rest-corrected {warnings['baked_bones']} bone(s) over "
-                    f"{warnings['baked_frames']} frame sample(s)"
-                )
-                if warnings.get("ignored_end_bones"):
-                    report_fn(f"Ignored {warnings['ignored_end_bones']} terminal/end bone(s)")
-            elif transfer_mode == "BAKE":
-                new_action, warnings = bake_retargeted_action(
-                    imported_armature,
-                    imported_action,
-                    main_armature,
-                    action_name,
-                    strip_prefixes=settings.strip_mixamo_prefix,
-                    ignore_end_bones=settings.ignore_end_bones,
-                    fake_user=settings.mark_fake_user,
-                    sample_step=bake_sample_step,
-                )
-                report_fn(
-                    f"Baked {warnings['baked_bones']} bone(s) over "
-                    f"{warnings['baked_frames']} frame sample(s)"
-                )
-                if warnings.get("ignored_end_bones"):
-                    report_fn(f"Ignored {warnings['ignored_end_bones']} terminal/end bone(s)")
-            else:
-                new_action, warnings = copy_filtered_action(
-                    imported_action,
-                    main_armature,
-                    action_name,
-                    strip_prefixes=settings.strip_mixamo_prefix,
-                    ignore_end_bones=settings.ignore_end_bones,
-                    fake_user=settings.mark_fake_user,
-                )
-
-            keyed_constraints = 0
-            if getattr(settings, "disable_ik_constraints_in_actions", True):
-                keyed_constraints = add_constraint_influence_keys(new_action, main_armature, constraint_type="IK", influence=0.0)
-                if keyed_constraints:
-                    report_fn(f"Keyed {keyed_constraints} IK constraint influence(s) to 0 in Action")
-
-            if settings.assign_last_action:
-                bind_action_to_armature(main_armature, new_action)
-                report_fn(f"Assigned Action {new_action.name} to {main_armature.name}")
-
-            if settings.push_to_nla:
-                push_action_to_nla(main_armature, new_action, action_name)
+            new_action, warnings = copy_filtered_action(
+                imported_action,
+                main_armature,
+                action_name,
+                strip_prefixes=False,
+                ignore_end_bones=False,
+                fake_user=True,
+            )
 
             summary["actions_created"] += 1
 
@@ -816,13 +766,17 @@ def batch_import_mixamo_actions(settings, report_fn=print):
                 if obj.animation_data and obj.animation_data.action in imported_actions_to_remove:
                     obj.animation_data.action = None
 
-            if settings.delete_temp_imports and imported_objects:
+            if imported_objects and not keep_imported_objects:
                 report_fn(f"Deleting {len(imported_objects)} temporary imported object(s)")
                 remove_objects(imported_objects)
+            elif keep_imported_objects:
+                report_fn(f"Keeping {len(imported_objects)} object(s) from first FBX as the combined character")
 
             remove_temporary_actions(imported_actions_to_remove, report_fn=report_fn)
 
-    report_fn("Mixamo batch import finished.")
+    report_fn("FBX animation combine finished.")
+    if summary["master_armature"]:
+        report_fn(f"Master armature: {summary['master_armature']}")
     report_fn(f"Files processed: {summary['files']}")
     report_fn(f"Actions created: {summary['actions_created']}")
     report_fn(f"Warnings: {len(summary['warnings'])}")
@@ -836,92 +790,10 @@ def batch_import_mixamo_actions(settings, report_fn=print):
 
 
 class MIXAMO_BATCH_Settings(bpy.types.PropertyGroup):
-    main_armature: PointerProperty(
-        name="Main Armature",
-        description="Existing rig that should receive the imported Actions",
-        type=bpy.types.Object,
-        poll=lambda self, obj: obj.type == "ARMATURE",
-    )
-
     folder: StringProperty(
         name="FBX Folder",
-        description="Folder containing Mixamo animation FBX files",
+        description="Folder containing compatible FBX animation files",
         subtype="DIR_PATH",
-    )
-
-    transfer_mode: EnumProperty(
-        name="Transfer Mode",
-        description="How animation from each imported FBX should be transferred to the main armature",
-        items=(
-            (
-                "REST_CORRECTED",
-                "Rest-Pose Corrected",
-                "Experimental: convert source bone-local rotations into the target armature's rest-pose axes",
-            ),
-            (
-                "COPY",
-                "Direct Copy Curves",
-                "Copy matching F-curves directly; use only when the imported and target armatures have the same rest pose",
-            ),
-            (
-                "BAKE",
-                "Bake Retargeted Pose",
-                "Experimental: sample the imported pose and key equivalent transforms on the selected armature",
-            ),
-        ),
-        default="COPY",
-    )
-
-    bake_sample_step: IntProperty(
-        name="Bake Every N Frames",
-        description="Frame step for baked retarget mode. 1 preserves every source frame",
-        default=1,
-        min=1,
-        max=30,
-    )
-
-    rename_from_filename: BoolProperty(
-        name="Rename From Filename",
-        default=True,
-    )
-
-    mark_fake_user: BoolProperty(
-        name="Mark Fake User",
-        default=True,
-    )
-
-    push_to_nla: BoolProperty(
-        name="Push To NLA",
-        default=False,
-    )
-
-    assign_last_action: BoolProperty(
-        name="Assign Last Action",
-        description="Assign each created Action to the main armature as it is created. Final result leaves the last Action active",
-        default=False,
-    )
-
-    delete_temp_imports: BoolProperty(
-        name="Delete Temporary Imports",
-        default=True,
-    )
-
-    strip_mixamo_prefix: BoolProperty(
-        name="Strip Mixamo Prefix",
-        description='Strip prefixes such as "mixamorig:" from imported F-curve bone paths',
-        default=True,
-    )
-
-    ignore_end_bones: BoolProperty(
-        name="Ignore *_end Bones",
-        description="Skip imported terminal/end-bone F-curves if those bones do not exist on the main rig",
-        default=True,
-    )
-
-    disable_ik_constraints_in_actions: BoolProperty(
-        name="Disable IK In Imported Actions",
-        description="Key IK constraint influence to 0 so imported Mixamo FK bone curves are not overridden by IK controls",
-        default=True,
     )
 
     overwrite_existing: BoolProperty(
@@ -946,8 +818,8 @@ class MIXAMO_BATCH_Settings(bpy.types.PropertyGroup):
 
 class MIXAMO_BATCH_OT_import(bpy.types.Operator):
     bl_idname = "object.mixamo_batch_import_actions"
-    bl_label = "Import Mixamo Actions"
-    bl_description = "Batch-import Mixamo FBX animation files as Actions for the selected main armature"
+    bl_label = "Combine FBX Animations"
+    bl_description = "Combine compatible FBX animation files as Actions on one master armature"
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
@@ -958,7 +830,7 @@ class MIXAMO_BATCH_OT_import(bpy.types.Operator):
                 log_path = settings.log_path.strip() or default_log_path()
                 with BatchLogger(log_path, mirror_to_console=True) as logger:
                     summary = batch_import_mixamo_actions(settings, report_fn=logger)
-                print(f"Mixamo batch log written to: {log_path}")
+                print(f"FBX animation combine log written to: {log_path}")
             else:
                 summary = batch_import_mixamo_actions(settings, report_fn=print)
         except Exception as exc:
@@ -980,7 +852,7 @@ class MIXAMO_BATCH_OT_import(bpy.types.Operator):
 
 
 class MIXAMO_BATCH_PT_panel(bpy.types.Panel):
-    bl_label = "Mixamo Batch"
+    bl_label = "FBX Combiner"
     bl_idname = "MIXAMO_BATCH_PT_panel"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -990,25 +862,11 @@ class MIXAMO_BATCH_PT_panel(bpy.types.Panel):
         layout = self.layout
         settings = context.scene.mixamo_batch_importer
 
-        layout.prop(settings, "main_armature")
         layout.prop(settings, "folder")
-
-        box = layout.box()
-        box.prop(settings, "transfer_mode")
-        if settings.transfer_mode == "BAKE":
-            box.prop(settings, "bake_sample_step")
-        box.prop(settings, "rename_from_filename")
-        box.prop(settings, "mark_fake_user")
-        box.prop(settings, "push_to_nla")
-        box.prop(settings, "assign_last_action")
-        box.prop(settings, "delete_temp_imports")
-        box.prop(settings, "strip_mixamo_prefix")
-        box.prop(settings, "ignore_end_bones")
-        box.prop(settings, "disable_ik_constraints_in_actions")
-        box.prop(settings, "overwrite_existing")
-        box.prop(settings, "log_to_file")
+        layout.prop(settings, "overwrite_existing")
+        layout.prop(settings, "log_to_file")
         if settings.log_to_file:
-            box.prop(settings, "log_path")
+            layout.prop(settings, "log_path")
 
         layout.operator(MIXAMO_BATCH_OT_import.bl_idname)
 

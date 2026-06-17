@@ -1,0 +1,67 @@
+<h1>Action Name Cleaner add-on for Blender</h1>
+
+<p>
+  Blender calls reusable animation clips <code>Actions</code>. Other tools and file formats may call the same idea animations, clips, takes, sequences, stacks, or animation layers.
+</p>
+
+<p>
+  When animation data moves between tools, exporters often wrap the original animation name with extra context. They may include the armature object name, the FBX animation stack, a take name, a layer name, or the name of the imported object that owned the animation. This is why a readable animation name can turn into something like this:
+</p>
+
+<pre><code>Armature.001|Rifle_StrafeRun135LeftLoop|Rifle_StrafeRun135LeftLoop:BaseAnimation</code></pre>
+
+<p>
+  The useful part is still the animation name. The Action Name Cleaner removes duplicated exporter information and converts the result to snake case:
+</p>
+
+<pre><code>rifle_strafe_run_135_left_loop</code></pre>
+
+<h2>Files</h2>
+
+<ul>
+  <li>Add-on: <a href="blender_action_name_cleaner_addon.py">blender_action_name_cleaner_addon.py</a></li>
+  <li>Panel location: <code>3D View &gt; Sidebar &gt; Animation &gt; Action Name Cleaner</code></li>
+  <li>Operator: <code>Clean Action Names</code></li>
+</ul>
+
+<h2>What it cleans</h2>
+
+<ul>
+  <li>Object wrapper names such as <code>Armature.001</code>.</li>
+  <li>FBX-style separators such as <code>|</code> and <code>:</code>.</li>
+  <li>Duplicated animation segments.</li>
+  <li>Generic suffixes such as <code>BaseAnimation</code>, <code>Layer0</code>, and <code>Animation</code>.</li>
+  <li>CamelCase names, which are split into snake case.</li>
+  <li>Numbers embedded in words, such as <code>Run135Left</code> becoming <code>run_135_left</code>.</li>
+</ul>
+
+<h2>Workflow</h2>
+
+<ol>
+  <li>Install and enable <code>blender_action_name_cleaner_addon.py</code>.</li>
+  <li>Open the Blender file that contains the Actions.</li>
+  <li>Open <code>3D View &gt; Sidebar &gt; Animation &gt; Action Name Cleaner</code>.</li>
+  <li>Choose <code>Active Action</code> or <code>All Actions</code>.</li>
+  <li>Optionally enable <code>Print Mapping</code> to print old and new names to the console.</li>
+  <li>Run <code>Clean Action Names</code>.</li>
+</ol>
+
+<h2>Examples</h2>
+
+<pre><code>Armature.001|Rifle_StrafeRun135LeftLoop|Rifle_StrafeRun135LeftLoop:BaseAnimation
+  -> rifle_strafe_run_135_left_loop
+
+Armature|Walk|Walk:BaseAnimation
+  -> walk
+
+mixamorig:Hips|RunForward|RunForward:Layer0
+  -> run_forward
+</code></pre>
+
+<h2>Notes</h2>
+
+<ul>
+  <li>The normalized form is always snake case.</li>
+  <li>If two Actions normalize to the same name, the add-on appends a numeric suffix such as <code>_01</code>.</li>
+  <li>This add-on only renames Actions. It does not modify keyframes, armatures, meshes, or exported animation data.</li>
+</ul>

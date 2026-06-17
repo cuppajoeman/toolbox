@@ -1,76 +1,91 @@
-<h1>Mixamo batch animation import workflow</h1>
+<h1>FBX animation combiner workflow</h1>
 
 <p>
-  This workflow is for a Blender character that already has its real mesh and main armature, and a folder of Mixamo animation FBX files that contain armatures with animation data. The goal is to keep one character file and turn each Mixamo FBX into a reusable Blender Action on the existing armature.
+  This workflow combines a folder of compatible FBX character files into one Blender file with one armature, one skinned mesh, and many reusable Actions. It is useful when every FBX contains the same character rig and mesh, but each file has a different animation clip.
 </p>
 
 <p>
-  The important assumption is that the character armature is in a T-pose rest pose before Mixamo animation data is applied. Mixamo animation downloads are authored against that T-pose assumption. If the character is in an A-pose rest pose, legs may still look acceptable, but arms often come in wrong because the local arm rotations are interpreted from the wrong rest orientation.
+  The result is an animation library file instead of many separate FBX files.
 </p>
 
 <h2>Files</h2>
 
 <ul>
-  <li>Add-on: <a href="mixamo_batch_action_importer.py">mixamo_batch_action_importer.py</a></li>
-  <li>Install location example: <code>%APPDATA%\Blender Foundation\Blender\5.1\scripts\addons\mixamo_batch_action_importer.py</code></li>
-  <li>Panel location: <code>3D View &gt; Sidebar &gt; Animation &gt; Mixamo Batch</code></li>
+  <li>Add-on: <a href="fbx_animation_combiner_addon.py">fbx_animation_combiner_addon.py</a></li>
+  <li>Panel location: <code>3D View &gt; Sidebar &gt; Animation &gt; FBX Combiner</code></li>
 </ul>
 
-<h2>Expected workflow</h2>
+<h2>Assumptions</h2>
+
+<ul>
+  <li>All FBX files target the same armature structure.</li>
+  <li>All FBX files use the same bone names.</li>
+  <li>All FBX files were exported from, or generated for, the same skinned character.</li>
+  <li>Each FBX usually contains one animation clip.</li>
+  <li>The character rest pose should match across files. For Mixamo-style animations, this normally means T-pose.</li>
+</ul>
+
+<h2>Empty-project workflow</h2>
 
 <ol>
-  <li>Start with the character in Blender: mesh, armature, and weight painting already set up.</li>
-  <li>If the character is not in a T-pose rest pose, convert it first. See <a href="convert_a_pose_character_to_t_pose.html">Convert an A-pose character to T-pose</a>.</li>
-  <li>Export the character to FBX from Blender.</li>
-  <li>Upload that FBX to Mixamo.</li>
-  <li>Download the animations or animation pack from Mixamo using the default settings.</li>
-  <li>Open the original character file in Blender.</li>
-  <li>Select or choose the main armature in the add-on panel.</li>
-  <li>Choose the folder containing the Mixamo animation FBX files.</li>
-  <li>Run <code>Import Mixamo Actions</code>.</li>
+  <li>Open a new empty Blender project.</li>
+  <li>Enable the <code>FBX Animation Combiner</code> add-on.</li>
+  <li>Open <code>3D View &gt; Sidebar &gt; Animation &gt; FBX Combiner</code>.</li>
+  <li>Set <code>FBX Folder</code> to the directory containing the FBX files.</li>
+  <li>Run <code>Combine FBX Animations</code>.</li>
 </ol>
 
-<h2>Recommended add-on settings</h2>
-
-<ul>
-  <li><code>Transfer Mode</code>: <code>Direct Copy Curves</code></li>
-  <li><code>Disable IK In Imported Actions</code>: enabled</li>
-  <li><code>Rename From Filename</code>: enabled</li>
-  <li><code>Mark Fake User</code>: enabled</li>
-  <li><code>Delete Temporary Imports</code>: enabled</li>
-  <li><code>Strip Mixamo Prefix</code>: enabled</li>
-  <li><code>Ignore *_end Bones</code>: enabled</li>
-  <li><code>Overwrite Existing Actions</code>: enabled when re-importing the same animation set</li>
-</ul>
-
-<h2>What the add-on does</h2>
-
-<ul>
-  <li>Imports each FBX in the selected folder.</li>
-  <li>Finds the temporary imported armature and its Action.</li>
-  <li>Creates a clean Action on the real selected armature.</li>
-  <li>Copies matching F-curves by bone name.</li>
-  <li>Ignores harmless terminal bones such as <code>*_end</code>.</li>
-  <li>Keys IK constraint influence to <code>0</code> inside the imported Action when <code>Disable IK In Imported Actions</code> is enabled.</li>
-  <li>Deletes the temporary imported armature and temporary source Action.</li>
-  <li>Keeps the final scene as one character armature plus many reusable Actions.</li>
-</ul>
-
-<h2>Why T-pose matters</h2>
-
 <p>
-  The add-on transfers animation primarily by bone name and local transform curves. That is simple and reliable when the source Mixamo armature and the target character armature have the same rest pose. If the target character is in A-pose, the arm bones start from a different local orientation, so the same animation curves rotate the arms from the wrong basis.
+  The first imported FBX becomes the master character. Its armature and mesh stay in the scene. Each later FBX is imported temporarily, its animation is copied into a clean Action on the master armature, and then its temporary objects are deleted.
 </p>
 
-<p>
-  In practice, this can look like the legs working while the arms are twisted, lowered, or otherwise incorrect. The legs are often close enough between rigs, but arms can differ by 50 degrees or more between A-pose and T-pose.
-</p>
-
-<h2>Troubleshooting</h2>
+<h2>Settings</h2>
 
 <ul>
-  <li>If the Action appears bound to <code>Armature.001</code>, the file probably contains leftover temporary Actions from an old import. Re-run from a clean character file with the current add-on.</li>
-  <li>If the character is stiff, make sure <code>Disable IK In Imported Actions</code> is enabled. IK constraints can override imported FK animation curves.</li>
-  <li>If legs work but arms are wrong, check whether the character's rest pose is A-pose instead of T-pose.</li>
-  <li>If an FBX imports with no Action, it may be a reference/startup FBX rather than an animation. The add-on can skip it.</li>
+  <li><code>FBX Folder</code>: the directory containing the compatible FBX files.</li>
+  <li><code>Overwrite Existing Actions</code>: enabled when re-importing the same folder and replacing old Actions.</li>
+  <li><code>Log To File</code>: writes a detailed combine log.</li>
+</ul>
+
+<p>
+  Everything else is intentionally automatic: Actions are named from filenames, fake users are enabled, later imported FBXs are deleted after their Actions are copied, and the transfer path is direct-copy because the files are assumed to target the same rig.
+</p>
+
+<h2>What the add-on creates</h2>
+
+<p>
+  After a successful combine, the Blender file should contain one master armature and mesh, plus Actions named from the FBX filenames:
+</p>
+
+<pre><code>idle
+walk
+run
+jump
+reload
+death
+</code></pre>
+
+<p>
+  These Actions can then be selected in the Action Editor, pushed to NLA, cleaned with the Root Motion Cleaner, or exported through glTF/FBX.
+</p>
+
+<h2>Root motion cleanup</h2>
+
+<p>
+  Some FBX imports store forward movement on the armature object location curves instead of only on a root bone. If the combined animations should be stationary/in-place, run the <a href="root_motion_cleaner_addon.html">Root Motion Cleaner add-on</a> afterward.
+</p>
+
+<h2>Mixamo note</h2>
+
+<p>
+  This add-on still works for Mixamo animation folders. For Mixamo-style downloads, the source and target character should be in T-pose. If the character is in A-pose, convert it first: <a href="convert_a_pose_character_to_t_pose.html">Convert an A-pose character to T-pose</a>.
+</p>
+
+<h2>Limitations</h2>
+
+<ul>
+  <li>The add-on expects compatible skeletons. It is not a full retargeting system for unrelated rigs.</li>
+  <li>It expects one main animation Action per imported FBX.</li>
+  <li>If one FBX contains multiple animation takes, those may need separate support.</li>
+  <li>If arm rest poses differ, especially A-pose versus T-pose, arms may not line up even when bone names match.</li>
 </ul>

@@ -1,0 +1,48 @@
+<h1>dnSpy</h1>
+
+<p>
+  dnSpy is a .NET assembly browser, decompiler, debugger, and editor. It is useful when you have a compiled .NET program or library and want to inspect the C#-like source that was produced from the assembly. It can also export a whole assembly as a C# project, which is the workflow I usually want when I need to search and compare code across many files.
+</p>
+
+<h2>opening an assembly</h2>
+
+<p>
+  Start dnSpy, then use <code>File -&gt; Open...</code> and choose the assembly you want to inspect. For a Unity game using the Mono scripting backend, the main game code is usually in a managed DLL under a path like:
+</p>
+
+<pre><code>GameName_Data\Managed\Assembly-CSharp.dll</code></pre>
+
+<p>
+  After opening the DLL, dnSpy shows the assembly tree on the left. Expanding namespaces and classes lets you browse decompiled code directly in the editor pane.
+</p>
+
+<h2>saving the decompiled project</h2>
+
+<p>
+  To save the decompiled code as files, use <code>File -&gt; Export to Project...</code>. Pick an empty output folder. dnSpy will write a Visual Studio style project, usually including a solution file, a project file, and one C# file per decompiled type.
+</p>
+
+<p>
+  The output will look roughly like this:
+</p>
+
+<pre><code>decompiled-output\
+  solution.sln
+  Assembly-CSharp\
+    Assembly-CSharp.csproj
+    SomeNamespace\
+      SomeClass.cs</code></pre>
+
+<p>
+  Once it is exported, the folder can be searched with regular tools, opened in an editor, or compared against a previous export after an application update.
+</p>
+
+<h2>notes</h2>
+
+<p>
+  <code>Save Code...</code> is useful for saving the currently viewed decompiled file. <code>Export to Project...</code> is the one to use when you want the whole assembly saved as a project.
+</p>
+
+<p>
+  If the program was built with native/IL2CPP instead of regular managed .NET assemblies, this workflow may not produce the game logic directly. In that case, a different toolchain is needed.
+</p>
