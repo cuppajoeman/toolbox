@@ -1,0 +1,59 @@
+<h1>Empty Action Cleaner add-on for Blender</h1>
+
+<p>
+  This add-on deletes Blender Actions that do not contain meaningful animation keyframe data. It is useful after importing or combining animation files, because Blender and importers can sometimes leave behind placeholder Actions, failed import Actions, one-frame pose Actions, or source Actions that no longer hold useful curves.
+</p>
+
+<p>
+  In Blender, an Action is the container for animation curves. If an Action has no keyframes, or only has keys on one frame, it does not actually animate over time. Keeping those Actions around makes the Action Editor harder to read and can make export/debugging more confusing.
+</p>
+
+<h2>Files</h2>
+
+<ul>
+  <li>Add-on: <a href="blender_empty_action_cleaner_addon.py">blender_empty_action_cleaner_addon.py</a></li>
+  <li>Panel location: <code>3D View &gt; Sidebar &gt; Animation &gt; Empty Action Cleaner</code></li>
+  <li>Operator: <code>Delete Empty Actions</code></li>
+</ul>
+
+<h2>Workflow</h2>
+
+<ol>
+  <li>Install and enable <code>blender_empty_action_cleaner_addon.py</code>.</li>
+  <li>Open the Blender file that contains the Actions.</li>
+  <li>Open <code>3D View &gt; Sidebar &gt; Animation &gt; Empty Action Cleaner</code>.</li>
+  <li>Choose <code>Active Action</code> or <code>All Actions</code>.</li>
+  <li>Leave <code>Dry Run</code> enabled first.</li>
+  <li>Run <code>Delete Empty Actions</code> to see what would be removed.</li>
+  <li>If the result looks right, disable <code>Dry Run</code> and run it again.</li>
+</ol>
+
+<h2>Settings</h2>
+
+<ul>
+  <li><code>Scope</code>: check either the active Action or every Action in the file.</li>
+  <li><code>Armature</code>: used only when scope is <code>Active Action</code>.</li>
+  <li><code>Dry Run</code>: reports empty Actions without deleting them.</li>
+  <li><code>Min Keyed Frames</code>: Actions with fewer distinct keyed frames than this are deleted. The default is <code>2</code>.</li>
+  <li><code>Print Details</code>: prints Action names to the console as they are reported or deleted.</li>
+</ul>
+
+<h2>What counts as non-animating</h2>
+
+<p>
+  By default, an Action is considered non-animating when it has fewer than two distinct keyed frames. This removes Actions with zero keyframes and Actions that only store a single pose on one frame. The add-on supports both older Blender Actions and Blender 5.x layered Actions.
+</p>
+
+<h2>What it does not delete</h2>
+
+<ul>
+  <li>Actions with at least two distinct keyed frames by default.</li>
+  <li>Meshes, armatures, materials, or other scene objects.</li>
+  <li>Actions that have multiple keyed frames but visually do not move. For those, inspect the curves directly.</li>
+</ul>
+
+<h2>Typical use</h2>
+
+<p>
+  Run this after using the <a href="mixamo_batch_import_workflow.html">FBX Animation Combiner</a> or after importing several animation files by hand. It keeps the Action list focused on animation clips that actually contain data.
+</p>

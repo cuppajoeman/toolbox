@@ -1,0 +1,54 @@
+<h1>Armature Snake Case add-on</h1>
+
+<p>
+    This add-on renames an armature and its bones to snake_case. It is useful when imported rigs use names like <code>Spine1</code>, <code>LeftArm</code>, <code>mixamorig:Hips</code>, or <code>DEF-upper_arm.L</code>, but your engine or tools expect consistent lowercase names.
+</p>
+
+<h2>Download</h2>
+
+<p>
+    <a href="blender_armature_snake_case_addon.py">blender_armature_snake_case_addon.py</a>
+</p>
+
+<h2>Examples</h2>
+
+<ul>
+    <li><code>Spine1</code> becomes <code>spine_1</code></li>
+    <li><code>LeftArm</code> becomes <code>left_arm</code></li>
+    <li><code>mixamorig:Hips</code> becomes <code>mixamorig_hips</code></li>
+    <li><code>DEF-upper_arm.L</code> becomes <code>def_upper_arm_l</code></li>
+</ul>
+
+<h2>Install</h2>
+
+<ol>
+    <li>In Blender, open <b>Edit &gt; Preferences &gt; Add-ons</b>.</li>
+    <li>Use <b>Install from Disk</b> and choose <code>blender_armature_snake_case_addon.py</code>.</li>
+    <li>Enable <b>Armature Snake Case Renamer</b>.</li>
+</ol>
+
+<h2>Use</h2>
+
+<ol>
+    <li>Select the armature object.</li>
+    <li>Open the 3D View sidebar with <b>N</b>.</li>
+    <li>Go to <b>Animation &gt; Armature Snake Case</b>.</li>
+    <li>Run once with <b>Dry Run</b> enabled and check the console output.</li>
+    <li>Disable <b>Dry Run</b> and run again to rename the rig.</li>
+</ol>
+
+<h2>What it updates</h2>
+
+<ul>
+    <li>Bone names on the armature.</li>
+    <li>The armature object and armature data-block name, if enabled.</li>
+    <li>Matching vertex groups on meshes using that armature, if enabled.</li>
+    <li>Action F-curve paths like <code>pose.bones["Spine1"].rotation_quaternion</code>, if enabled.</li>
+    <li>Constraint subtargets that point at renamed bones, if enabled.</li>
+</ul>
+
+<h2>Notes</h2>
+
+<p>
+    Renaming bones changes the public interface of the rig. Do it before exporting to the engine or before building tools that depend on exact bone names. If an animation came from a different file with the old bone names, clean the rig and the Actions together in the same Blender file.
+</p>

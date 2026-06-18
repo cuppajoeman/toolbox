@@ -1,0 +1,52 @@
+<h1>Action Start Cleaner add-on</h1>
+
+<p>
+    Some imported animations keep the frame numbers from the program that exported them. That can leave an Action with empty time at the beginning: for example, the real animation keys might start on frame 42 even though you want the clip to start immediately.
+</p>
+
+<p>
+    This add-on shifts Actions so the earliest keyframe lands on a target start frame. The default target is frame 1, but it can also use the scene start frame or a custom frame.
+</p>
+
+<h2>Download</h2>
+
+<p>
+    <a href="blender_action_start_cleaner_addon.py">blender_action_start_cleaner_addon.py</a>
+</p>
+
+<h2>Install</h2>
+
+<ol>
+    <li>In Blender, open <b>Edit &gt; Preferences &gt; Add-ons</b>.</li>
+    <li>Use <b>Install from Disk</b> and choose <code>blender_action_start_cleaner_addon.py</code>.</li>
+    <li>Enable <b>Action Start Cleaner</b>.</li>
+</ol>
+
+<h2>Use</h2>
+
+<ol>
+    <li>Open the 3D View sidebar with <b>N</b>.</li>
+    <li>Go to <b>Animation &gt; Action Start Cleaner</b>.</li>
+    <li>Choose <b>All Actions</b> to clean every Action in the file, or <b>Active Action</b> to clean only the Action assigned to one armature.</li>
+    <li>Choose the target start frame.</li>
+    <li>Run once with <b>Dry Run</b> enabled to see what would move.</li>
+    <li>Disable <b>Dry Run</b> and run again to actually shift the keyframes.</li>
+</ol>
+
+<h2>What it changes</h2>
+
+<p>
+    The add-on moves every keyframe in an Action by the same amount. It also moves the keyframe handles, so curve interpolation keeps the same shape. If an Action starts at frame 30 and the target is frame 1, every keyframe is shifted by -29 frames.
+</p>
+
+<p>
+    It does not change the pose, bone names, mesh, rig, or animation values. It only changes when the keys occur.
+</p>
+
+<h2>When to use it</h2>
+
+<ul>
+    <li>After combining many FBX animations into one Blender file.</li>
+    <li>After importing animations that start later than frame 1.</li>
+    <li>Before exporting animation clips to a game engine that expects each clip to begin immediately.</li>
+</ul>

@@ -1,6 +1,5 @@
 bl_info = {
     "name": "Action Name Cleaner",
-    "author": "Codex",
     "version": (1, 0, 0),
     "blender": (4, 0, 0),
     "location": "View3D > Sidebar > Animation > Action Name Cleaner",

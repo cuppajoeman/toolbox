@@ -1,6 +1,5 @@
 bl_info = {
     "name": "FBX Animation Combiner",
-    "author": "Codex",
     "version": (1, 1, 0),
     "blender": (4, 0, 0),
     "location": "View3D > Sidebar > Animation > FBX Combiner",

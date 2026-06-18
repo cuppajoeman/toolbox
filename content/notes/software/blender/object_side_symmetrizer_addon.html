@@ -1,0 +1,59 @@
+<h1>Object Side Symmetrizer add-on</h1>
+
+<p>
+    This add-on mirrors or deletes selected objects based on left/right markers in their object names. It is meant for separate mesh objects such as armor pieces, pads, accessories, or weapon parts where you want <code>thing.L</code> to create <code>thing.R</code>.
+</p>
+
+<h2>Download</h2>
+
+<p>
+    <a href="blender_object_side_symmetrizer_addon.py">blender_object_side_symmetrizer_addon.py</a>
+</p>
+
+<h2>Recognized names</h2>
+
+<p>
+    Side markers can be prefixes or suffixes. The delimiter can be a dot, underscore, or dash.
+</p>
+
+<ul>
+    <li><code>scope.L</code> mirrors to <code>scope.R</code></li>
+    <li><code>scope_left</code> mirrors to <code>scope_right</code></li>
+    <li><code>left-scope</code> mirrors to <code>right-scope</code></li>
+    <li><code>L.scope</code> mirrors to <code>R.scope</code></li>
+</ul>
+
+<h2>Install</h2>
+
+<ol>
+    <li>In Blender, open <b>Edit &gt; Preferences &gt; Add-ons</b>.</li>
+    <li>Use <b>Install from Disk</b> and choose <code>blender_object_side_symmetrizer_addon.py</code>.</li>
+    <li>Enable <b>Object Side Symmetrizer</b>.</li>
+</ol>
+
+<h2>Use</h2>
+
+<ol>
+    <li>Select the objects you want to operate on.</li>
+    <li>Open the 3D View sidebar with <b>N</b>.</li>
+    <li>Go to <b>Object &gt; Object Side Symmetrizer</b>.</li>
+    <li>Choose <b>Symmetrize Left To Right</b>, <b>Symmetrize Right To Left</b>, <b>Delete Lefts</b>, or <b>Delete Rights</b>.</li>
+    <li>Run once with <b>Dry Run</b> enabled to check the console output.</li>
+    <li>Disable <b>Dry Run</b> and run again to apply the operation.</li>
+</ol>
+
+<h2>Mirror behavior</h2>
+
+<p>
+    The add-on duplicates the source object, renames the duplicate to the opposite side, and mirrors it across the selected world axis. For most character and weapon assets, use the default X axis and keep the asset centered around world X = 0.
+</p>
+
+<p>
+    If a counterpart already exists, <b>Overwrite Existing Counterparts</b> replaces it. If that option is off, Blender creates a numbered duplicate name instead.
+</p>
+
+<h2>Notes</h2>
+
+<p>
+    This is object-level symmetry, not edit-mode mesh symmetrize. It does not inspect mesh topology and it does not use bone naming conventions. It only uses the selected object names and their transforms.
+</p>
