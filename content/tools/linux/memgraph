@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+usage: memgraph PID [LOG_FILE]
+
+Live-graph the resident memory usage of a running process.
+
+Arguments:
+  PID       Process id to monitor.
+  LOG_FILE  Optional output log file. Defaults to mem-PID.log.
+
+Examples:
+  memgraph 817723
+  memgraph 817723 ./mem.log
+
+The log format is:
+  unix_timestamp rss_mb
+EOF
+}
+
+missing_dependency() {
+    local name="$1"
+    local hint="$2"
+
+    printf 'missing dependency: %s\n' "$name" >&2
+    printf 'install hint: %s\n' "$hint" >&2
+}
+
+require_command() {
+    local name="$1"
+    local hint="$2"
+
+    if ! command -v "$name" >/dev/null 2>&1; then
+        missing_dependency "$name" "$hint"
+        return 1
+    fi
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+    usage
+    exit 0
+fi
+
+if [[ $# -lt 1 || $# -gt 2 ]]; then
+    usage >&2
+    exit 2
+fi
+
+pid="$1"
+log_file="${2:-mem-${pid}.log}"
+
+if [[ ! "$pid" =~ ^[0-9]+$ ]]; then
+    printf 'error: PID must be a number, got: %s\n' "$pid" >&2
+    exit 2
+fi
+
+missing=0
+require_command date "install GNU coreutils; on most Linux systems this is already installed" || missing=1
+require_command awk "install awk/gawk; for example: sudo apt install gawk" || missing=1
+require_command ps "install procps; for example: sudo apt install procps" || missing=1
+require_command gnuplot "install gnuplot; for example: sudo apt install gnuplot" || missing=1
+
+if [[ "$missing" -ne 0 ]]; then
+    exit 1
+fi
+
+if ! ps -p "$pid" >/dev/null 2>&1; then
+    printf 'error: no process found with PID %s\n' "$pid" >&2
+    exit 1
+fi
+
+gnuplot_script="$(mktemp "${TMPDIR:-/tmp}/memgraph.XXXXXX.gnuplot")"
+logger_pid=""
+
+cleanup() {
+    if [[ -n "$logger_pid" ]] && kill -0 "$logger_pid" >/dev/null 2>&1; then
+        kill "$logger_pid" >/dev/null 2>&1 || true
+    fi
+
+    rm -f "$gnuplot_script"
+}
+
+trap cleanup EXIT INT TERM
+
+cat > "$gnuplot_script" <<EOF
+set xdata time
+set timefmt "%s"
+set format x "%H:%M:%S"
+set xlabel "time"
+set ylabel "RSS MB"
+set title "Process $pid RSS"
+set grid
+
+while (1) {
+    plot "$log_file" using 1:2 with lines title "RSS MB"
+    pause 1
+}
+EOF
+
+: > "$log_file"
+
+(
+    while true; do
+        rss_kb="$(ps -o rss= -p "$pid" | awk '{print $1}')"
+
+        if [[ -z "$rss_kb" ]]; then
+            printf 'process %s ended; stopped logging\n' "$pid" >&2
+            break
+        fi
+
+        awk -v t="$(date +%s)" -v r="$rss_kb" 'BEGIN { printf "%s %.1f\n", t, r / 1024 }' >> "$log_file"
+        sleep 1
+    done
+) &
+logger_pid="$!"
+
+printf 'logging PID %s RSS to %s\n' "$pid" "$log_file"
+printf 'close the gnuplot window or press Ctrl-C here to stop\n'
+
+gnuplot -p "$gnuplot_script"
