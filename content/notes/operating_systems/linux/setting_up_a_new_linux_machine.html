@@ -1,0 +1,145 @@
+<h1>Setting up a new Linux machine</h1>
+
+<p>
+  This is the quick path for a fresh Linux VM or server that I want to use for a small amount of development, cloning repos, and running services. The main idea is to stop living as root, set up SSH access, clone the toolbox repo, and generate my Vim config.
+</p>
+
+<h2>create a normal user</h2>
+
+<p>
+  If the machine starts with only root access, create a regular user and give it sudo privileges.
+</p>
+
+<pre><code class="language-bash">adduser ccn
+usermod -aG sudo ccn</code></pre>
+
+<p>
+  Then log in as that user, or switch to it:
+</p>
+
+<pre><code class="language-bash">su - ccn</code></pre>
+
+<h2>install basics</h2>
+
+<p>
+  On Debian or Ubuntu, install the tools I usually want immediately.
+</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install git vim curl openssh-client build-essential</code></pre>
+
+<h2>create an SSH key for GitHub</h2>
+
+<p>
+  Generate an SSH key on the new machine. Replace the email with the one used for GitHub if desired.
+</p>
+
+<pre><code class="language-bash">ssh-keygen -t ed25519 -C "you@example.com"</code></pre>
+
+<p>
+  Start the SSH agent and add the key.
+</p>
+
+<pre><code class="language-bash">eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519</code></pre>
+
+<p>
+  Print the public key and add it to GitHub under <code>Settings -&gt; SSH and GPG keys -&gt; New SSH key</code>.
+</p>
+
+<pre><code class="language-bash">cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<p>
+  Test the GitHub SSH connection.
+</p>
+
+<pre><code class="language-bash">ssh -T git@github.com</code></pre>
+
+<h2>clone toolbox</h2>
+
+<p>
+  I usually keep cloned projects under <code>~/projects</code>.
+</p>
+
+<pre><code class="language-bash">mkdir -p ~/projects
+cd ~/projects
+git clone git@github.com:cuppajoeman/toolbox.git</code></pre>
+
+<h2>generate vimrc</h2>
+
+<p>
+  The toolbox repo has a script that generates <code>~/.vimrc</code> from the Vim config fragments in the repo. Run it from the Vim notes directory.
+</p>
+
+<pre><code class="language-bash">cd ~/projects/toolbox/content/notes/programming/vim
+./generate_vimrc.sh</code></pre>
+
+<p>
+  If the script is not executable yet:
+</p>
+
+<pre><code class="language-bash">chmod +x generate_vimrc.sh
+./generate_vimrc.sh</code></pre>
+
+<h2>allow incoming connections</h2>
+
+<p>
+  If a server is running but cannot be reached from another machine, check both the Linux firewall on the VM and the firewall/security rules from the VPS or cloud provider. Either one can block incoming connections.
+</p>
+
+<p>
+  On Ubuntu, <code>ufw</code> is a common local firewall. Check whether it is installed and active:
+</p>
+
+<pre><code class="language-bash">sudo ufw status verbose</code></pre>
+
+<p>
+  Allow SSH before enabling <code>ufw</code>, otherwise it is easy to lock yourself out of the machine.
+</p>
+
+<pre><code class="language-bash">sudo ufw allow OpenSSH
+sudo ufw enable</code></pre>
+
+<p>
+  Open ports for the services you actually want reachable. For example:
+</p>
+
+<pre><code class="language-bash">sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 3000/tcp</code></pre>
+
+<p>
+  To remove a rule:
+</p>
+
+<pre><code class="language-bash">sudo ufw delete allow 3000/tcp</code></pre>
+
+<p>
+  Some machines use lower-level firewall tools instead of, or underneath, <code>ufw</code>, such as <code>iptables</code>, <code>nftables</code>, or <code>firewalld</code>. Useful checks are:
+</p>
+
+<pre><code class="language-bash">sudo systemctl status firewalld
+sudo nft list ruleset
+sudo iptables -S</code></pre>
+
+<p>
+  Also check that the service is listening on the expected port and address. If it is only listening on <code>127.0.0.1</code>, outside machines cannot connect even if the firewall allows the port.
+</p>
+
+<pre><code class="language-bash">ss -tulpn</code></pre>
+
+<p>
+  For a cloud VM, remember to open the same port in the provider control panel as well. These are often called firewall rules, security groups, network ACLs, or inbound rules.
+</p>
+<h2>running services</h2>
+
+<p>
+  Keep project files owned by the regular user, and use <code>sudo</code> only for system-level tasks like installing packages, opening firewall ports, or creating systemd services. Avoid running application servers as root unless there is a specific reason.
+</p>
+
+<pre><code class="language-bash">cd ~/projects/some-server
+# run/build the server as the normal user</code></pre>
+
+<p>
+  If a service needs to be long-lived, make a systemd service for it later. For a more serious public server, consider creating a dedicated service user instead of running the app under the personal login account.
+</p>
