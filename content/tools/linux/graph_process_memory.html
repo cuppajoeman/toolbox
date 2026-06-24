@@ -1,0 +1,77 @@
+<h1>graph a Linux process's memory usage</h1>
+
+<p>
+  Sometimes you want to run a Linux program, keep it in the foreground, and still watch how much memory it is using. The little <code>memgraph</code> script in this toolbox takes a process id, logs the process's RSS memory once per second, and opens a live-refreshing gnuplot graph.
+</p>
+
+<h2>install the dependencies</h2>
+
+<p>
+  The script checks for its own dependencies before it starts. It needs <code>ps</code>, <code>date</code>, <code>awk</code>, and <code>gnuplot</code>. On most Linux systems only <code>gnuplot</code> is likely to be missing.
+</p>
+
+<pre><code>sudo apt install gnuplot procps gawk coreutils</code></pre>
+
+<p>
+  On Fedora:
+</p>
+
+<pre><code>sudo dnf install gnuplot procps-ng gawk coreutils</code></pre>
+
+<p>
+  On Arch:
+</p>
+
+<pre><code>sudo pacman -S gnuplot procps-ng gawk coreutils</code></pre>
+
+<h2>use the tool</h2>
+
+<pre><code>./content/tools/linux/memgraph 817723</code></pre>
+
+<p>
+  By default it writes a log named after the process id, like <code>mem-817723.log</code>. You can choose the log path too:
+</p>
+
+<pre><code>./content/tools/linux/memgraph 817723 ./mem.log</code></pre>
+
+<p>
+  The log format is two columns:
+</p>
+
+<pre><code>unix_timestamp rss_mb</code></pre>
+
+<h2>start a process and print its pid</h2>
+
+<p>
+  If you do not mind putting the program in the background, the shell gives you the pid with <code>$!</code>:
+</p>
+
+<pre><code>./your_program &amp;
+pid=$!
+echo "PID: $pid"</code></pre>
+
+<p>
+  If you want the program to stay in the foreground, run it through a tiny wrapper:
+</p>
+
+<pre><code>sh -c 'echo "PID: $$"; exec ./your_program'</code></pre>
+
+<p>
+  The <code>exec</code> part replaces the wrapper shell with your program, so the printed pid becomes your program's pid.
+</p>
+
+<p>
+  With arguments:
+</p>
+
+<pre><code>sh -c 'echo "PID: $$"; exec "$@"' sh ./your_program arg1 arg2</code></pre>
+
+<p>
+  Then, from a second terminal:
+</p>
+
+<pre><code>./content/tools/linux/memgraph PID_FROM_THE_FIRST_TERMINAL</code></pre>
+
+<h2>script</h2>
+
+<div class="code-file" data-file-name="memgraph"></div>
