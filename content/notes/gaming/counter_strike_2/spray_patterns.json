@@ -1,0 +1,4392 @@
+{
+  "source": "https://op.gg/cs2/spray-patterns/ak47",
+  "note": "Decoded from OP.GG's client payload. Check OP.GG terms before republishing this dataset.",
+  "patterns": [
+    {
+      "id": "weapon_ak47",
+      "name": "AK-47",
+      "clipSize": 30,
+      "cycleTime": 0.1,
+      "intervalMs": 100,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/ak47",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 8
+        },
+        {
+          "x": 0.1614,
+          "y": -0.3123,
+          "time": 0.1,
+          "bullet": 2,
+          "samples": 8
+        },
+        {
+          "x": 0.05,
+          "y": -0.6188,
+          "time": 0.2,
+          "bullet": 3,
+          "samples": 8
+        },
+        {
+          "x": 0.0352,
+          "y": -1.3123,
+          "time": 0.3,
+          "bullet": 4,
+          "samples": 8
+        },
+        {
+          "x": 0.107,
+          "y": -2.2703,
+          "time": 0.4,
+          "bullet": 5,
+          "samples": 8
+        },
+        {
+          "x": 0.0018,
+          "y": -3.254,
+          "time": 0.5,
+          "bullet": 6,
+          "samples": 8
+        },
+        {
+          "x": -0.3759,
+          "y": -4.152,
+          "time": 0.6,
+          "bullet": 7,
+          "samples": 8
+        },
+        {
+          "x": -0.6758,
+          "y": -4.9282,
+          "time": 0.7,
+          "bullet": 8,
+          "samples": 8
+        },
+        {
+          "x": -0.8485,
+          "y": -5.5044,
+          "time": 0.8,
+          "bullet": 9,
+          "samples": 8
+        },
+        {
+          "x": -0.0605,
+          "y": -5.8216,
+          "time": 0.9,
+          "bullet": 10,
+          "samples": 8
+        },
+        {
+          "x": 1.1745,
+          "y": -5.7233,
+          "time": 1.0,
+          "bullet": 11,
+          "samples": 7
+        },
+        {
+          "x": 1.5496,
+          "y": -5.911,
+          "time": 1.1,
+          "bullet": 12,
+          "samples": 5
+        },
+        {
+          "x": 1.3475,
+          "y": -6.1542,
+          "time": 1.2,
+          "bullet": 13,
+          "samples": 5
+        },
+        {
+          "x": 1.9512,
+          "y": -6.1183,
+          "time": 1.3,
+          "bullet": 14,
+          "samples": 4
+        },
+        {
+          "x": 2.5876,
+          "y": -5.9859,
+          "time": 1.4,
+          "bullet": 15,
+          "samples": 4
+        },
+        {
+          "x": 2.3262,
+          "y": -6.136,
+          "time": 1.5,
+          "bullet": 16,
+          "samples": 4
+        },
+        {
+          "x": 1.2088,
+          "y": -6.2834,
+          "time": 1.6,
+          "bullet": 17,
+          "samples": 4
+        },
+        {
+          "x": 0.5945,
+          "y": -6.4798,
+          "time": 1.7,
+          "bullet": 18,
+          "samples": 4
+        },
+        {
+          "x": 0.0275,
+          "y": -6.6219,
+          "time": 1.8,
+          "bullet": 19,
+          "samples": 4
+        },
+        {
+          "x": -0.8932,
+          "y": -6.5493,
+          "time": 1.9,
+          "bullet": 20,
+          "samples": 4
+        },
+        {
+          "x": -1.5381,
+          "y": -6.3379,
+          "time": 2.0,
+          "bullet": 21,
+          "samples": 4
+        },
+        {
+          "x": -1.0622,
+          "y": -6.3786,
+          "time": 2.1,
+          "bullet": 22,
+          "samples": 4
+        },
+        {
+          "x": -1.1303,
+          "y": -6.4743,
+          "time": 2.2,
+          "bullet": 23,
+          "samples": 4
+        },
+        {
+          "x": -0.8718,
+          "y": -6.6432,
+          "time": 2.3,
+          "bullet": 24,
+          "samples": 4
+        },
+        {
+          "x": -0.8445,
+          "y": -6.734,
+          "time": 2.4,
+          "bullet": 25,
+          "samples": 4
+        },
+        {
+          "x": -1.3661,
+          "y": -6.6599,
+          "time": 2.5,
+          "bullet": 26,
+          "samples": 4
+        },
+        {
+          "x": -1.3194,
+          "y": -6.7159,
+          "time": 2.6,
+          "bullet": 27,
+          "samples": 4
+        },
+        {
+          "x": -0.5297,
+          "y": -6.7472,
+          "time": 2.7,
+          "bullet": 28,
+          "samples": 4
+        },
+        {
+          "x": 0.6645,
+          "y": -6.5386,
+          "time": 2.8,
+          "bullet": 29,
+          "samples": 4
+        },
+        {
+          "x": 1.8465,
+          "y": -6.1318,
+          "time": 2.9,
+          "bullet": 30,
+          "samples": 4
+        }
+      ]
+    },
+    {
+      "id": "weapon_aug",
+      "name": "AUG",
+      "clipSize": 30,
+      "cycleTime": 0.1,
+      "intervalMs": 100,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/aug",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 2
+        },
+        {
+          "x": -0.1689,
+          "y": -0.2249,
+          "time": 0.1,
+          "bullet": 2,
+          "samples": 2
+        },
+        {
+          "x": -0.1508,
+          "y": -0.4841,
+          "time": 0.2,
+          "bullet": 3,
+          "samples": 2
+        },
+        {
+          "x": -0.0583,
+          "y": -0.8088,
+          "time": 0.3,
+          "bullet": 4,
+          "samples": 2
+        },
+        {
+          "x": 0.0839,
+          "y": -1.4055,
+          "time": 0.4,
+          "bullet": 5,
+          "samples": 2
+        },
+        {
+          "x": 0.1538,
+          "y": -2.1205,
+          "time": 0.5,
+          "bullet": 6,
+          "samples": 2
+        },
+        {
+          "x": -0.0517,
+          "y": -2.8465,
+          "time": 0.6,
+          "bullet": 7,
+          "samples": 2
+        },
+        {
+          "x": -0.3247,
+          "y": -3.4648,
+          "time": 0.7,
+          "bullet": 8,
+          "samples": 2
+        },
+        {
+          "x": -0.649,
+          "y": -3.9259,
+          "time": 0.8,
+          "bullet": 9,
+          "samples": 2
+        },
+        {
+          "x": -0.8662,
+          "y": -4.2766,
+          "time": 0.9,
+          "bullet": 10,
+          "samples": 2
+        },
+        {
+          "x": -0.9727,
+          "y": -4.4835,
+          "time": 1.0,
+          "bullet": 11,
+          "samples": 2
+        },
+        {
+          "x": -0.5157,
+          "y": -4.6556,
+          "time": 1.1,
+          "bullet": 12,
+          "samples": 2
+        },
+        {
+          "x": -0.549,
+          "y": -4.7821,
+          "time": 1.2,
+          "bullet": 13,
+          "samples": 2
+        },
+        {
+          "x": -0.8675,
+          "y": -4.813,
+          "time": 1.3,
+          "bullet": 14,
+          "samples": 2
+        },
+        {
+          "x": -0.6575,
+          "y": -4.8934,
+          "time": 1.4,
+          "bullet": 15,
+          "samples": 2
+        },
+        {
+          "x": 0.1466,
+          "y": -4.8207,
+          "time": 1.5,
+          "bullet": 16,
+          "samples": 2
+        },
+        {
+          "x": 1.1155,
+          "y": -4.5389,
+          "time": 1.6,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": 1.6822,
+          "y": -4.3774,
+          "time": 1.7,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": 1.6425,
+          "y": -4.5097,
+          "time": 1.8,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": 1.754,
+          "y": -4.5965,
+          "time": 1.9,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": 1.7124,
+          "y": -4.6503,
+          "time": 2.0,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": 0.8968,
+          "y": -4.7335,
+          "time": 2.1,
+          "bullet": 22,
+          "samples": 2
+        },
+        {
+          "x": 0.1038,
+          "y": -4.7384,
+          "time": 2.2,
+          "bullet": 23,
+          "samples": 2
+        },
+        {
+          "x": -0.0164,
+          "y": -4.8327,
+          "time": 2.3,
+          "bullet": 24,
+          "samples": 2
+        },
+        {
+          "x": 0.0425,
+          "y": -4.8981,
+          "time": 2.4,
+          "bullet": 25,
+          "samples": 2
+        },
+        {
+          "x": -0.5412,
+          "y": -4.8363,
+          "time": 2.5,
+          "bullet": 26,
+          "samples": 2
+        },
+        {
+          "x": -1.2879,
+          "y": -4.6288,
+          "time": 2.6,
+          "bullet": 27,
+          "samples": 2
+        },
+        {
+          "x": -1.4591,
+          "y": -4.5997,
+          "time": 2.7,
+          "bullet": 28,
+          "samples": 2
+        },
+        {
+          "x": -0.8422,
+          "y": -4.7002,
+          "time": 2.8,
+          "bullet": 29,
+          "samples": 2
+        },
+        {
+          "x": -0.4776,
+          "y": -4.8205,
+          "time": 2.9,
+          "bullet": 30,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "id": "weapon_famas",
+      "name": "FAMAS",
+      "clipSize": 25,
+      "cycleTime": 0.09,
+      "intervalMs": 90,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/famas",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 3
+        },
+        {
+          "x": 0.1546,
+          "y": -0.1711,
+          "time": 0.09,
+          "bullet": 2,
+          "samples": 3
+        },
+        {
+          "x": 0.1893,
+          "y": -0.4922,
+          "time": 0.18,
+          "bullet": 3,
+          "samples": 3
+        },
+        {
+          "x": 0.2613,
+          "y": -0.7285,
+          "time": 0.27,
+          "bullet": 4,
+          "samples": 3
+        },
+        {
+          "x": 0.4146,
+          "y": -1.0572,
+          "time": 0.36,
+          "bullet": 5,
+          "samples": 3
+        },
+        {
+          "x": 0.395,
+          "y": -1.6312,
+          "time": 0.45,
+          "bullet": 6,
+          "samples": 3
+        },
+        {
+          "x": 0.2029,
+          "y": -2.243,
+          "time": 0.54,
+          "bullet": 7,
+          "samples": 3
+        },
+        {
+          "x": -0.3164,
+          "y": -2.6719,
+          "time": 0.63,
+          "bullet": 8,
+          "samples": 3
+        },
+        {
+          "x": -0.6331,
+          "y": -3.0436,
+          "time": 0.72,
+          "bullet": 9,
+          "samples": 3
+        },
+        {
+          "x": -0.2727,
+          "y": -3.399,
+          "time": 0.81,
+          "bullet": 10,
+          "samples": 3
+        },
+        {
+          "x": 0.3781,
+          "y": -3.5527,
+          "time": 0.9,
+          "bullet": 11,
+          "samples": 3
+        },
+        {
+          "x": 0.8758,
+          "y": -3.6591,
+          "time": 0.99,
+          "bullet": 12,
+          "samples": 3
+        },
+        {
+          "x": 1.1404,
+          "y": -3.7768,
+          "time": 1.08,
+          "bullet": 13,
+          "samples": 2
+        },
+        {
+          "x": 0.7906,
+          "y": -3.9759,
+          "time": 1.17,
+          "bullet": 14,
+          "samples": 2
+        },
+        {
+          "x": 0.0942,
+          "y": -4.0407,
+          "time": 1.26,
+          "bullet": 15,
+          "samples": 2
+        },
+        {
+          "x": -0.3268,
+          "y": -4.1089,
+          "time": 1.35,
+          "bullet": 16,
+          "samples": 2
+        },
+        {
+          "x": -0.846,
+          "y": -4.0938,
+          "time": 1.44,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": -1.1285,
+          "y": -4.1397,
+          "time": 1.53,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": -1.4991,
+          "y": -4.107,
+          "time": 1.62,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": -1.4963,
+          "y": -4.2302,
+          "time": 1.71,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": -1.1677,
+          "y": -4.345,
+          "time": 1.8,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": -0.5499,
+          "y": -4.3596,
+          "time": 1.89,
+          "bullet": 22,
+          "samples": 2
+        },
+        {
+          "x": -0.5867,
+          "y": -4.3532,
+          "time": 1.98,
+          "bullet": 23,
+          "samples": 2
+        },
+        {
+          "x": -0.9897,
+          "y": -4.2539,
+          "time": 2.07,
+          "bullet": 24,
+          "samples": 2
+        },
+        {
+          "x": -1.5092,
+          "y": -4.063,
+          "time": 2.16,
+          "bullet": 25,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "id": "weapon_galilar",
+      "name": "Galil AR",
+      "clipSize": 35,
+      "cycleTime": 0.09,
+      "intervalMs": 90,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/galilar",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 6
+        },
+        {
+          "x": -0.171,
+          "y": -0.1852,
+          "time": 0.09,
+          "bullet": 2,
+          "samples": 6
+        },
+        {
+          "x": -0.1279,
+          "y": -0.4184,
+          "time": 0.18,
+          "bullet": 3,
+          "samples": 6
+        },
+        {
+          "x": -0.205,
+          "y": -0.5611,
+          "time": 0.27,
+          "bullet": 4,
+          "samples": 6
+        },
+        {
+          "x": -0.4888,
+          "y": -0.9669,
+          "time": 0.36,
+          "bullet": 5,
+          "samples": 6
+        },
+        {
+          "x": -0.7403,
+          "y": -1.5319,
+          "time": 0.45,
+          "bullet": 6,
+          "samples": 6
+        },
+        {
+          "x": -0.7043,
+          "y": -2.2198,
+          "time": 0.54,
+          "bullet": 7,
+          "samples": 6
+        },
+        {
+          "x": -0.7736,
+          "y": -2.8663,
+          "time": 0.63,
+          "bullet": 8,
+          "samples": 6
+        },
+        {
+          "x": -1.0279,
+          "y": -3.3404,
+          "time": 0.72,
+          "bullet": 9,
+          "samples": 6
+        },
+        {
+          "x": -1.235,
+          "y": -3.6733,
+          "time": 0.81,
+          "bullet": 10,
+          "samples": 6
+        },
+        {
+          "x": -0.8933,
+          "y": -4.011,
+          "time": 0.9,
+          "bullet": 11,
+          "samples": 6
+        },
+        {
+          "x": -0.0735,
+          "y": -4.1384,
+          "time": 0.99,
+          "bullet": 12,
+          "samples": 6
+        },
+        {
+          "x": 0.9268,
+          "y": -3.976,
+          "time": 1.08,
+          "bullet": 13,
+          "samples": 6
+        },
+        {
+          "x": 1.6958,
+          "y": -3.7837,
+          "time": 1.17,
+          "bullet": 14,
+          "samples": 6
+        },
+        {
+          "x": 1.9893,
+          "y": -3.904,
+          "time": 1.26,
+          "bullet": 15,
+          "samples": 5
+        },
+        {
+          "x": 2.2938,
+          "y": -3.9382,
+          "time": 1.35,
+          "bullet": 16,
+          "samples": 5
+        },
+        {
+          "x": 2.4583,
+          "y": -3.9898,
+          "time": 1.44,
+          "bullet": 17,
+          "samples": 5
+        },
+        {
+          "x": 2.4353,
+          "y": -4.1084,
+          "time": 1.53,
+          "bullet": 18,
+          "samples": 5
+        },
+        {
+          "x": 2.0568,
+          "y": -4.2975,
+          "time": 1.62,
+          "bullet": 19,
+          "samples": 4
+        },
+        {
+          "x": 1.3199,
+          "y": -4.4598,
+          "time": 1.71,
+          "bullet": 20,
+          "samples": 4
+        },
+        {
+          "x": 0.7848,
+          "y": -4.5642,
+          "time": 1.8,
+          "bullet": 21,
+          "samples": 4
+        },
+        {
+          "x": -0.0989,
+          "y": -4.4479,
+          "time": 1.89,
+          "bullet": 22,
+          "samples": 4
+        },
+        {
+          "x": -0.9064,
+          "y": -4.1927,
+          "time": 1.98,
+          "bullet": 23,
+          "samples": 4
+        },
+        {
+          "x": -0.8656,
+          "y": -4.2864,
+          "time": 2.07,
+          "bullet": 24,
+          "samples": 4
+        },
+        {
+          "x": -0.6997,
+          "y": -4.4158,
+          "time": 2.16,
+          "bullet": 25,
+          "samples": 4
+        },
+        {
+          "x": -1.11,
+          "y": -4.4191,
+          "time": 2.25,
+          "bullet": 26,
+          "samples": 4
+        },
+        {
+          "x": -1.5231,
+          "y": -4.382,
+          "time": 2.34,
+          "bullet": 27,
+          "samples": 4
+        },
+        {
+          "x": -1.8102,
+          "y": -4.2739,
+          "time": 2.43,
+          "bullet": 28,
+          "samples": 4
+        },
+        {
+          "x": -1.2391,
+          "y": -4.3221,
+          "time": 2.52,
+          "bullet": 29,
+          "samples": 4
+        },
+        {
+          "x": -0.2373,
+          "y": -4.2214,
+          "time": 2.61,
+          "bullet": 30,
+          "samples": 4
+        },
+        {
+          "x": 0.4775,
+          "y": -4.2269,
+          "time": 2.7,
+          "bullet": 31,
+          "samples": 4
+        },
+        {
+          "x": 0.7427,
+          "y": -4.3567,
+          "time": 2.79,
+          "bullet": 32,
+          "samples": 4
+        },
+        {
+          "x": 0.6868,
+          "y": -4.481,
+          "time": 2.88,
+          "bullet": 33,
+          "samples": 4
+        },
+        {
+          "x": 1.261,
+          "y": -4.3229,
+          "time": 2.97,
+          "bullet": 34,
+          "samples": 4
+        },
+        {
+          "x": 1.9598,
+          "y": -3.9975,
+          "time": 3.06,
+          "bullet": 35,
+          "samples": 4
+        }
+      ]
+    },
+    {
+      "id": "weapon_m4a1_silencer",
+      "name": "M4A1-S",
+      "clipSize": 20,
+      "cycleTime": 0.1,
+      "intervalMs": 100,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/m4a1_silencer",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 7
+        },
+        {
+          "x": -0.0486,
+          "y": -0.2412,
+          "time": 0.1,
+          "bullet": 2,
+          "samples": 7
+        },
+        {
+          "x": -0.0486,
+          "y": -0.466,
+          "time": 0.2,
+          "bullet": 3,
+          "samples": 7
+        },
+        {
+          "x": 0.0454,
+          "y": -0.6387,
+          "time": 0.3,
+          "bullet": 4,
+          "samples": 7
+        },
+        {
+          "x": 0.0376,
+          "y": -1.0887,
+          "time": 0.4,
+          "bullet": 5,
+          "samples": 7
+        },
+        {
+          "x": 0.0224,
+          "y": -1.6563,
+          "time": 0.5,
+          "bullet": 6,
+          "samples": 7
+        },
+        {
+          "x": 0.2019,
+          "y": -2.2439,
+          "time": 0.6,
+          "bullet": 7,
+          "samples": 7
+        },
+        {
+          "x": 0.1298,
+          "y": -2.9203,
+          "time": 0.7,
+          "bullet": 8,
+          "samples": 7
+        },
+        {
+          "x": -0.2711,
+          "y": -3.2364,
+          "time": 0.8,
+          "bullet": 9,
+          "samples": 7
+        },
+        {
+          "x": -0.6159,
+          "y": -3.4182,
+          "time": 0.9,
+          "bullet": 10,
+          "samples": 7
+        },
+        {
+          "x": -0.9648,
+          "y": -3.4698,
+          "time": 1.0,
+          "bullet": 11,
+          "samples": 5
+        },
+        {
+          "x": -0.6414,
+          "y": -3.6586,
+          "time": 1.1,
+          "bullet": 12,
+          "samples": 4
+        },
+        {
+          "x": -0.0597,
+          "y": -3.8091,
+          "time": 1.2,
+          "bullet": 13,
+          "samples": 3
+        },
+        {
+          "x": 0.6713,
+          "y": -3.6939,
+          "time": 1.3,
+          "bullet": 14,
+          "samples": 3
+        },
+        {
+          "x": 1.252,
+          "y": -3.5669,
+          "time": 1.4,
+          "bullet": 15,
+          "samples": 2
+        },
+        {
+          "x": 1.6247,
+          "y": -3.4856,
+          "time": 1.5,
+          "bullet": 16,
+          "samples": 2
+        },
+        {
+          "x": 1.4702,
+          "y": -3.6493,
+          "time": 1.6,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": 1.3606,
+          "y": -3.7628,
+          "time": 1.7,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": 1.6729,
+          "y": -3.6745,
+          "time": 1.8,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": 1.8817,
+          "y": -3.6193,
+          "time": 1.9,
+          "bullet": 20,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "id": "weapon_m4a1",
+      "name": "M4A4",
+      "clipSize": 30,
+      "cycleTime": 0.09,
+      "intervalMs": 90,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/m4a1",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 5
+        },
+        {
+          "x": -0.0575,
+          "y": -0.2633,
+          "time": 0.09,
+          "bullet": 2,
+          "samples": 5
+        },
+        {
+          "x": -0.0598,
+          "y": -0.5211,
+          "time": 0.18,
+          "bullet": 3,
+          "samples": 5
+        },
+        {
+          "x": 0.0339,
+          "y": -0.8934,
+          "time": 0.27,
+          "bullet": 4,
+          "samples": 5
+        },
+        {
+          "x": 0.0727,
+          "y": -1.4951,
+          "time": 0.36,
+          "bullet": 5,
+          "samples": 5
+        },
+        {
+          "x": 0.0228,
+          "y": -2.2031,
+          "time": 0.45,
+          "bullet": 6,
+          "samples": 5
+        },
+        {
+          "x": 0.2546,
+          "y": -2.932,
+          "time": 0.54,
+          "bullet": 7,
+          "samples": 5
+        },
+        {
+          "x": 0.1958,
+          "y": -3.5885,
+          "time": 0.63,
+          "bullet": 8,
+          "samples": 5
+        },
+        {
+          "x": -0.2959,
+          "y": -4.0562,
+          "time": 0.72,
+          "bullet": 9,
+          "samples": 5
+        },
+        {
+          "x": -0.7498,
+          "y": -4.3918,
+          "time": 0.81,
+          "bullet": 10,
+          "samples": 5
+        },
+        {
+          "x": -1.2343,
+          "y": -4.5119,
+          "time": 0.9,
+          "bullet": 11,
+          "samples": 5
+        },
+        {
+          "x": -0.9119,
+          "y": -4.7761,
+          "time": 0.99,
+          "bullet": 12,
+          "samples": 5
+        },
+        {
+          "x": -0.2186,
+          "y": -4.9263,
+          "time": 1.08,
+          "bullet": 13,
+          "samples": 5
+        },
+        {
+          "x": 0.7223,
+          "y": -4.8437,
+          "time": 1.17,
+          "bullet": 14,
+          "samples": 5
+        },
+        {
+          "x": 1.5301,
+          "y": -4.7034,
+          "time": 1.26,
+          "bullet": 15,
+          "samples": 3
+        },
+        {
+          "x": 2.0937,
+          "y": -4.5757,
+          "time": 1.35,
+          "bullet": 16,
+          "samples": 3
+        },
+        {
+          "x": 2.0139,
+          "y": -4.7618,
+          "time": 1.44,
+          "bullet": 17,
+          "samples": 3
+        },
+        {
+          "x": 1.9127,
+          "y": -4.9178,
+          "time": 1.53,
+          "bullet": 18,
+          "samples": 3
+        },
+        {
+          "x": 2.2876,
+          "y": -4.822,
+          "time": 1.62,
+          "bullet": 19,
+          "samples": 3
+        },
+        {
+          "x": 2.5815,
+          "y": -4.7439,
+          "time": 1.71,
+          "bullet": 20,
+          "samples": 3
+        },
+        {
+          "x": 2.2276,
+          "y": -4.87,
+          "time": 1.8,
+          "bullet": 21,
+          "samples": 3
+        },
+        {
+          "x": 1.3194,
+          "y": -4.9662,
+          "time": 1.89,
+          "bullet": 22,
+          "samples": 3
+        },
+        {
+          "x": 0.812,
+          "y": -5.0758,
+          "time": 1.98,
+          "bullet": 23,
+          "samples": 3
+        },
+        {
+          "x": 0.1069,
+          "y": -5.1165,
+          "time": 2.07,
+          "bullet": 24,
+          "samples": 3
+        },
+        {
+          "x": -0.1974,
+          "y": -5.227,
+          "time": 2.16,
+          "bullet": 25,
+          "samples": 3
+        },
+        {
+          "x": -0.366,
+          "y": -5.3093,
+          "time": 2.25,
+          "bullet": 26,
+          "samples": 3
+        },
+        {
+          "x": -0.1439,
+          "y": -5.3686,
+          "time": 2.34,
+          "bullet": 27,
+          "samples": 3
+        },
+        {
+          "x": -0.3116,
+          "y": -5.4294,
+          "time": 2.43,
+          "bullet": 28,
+          "samples": 3
+        },
+        {
+          "x": -0.4243,
+          "y": -5.5,
+          "time": 2.52,
+          "bullet": 29,
+          "samples": 3
+        },
+        {
+          "x": -0.5411,
+          "y": -5.5556,
+          "time": 2.61,
+          "bullet": 30,
+          "samples": 3
+        }
+      ]
+    },
+    {
+      "id": "weapon_mac10",
+      "name": "MAC-10",
+      "clipSize": 24,
+      "cycleTime": 0.075,
+      "intervalMs": 75,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/mac10",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 3
+        },
+        {
+          "x": 0.1701,
+          "y": -0.1121,
+          "time": 0.075,
+          "bullet": 2,
+          "samples": 3
+        },
+        {
+          "x": 0.279,
+          "y": -0.2976,
+          "time": 0.15,
+          "bullet": 3,
+          "samples": 3
+        },
+        {
+          "x": 0.1665,
+          "y": -0.4827,
+          "time": 0.225,
+          "bullet": 4,
+          "samples": 3
+        },
+        {
+          "x": 0.0412,
+          "y": -0.769,
+          "time": 0.3,
+          "bullet": 5,
+          "samples": 3
+        },
+        {
+          "x": -0.1861,
+          "y": -1.2625,
+          "time": 0.375,
+          "bullet": 6,
+          "samples": 3
+        },
+        {
+          "x": -0.5461,
+          "y": -1.853,
+          "time": 0.45,
+          "bullet": 7,
+          "samples": 3
+        },
+        {
+          "x": -0.8655,
+          "y": -2.5026,
+          "time": 0.525,
+          "bullet": 8,
+          "samples": 3
+        },
+        {
+          "x": -0.9938,
+          "y": -3.122,
+          "time": 0.6,
+          "bullet": 9,
+          "samples": 3
+        },
+        {
+          "x": -0.9482,
+          "y": -3.614,
+          "time": 0.675,
+          "bullet": 10,
+          "samples": 3
+        },
+        {
+          "x": -1.1923,
+          "y": -3.9319,
+          "time": 0.75,
+          "bullet": 11,
+          "samples": 3
+        },
+        {
+          "x": -1.3064,
+          "y": -4.222,
+          "time": 0.825,
+          "bullet": 12,
+          "samples": 3
+        },
+        {
+          "x": -1.3709,
+          "y": -4.5749,
+          "time": 0.9,
+          "bullet": 13,
+          "samples": 3
+        },
+        {
+          "x": -1.2903,
+          "y": -4.7317,
+          "time": 0.975,
+          "bullet": 14,
+          "samples": 3
+        },
+        {
+          "x": -1.1541,
+          "y": -4.869,
+          "time": 1.05,
+          "bullet": 15,
+          "samples": 3
+        },
+        {
+          "x": -0.7136,
+          "y": -4.9431,
+          "time": 1.125,
+          "bullet": 16,
+          "samples": 3
+        },
+        {
+          "x": 0.0918,
+          "y": -4.8083,
+          "time": 1.2,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": 0.7259,
+          "y": -4.6093,
+          "time": 1.275,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": 0.8559,
+          "y": -4.5951,
+          "time": 1.35,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": 1.0588,
+          "y": -4.5686,
+          "time": 1.425,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": 0.9657,
+          "y": -4.6044,
+          "time": 1.5,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": 1.2367,
+          "y": -4.5556,
+          "time": 1.575,
+          "bullet": 22,
+          "samples": 1
+        },
+        {
+          "x": 1.6134,
+          "y": -4.4692,
+          "time": 1.65,
+          "bullet": 23,
+          "samples": 1
+        },
+        {
+          "x": 1.6605,
+          "y": -4.4895,
+          "time": 1.725,
+          "bullet": 24,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "id": "weapon_mp5sd",
+      "name": "MP5-SD",
+      "clipSize": 30,
+      "cycleTime": 0.08,
+      "intervalMs": 80,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/mp5sd",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 2
+        },
+        {
+          "x": -0.0057,
+          "y": -0.1837,
+          "time": 0.08,
+          "bullet": 2,
+          "samples": 2
+        },
+        {
+          "x": 0.0392,
+          "y": -0.3655,
+          "time": 0.16,
+          "bullet": 3,
+          "samples": 2
+        },
+        {
+          "x": 0.1459,
+          "y": -0.4702,
+          "time": 0.24,
+          "bullet": 4,
+          "samples": 2
+        },
+        {
+          "x": 0.2731,
+          "y": -0.6343,
+          "time": 0.32,
+          "bullet": 5,
+          "samples": 2
+        },
+        {
+          "x": 0.5004,
+          "y": -0.9921,
+          "time": 0.4,
+          "bullet": 6,
+          "samples": 2
+        },
+        {
+          "x": 0.6726,
+          "y": -1.4737,
+          "time": 0.48,
+          "bullet": 7,
+          "samples": 2
+        },
+        {
+          "x": 0.7348,
+          "y": -1.9479,
+          "time": 0.56,
+          "bullet": 8,
+          "samples": 2
+        },
+        {
+          "x": 0.9764,
+          "y": -2.3247,
+          "time": 0.64,
+          "bullet": 9,
+          "samples": 2
+        },
+        {
+          "x": 1.1382,
+          "y": -2.639,
+          "time": 0.72,
+          "bullet": 10,
+          "samples": 2
+        },
+        {
+          "x": 1.4624,
+          "y": -2.7846,
+          "time": 0.8,
+          "bullet": 11,
+          "samples": 2
+        },
+        {
+          "x": 1.5406,
+          "y": -2.9797,
+          "time": 0.88,
+          "bullet": 12,
+          "samples": 2
+        },
+        {
+          "x": 1.123,
+          "y": -3.2041,
+          "time": 0.96,
+          "bullet": 13,
+          "samples": 2
+        },
+        {
+          "x": 0.4549,
+          "y": -3.2707,
+          "time": 1.04,
+          "bullet": 14,
+          "samples": 2
+        },
+        {
+          "x": -0.1272,
+          "y": -3.2662,
+          "time": 1.12,
+          "bullet": 15,
+          "samples": 2
+        },
+        {
+          "x": -0.4677,
+          "y": -3.2853,
+          "time": 1.2,
+          "bullet": 16,
+          "samples": 2
+        },
+        {
+          "x": -0.4012,
+          "y": -3.4238,
+          "time": 1.28,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": -0.212,
+          "y": -3.5657,
+          "time": 1.36,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": -0.0956,
+          "y": -3.6982,
+          "time": 1.44,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": -0.0456,
+          "y": -3.8095,
+          "time": 1.52,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": -0.1154,
+          "y": -3.8883,
+          "time": 1.6,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": 0.0918,
+          "y": -3.9109,
+          "time": 1.68,
+          "bullet": 22,
+          "samples": 2
+        },
+        {
+          "x": 0.6613,
+          "y": -3.702,
+          "time": 1.76,
+          "bullet": 23,
+          "samples": 2
+        },
+        {
+          "x": 1.1562,
+          "y": -3.4403,
+          "time": 1.84,
+          "bullet": 24,
+          "samples": 2
+        },
+        {
+          "x": 1.312,
+          "y": -3.3932,
+          "time": 1.92,
+          "bullet": 25,
+          "samples": 2
+        },
+        {
+          "x": 1.5075,
+          "y": -3.3338,
+          "time": 2.0,
+          "bullet": 26,
+          "samples": 2
+        },
+        {
+          "x": 1.4944,
+          "y": -3.3672,
+          "time": 2.08,
+          "bullet": 27,
+          "samples": 2
+        },
+        {
+          "x": 1.5328,
+          "y": -3.3899,
+          "time": 2.16,
+          "bullet": 28,
+          "samples": 2
+        },
+        {
+          "x": 1.5767,
+          "y": -3.4212,
+          "time": 2.24,
+          "bullet": 29,
+          "samples": 2
+        },
+        {
+          "x": 1.679,
+          "y": -3.4188,
+          "time": 2.32,
+          "bullet": 30,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "id": "weapon_mp7",
+      "name": "MP7",
+      "clipSize": 30,
+      "cycleTime": 0.08,
+      "intervalMs": 80,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/mp7",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 5
+        },
+        {
+          "x": -0.0057,
+          "y": -0.1837,
+          "time": 0.08,
+          "bullet": 2,
+          "samples": 5
+        },
+        {
+          "x": 0.0392,
+          "y": -0.3655,
+          "time": 0.16,
+          "bullet": 3,
+          "samples": 5
+        },
+        {
+          "x": 0.1459,
+          "y": -0.4702,
+          "time": 0.24,
+          "bullet": 4,
+          "samples": 5
+        },
+        {
+          "x": 0.2731,
+          "y": -0.6343,
+          "time": 0.32,
+          "bullet": 5,
+          "samples": 5
+        },
+        {
+          "x": 0.5004,
+          "y": -0.9921,
+          "time": 0.4,
+          "bullet": 6,
+          "samples": 5
+        },
+        {
+          "x": 0.6725,
+          "y": -1.4735,
+          "time": 0.48,
+          "bullet": 7,
+          "samples": 5
+        },
+        {
+          "x": 0.7347,
+          "y": -1.9476,
+          "time": 0.56,
+          "bullet": 8,
+          "samples": 5
+        },
+        {
+          "x": 0.9762,
+          "y": -2.3243,
+          "time": 0.64,
+          "bullet": 9,
+          "samples": 5
+        },
+        {
+          "x": 1.138,
+          "y": -2.6387,
+          "time": 0.72,
+          "bullet": 10,
+          "samples": 5
+        },
+        {
+          "x": 1.4623,
+          "y": -2.7844,
+          "time": 0.8,
+          "bullet": 11,
+          "samples": 5
+        },
+        {
+          "x": 1.5405,
+          "y": -2.9795,
+          "time": 0.88,
+          "bullet": 12,
+          "samples": 4
+        },
+        {
+          "x": 1.1228,
+          "y": -3.2037,
+          "time": 0.96,
+          "bullet": 13,
+          "samples": 4
+        },
+        {
+          "x": 0.4546,
+          "y": -3.2701,
+          "time": 1.04,
+          "bullet": 14,
+          "samples": 3
+        },
+        {
+          "x": -0.1273,
+          "y": -3.2657,
+          "time": 1.12,
+          "bullet": 15,
+          "samples": 3
+        },
+        {
+          "x": -0.4678,
+          "y": -3.2849,
+          "time": 1.2,
+          "bullet": 16,
+          "samples": 3
+        },
+        {
+          "x": -0.4013,
+          "y": -3.4234,
+          "time": 1.28,
+          "bullet": 17,
+          "samples": 3
+        },
+        {
+          "x": -0.212,
+          "y": -3.5657,
+          "time": 1.36,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": -0.0956,
+          "y": -3.6982,
+          "time": 1.44,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": -0.0456,
+          "y": -3.8095,
+          "time": 1.52,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": -0.1154,
+          "y": -3.8883,
+          "time": 1.6,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": 0.0918,
+          "y": -3.9109,
+          "time": 1.68,
+          "bullet": 22,
+          "samples": 2
+        },
+        {
+          "x": 0.6613,
+          "y": -3.702,
+          "time": 1.76,
+          "bullet": 23,
+          "samples": 2
+        },
+        {
+          "x": 1.1562,
+          "y": -3.4403,
+          "time": 1.84,
+          "bullet": 24,
+          "samples": 2
+        },
+        {
+          "x": 1.312,
+          "y": -3.3932,
+          "time": 1.92,
+          "bullet": 25,
+          "samples": 2
+        },
+        {
+          "x": 1.5075,
+          "y": -3.3338,
+          "time": 2.0,
+          "bullet": 26,
+          "samples": 2
+        },
+        {
+          "x": 1.4944,
+          "y": -3.3672,
+          "time": 2.08,
+          "bullet": 27,
+          "samples": 2
+        },
+        {
+          "x": 1.5328,
+          "y": -3.3899,
+          "time": 2.16,
+          "bullet": 28,
+          "samples": 2
+        },
+        {
+          "x": 1.5767,
+          "y": -3.4212,
+          "time": 2.24,
+          "bullet": 29,
+          "samples": 2
+        },
+        {
+          "x": 1.679,
+          "y": -3.4188,
+          "time": 2.32,
+          "bullet": 30,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "id": "weapon_mp9",
+      "name": "MP9",
+      "clipSize": 30,
+      "cycleTime": 0.07,
+      "intervalMs": 70,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/mp9",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 3
+        },
+        {
+          "x": 0.0258,
+          "y": -0.2376,
+          "time": 0.07,
+          "bullet": 2,
+          "samples": 3
+        },
+        {
+          "x": 0.14,
+          "y": -0.469,
+          "time": 0.14,
+          "bullet": 3,
+          "samples": 3
+        },
+        {
+          "x": 0.0969,
+          "y": -0.7861,
+          "time": 0.21,
+          "bullet": 4,
+          "samples": 3
+        },
+        {
+          "x": 0.0349,
+          "y": -1.3457,
+          "time": 0.28,
+          "bullet": 5,
+          "samples": 3
+        },
+        {
+          "x": -0.0585,
+          "y": -2.0868,
+          "time": 0.35,
+          "bullet": 6,
+          "samples": 3
+        },
+        {
+          "x": -0.3149,
+          "y": -2.8352,
+          "time": 0.42,
+          "bullet": 7,
+          "samples": 3
+        },
+        {
+          "x": -0.1912,
+          "y": -3.6081,
+          "time": 0.49,
+          "bullet": 8,
+          "samples": 3
+        },
+        {
+          "x": -0.1038,
+          "y": -4.256,
+          "time": 0.56,
+          "bullet": 9,
+          "samples": 3
+        },
+        {
+          "x": -0.6167,
+          "y": -4.6926,
+          "time": 0.63,
+          "bullet": 10,
+          "samples": 3
+        },
+        {
+          "x": -1.4092,
+          "y": -4.8734,
+          "time": 0.7,
+          "bullet": 11,
+          "samples": 3
+        },
+        {
+          "x": -2.3079,
+          "y": -4.7622,
+          "time": 0.77,
+          "bullet": 12,
+          "samples": 3
+        },
+        {
+          "x": -2.9175,
+          "y": -4.6914,
+          "time": 0.84,
+          "bullet": 13,
+          "samples": 3
+        },
+        {
+          "x": -2.8938,
+          "y": -5.0269,
+          "time": 0.91,
+          "bullet": 14,
+          "samples": 3
+        },
+        {
+          "x": -2.6403,
+          "y": -5.3635,
+          "time": 0.98,
+          "bullet": 15,
+          "samples": 3
+        },
+        {
+          "x": -1.8431,
+          "y": -5.6348,
+          "time": 1.05,
+          "bullet": 16,
+          "samples": 2
+        },
+        {
+          "x": -1.3341,
+          "y": -5.9249,
+          "time": 1.12,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": -0.6832,
+          "y": -6.1643,
+          "time": 1.19,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": -0.1082,
+          "y": -6.3001,
+          "time": 1.26,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": 0.7974,
+          "y": -6.1556,
+          "time": 1.33,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": 1.4757,
+          "y": -5.9381,
+          "time": 1.4,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": 1.17,
+          "y": -6.0149,
+          "time": 1.47,
+          "bullet": 22,
+          "samples": 2
+        },
+        {
+          "x": 0.5173,
+          "y": -6.106,
+          "time": 1.54,
+          "bullet": 23,
+          "samples": 2
+        },
+        {
+          "x": -0.0971,
+          "y": -6.146,
+          "time": 1.61,
+          "bullet": 24,
+          "samples": 2
+        },
+        {
+          "x": 0.0702,
+          "y": -6.1928,
+          "time": 1.68,
+          "bullet": 25,
+          "samples": 2
+        },
+        {
+          "x": 0.8427,
+          "y": -6.0571,
+          "time": 1.75,
+          "bullet": 26,
+          "samples": 2
+        },
+        {
+          "x": 1.5625,
+          "y": -5.9254,
+          "time": 1.82,
+          "bullet": 27,
+          "samples": 2
+        },
+        {
+          "x": 1.8441,
+          "y": -6.0074,
+          "time": 1.89,
+          "bullet": 28,
+          "samples": 2
+        },
+        {
+          "x": 1.9974,
+          "y": -6.0839,
+          "time": 1.96,
+          "bullet": 29,
+          "samples": 2
+        },
+        {
+          "x": 1.6641,
+          "y": -6.255,
+          "time": 2.03,
+          "bullet": 30,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "id": "weapon_negev",
+      "name": "Negev",
+      "clipSize": 150,
+      "cycleTime": 0.075,
+      "intervalMs": 75,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/negev",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -0.2493,
+          "time": 0.075,
+          "bullet": 2,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -0.4883,
+          "time": 0.15,
+          "bullet": 3,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -0.795,
+          "time": 0.225,
+          "bullet": 4,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -1.3865,
+          "time": 0.3,
+          "bullet": 5,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -2.075,
+          "time": 0.375,
+          "bullet": 6,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -2.7709,
+          "time": 0.45,
+          "bullet": 7,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -3.4511,
+          "time": 0.525,
+          "bullet": 8,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -4.0481,
+          "time": 0.6,
+          "bullet": 9,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -4.5449,
+          "time": 0.675,
+          "bullet": 10,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -4.9548,
+          "time": 0.75,
+          "bullet": 11,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -5.251,
+          "time": 0.825,
+          "bullet": 12,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -5.4742,
+          "time": 0.9,
+          "bullet": 13,
+          "samples": 3
+        },
+        {
+          "x": -0.0,
+          "y": -5.5886,
+          "time": 0.975,
+          "bullet": 14,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.6522,
+          "time": 1.05,
+          "bullet": 15,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.7165,
+          "time": 1.125,
+          "bullet": 16,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.787,
+          "time": 1.2,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.8751,
+          "time": 1.275,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.9176,
+          "time": 1.35,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.9578,
+          "time": 1.425,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.9423,
+          "time": 1.5,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.8994,
+          "time": 1.575,
+          "bullet": 22,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.8558,
+          "time": 1.65,
+          "bullet": 23,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.822,
+          "time": 1.725,
+          "bullet": 24,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.8276,
+          "time": 1.8,
+          "bullet": 25,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.9057,
+          "time": 1.875,
+          "bullet": 26,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.9768,
+          "time": 1.95,
+          "bullet": 27,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.9902,
+          "time": 2.025,
+          "bullet": 28,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -5.9936,
+          "time": 2.1,
+          "bullet": 29,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.0036,
+          "time": 2.175,
+          "bullet": 30,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.0476,
+          "time": 2.25,
+          "bullet": 31,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1196,
+          "time": 2.325,
+          "bullet": 32,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1794,
+          "time": 2.4,
+          "bullet": 33,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2255,
+          "time": 2.475,
+          "bullet": 34,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.3032,
+          "time": 2.55,
+          "bullet": 35,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.3984,
+          "time": 2.625,
+          "bullet": 36,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.4559,
+          "time": 2.7,
+          "bullet": 37,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.435,
+          "time": 2.775,
+          "bullet": 38,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.3723,
+          "time": 2.85,
+          "bullet": 39,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2667,
+          "time": 2.925,
+          "bullet": 40,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1676,
+          "time": 3.0,
+          "bullet": 41,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1133,
+          "time": 3.075,
+          "bullet": 42,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1179,
+          "time": 3.15,
+          "bullet": 43,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.171,
+          "time": 3.225,
+          "bullet": 44,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2383,
+          "time": 3.3,
+          "bullet": 45,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2364,
+          "time": 3.375,
+          "bullet": 46,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1981,
+          "time": 3.45,
+          "bullet": 47,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1998,
+          "time": 3.525,
+          "bullet": 48,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1888,
+          "time": 3.6,
+          "bullet": 49,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1665,
+          "time": 3.675,
+          "bullet": 50,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1274,
+          "time": 3.75,
+          "bullet": 51,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1514,
+          "time": 3.825,
+          "bullet": 52,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.223,
+          "time": 3.9,
+          "bullet": 53,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2955,
+          "time": 3.975,
+          "bullet": 54,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.319,
+          "time": 4.05,
+          "bullet": 55,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2903,
+          "time": 4.125,
+          "bullet": 56,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2345,
+          "time": 4.2,
+          "bullet": 57,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1783,
+          "time": 4.275,
+          "bullet": 58,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1849,
+          "time": 4.35,
+          "bullet": 59,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2024,
+          "time": 4.425,
+          "bullet": 60,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.1964,
+          "time": 4.5,
+          "bullet": 61,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.201,
+          "time": 4.575,
+          "bullet": 62,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2492,
+          "time": 4.65,
+          "bullet": 63,
+          "samples": 2
+        },
+        {
+          "x": -0.0,
+          "y": -6.2996,
+          "time": 4.725,
+          "bullet": 64,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.38,
+          "time": 4.8,
+          "bullet": 65,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.3851,
+          "time": 4.875,
+          "bullet": 66,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.0886,
+          "time": 4.95,
+          "bullet": 67,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.6723,
+          "time": 5.025,
+          "bullet": 68,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.3441,
+          "time": 5.1,
+          "bullet": 69,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.1452,
+          "time": 5.175,
+          "bullet": 70,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.0887,
+          "time": 5.25,
+          "bullet": 71,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.1704,
+          "time": 5.325,
+          "bullet": 72,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.3087,
+          "time": 5.4,
+          "bullet": 73,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.4619,
+          "time": 5.475,
+          "bullet": 74,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.6181,
+          "time": 5.55,
+          "bullet": 75,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.729,
+          "time": 5.625,
+          "bullet": 76,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8176,
+          "time": 5.7,
+          "bullet": 77,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8349,
+          "time": 5.775,
+          "bullet": 78,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8286,
+          "time": 5.85,
+          "bullet": 79,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8426,
+          "time": 5.925,
+          "bullet": 80,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8772,
+          "time": 6.0,
+          "bullet": 81,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9395,
+          "time": 6.075,
+          "bullet": 82,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9637,
+          "time": 6.15,
+          "bullet": 83,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9907,
+          "time": 6.225,
+          "bullet": 84,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9658,
+          "time": 6.3,
+          "bullet": 85,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9161,
+          "time": 6.375,
+          "bullet": 86,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8677,
+          "time": 6.45,
+          "bullet": 87,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8305,
+          "time": 6.525,
+          "bullet": 88,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8337,
+          "time": 6.6,
+          "bullet": 89,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.91,
+          "time": 6.675,
+          "bullet": 90,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9799,
+          "time": 6.75,
+          "bullet": 91,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9924,
+          "time": 6.825,
+          "bullet": 92,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9952,
+          "time": 6.9,
+          "bullet": 93,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.0047,
+          "time": 6.975,
+          "bullet": 94,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.0485,
+          "time": 7.05,
+          "bullet": 95,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1202,
+          "time": 7.125,
+          "bullet": 96,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1798,
+          "time": 7.2,
+          "bullet": 97,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2258,
+          "time": 7.275,
+          "bullet": 98,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.3034,
+          "time": 7.35,
+          "bullet": 99,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.3986,
+          "time": 7.425,
+          "bullet": 100,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.456,
+          "time": 7.5,
+          "bullet": 101,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.435,
+          "time": 7.575,
+          "bullet": 102,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.3724,
+          "time": 7.65,
+          "bullet": 103,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2667,
+          "time": 7.725,
+          "bullet": 104,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1677,
+          "time": 7.8,
+          "bullet": 105,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1134,
+          "time": 7.875,
+          "bullet": 106,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1179,
+          "time": 7.95,
+          "bullet": 107,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.171,
+          "time": 8.025,
+          "bullet": 108,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2383,
+          "time": 8.1,
+          "bullet": 109,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2364,
+          "time": 8.175,
+          "bullet": 110,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1981,
+          "time": 8.25,
+          "bullet": 111,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1998,
+          "time": 8.325,
+          "bullet": 112,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1888,
+          "time": 8.4,
+          "bullet": 113,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1665,
+          "time": 8.475,
+          "bullet": 114,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1274,
+          "time": 8.55,
+          "bullet": 115,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1514,
+          "time": 8.625,
+          "bullet": 116,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.223,
+          "time": 8.7,
+          "bullet": 117,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2955,
+          "time": 8.775,
+          "bullet": 118,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.319,
+          "time": 8.85,
+          "bullet": 119,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2903,
+          "time": 8.925,
+          "bullet": 120,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2345,
+          "time": 9.0,
+          "bullet": 121,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1783,
+          "time": 9.075,
+          "bullet": 122,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1849,
+          "time": 9.15,
+          "bullet": 123,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2024,
+          "time": 9.225,
+          "bullet": 124,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.1964,
+          "time": 9.3,
+          "bullet": 125,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.201,
+          "time": 9.375,
+          "bullet": 126,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2492,
+          "time": 9.45,
+          "bullet": 127,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.2996,
+          "time": 9.525,
+          "bullet": 128,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.38,
+          "time": 9.6,
+          "bullet": 129,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.3851,
+          "time": 9.675,
+          "bullet": 130,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -6.0886,
+          "time": 9.75,
+          "bullet": 131,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.6723,
+          "time": 9.825,
+          "bullet": 132,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.3441,
+          "time": 9.9,
+          "bullet": 133,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.1452,
+          "time": 9.975,
+          "bullet": 134,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.0887,
+          "time": 10.05,
+          "bullet": 135,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.1704,
+          "time": 10.125,
+          "bullet": 136,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.3087,
+          "time": 10.2,
+          "bullet": 137,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.4619,
+          "time": 10.275,
+          "bullet": 138,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.6181,
+          "time": 10.35,
+          "bullet": 139,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.729,
+          "time": 10.425,
+          "bullet": 140,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8176,
+          "time": 10.5,
+          "bullet": 141,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8349,
+          "time": 10.575,
+          "bullet": 142,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8286,
+          "time": 10.65,
+          "bullet": 143,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8426,
+          "time": 10.725,
+          "bullet": 144,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.8772,
+          "time": 10.8,
+          "bullet": 145,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9395,
+          "time": 10.875,
+          "bullet": 146,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9637,
+          "time": 10.95,
+          "bullet": 147,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9907,
+          "time": 11.025,
+          "bullet": 148,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9658,
+          "time": 11.1,
+          "bullet": 149,
+          "samples": 1
+        },
+        {
+          "x": -0.0,
+          "y": -5.9161,
+          "time": 11.175,
+          "bullet": 150,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "id": "weapon_p90",
+      "name": "P90",
+      "clipSize": 50,
+      "cycleTime": 0.07,
+      "intervalMs": 70,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/p90",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 4
+        },
+        {
+          "x": 0.116,
+          "y": -0.1369,
+          "time": 0.07,
+          "bullet": 2,
+          "samples": 4
+        },
+        {
+          "x": 0.1292,
+          "y": -0.3268,
+          "time": 0.14,
+          "bullet": 3,
+          "samples": 4
+        },
+        {
+          "x": 0.0479,
+          "y": -0.4916,
+          "time": 0.21,
+          "bullet": 4,
+          "samples": 4
+        },
+        {
+          "x": 0.0828,
+          "y": -0.7381,
+          "time": 0.28,
+          "bullet": 5,
+          "samples": 4
+        },
+        {
+          "x": 0.2954,
+          "y": -1.1601,
+          "time": 0.35,
+          "bullet": 6,
+          "samples": 4
+        },
+        {
+          "x": 0.6866,
+          "y": -1.5888,
+          "time": 0.42,
+          "bullet": 7,
+          "samples": 4
+        },
+        {
+          "x": 1.0751,
+          "y": -2.0231,
+          "time": 0.49,
+          "bullet": 8,
+          "samples": 4
+        },
+        {
+          "x": 1.1674,
+          "y": -2.5267,
+          "time": 0.56,
+          "bullet": 9,
+          "samples": 4
+        },
+        {
+          "x": 0.8349,
+          "y": -2.9748,
+          "time": 0.63,
+          "bullet": 10,
+          "samples": 4
+        },
+        {
+          "x": 0.5911,
+          "y": -3.3542,
+          "time": 0.7,
+          "bullet": 11,
+          "samples": 4
+        },
+        {
+          "x": 0.5041,
+          "y": -3.7125,
+          "time": 0.77,
+          "bullet": 12,
+          "samples": 4
+        },
+        {
+          "x": 0.4672,
+          "y": -4.0145,
+          "time": 0.84,
+          "bullet": 13,
+          "samples": 3
+        },
+        {
+          "x": 0.6668,
+          "y": -4.1682,
+          "time": 0.91,
+          "bullet": 14,
+          "samples": 3
+        },
+        {
+          "x": 1.0091,
+          "y": -4.184,
+          "time": 0.98,
+          "bullet": 15,
+          "samples": 3
+        },
+        {
+          "x": 1.2026,
+          "y": -4.2616,
+          "time": 1.05,
+          "bullet": 16,
+          "samples": 3
+        },
+        {
+          "x": 1.4601,
+          "y": -4.3058,
+          "time": 1.12,
+          "bullet": 17,
+          "samples": 3
+        },
+        {
+          "x": 1.5876,
+          "y": -4.3103,
+          "time": 1.19,
+          "bullet": 18,
+          "samples": 3
+        },
+        {
+          "x": 1.1089,
+          "y": -4.3754,
+          "time": 1.26,
+          "bullet": 19,
+          "samples": 3
+        },
+        {
+          "x": 0.598,
+          "y": -4.4119,
+          "time": 1.33,
+          "bullet": 20,
+          "samples": 3
+        },
+        {
+          "x": 0.2874,
+          "y": -4.4564,
+          "time": 1.4,
+          "bullet": 21,
+          "samples": 3
+        },
+        {
+          "x": -0.0917,
+          "y": -4.4706,
+          "time": 1.47,
+          "bullet": 22,
+          "samples": 3
+        },
+        {
+          "x": -0.5485,
+          "y": -4.4229,
+          "time": 1.54,
+          "bullet": 23,
+          "samples": 3
+        },
+        {
+          "x": -0.8529,
+          "y": -4.3317,
+          "time": 1.61,
+          "bullet": 24,
+          "samples": 3
+        },
+        {
+          "x": -0.7685,
+          "y": -4.3468,
+          "time": 1.68,
+          "bullet": 25,
+          "samples": 3
+        },
+        {
+          "x": -0.7463,
+          "y": -4.3703,
+          "time": 1.75,
+          "bullet": 26,
+          "samples": 3
+        },
+        {
+          "x": -0.3064,
+          "y": -4.3799,
+          "time": 1.82,
+          "bullet": 27,
+          "samples": 3
+        },
+        {
+          "x": 0.2801,
+          "y": -4.303,
+          "time": 1.89,
+          "bullet": 28,
+          "samples": 3
+        },
+        {
+          "x": 0.7637,
+          "y": -4.1976,
+          "time": 1.96,
+          "bullet": 29,
+          "samples": 3
+        },
+        {
+          "x": 0.7079,
+          "y": -4.2789,
+          "time": 2.03,
+          "bullet": 30,
+          "samples": 3
+        },
+        {
+          "x": 0.5909,
+          "y": -4.3754,
+          "time": 2.1,
+          "bullet": 31,
+          "samples": 3
+        },
+        {
+          "x": 0.7307,
+          "y": -4.4359,
+          "time": 2.17,
+          "bullet": 32,
+          "samples": 3
+        },
+        {
+          "x": 0.7834,
+          "y": -4.5086,
+          "time": 2.24,
+          "bullet": 33,
+          "samples": 3
+        },
+        {
+          "x": 0.483,
+          "y": -4.5713,
+          "time": 2.31,
+          "bullet": 34,
+          "samples": 3
+        },
+        {
+          "x": 0.0304,
+          "y": -4.5524,
+          "time": 2.38,
+          "bullet": 35,
+          "samples": 3
+        },
+        {
+          "x": -0.0848,
+          "y": -4.5662,
+          "time": 2.45,
+          "bullet": 36,
+          "samples": 3
+        },
+        {
+          "x": 0.0349,
+          "y": -4.5941,
+          "time": 2.52,
+          "bullet": 37,
+          "samples": 3
+        },
+        {
+          "x": 0.2121,
+          "y": -4.6042,
+          "time": 2.59,
+          "bullet": 38,
+          "samples": 3
+        },
+        {
+          "x": 0.6278,
+          "y": -4.552,
+          "time": 2.66,
+          "bullet": 39,
+          "samples": 3
+        },
+        {
+          "x": 0.845,
+          "y": -4.5438,
+          "time": 2.73,
+          "bullet": 40,
+          "samples": 3
+        },
+        {
+          "x": 0.6689,
+          "y": -4.588,
+          "time": 2.8,
+          "bullet": 41,
+          "samples": 3
+        },
+        {
+          "x": 0.181,
+          "y": -4.5485,
+          "time": 2.87,
+          "bullet": 42,
+          "samples": 3
+        },
+        {
+          "x": -0.3827,
+          "y": -4.4207,
+          "time": 2.94,
+          "bullet": 43,
+          "samples": 3
+        },
+        {
+          "x": -0.674,
+          "y": -4.4031,
+          "time": 3.01,
+          "bullet": 44,
+          "samples": 3
+        },
+        {
+          "x": -1.1044,
+          "y": -4.3531,
+          "time": 3.08,
+          "bullet": 45,
+          "samples": 3
+        },
+        {
+          "x": -1.5223,
+          "y": -4.2948,
+          "time": 3.15,
+          "bullet": 46,
+          "samples": 3
+        },
+        {
+          "x": -1.8345,
+          "y": -4.2715,
+          "time": 3.22,
+          "bullet": 47,
+          "samples": 3
+        },
+        {
+          "x": -2.0405,
+          "y": -4.2263,
+          "time": 3.29,
+          "bullet": 48,
+          "samples": 3
+        },
+        {
+          "x": -1.8189,
+          "y": -4.3145,
+          "time": 3.36,
+          "bullet": 49,
+          "samples": 3
+        },
+        {
+          "x": -1.6042,
+          "y": -4.3742,
+          "time": 3.43,
+          "bullet": 50,
+          "samples": 3
+        }
+      ]
+    },
+    {
+      "id": "weapon_bizon",
+      "name": "PP-Bizon",
+      "clipSize": 64,
+      "cycleTime": 0.08,
+      "intervalMs": 80,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/bizon",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 2
+        },
+        {
+          "x": 0.0479,
+          "y": -0.1949,
+          "time": 0.08,
+          "bullet": 2,
+          "samples": 2
+        },
+        {
+          "x": 0.1608,
+          "y": -0.3596,
+          "time": 0.16,
+          "bullet": 3,
+          "samples": 2
+        },
+        {
+          "x": 0.2261,
+          "y": -0.4935,
+          "time": 0.24,
+          "bullet": 4,
+          "samples": 2
+        },
+        {
+          "x": 0.393,
+          "y": -0.7853,
+          "time": 0.32,
+          "bullet": 5,
+          "samples": 2
+        },
+        {
+          "x": 0.7072,
+          "y": -1.1967,
+          "time": 0.4,
+          "bullet": 6,
+          "samples": 2
+        },
+        {
+          "x": 0.9333,
+          "y": -1.7103,
+          "time": 0.48,
+          "bullet": 7,
+          "samples": 2
+        },
+        {
+          "x": 0.7208,
+          "y": -2.3245,
+          "time": 0.56,
+          "bullet": 8,
+          "samples": 2
+        },
+        {
+          "x": 0.4718,
+          "y": -2.8686,
+          "time": 0.64,
+          "bullet": 9,
+          "samples": 2
+        },
+        {
+          "x": 0.2826,
+          "y": -3.2904,
+          "time": 0.72,
+          "bullet": 10,
+          "samples": 2
+        },
+        {
+          "x": -0.2818,
+          "y": -3.5109,
+          "time": 0.8,
+          "bullet": 11,
+          "samples": 2
+        },
+        {
+          "x": -0.6838,
+          "y": -3.728,
+          "time": 0.88,
+          "bullet": 12,
+          "samples": 2
+        },
+        {
+          "x": -0.9447,
+          "y": -3.9116,
+          "time": 0.96,
+          "bullet": 13,
+          "samples": 2
+        },
+        {
+          "x": -1.2032,
+          "y": -3.9761,
+          "time": 1.04,
+          "bullet": 14,
+          "samples": 2
+        },
+        {
+          "x": -0.7646,
+          "y": -4.0913,
+          "time": 1.12,
+          "bullet": 15,
+          "samples": 2
+        },
+        {
+          "x": -0.1389,
+          "y": -4.0452,
+          "time": 1.2,
+          "bullet": 16,
+          "samples": 2
+        },
+        {
+          "x": -0.2829,
+          "y": -4.0862,
+          "time": 1.28,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": -0.6555,
+          "y": -4.0933,
+          "time": 1.36,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": -0.7557,
+          "y": -4.2195,
+          "time": 1.44,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": -0.738,
+          "y": -4.3644,
+          "time": 1.52,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": -1.0213,
+          "y": -4.4035,
+          "time": 1.6,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": -1.4486,
+          "y": -4.3039,
+          "time": 1.68,
+          "bullet": 22,
+          "samples": 2
+        },
+        {
+          "x": -1.8519,
+          "y": -4.1549,
+          "time": 1.76,
+          "bullet": 23,
+          "samples": 2
+        },
+        {
+          "x": -2.0748,
+          "y": -4.1083,
+          "time": 1.84,
+          "bullet": 24,
+          "samples": 2
+        },
+        {
+          "x": -2.2729,
+          "y": -4.0378,
+          "time": 1.92,
+          "bullet": 25,
+          "samples": 2
+        },
+        {
+          "x": -2.4315,
+          "y": -3.9692,
+          "time": 2.0,
+          "bullet": 26,
+          "samples": 2
+        },
+        {
+          "x": -2.4383,
+          "y": -3.9965,
+          "time": 2.08,
+          "bullet": 27,
+          "samples": 2
+        },
+        {
+          "x": -2.3354,
+          "y": -4.0955,
+          "time": 2.16,
+          "bullet": 28,
+          "samples": 2
+        },
+        {
+          "x": -2.2356,
+          "y": -4.1815,
+          "time": 2.24,
+          "bullet": 29,
+          "samples": 2
+        },
+        {
+          "x": -1.9738,
+          "y": -4.2578,
+          "time": 2.32,
+          "bullet": 30,
+          "samples": 2
+        },
+        {
+          "x": -1.418,
+          "y": -4.3233,
+          "time": 2.4,
+          "bullet": 31,
+          "samples": 2
+        },
+        {
+          "x": -1.3453,
+          "y": -4.3631,
+          "time": 2.48,
+          "bullet": 32,
+          "samples": 2
+        },
+        {
+          "x": -1.4081,
+          "y": -4.374,
+          "time": 2.56,
+          "bullet": 33,
+          "samples": 2
+        },
+        {
+          "x": -1.4928,
+          "y": -4.3206,
+          "time": 2.64,
+          "bullet": 34,
+          "samples": 2
+        },
+        {
+          "x": -1.1366,
+          "y": -4.3301,
+          "time": 2.72,
+          "bullet": 35,
+          "samples": 2
+        },
+        {
+          "x": -1.2586,
+          "y": -4.2659,
+          "time": 2.8,
+          "bullet": 36,
+          "samples": 2
+        },
+        {
+          "x": -1.2856,
+          "y": -4.2207,
+          "time": 2.88,
+          "bullet": 37,
+          "samples": 2
+        },
+        {
+          "x": -0.9998,
+          "y": -4.2416,
+          "time": 2.96,
+          "bullet": 38,
+          "samples": 2
+        },
+        {
+          "x": -0.9786,
+          "y": -4.2766,
+          "time": 3.04,
+          "bullet": 39,
+          "samples": 2
+        },
+        {
+          "x": -0.8013,
+          "y": -4.3532,
+          "time": 3.12,
+          "bullet": 40,
+          "samples": 2
+        },
+        {
+          "x": -1.006,
+          "y": -4.3016,
+          "time": 3.2,
+          "bullet": 41,
+          "samples": 2
+        },
+        {
+          "x": -1.4848,
+          "y": -4.0769,
+          "time": 3.28,
+          "bullet": 42,
+          "samples": 2
+        },
+        {
+          "x": -1.9109,
+          "y": -3.9112,
+          "time": 3.36,
+          "bullet": 43,
+          "samples": 2
+        },
+        {
+          "x": -2.2765,
+          "y": -3.7719,
+          "time": 3.44,
+          "bullet": 44,
+          "samples": 2
+        },
+        {
+          "x": -2.35,
+          "y": -3.7946,
+          "time": 3.52,
+          "bullet": 45,
+          "samples": 2
+        },
+        {
+          "x": -2.1737,
+          "y": -3.9501,
+          "time": 3.6,
+          "bullet": 46,
+          "samples": 2
+        },
+        {
+          "x": -2.2918,
+          "y": -3.9682,
+          "time": 3.68,
+          "bullet": 47,
+          "samples": 2
+        },
+        {
+          "x": -2.6216,
+          "y": -3.8053,
+          "time": 3.76,
+          "bullet": 48,
+          "samples": 2
+        },
+        {
+          "x": -2.6915,
+          "y": -3.7207,
+          "time": 3.84,
+          "bullet": 49,
+          "samples": 2
+        },
+        {
+          "x": -2.0457,
+          "y": -3.8979,
+          "time": 3.92,
+          "bullet": 50,
+          "samples": 2
+        },
+        {
+          "x": -1.5888,
+          "y": -4.0278,
+          "time": 4.0,
+          "bullet": 51,
+          "samples": 2
+        },
+        {
+          "x": -1.6248,
+          "y": -4.0384,
+          "time": 4.08,
+          "bullet": 52,
+          "samples": 2
+        },
+        {
+          "x": -1.7777,
+          "y": -4.0126,
+          "time": 4.16,
+          "bullet": 53,
+          "samples": 2
+        },
+        {
+          "x": -1.801,
+          "y": -4.0614,
+          "time": 4.24,
+          "bullet": 54,
+          "samples": 2
+        },
+        {
+          "x": -1.929,
+          "y": -4.0511,
+          "time": 4.32,
+          "bullet": 55,
+          "samples": 2
+        },
+        {
+          "x": -2.0124,
+          "y": -3.9678,
+          "time": 4.4,
+          "bullet": 56,
+          "samples": 2
+        },
+        {
+          "x": -1.5528,
+          "y": -4.0592,
+          "time": 4.48,
+          "bullet": 57,
+          "samples": 2
+        },
+        {
+          "x": -1.0581,
+          "y": -4.161,
+          "time": 4.56,
+          "bullet": 58,
+          "samples": 2
+        },
+        {
+          "x": -0.4145,
+          "y": -4.1594,
+          "time": 4.64,
+          "bullet": 59,
+          "samples": 2
+        },
+        {
+          "x": 0.2594,
+          "y": -4.0307,
+          "time": 4.72,
+          "bullet": 60,
+          "samples": 2
+        },
+        {
+          "x": 0.3187,
+          "y": -4.1116,
+          "time": 4.8,
+          "bullet": 61,
+          "samples": 2
+        },
+        {
+          "x": 0.0318,
+          "y": -4.2175,
+          "time": 4.88,
+          "bullet": 62,
+          "samples": 2
+        },
+        {
+          "x": -0.267,
+          "y": -4.2039,
+          "time": 4.96,
+          "bullet": 63,
+          "samples": 2
+        },
+        {
+          "x": 0.0129,
+          "y": -4.2151,
+          "time": 5.04,
+          "bullet": 64,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "id": "weapon_sg556",
+      "name": "SG 553",
+      "clipSize": 30,
+      "cycleTime": 0.11,
+      "intervalMs": 110,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/sg556",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 2
+        },
+        {
+          "x": 0.144,
+          "y": -0.3141,
+          "time": 0.11,
+          "bullet": 2,
+          "samples": 2
+        },
+        {
+          "x": 0.3508,
+          "y": -0.5165,
+          "time": 0.22,
+          "bullet": 3,
+          "samples": 2
+        },
+        {
+          "x": 0.6435,
+          "y": -1.0572,
+          "time": 0.33,
+          "bullet": 4,
+          "samples": 2
+        },
+        {
+          "x": 0.8279,
+          "y": -1.7851,
+          "time": 0.44,
+          "bullet": 5,
+          "samples": 2
+        },
+        {
+          "x": 0.9848,
+          "y": -2.5849,
+          "time": 0.55,
+          "bullet": 6,
+          "samples": 2
+        },
+        {
+          "x": 1.1448,
+          "y": -3.4021,
+          "time": 0.66,
+          "bullet": 7,
+          "samples": 2
+        },
+        {
+          "x": 1.3975,
+          "y": -4.0161,
+          "time": 0.77,
+          "bullet": 8,
+          "samples": 2
+        },
+        {
+          "x": 1.6866,
+          "y": -4.2972,
+          "time": 0.88,
+          "bullet": 9,
+          "samples": 2
+        },
+        {
+          "x": 1.3399,
+          "y": -4.6509,
+          "time": 0.99,
+          "bullet": 10,
+          "samples": 2
+        },
+        {
+          "x": 1.6716,
+          "y": -4.7654,
+          "time": 1.1,
+          "bullet": 11,
+          "samples": 2
+        },
+        {
+          "x": 2.0199,
+          "y": -4.8215,
+          "time": 1.21,
+          "bullet": 12,
+          "samples": 2
+        },
+        {
+          "x": 2.0184,
+          "y": -4.9585,
+          "time": 1.32,
+          "bullet": 13,
+          "samples": 2
+        },
+        {
+          "x": 1.9123,
+          "y": -5.1006,
+          "time": 1.43,
+          "bullet": 14,
+          "samples": 2
+        },
+        {
+          "x": 2.0447,
+          "y": -5.1861,
+          "time": 1.54,
+          "bullet": 15,
+          "samples": 2
+        },
+        {
+          "x": 2.0653,
+          "y": -5.3059,
+          "time": 1.65,
+          "bullet": 16,
+          "samples": 2
+        },
+        {
+          "x": 2.5902,
+          "y": -5.0656,
+          "time": 1.76,
+          "bullet": 17,
+          "samples": 2
+        },
+        {
+          "x": 3.1514,
+          "y": -4.6148,
+          "time": 1.87,
+          "bullet": 18,
+          "samples": 2
+        },
+        {
+          "x": 3.462,
+          "y": -4.3867,
+          "time": 1.98,
+          "bullet": 19,
+          "samples": 2
+        },
+        {
+          "x": 3.1396,
+          "y": -4.423,
+          "time": 2.09,
+          "bullet": 20,
+          "samples": 2
+        },
+        {
+          "x": 1.6696,
+          "y": -4.5533,
+          "time": 2.2,
+          "bullet": 21,
+          "samples": 2
+        },
+        {
+          "x": 0.1459,
+          "y": -4.4278,
+          "time": 2.31,
+          "bullet": 22,
+          "samples": 2
+        },
+        {
+          "x": -0.7254,
+          "y": -4.4118,
+          "time": 2.42,
+          "bullet": 23,
+          "samples": 2
+        },
+        {
+          "x": -0.8691,
+          "y": -4.731,
+          "time": 2.53,
+          "bullet": 24,
+          "samples": 2
+        },
+        {
+          "x": -1.0807,
+          "y": -5.0419,
+          "time": 2.64,
+          "bullet": 25,
+          "samples": 2
+        },
+        {
+          "x": -1.2843,
+          "y": -5.2087,
+          "time": 2.75,
+          "bullet": 26,
+          "samples": 2
+        },
+        {
+          "x": -1.9702,
+          "y": -5.082,
+          "time": 2.86,
+          "bullet": 27,
+          "samples": 2
+        },
+        {
+          "x": -2.4187,
+          "y": -4.9249,
+          "time": 2.97,
+          "bullet": 28,
+          "samples": 2
+        },
+        {
+          "x": -1.8934,
+          "y": -5.1192,
+          "time": 3.08,
+          "bullet": 29,
+          "samples": 2
+        },
+        {
+          "x": -1.224,
+          "y": -5.2367,
+          "time": 3.19,
+          "bullet": 30,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "id": "weapon_ump45",
+      "name": "UMP-45",
+      "clipSize": 25,
+      "cycleTime": 0.09,
+      "intervalMs": 90,
+      "source": "OP.GG CS2 Spray Patterns",
+      "sourceUrl": "https://op.gg/cs2/spray-patterns/ump45",
+      "points": [
+        {
+          "x": -0.0,
+          "y": 0.0,
+          "time": 0.0,
+          "bullet": 1,
+          "samples": 3
+        },
+        {
+          "x": 0.0368,
+          "y": -0.267,
+          "time": 0.09,
+          "bullet": 2,
+          "samples": 3
+        },
+        {
+          "x": 0.1392,
+          "y": -0.5014,
+          "time": 0.18,
+          "bullet": 3,
+          "samples": 3
+        },
+        {
+          "x": 0.2006,
+          "y": -0.8667,
+          "time": 0.27,
+          "bullet": 4,
+          "samples": 3
+        },
+        {
+          "x": 0.2908,
+          "y": -1.5,
+          "time": 0.36,
+          "bullet": 5,
+          "samples": 3
+        },
+        {
+          "x": 0.501,
+          "y": -2.2174,
+          "time": 0.45,
+          "bullet": 6,
+          "samples": 3
+        },
+        {
+          "x": 0.7322,
+          "y": -2.9281,
+          "time": 0.54,
+          "bullet": 7,
+          "samples": 3
+        },
+        {
+          "x": 0.6404,
+          "y": -3.5942,
+          "time": 0.63,
+          "bullet": 8,
+          "samples": 3
+        },
+        {
+          "x": 0.414,
+          "y": -4.1031,
+          "time": 0.72,
+          "bullet": 9,
+          "samples": 3
+        },
+        {
+          "x": 0.4291,
+          "y": -4.4942,
+          "time": 0.81,
+          "bullet": 10,
+          "samples": 3
+        },
+        {
+          "x": 0.0214,
+          "y": -4.7965,
+          "time": 0.9,
+          "bullet": 11,
+          "samples": 3
+        },
+        {
+          "x": -0.5409,
+          "y": -4.9615,
+          "time": 0.99,
+          "bullet": 12,
+          "samples": 3
+        },
+        {
+          "x": -0.8619,
+          "y": -5.1305,
+          "time": 1.08,
+          "bullet": 13,
+          "samples": 3
+        },
+        {
+          "x": -0.8907,
+          "y": -5.2895,
+          "time": 1.17,
+          "bullet": 14,
+          "samples": 3
+        },
+        {
+          "x": -0.9873,
+          "y": -5.4001,
+          "time": 1.26,
+          "bullet": 15,
+          "samples": 3
+        },
+        {
+          "x": -1.0446,
+          "y": -5.4612,
+          "time": 1.35,
+          "bullet": 16,
+          "samples": 3
+        },
+        {
+          "x": -1.3247,
+          "y": -5.422,
+          "time": 1.44,
+          "bullet": 17,
+          "samples": 3
+        },
+        {
+          "x": -1.34,
+          "y": -5.4508,
+          "time": 1.53,
+          "bullet": 18,
+          "samples": 3
+        },
+        {
+          "x": -0.8253,
+          "y": -5.5141,
+          "time": 1.62,
+          "bullet": 19,
+          "samples": 3
+        },
+        {
+          "x": -0.4001,
+          "y": -5.5175,
+          "time": 1.71,
+          "bullet": 20,
+          "samples": 3
+        },
+        {
+          "x": -0.554,
+          "y": -5.4816,
+          "time": 1.8,
+          "bullet": 21,
+          "samples": 3
+        },
+        {
+          "x": -1.039,
+          "y": -5.3654,
+          "time": 1.89,
+          "bullet": 22,
+          "samples": 3
+        },
+        {
+          "x": -1.3974,
+          "y": -5.2505,
+          "time": 1.98,
+          "bullet": 23,
+          "samples": 3
+        },
+        {
+          "x": -1.0675,
+          "y": -5.2877,
+          "time": 2.07,
+          "bullet": 24,
+          "samples": 3
+        },
+        {
+          "x": -0.5244,
+          "y": -5.3178,
+          "time": 2.16,
+          "bullet": 25,
+          "samples": 3
+        }
+      ]
+    }
+  ]
+}

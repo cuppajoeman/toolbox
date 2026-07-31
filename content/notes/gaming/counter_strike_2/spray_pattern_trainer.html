@@ -1,0 +1,764 @@
+<style>
+#trainingSection {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+#trainingCanvas {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+</style>
+
+<section>
+    <h2>Weapon</h2>
+
+    <p>
+        Select a spray pattern to preview it and train the opposite compensation movement.
+    </p>
+
+    <label for="weaponSelect">Weapon</label>
+    <select id="weaponSelect"></select>
+
+    <label for="guideFrequency">Hide guide every N attempts</label>
+    <input id="guideFrequency" type="number" min="0" value="4">
+    <span>0 = never hide, 1 = always hidden</span>
+
+    <button id="resetButton">Reset</button>
+
+    <p id="weaponInfo"></p>
+    <p id="status">Loading spray patterns...</p>
+</section>
+
+<section>
+    <h2>Spray Pattern</h2>
+    <canvas id="sprayCanvas" width="320" height="360"></canvas>
+</section>
+
+<section id="trainingSection">
+    <h2>Training</h2>
+    <p>Press and hold once, follow the path, then release after the spray finishes.</p>
+    <canvas id="trainingCanvas" width="640" height="480"></canvas>
+</section>
+
+<section>
+    <h2>Session Error</h2>
+
+    <p>Attempts this weapon: <span id="attemptCount">0</span></p>
+    <p>Current attempt error: <span id="currentError">-</span></p>
+    <p>Running average error: <span id="averageError">-</span></p>
+    <canvas id="sessionGraph" width="640" height="220"></canvas>
+    <ol id="sessionList"></ol>
+
+    <h3>Current Attempt</h3>
+    <ol id="errorList"></ol>
+</section>
+
+<script>
+const weaponSelect = document.getElementById("weaponSelect");
+const guideFrequency = document.getElementById("guideFrequency");
+const resetButton = document.getElementById("resetButton");
+const weaponInfo = document.getElementById("weaponInfo");
+const statusText = document.getElementById("status");
+const sprayCanvas = document.getElementById("sprayCanvas");
+const sprayCtx = sprayCanvas.getContext("2d");
+const trainingCanvas = document.getElementById("trainingCanvas");
+const trainingCtx = trainingCanvas.getContext("2d");
+const attemptCountText = document.getElementById("attemptCount");
+const currentErrorText = document.getElementById("currentError");
+const averageErrorText = document.getElementById("averageError");
+const sessionGraph = document.getElementById("sessionGraph");
+const sessionCtx = sessionGraph.getContext("2d");
+const sessionList = document.getElementById("sessionList");
+const errorList = document.getElementById("errorList");
+
+let sprayPatterns = [];
+let selectedPattern = null;
+let sprayPoints = [];
+let compensationOffsets = [];
+let trainingScale = 1;
+let previewScale = 1;
+let globalPatternSize = { width: 1, height: 1 };
+let validStartBounds = null;
+let mouse = { x: 0, y: 0, inside: false };
+let running = false;
+let runStartedAt = 0;
+let runStart = null;
+let guideVisibleThisAttempt = true;
+let attemptCount = 0;
+let nextPointIndex = 0;
+let userPath = [];
+let samples = [];
+let timers = [];
+let animationFrame = null;
+let audioContext = null;
+let sessionAttempts = [];
+
+function canvasInkColor() {
+    return getComputedStyle(document.body).color || "#ffffff";
+}
+
+function withAlpha(color, alpha) {
+    if (color.startsWith("rgb(")) {
+        return color.replace("rgb(", "rgba(").replace(")", ", " + alpha + ")");
+    }
+    return color;
+}
+
+function rawPoints() {
+    return selectedPattern ? selectedPattern.points || [] : [];
+}
+
+function boundsFor(points) {
+    const xs = points.map((point) => point.x);
+    const ys = points.map((point) => point.y);
+    return {
+        minX: Math.min(...xs),
+        maxX: Math.max(...xs),
+        minY: Math.min(...ys),
+        maxY: Math.max(...ys)
+    };
+}
+
+function computeGlobalScales() {
+    const allPoints = sprayPatterns.flatMap((pattern) => pattern.points || []);
+    if (allPoints.length === 0) {
+        previewScale = 1;
+        trainingScale = 1;
+        globalPatternSize = { width: 1, height: 1 };
+        return;
+    }
+
+    let maxWidth = 1;
+    let maxHeight = 1;
+    sprayPatterns.forEach((pattern) => {
+        const points = pattern.points || [];
+        if (points.length === 0) {
+            return;
+        }
+        const bounds = boundsFor(points);
+        maxWidth = Math.max(maxWidth, bounds.maxX - bounds.minX);
+        maxHeight = Math.max(maxHeight, bounds.maxY - bounds.minY);
+    });
+
+    globalPatternSize = { width: maxWidth, height: maxHeight };
+    previewScale = Math.min((sprayCanvas.width - 48) / maxWidth, (sprayCanvas.height - 48) / maxHeight);
+    trainingScale = Math.min((trainingCanvas.width * 0.55) / maxWidth, (trainingCanvas.height * 0.65) / maxHeight);
+}
+
+function fitPointsToCanvas(points, canvas, scale) {
+    if (points.length === 0) {
+        return [];
+    }
+
+    const bounds = boundsFor(points);
+    const rawWidth = bounds.maxX - bounds.minX;
+    const rawHeight = bounds.maxY - bounds.minY;
+    const drawnWidth = rawWidth * scale;
+    const drawnHeight = rawHeight * scale;
+    const offsetX = (canvas.width - drawnWidth) / 2;
+    const offsetY = (canvas.height - drawnHeight) / 2;
+
+    return points.map((point) => ({
+        x: offsetX + (point.x - bounds.minX) * scale,
+        y: offsetY + (point.y - bounds.minY) * scale,
+        time: point.time,
+        bullet: point.bullet
+    }));
+}
+
+function computeTrainingGeometry() {
+    const points = rawPoints();
+    if (points.length === 0) {
+        compensationOffsets = [];
+        validStartBounds = null;
+        return;
+    }
+
+    compensationOffsets = points.map((point) => ({
+        x: -point.x * trainingScale,
+        y: -point.y * trainingScale,
+        time: point.time,
+        bullet: point.bullet
+    }));
+
+    const offsetBounds = boundsFor(compensationOffsets);
+    const padding = 18;
+    validStartBounds = {
+        minX: padding - offsetBounds.minX,
+        maxX: trainingCanvas.width - padding - offsetBounds.maxX,
+        minY: padding - offsetBounds.minY,
+        maxY: trainingCanvas.height - padding - offsetBounds.maxY
+    };
+}
+
+function selectPattern(patternId) {
+    selectedPattern = sprayPatterns.find((pattern) => pattern.id === patternId) || sprayPatterns[0] || null;
+    sprayPoints = selectedPattern ? fitPointsToCanvas(rawPoints(), sprayCanvas, previewScale) : [];
+    computeTrainingGeometry();
+    clearRun();
+    resetSession();
+
+    if (!selectedPattern) {
+        weaponInfo.textContent = "";
+        statusText.textContent = "No spray patterns found.";
+        draw();
+        return;
+    }
+
+    weaponSelect.value = selectedPattern.id;
+    weaponInfo.textContent = selectedPattern.name + ": " + selectedPattern.clipSize + " bullets, " + selectedPattern.cycleTime.toFixed(3) + "s cycle time.";
+    statusText.textContent = "Press and hold inside the valid area to start.";
+    draw();
+}
+
+async function loadSprayPatterns() {
+    const response = await fetch("spray_patterns.json");
+    if (!response.ok) {
+        throw new Error("Could not load spray_patterns.json.");
+    }
+
+    const data = await response.json();
+    sprayPatterns = data.patterns || [];
+    computeGlobalScales();
+    weaponSelect.replaceChildren();
+
+    sprayPatterns.forEach((pattern) => {
+        const option = document.createElement("option");
+        option.value = pattern.id;
+        option.textContent = pattern.name;
+        weaponSelect.appendChild(option);
+    });
+
+    selectPattern(sprayPatterns[0] ? sprayPatterns[0].id : "");
+}
+
+function clearTimers() {
+    timers.forEach((timer) => clearTimeout(timer));
+    timers = [];
+}
+
+function clearRun() {
+    clearTimers();
+    running = false;
+    runStartedAt = 0;
+    runStart = null;
+    nextPointIndex = 0;
+    userPath = [];
+    samples = [];
+}
+
+function clearCurrentError() {
+    currentErrorText.textContent = "-";
+    errorList.replaceChildren();
+}
+
+function resetSession() {
+    attemptCount = 0;
+    attemptCountText.textContent = "0";
+    sessionAttempts = [];
+    averageErrorText.textContent = "-";
+    sessionList.replaceChildren();
+    clearCurrentError();
+    drawSessionGraph();
+}
+
+function clearResultForNextAttempt(point) {
+    if (running || samples.length === 0) {
+        return false;
+    }
+
+    clearRun();
+    mouse = { ...point, inside: true };
+    statusText.textContent = "Ready. Press and hold inside the valid area to start the next attempt.";
+    draw();
+    return true;
+}
+
+function distance(a, b) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+function targetPoint(index) {
+    const offset = compensationOffsets[index];
+    return {
+        x: runStart.x + offset.x,
+        y: runStart.y + offset.y,
+        time: offset.time,
+        bullet: offset.bullet
+    };
+}
+
+function currentPointerSample() {
+    return { x: mouse.x, y: mouse.y, elapsed: (performance.now() - runStartedAt) / 1000 };
+}
+
+function samplePoint(pointIndex) {
+    if (!running || pointIndex >= compensationOffsets.length) {
+        return;
+    }
+
+    const target = targetPoint(pointIndex);
+    const pointer = currentPointerSample();
+    samples.push({
+        target,
+        mouse: { x: pointer.x, y: pointer.y },
+        distance: distance(target, pointer),
+        elapsed: pointer.elapsed
+    });
+    nextPointIndex = pointIndex + 1;
+    playBulletSound(pointIndex);
+
+    if (nextPointIndex >= compensationOffsets.length) {
+        finishRun(false);
+    }
+}
+
+function currentAttemptError() {
+    return samples.reduce((sum, sample) => sum + sample.distance, 0);
+}
+
+function updateCurrentError() {
+    const error = currentAttemptError();
+    currentErrorText.textContent = error.toFixed(2);
+    errorList.replaceChildren();
+
+    samples.forEach((sample, index) => {
+        const item = document.createElement("li");
+        item.textContent = "Bullet " + (index + 1) + ": " + sample.distance.toFixed(2) + " px at " + sample.elapsed.toFixed(3) + "s";
+        errorList.appendChild(item);
+    });
+}
+
+function recordSessionAttempt(releasedEarly) {
+    const error = currentAttemptError();
+    const previousTotal = sessionAttempts.reduce((sum, attempt) => sum + attempt.error, 0);
+    const average = (previousTotal + error) / (sessionAttempts.length + 1);
+    const attempt = {
+        number: attemptCount,
+        error,
+        average,
+        guideVisible: guideVisibleThisAttempt,
+        sampleCount: samples.length,
+        releasedEarly
+    };
+
+    sessionAttempts.push(attempt);
+    averageErrorText.textContent = average.toFixed(2);
+
+    const item = document.createElement("li");
+    item.textContent = "Attempt " + attempt.number + ": error " + error.toFixed(2) + " px, average " + average.toFixed(2) + " px, compensation guide " + (attempt.guideVisible ? "shown" : "hidden") + (releasedEarly ? ", released early" : "");
+    sessionList.appendChild(item);
+    drawSessionGraph();
+}
+
+function getAudioContext() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioContext;
+}
+
+function playBulletSound(index) {
+    const context = getAudioContext();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const start = context.currentTime;
+
+    oscillator.type = "square";
+    oscillator.frequency.value = index === 0 ? 720 : 420;
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.08, start + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.045);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(start);
+    oscillator.stop(start + 0.05);
+}
+
+function unlockAudio() {
+    const context = getAudioContext();
+    if (context.state === "suspended") {
+        context.resume();
+    }
+}
+
+function guideShouldBeVisible() {
+    const frequency = Math.max(0, Number(guideFrequency.value) || 0);
+    if (frequency === 0) {
+        return true;
+    }
+    return attemptCount % frequency !== 0;
+}
+
+function pointInsideValidStart(point) {
+    if (!validStartBounds) {
+        return false;
+    }
+    return point.x >= validStartBounds.minX && point.x <= validStartBounds.maxX && point.y >= validStartBounds.minY && point.y <= validStartBounds.maxY;
+}
+
+function startRun(point) {
+    if (compensationOffsets.length === 0) {
+        statusText.textContent = "Select a weapon with spray points first.";
+        return;
+    }
+    if (!pointInsideValidStart(point)) {
+        statusText.textContent = "Start inside the clear area so the whole compensation path fits.";
+        return;
+    }
+
+    clearRun();
+    clearCurrentError();
+    running = true;
+    attemptCount += 1;
+    attemptCountText.textContent = String(attemptCount);
+    guideVisibleThisAttempt = guideShouldBeVisible();
+    unlockAudio();
+    runStartedAt = performance.now();
+    runStart = point;
+    mouse = { ...point, inside: true };
+    userPath = [currentPointerSample()];
+    statusText.textContent = guideVisibleThisAttempt ? "Spraying with guide. Keep holding and follow the timing." : "Spraying blind. Keep holding and follow the timing.";
+
+    compensationOffsets.forEach((offset, index) => {
+        timers.push(setTimeout(() => samplePoint(index), offset.time * 1000));
+    });
+
+    if (activePointerId !== null && trainingCanvas.setPointerCapture) {
+        trainingCanvas.setPointerCapture(activePointerId);
+    }
+    draw();
+}
+
+function finishRun(releasedEarly) {
+    if (!running) {
+        return;
+    }
+
+    running = false;
+    clearTimers();
+    updateCurrentError();
+    recordSessionAttempt(releasedEarly);
+    statusText.textContent = releasedEarly ? "Released early. Deltas are shown below." : "Finished. Deltas are shown below.";
+    draw();
+}
+
+function canvasPoint(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: (event.clientX - rect.left) * (canvas.width / rect.width),
+        y: (event.clientY - rect.top) * (canvas.height / rect.height)
+    };
+}
+
+function drawPath(ctx, points) {
+    if (points.length === 0) {
+        return;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    points.slice(1).forEach((point) => ctx.lineTo(point.x, point.y));
+    ctx.stroke();
+}
+
+function drawPoint(ctx, point, radius, label) {
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+    ctx.stroke();
+    if (label) {
+        ctx.fillText(label, point.x + radius + 3, point.y - radius - 3);
+    }
+}
+
+function drawSprayPreview() {
+    const inkColor = canvasInkColor();
+    sprayCtx.clearRect(0, 0, sprayCanvas.width, sprayCanvas.height);
+    sprayCtx.strokeStyle = inkColor;
+    sprayCtx.fillStyle = inkColor;
+    sprayCtx.lineWidth = 1;
+    sprayCtx.strokeRect(0, 0, sprayCanvas.width, sprayCanvas.height);
+
+    if (sprayPoints.length > 1) {
+        sprayCtx.lineWidth = 2;
+        drawPath(sprayCtx, sprayPoints);
+        sprayCtx.lineWidth = 1;
+    }
+
+    sprayPoints.forEach((point, index) => drawPoint(sprayCtx, point, index === 0 ? 5 : 3, String(index + 1)));
+}
+
+function graphPoint(attempts, index, value, minValue, maxValue, padding) {
+    const width = sessionGraph.width - padding * 2;
+    const height = sessionGraph.height - padding * 2;
+    const x = attempts.length === 1 ? padding + width / 2 : padding + index * width / (attempts.length - 1);
+    const range = Math.max(1, maxValue - minValue);
+    const y = sessionGraph.height - padding - ((value - minValue) / range) * height;
+    return { x, y };
+}
+
+function drawSessionGraph() {
+    const inkColor = canvasInkColor();
+    const padding = 32;
+    sessionCtx.clearRect(0, 0, sessionGraph.width, sessionGraph.height);
+    sessionCtx.strokeStyle = inkColor;
+    sessionCtx.fillStyle = inkColor;
+    sessionCtx.lineWidth = 1;
+    sessionCtx.strokeRect(0, 0, sessionGraph.width, sessionGraph.height);
+
+    sessionCtx.font = "12px sans-serif";
+    sessionCtx.fillText("error over this weapon session, lower is better", 10, 18);
+
+    if (sessionAttempts.length === 0) {
+        sessionCtx.fillText("No attempts yet.", padding, sessionGraph.height / 2);
+        return;
+    }
+
+    const values = sessionAttempts.flatMap((attempt) => [attempt.error, attempt.average]);
+    const minValue = Math.min(...values, 0);
+    const maxValue = Math.max(...values, 1);
+    const plotBottom = sessionGraph.height - padding;
+    const plotRight = sessionGraph.width - padding;
+
+    sessionCtx.strokeStyle = withAlpha(inkColor, 0.35);
+    sessionCtx.beginPath();
+    sessionCtx.moveTo(padding, padding);
+    sessionCtx.lineTo(padding, plotBottom);
+    sessionCtx.lineTo(plotRight, plotBottom);
+    sessionCtx.stroke();
+
+    sessionCtx.fillStyle = withAlpha(inkColor, 0.75);
+    sessionCtx.fillText(maxValue.toFixed(0), 4, padding + 4);
+    sessionCtx.fillText(minValue.toFixed(0), 4, plotBottom);
+
+    if (sessionAttempts.length > 1) {
+        sessionCtx.strokeStyle = "#7f8c8d";
+        sessionCtx.setLineDash([5, 4]);
+        sessionCtx.beginPath();
+        sessionAttempts.forEach((attempt, index) => {
+            const point = graphPoint(sessionAttempts, index, attempt.average, minValue, maxValue, padding);
+            if (index === 0) {
+                sessionCtx.moveTo(point.x, point.y);
+            } else {
+                sessionCtx.lineTo(point.x, point.y);
+            }
+        });
+        sessionCtx.stroke();
+        sessionCtx.setLineDash([]);
+    }
+
+    sessionCtx.strokeStyle = "#2ecc71";
+    sessionCtx.lineWidth = 2;
+    sessionCtx.beginPath();
+    sessionAttempts.forEach((attempt, index) => {
+        const point = graphPoint(sessionAttempts, index, attempt.error, minValue, maxValue, padding);
+        if (index === 0) {
+            sessionCtx.moveTo(point.x, point.y);
+        } else {
+            sessionCtx.lineTo(point.x, point.y);
+        }
+    });
+    sessionCtx.stroke();
+    sessionCtx.lineWidth = 1;
+
+    sessionAttempts.forEach((attempt, index) => {
+        const point = graphPoint(sessionAttempts, index, attempt.error, minValue, maxValue, padding);
+        sessionCtx.fillStyle = attempt.guideVisible ? "#2ecc71" : "#f39c12";
+        sessionCtx.strokeStyle = sessionCtx.fillStyle;
+        if (attempt.guideVisible) {
+            sessionCtx.beginPath();
+            sessionCtx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+            sessionCtx.fill();
+        } else {
+            sessionCtx.fillRect(point.x - 4, point.y - 4, 8, 8);
+        }
+    });
+
+    sessionCtx.fillStyle = "#2ecc71";
+    sessionCtx.fillText("circle = guide shown", padding, sessionGraph.height - 8);
+    sessionCtx.fillStyle = "#f39c12";
+    sessionCtx.fillText("square = guide hidden", padding + 145, sessionGraph.height - 8);
+    sessionCtx.fillStyle = "#7f8c8d";
+    sessionCtx.fillText("dashed = running average", padding + 292, sessionGraph.height - 8);
+}
+
+function shadeInvalidStartAreas(inkColor) {
+    if (!validStartBounds) {
+        return;
+    }
+
+    trainingCtx.fillStyle = withAlpha(inkColor, 0.18);
+    trainingCtx.fillRect(0, 0, trainingCanvas.width, validStartBounds.minY);
+    trainingCtx.fillRect(0, validStartBounds.maxY, trainingCanvas.width, trainingCanvas.height - validStartBounds.maxY);
+    trainingCtx.fillRect(0, validStartBounds.minY, validStartBounds.minX, validStartBounds.maxY - validStartBounds.minY);
+    trainingCtx.fillRect(validStartBounds.maxX, validStartBounds.minY, trainingCanvas.width - validStartBounds.maxX, validStartBounds.maxY - validStartBounds.minY);
+
+    trainingCtx.setLineDash([5, 5]);
+    trainingCtx.strokeRect(validStartBounds.minX, validStartBounds.minY, validStartBounds.maxX - validStartBounds.minX, validStartBounds.maxY - validStartBounds.minY);
+    trainingCtx.setLineDash([]);
+}
+
+function drawTrainingGuide(inkColor) {
+    if (!runStart || compensationOffsets.length === 0 || !guideVisibleThisAttempt) {
+        return;
+    }
+
+    const guidePoints = compensationOffsets.map((offset) => ({
+        x: runStart.x + offset.x,
+        y: runStart.y + offset.y
+    }));
+
+    trainingCtx.strokeStyle = withAlpha(inkColor, 0.32);
+    trainingCtx.fillStyle = withAlpha(inkColor, 0.48);
+    trainingCtx.lineWidth = 2;
+    drawPath(trainingCtx, guidePoints);
+    trainingCtx.lineWidth = 1;
+    guidePoints.forEach((point, index) => drawPoint(trainingCtx, point, index === nextPointIndex && running ? 7 : 3, ""));
+}
+
+function drawUserBulletMarkers() {
+    if (samples.length === 0) {
+        return;
+    }
+
+    trainingCtx.strokeStyle = "#2ecc71";
+    trainingCtx.fillStyle = "#2ecc71";
+    samples.forEach((sample, index) => {
+        trainingCtx.beginPath();
+        trainingCtx.arc(sample.mouse.x, sample.mouse.y, index === 0 ? 5 : 3.5, 0, Math.PI * 2);
+        trainingCtx.fill();
+        trainingCtx.stroke();
+    });
+}
+
+function drawTraining() {
+    const inkColor = canvasInkColor();
+    trainingCtx.clearRect(0, 0, trainingCanvas.width, trainingCanvas.height);
+    trainingCtx.strokeStyle = inkColor;
+    trainingCtx.fillStyle = inkColor;
+    trainingCtx.lineWidth = 1;
+    trainingCtx.strokeRect(0, 0, trainingCanvas.width, trainingCanvas.height);
+
+    if (!running && samples.length === 0) {
+        shadeInvalidStartAreas(inkColor);
+    }
+
+    drawTrainingGuide(inkColor);
+
+    if (userPath.length > 0) {
+        trainingCtx.strokeStyle = "#2ecc71";
+        trainingCtx.fillStyle = "#2ecc71";
+        trainingCtx.lineWidth = 2.5;
+        drawPath(trainingCtx, userPath);
+        trainingCtx.lineWidth = 1;
+    }
+
+    if (!running && samples.length > 0) {
+        trainingCtx.strokeStyle = "#e74c3c";
+        trainingCtx.fillStyle = "#e74c3c";
+        samples.forEach((sample) => {
+            trainingCtx.beginPath();
+            trainingCtx.moveTo(sample.target.x, sample.target.y);
+            trainingCtx.lineTo(sample.mouse.x, sample.mouse.y);
+            trainingCtx.stroke();
+            drawPoint(trainingCtx, sample.target, 3, "");
+        });
+    }
+
+    drawUserBulletMarkers();
+
+    if (mouse.inside && !running) {
+        trainingCtx.fillStyle = pointInsideValidStart(mouse) ? "#2ecc71" : "#e74c3c";
+        trainingCtx.beginPath();
+        trainingCtx.arc(mouse.x, mouse.y, 4, 0, Math.PI * 2);
+        trainingCtx.fill();
+    }
+}
+
+function draw() {
+    drawSprayPreview();
+    drawTraining();
+    drawSessionGraph();
+}
+
+function animate() {
+    if (running) {
+        const pointer = currentPointerSample();
+        const last = userPath[userPath.length - 1];
+        if (!last || distance(last, pointer) > 1) {
+            userPath.push(pointer);
+        }
+
+        const elapsed = pointer.elapsed;
+        if (nextPointIndex < compensationOffsets.length) {
+            const nextPoint = compensationOffsets[nextPointIndex];
+            statusText.textContent = "Spraying. Bullet " + (nextPointIndex + 1) + " at " + nextPoint.time.toFixed(3) + "s, now " + elapsed.toFixed(3) + "s.";
+        }
+    }
+
+    draw();
+    animationFrame = requestAnimationFrame(animate);
+}
+
+let activePointerId = null;
+
+weaponSelect.addEventListener("change", () => selectPattern(weaponSelect.value));
+guideFrequency.addEventListener("change", draw);
+
+resetButton.addEventListener("click", () => {
+    clearRun();
+    resetSession();
+    statusText.textContent = "Reset. Press and hold inside the valid area to start.";
+    draw();
+});
+
+trainingCanvas.addEventListener("pointermove", (event) => {
+    mouse = { ...canvasPoint(trainingCanvas, event), inside: true };
+});
+
+trainingCanvas.addEventListener("pointerleave", () => {
+    if (!running) {
+        mouse.inside = false;
+    }
+});
+
+trainingCanvas.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    const point = canvasPoint(trainingCanvas, event);
+    if (clearResultForNextAttempt(point)) {
+        activePointerId = null;
+        return;
+    }
+
+    activePointerId = event.pointerId;
+    startRun(point);
+});
+
+trainingCanvas.addEventListener("pointerup", (event) => {
+    if (activePointerId !== event.pointerId) {
+        return;
+    }
+    mouse = { ...canvasPoint(trainingCanvas, event), inside: true };
+    finishRun(nextPointIndex < compensationOffsets.length);
+    activePointerId = null;
+});
+
+trainingCanvas.addEventListener("pointercancel", () => {
+    finishRun(true);
+    activePointerId = null;
+});
+
+loadSprayPatterns().catch((error) => {
+    statusText.textContent = error.message;
+    draw();
+});
+animationFrame = requestAnimationFrame(animate);
+</script>
