@@ -1,0 +1,148 @@
+<h1>Sending files between Linux computers</h1>
+
+<p>
+  In order to send files between computers, the easiest and safest way I have found so far is using <code>rsync</code>. It is good for this task because, as long as SSH keys are set up, files are transferred securely over SSH. In this setup, assume that you are on the sender computer and that the remote machine is the receiver.
+</p>
+
+<h2>make sure ssh works first</h2>
+
+<p>
+  Before thinking about <code>rsync</code>, make sure the sender can SSH into the receiver. Test that with:
+</p>
+
+<pre><code class="language-bash">ssh cjm@1.2.3.4</code></pre>
+
+<p>
+  Replace <code>cjm</code> with the username on the receiver, and replace <code>1.2.3.4</code> with the receiver's IP address or hostname.
+</p>
+
+<p>
+  If this is the first time this pair of computers has communicated, the command may not work yet. The receiver needs to know that it should trust the sender. The normal way to do this is to put the sender's public SSH key into the receiver's <code>authorized_keys</code> file.
+</p>
+
+<h2>create a key on the sender</h2>
+
+<p>
+  On the sender computer, generate an SSH key if one does not already exist:
+</p>
+
+<pre><code class="language-bash">ssh-keygen</code></pre>
+
+<p>
+  Press <code>Enter</code> to accept the default file location. Use a passphrase if desired, or press <code>Enter</code> twice for no passphrase.
+</p>
+
+<p>
+  Print the sender's public key:
+</p>
+
+<pre><code class="language-bash">cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<h2>register the sender on the receiver</h2>
+
+<p>
+  The easiest way to install the sender's public key on the receiver is:
+</p>
+
+<pre><code class="language-bash">ssh-copy-id cjm@1.2.3.4</code></pre>
+
+<p>
+  If <code>ssh-copy-id</code> is not available, manually add the sender's public key as a new line in this file on the receiver:
+</p>
+
+<pre><code class="language-bash">/home/cjm/.ssh/authorized_keys</code></pre>
+
+<p>
+  After that, test SSH again:
+</p>
+
+<pre><code class="language-bash">ssh cjm@1.2.3.4</code></pre>
+
+<p>
+  If this works, <code>rsync</code> has the connection path it needs.
+</p>
+
+<h2>install rsync</h2>
+
+<p>
+  <code>rsync</code> should be installed on both the sender and the receiver.
+</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install rsync</code></pre>
+
+<h2>send files to the receiver</h2>
+
+<p>
+  Copy the contents of a local folder on the sender to a folder on the receiver:
+</p>
+
+<pre><code class="language-bash">rsync -avz ./local-folder/ cjm@1.2.3.4:/home/cjm/remote-folder/</code></pre>
+
+<p>
+  A common real shape is:
+</p>
+
+<pre><code class="language-bash">rsync -avz ./site/ cjm@1.2.3.4:/home/cjm/site/</code></pre>
+
+<h2>copy files back from the receiver</h2>
+
+<p>
+  Reverse the source and destination to pull files from the receiver back to the sender:
+</p>
+
+<pre><code class="language-bash">rsync -avz cjm@1.2.3.4:/home/cjm/remote-folder/ ./local-folder/</code></pre>
+
+<h2>trailing slash</h2>
+
+<p>
+  The trailing slash changes what gets copied.
+</p>
+
+<pre><code class="language-bash">rsync -avz folder/ cjm@1.2.3.4:/home/cjm/dest/</code></pre>
+
+<p>
+  This copies the contents of <code>folder</code> into <code>dest</code>.
+</p>
+
+<pre><code class="language-bash">rsync -avz folder cjm@1.2.3.4:/home/cjm/dest/</code></pre>
+
+<p>
+  This copies the <code>folder</code> directory itself into <code>dest</code>.
+</p>
+
+<h2>useful options</h2>
+
+<pre><code class="language-bash"># archive mode, verbose, compressed
+rsync -avz source/ dest/
+
+# show what would happen without copying
+rsync -avzn source/ dest/
+
+# delete destination files that no longer exist in the source
+rsync -avz --delete source/ dest/</code></pre>
+
+<p>
+  Be careful with <code>--delete</code>. It is useful for mirroring directories, but it can remove files on the receiver.
+</p>
+
+<h2>custom ssh port</h2>
+
+<p>
+  If the receiver's SSH server uses a non-default port, pass an SSH command with <code>-e</code>:
+</p>
+
+<pre><code class="language-bash">rsync -avz -e "ssh -p 2222" ./local-folder/ cjm@1.2.3.4:/home/cjm/remote-folder/</code></pre>
+
+<h2>network access</h2>
+
+<p>
+  The receiver must allow SSH connections. Usually that means port <code>22/tcp</code> is open in the local firewall and in any VPS or cloud-provider firewall rules.
+</p>
+
+<pre><code class="language-bash">sudo ufw allow OpenSSH
+sudo ufw status verbose</code></pre>
+
+<p>
+  If <code>ssh cjm@1.2.3.4</code> works from the sender, then <code>rsync</code> should work too.
+</p>

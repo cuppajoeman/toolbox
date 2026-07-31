@@ -1,0 +1,413 @@
+<h1>Rhythm Tester</h1>
+
+<section>
+    <h2>Tempo</h2>
+
+    <label for="bpm">BPM</label>
+    <input id="bpm" type="number" min="20" max="320" step="1" value="120">
+</section>
+
+<section>
+    <h2>Loop A Rhythm</h2>
+
+    <p>
+        Use <code>x</code> for sound and <code>-</code> for silence. Each bracketed group divides its parent duration evenly among its contents.
+    </p>
+
+    <p>
+        For example, <code>[[x-x-][x-x-][x-x-][x-x-]]</code> is an alternating sixteenth-note pattern across one whole note.
+    </p>
+
+    <label for="rhythm">Rhythm</label>
+    <br>
+    <textarea id="rhythm" rows="4" cols="80">[[x-x-][x-x-][x-x-][x-x-]]</textarea>
+
+    <br><br>
+
+    <button id="playButton">Play</button>
+    <button id="pauseButton">Pause</button>
+
+    <p id="playStatus"></p>
+</section>
+
+<section>
+    <h2>Tap Tempo</h2>
+
+    <p>
+        Click <strong>Start Tapping</strong>, then press <strong>Space</strong> or click <strong>Tap</strong> several times.
+    </p>
+
+    <button id="tapModeButton">Start Tapping</button>
+    <button id="tapButton">Tap</button>
+    <button id="clearTapButton">Clear Taps</button>
+
+    <p id="tapStatus">No taps yet.</p>
+</section>
+
+<section>
+    <h2>Record A Rhythm</h2>
+
+    <p>
+        Start recording, wait through the count-in, then press <strong>Space</strong> for each note. Recording lasts one whole note.
+    </p>
+
+    <label for="countIn">Count-in beats</label>
+    <input id="countIn" type="number" min="0" max="16" step="1" value="4">
+
+    <br><br>
+
+    <label for="subdivisions">Quantization subdivisions per beat</label>
+    <input id="subdivisions" type="number" min="1" max="16" step="1" value="4">
+
+    <br><br>
+
+    <button id="recordButton">Start Recording</button>
+    <button id="stopRecordButton">Stop Recording</button>
+
+    <p id="recordStatus">Not recording.</p>
+
+    <label for="recordedRhythm">Recorded rhythm</label>
+    <br>
+    <textarea id="recordedRhythm" rows="4" cols="80" readonly></textarea>
+</section>
+
+<script>
+const bpmInput = document.getElementById("bpm");
+const rhythmInput = document.getElementById("rhythm");
+const playButton = document.getElementById("playButton");
+const pauseButton = document.getElementById("pauseButton");
+const playStatus = document.getElementById("playStatus");
+const tapModeButton = document.getElementById("tapModeButton");
+const tapButton = document.getElementById("tapButton");
+const clearTapButton = document.getElementById("clearTapButton");
+const tapStatus = document.getElementById("tapStatus");
+const countInInput = document.getElementById("countIn");
+const subdivisionsInput = document.getElementById("subdivisions");
+const recordButton = document.getElementById("recordButton");
+const stopRecordButton = document.getElementById("stopRecordButton");
+const recordStatus = document.getElementById("recordStatus");
+const recordedRhythm = document.getElementById("recordedRhythm");
+
+let audioContext = null;
+let loopTimer = null;
+let loopStartedAt = 0;
+let nextLoopIndex = 0;
+let loopEvents = [];
+let loopLength = 0;
+let loopNodes = [];
+let tapMode = false;
+let tapTimes = [];
+let recording = false;
+let recordStartTime = 0;
+let recordEndTime = 0;
+let recordedTimes = [];
+let recordTimers = [];
+
+function getAudioContext() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioContext;
+}
+
+function secondsPerBeat() {
+    return 60 / Number(bpmInput.value || 120);
+}
+
+function wholeNoteSeconds() {
+    return secondsPerBeat() * 4;
+}
+
+function playTone(time, frequency, duration, gainAmount) {
+    const ctx = getAudioContext();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.exponentialRampToValueAtTime(gainAmount, time + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.01);
+
+    return { oscillator, gain };
+}
+
+function parseRhythm(text) {
+    const cleaned = text.replace(/\s+/g, "");
+    let index = 0;
+
+    function parseGroup() {
+        if (cleaned[index] !== "[") {
+            throw new Error("Expected '[' at position " + index + ".");
+        }
+
+        index++;
+        const children = [];
+
+        while (index < cleaned.length && cleaned[index] !== "]") {
+            const char = cleaned[index];
+            if (char === "[") {
+                children.push(parseGroup());
+            } else if (char === "x" || char === "X" || char === "-") {
+                children.push({ type: "hit", play: char.toLowerCase() === "x" });
+                index++;
+            } else {
+                throw new Error("Unexpected character '" + char + "' at position " + index + ".");
+            }
+        }
+
+        if (cleaned[index] !== "]") {
+            throw new Error("Missing closing ']'.");
+        }
+
+        index++;
+
+        if (children.length === 0) {
+            throw new Error("Empty bracket group.");
+        }
+
+        return { type: "group", children };
+    }
+
+    if (!cleaned) {
+        throw new Error("Rhythm is empty.");
+    }
+
+    const roots = [];
+    while (index < cleaned.length) {
+        roots.push(parseGroup());
+    }
+
+    const events = [];
+
+    function flatten(node, start, duration) {
+        if (node.type === "hit") {
+            events.push({ time: start, duration, play: node.play });
+            return;
+        }
+
+        const childDuration = duration / node.children.length;
+        node.children.forEach((child, childIndex) => {
+            flatten(child, start + childIndex * childDuration, childDuration);
+        });
+    }
+
+    const wholeSeconds = wholeNoteSeconds();
+    roots.forEach((root, rootIndex) => {
+        flatten(root, rootIndex * wholeSeconds, wholeSeconds);
+    });
+
+    return {
+        events,
+        length: roots.length * wholeSeconds,
+        wholeNotes: roots.length
+    };
+}
+
+function scheduleLoopIteration(startTime) {
+    loopEvents.forEach((event) => {
+        if (event.play) {
+            const node = playTone(startTime + event.time, 440, Math.min(event.duration * 0.8, 0.08), 0.18);
+            loopNodes.push(node);
+            node.oscillator.addEventListener("ended", () => {
+                loopNodes = loopNodes.filter((activeNode) => activeNode !== node);
+            });
+        }
+    });
+}
+
+function startLoop() {
+    stopLoop();
+    const ctx = getAudioContext();
+    const parsedRhythm = parseRhythm(rhythmInput.value);
+    loopEvents = parsedRhythm.events;
+    loopLength = parsedRhythm.length;
+    loopStartedAt = ctx.currentTime + 0.05;
+    nextLoopIndex = 1;
+
+    scheduleLoopIteration(loopStartedAt);
+    loopTimer = setInterval(() => {
+        const now = ctx.currentTime;
+        const nextStart = loopStartedAt + nextLoopIndex * loopLength;
+        if (nextStart - now < 0.25) {
+            scheduleLoopIteration(nextStart);
+            nextLoopIndex++;
+        }
+    }, 80);
+
+    playStatus.textContent = "Playing " + loopEvents.length + " slots.";
+}
+
+function stopLoop() {
+    if (loopTimer) {
+        clearInterval(loopTimer);
+        loopTimer = null;
+    }
+
+    loopNodes.forEach((node) => {
+        try {
+            node.gain.gain.cancelScheduledValues(audioContext.currentTime);
+            node.gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+            node.oscillator.stop();
+        } catch (error) {
+        }
+    });
+    loopNodes = [];
+
+    playStatus.textContent = "Paused.";
+}
+
+function tapTempo() {
+    const now = performance.now();
+    tapTimes.push(now);
+    if (tapTimes.length > 8) {
+        tapTimes.shift();
+    }
+
+    if (tapTimes.length < 2) {
+        tapStatus.textContent = "Tap a few more times.";
+        return;
+    }
+
+    const intervals = [];
+    for (let i = 1; i < tapTimes.length; i++) {
+        intervals.push(tapTimes[i] - tapTimes[i - 1]);
+    }
+
+    const averageInterval = intervals.reduce((sum, value) => sum + value, 0) / intervals.length;
+    const bpm = Math.round(60000 / averageInterval);
+    bpmInput.value = bpm;
+    tapStatus.textContent = "Tempo: " + bpm + " BPM from " + tapTimes.length + " taps.";
+}
+
+function clearTaps() {
+    tapTimes = [];
+    tapStatus.textContent = "No taps yet.";
+}
+
+function startRecording() {
+    stopRecording(false);
+    const ctx = getAudioContext();
+    const countInBeats = Number(countInInput.value || 0);
+    const beatSeconds = secondsPerBeat();
+    const wholeSeconds = wholeNoteSeconds();
+    const startAt = ctx.currentTime + countInBeats * beatSeconds + 0.1;
+
+    recording = true;
+    recordedTimes = [];
+    recordStartTime = startAt;
+    recordEndTime = startAt + wholeSeconds;
+    recordStatus.textContent = "Count-in...";
+
+    for (let i = 0; i < countInBeats; i++) {
+        const time = ctx.currentTime + 0.1 + i * beatSeconds;
+        playTone(time, i === 0 ? 1200 : 900, 0.04, 0.12);
+    }
+
+    for (let i = 0; i < 4; i++) {
+        playTone(startAt + i * beatSeconds, i === 0 ? 1200 : 900, 0.04, 0.12);
+    }
+
+    recordTimers.push(setTimeout(() => {
+        if (recording) {
+            recordStatus.textContent = "Recording. Press Space for notes.";
+        }
+    }, countInBeats * beatSeconds * 1000));
+
+    recordTimers.push(setTimeout(() => {
+        stopRecording(true);
+    }, (countInBeats * beatSeconds + wholeSeconds) * 1000 + 150));
+}
+
+function stopRecording(makeNotation) {
+    recordTimers.forEach((timer) => clearTimeout(timer));
+    recordTimers = [];
+
+    if (makeNotation && recording) {
+        recordedRhythm.value = makeRecordedNotation();
+        rhythmInput.value = recordedRhythm.value;
+        recordStatus.textContent = "Recorded " + recordedTimes.length + " notes.";
+    } else if (!makeNotation) {
+        recordStatus.textContent = "Not recording.";
+    }
+
+    recording = false;
+}
+
+function makeRecordedNotation() {
+    const subdivisions = Math.max(1, Number(subdivisionsInput.value || 4));
+    const totalSlots = subdivisions * 4;
+    const slots = Array(totalSlots).fill("-");
+    const loopDuration = recordEndTime - recordStartTime;
+
+    recordedTimes.forEach((time) => {
+        const normalized = (time - recordStartTime) / loopDuration;
+        if (normalized < 0 || normalized >= 1) {
+            return;
+        }
+
+        const slotIndex = Math.min(totalSlots - 1, Math.round(normalized * totalSlots));
+        slots[slotIndex] = "x";
+    });
+
+    const groups = [];
+    for (let beat = 0; beat < 4; beat++) {
+        const start = beat * subdivisions;
+        groups.push("[" + slots.slice(start, start + subdivisions).join("") + "]");
+    }
+
+    return "[" + groups.join("") + "]";
+}
+
+function isTypingTarget(element) {
+    return element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA");
+}
+
+playButton.addEventListener("click", () => {
+    try {
+        startLoop();
+    } catch (error) {
+        playStatus.textContent = error.message;
+    }
+});
+
+pauseButton.addEventListener("click", stopLoop);
+
+tapModeButton.addEventListener("click", () => {
+    tapMode = !tapMode;
+    tapModeButton.textContent = tapMode ? "Stop Tapping" : "Start Tapping";
+    tapStatus.textContent = tapMode ? "Tap Space or click Tap." : "Tap mode stopped.";
+});
+
+tapButton.addEventListener("click", tapTempo);
+clearTapButton.addEventListener("click", clearTaps);
+recordButton.addEventListener("click", startRecording);
+stopRecordButton.addEventListener("click", () => stopRecording(true));
+
+document.addEventListener("keydown", (event) => {
+    if (event.code !== "Space") {
+        return;
+    }
+
+    if (recording) {
+        event.preventDefault();
+        const ctx = getAudioContext();
+        if (ctx.currentTime >= recordStartTime && ctx.currentTime < recordEndTime) {
+            recordedTimes.push(ctx.currentTime);
+            playTone(ctx.currentTime, 660, 0.05, 0.16);
+            recordStatus.textContent = "Recording. Notes: " + recordedTimes.length;
+        }
+        return;
+    }
+
+    if (tapMode && !isTypingTarget(document.activeElement)) {
+        event.preventDefault();
+        tapTempo();
+    }
+});
+</script>

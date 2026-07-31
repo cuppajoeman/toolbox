@@ -27,6 +27,7 @@ terminal.vim
 statusline.vim
 per_dir_vimrc.vim
 clipboard.vim
+jai.vim
 "
 
 # If ~/.vimrc already exists, ask before overwriting

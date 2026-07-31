@@ -10,14 +10,14 @@
   If the machine starts with only root access, create a regular user and give it sudo privileges.
 </p>
 
-<pre><code class="language-bash">adduser ccn
-usermod -aG sudo ccn</code></pre>
+<pre><code class="language-bash">adduser cjm
+usermod -aG sudo cjm</code></pre>
 
 <p>
   Then log in as that user, or switch to it:
 </p>
 
-<pre><code class="language-bash">su - ccn</code></pre>
+<pre><code class="language-bash">su - cjm</code></pre>
 
 <h2>install basics</h2>
 
@@ -31,26 +31,19 @@ sudo apt install git vim curl openssh-client build-essential</code></pre>
 <h2>create an SSH key for GitHub</h2>
 
 <p>
-  Generate an SSH key on the new machine. Replace the email with the one used for GitHub if desired.
+  Generate an SSH key on the new machine. The default path is usually fine, so press <code>Enter</code> when it asks where to save the key. Use a passphrase if you want one, or press <code>Enter</code> twice for no passphrase.
 </p>
 
-<pre><code class="language-bash">ssh-keygen -t ed25519 -C "you@example.com"</code></pre>
-
-<p>
-  Start the SSH agent and add the key.
-</p>
-
-<pre><code class="language-bash">eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519</code></pre>
+<pre><code class="language-bash">ssh-keygen</code></pre>
 
 <p>
   Print the public key and add it to GitHub under <code>Settings -&gt; SSH and GPG keys -&gt; New SSH key</code>.
 </p>
 
-<pre><code class="language-bash">cat ~/.ssh/id_ed25519.pub</code></pre>
+<pre><code class="language-bash">cat .ssh/id_ed25519.pub</code></pre>
 
 <p>
-  Test the GitHub SSH connection.
+  Test the GitHub SSH connection. The first time, SSH will ask whether to trust GitHub's host key; type <code>yes</code>. A successful test says that you authenticated, but GitHub does not provide shell access.
 </p>
 
 <pre><code class="language-bash">ssh -T git@github.com</code></pre>
@@ -81,6 +74,37 @@ git clone git@github.com:cuppajoeman/toolbox.git</code></pre>
 <pre><code class="language-bash">chmod +x generate_vimrc.sh
 ./generate_vimrc.sh</code></pre>
 
+<h2>bashrc preferences</h2>
+
+<p>
+  I also like adding a few small preferences to the current user's <code>~/.bashrc</code>: a recursive grep helper, Vim as the default editor, vi-style shell editing, and a clear place to extend <code>PATH</code> later.
+</p>
+
+<pre><code class="language-bash"># grep but recursive
+grec() {
+    if [ "$#" -lt 1 ]; then
+        echo "usage: grec PATTERN [PATH]"
+        return 1
+    fi
+
+    local pattern="$1"
+    local path="${2:-.}"
+
+    grep -RnI --color=auto "$path" -e "$pattern"
+}
+
+export EDITOR=vim
+
+set -o vi
+
+# when you want to add something else to the path add ":your_path_1:your_path_2:..." to the end
+export PATH="$PATH"</code></pre>
+
+<p>
+  After editing <code>~/.bashrc</code>, reload it with:
+</p>
+
+<pre><code class="language-bash">source ~/.bashrc</code></pre>
 <h2>allow incoming connections</h2>
 
 <p>
