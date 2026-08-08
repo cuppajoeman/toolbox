@@ -279,6 +279,51 @@
 
 <details>
     <summary>Details</summary>
+
+    <h2>failed git submodule add leaves stale git metadata</h2>
+
+    <p>
+        If <code>git submodule add</code> fails part way through, simply deleting the visible submodule directory with <code>rm -rf</code> may not be enough. Git can leave behind the submodule's repository metadata under the parent repository's git directory. When you try to add the submodule again you may see an error like:
+    </p>
+
+    <pre>
+        <code>
+fatal: A git directory for 'fuzzy_matching' is found locally with remote(s):
+origin        git@github.com:jai-toolbox/fuzzy_matching.git
+        </code>
+    </pre>
+
+    <p>
+        This can be especially confusing when the repository you are currently in is itself nested inside another repository or submodule, because the actual git metadata directory may not simply be <code>.git/modules/fuzzy_matching</code>. Use <code>git rev-parse --git-common-dir</code> so the cleanup operates on the real git directory.
+    </p>
+
+    <p>
+        The following sequence completely cleans up the failed submodule add:
+    </p>
+
+    <pre>
+        <code>
+git submodule deinit -f -- fuzzy_matching 2>/dev/null || true
+rm -rf fuzzy_matching
+find "$(git rev-parse --git-common-dir)/modules" -type d -name fuzzy_matching -prune -exec rm -rf {} +
+git config -f .gitmodules --remove-section submodule.fuzzy_matching 2>/dev/null || true
+git config --remove-section submodule.fuzzy_matching 2>/dev/null || true
+        </code>
+    </pre>
+
+    <p>
+        After that you can add the submodule again normally:
+    </p>
+
+    <pre>
+        <code>
+git submodule add git@github.com:jai-toolbox/fuzzy_matching.git
+        </code>
+    </pre>
+
+    <p>
+        The important thing to remember is that a failed submodule add can leave state in multiple places: the working directory, <code>.gitmodules</code>, the repository's local git config, and the hidden submodule repository under the git common directory. Deleting only the working directory does not necessarily undo the failed add.
+    </p>
     <h2>ssh submodules, github organizations and collaborators</h2>
     
     <p>
