@@ -29,6 +29,14 @@
     <input id="guideFrequency" type="number" min="0" value="4">
     <span>0 = never hide, 1 = always hidden</span>
 
+    <label for="timeScale">Time scale</label>
+    <input id="timeScale" type="number" min="0.1" max="4" step="0.1" value="1">
+    <span>1 = normal, 0.5 = half speed, 2 = double speed</span>
+
+    <label for="patternScale">Pattern scale</label>
+    <input id="patternScale" type="number" min="0.01" max="1" step="0.01" value="0.5">
+    <span>1 = full size, 0.5 = half size</span>
+
     <button id="resetButton">Reset</button>
 
     <p id="weaponInfo"></p>
@@ -62,6 +70,8 @@
 <script>
 const weaponSelect = document.getElementById("weaponSelect");
 const guideFrequency = document.getElementById("guideFrequency");
+const timeScaleInput = document.getElementById("timeScale");
+const patternScaleInput = document.getElementById("patternScale");
 const resetButton = document.getElementById("resetButton");
 const weaponInfo = document.getElementById("weaponInfo");
 const statusText = document.getElementById("status");
@@ -90,6 +100,7 @@ let running = false;
 let runStartedAt = 0;
 let runStart = null;
 let guideVisibleThisAttempt = true;
+let timeScaleAtRun = 1;
 let attemptCount = 0;
 let nextPointIndex = 0;
 let userPath = [];
@@ -146,9 +157,10 @@ function computeGlobalScales() {
         maxHeight = Math.max(maxHeight, bounds.maxY - bounds.minY);
     });
 
+    const patternScale = getPatternScaleFactor();
     globalPatternSize = { width: maxWidth, height: maxHeight };
-    previewScale = Math.min((sprayCanvas.width - 48) / maxWidth, (sprayCanvas.height - 48) / maxHeight);
-    trainingScale = Math.min((trainingCanvas.width * 0.55) / maxWidth, (trainingCanvas.height * 0.65) / maxHeight);
+    previewScale = Math.min((sprayCanvas.width - 48) / maxWidth, (sprayCanvas.height - 48) / maxHeight) * patternScale;
+    trainingScale = Math.min((trainingCanvas.width * 0.55) / maxWidth, (trainingCanvas.height * 0.65) / maxHeight) * patternScale;
 }
 
 function fitPointsToCanvas(points, canvas, scale) {
@@ -212,9 +224,21 @@ function selectPattern(patternId) {
     }
 
     weaponSelect.value = selectedPattern.id;
-    weaponInfo.textContent = selectedPattern.name + ": " + selectedPattern.clipSize + " bullets, " + selectedPattern.cycleTime.toFixed(3) + "s cycle time.";
+    updateWeaponInfo();
     statusText.textContent = "Press and hold inside the valid area to start.";
     draw();
+}
+
+function updateWeaponInfo() {
+    if (!selectedPattern) {
+        weaponInfo.textContent = "";
+        return;
+    }
+
+    const scale = getTimeScale();
+    const patternScale = getPatternScaleFactor();
+    const effectiveCycleTime = selectedPattern.cycleTime / scale;
+    weaponInfo.textContent = selectedPattern.name + ": " + selectedPattern.clipSize + " bullets, " + selectedPattern.cycleTime.toFixed(3) + "s base cycle time, " + effectiveCycleTime.toFixed(3) + "s at " + scale.toFixed(1) + "x, pattern scale " + patternScale.toFixed(2) + "x.";
 }
 
 async function loadSprayPatterns() {
@@ -346,6 +370,7 @@ function recordSessionAttempt(releasedEarly) {
         error,
         average,
         guideVisible: guideVisibleThisAttempt,
+        timeScale: timeScaleAtRun,
         sampleCount: samples.length,
         releasedEarly
     };
@@ -354,7 +379,7 @@ function recordSessionAttempt(releasedEarly) {
     averageErrorText.textContent = average.toFixed(2);
 
     const item = document.createElement("li");
-    item.textContent = "Attempt " + attempt.number + ": error " + error.toFixed(2) + " px, average " + average.toFixed(2) + " px, compensation guide " + (attempt.guideVisible ? "shown" : "hidden") + (releasedEarly ? ", released early" : "");
+    item.textContent = "Attempt " + attempt.number + ": error " + error.toFixed(2) + " px, average " + average.toFixed(2) + " px, " + attempt.timeScale.toFixed(1) + "x, compensation guide " + (attempt.guideVisible ? "shown" : "hidden") + (releasedEarly ? ", released early" : "");
     sessionList.appendChild(item);
     drawSessionGraph();
 }
@@ -390,6 +415,26 @@ function unlockAudio() {
     }
 }
 
+function getTimeScale() {
+    const value = Number(timeScaleInput.value);
+    if (!Number.isFinite(value) || value <= 0) {
+        return 1;
+    }
+    return Math.max(0.1, Math.min(4, value));
+}
+
+function getPatternScaleFactor() {
+    const value = Number(patternScaleInput.value);
+    if (!Number.isFinite(value) || value <= 0) {
+        return 0.5;
+    }
+    return Math.max(0.01, Math.min(1, value));
+}
+
+function scaledPatternTime(patternTime, scale) {
+    return patternTime / scale;
+}
+
 function guideShouldBeVisible() {
     const frequency = Math.max(0, Number(guideFrequency.value) || 0);
     if (frequency === 0) {
@@ -421,15 +466,16 @@ function startRun(point) {
     attemptCount += 1;
     attemptCountText.textContent = String(attemptCount);
     guideVisibleThisAttempt = guideShouldBeVisible();
+    timeScaleAtRun = getTimeScale();
     unlockAudio();
     runStartedAt = performance.now();
     runStart = point;
     mouse = { ...point, inside: true };
     userPath = [currentPointerSample()];
-    statusText.textContent = guideVisibleThisAttempt ? "Spraying with guide. Keep holding and follow the timing." : "Spraying blind. Keep holding and follow the timing.";
+    statusText.textContent = guideVisibleThisAttempt ? "Spraying with guide at " + timeScaleAtRun.toFixed(1) + "x. Keep holding and follow the timing." : "Spraying blind at " + timeScaleAtRun.toFixed(1) + "x. Keep holding and follow the timing.";
 
     compensationOffsets.forEach((offset, index) => {
-        timers.push(setTimeout(() => samplePoint(index), offset.time * 1000));
+        timers.push(setTimeout(() => samplePoint(index), scaledPatternTime(offset.time, timeScaleAtRun) * 1000));
     });
 
     if (activePointerId !== null && trainingCanvas.setPointerCapture) {
@@ -700,7 +746,8 @@ function animate() {
         const elapsed = pointer.elapsed;
         if (nextPointIndex < compensationOffsets.length) {
             const nextPoint = compensationOffsets[nextPointIndex];
-            statusText.textContent = "Spraying. Bullet " + (nextPointIndex + 1) + " at " + nextPoint.time.toFixed(3) + "s, now " + elapsed.toFixed(3) + "s.";
+            const scheduledTime = scaledPatternTime(nextPoint.time, timeScaleAtRun);
+            statusText.textContent = "Spraying at " + timeScaleAtRun.toFixed(1) + "x. Bullet " + (nextPointIndex + 1) + " at " + scheduledTime.toFixed(3) + "s, now " + elapsed.toFixed(3) + "s.";
         }
     }
 
@@ -712,6 +759,22 @@ let activePointerId = null;
 
 weaponSelect.addEventListener("change", () => selectPattern(weaponSelect.value));
 guideFrequency.addEventListener("change", draw);
+timeScaleInput.addEventListener("change", () => {
+    timeScaleInput.value = getTimeScale().toFixed(1);
+    updateWeaponInfo();
+});
+
+patternScaleInput.addEventListener("change", () => {
+    patternScaleInput.value = getPatternScaleFactor().toFixed(2);
+    computeGlobalScales();
+    sprayPoints = selectedPattern ? fitPointsToCanvas(rawPoints(), sprayCanvas, previewScale) : [];
+    computeTrainingGeometry();
+    clearRun();
+    resetSession();
+    updateWeaponInfo();
+    statusText.textContent = "Pattern scale changed. Press and hold inside the valid area to start.";
+    draw();
+});
 
 resetButton.addEventListener("click", () => {
     clearRun();

@@ -42,3 +42,7 @@ of each spray pattern is meaningful: a larger spray should remain larger than a
 smaller spray. The trainer should compute one shared scale across the full weapon
 dataset and use that scale for every weapon. Individual patterns can still be
 centered on the canvas for readability, but their zoom level should stay uniform.
+
+The pattern scale control is a user display multiplier on top of that shared
+scale. Its default is 0.5, and it should shrink or grow every weapon together
+without making each weapon independently fit the canvas.
