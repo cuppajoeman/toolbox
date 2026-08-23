@@ -1,0 +1,39 @@
+<h1>Installing Blender add-ons</h1>
+
+<p>
+  Blender add-ons are usually installed from a single <code>.py</code> file or a zipped add-on package. Once installed, the add-on still has to be enabled before its panels, menus, or operators show up.
+</p>
+
+<h2>Generic install</h2>
+
+<ol>
+  <li>Open Blender.</li>
+  <li>Go to <b>Edit &gt; Preferences &gt; Add-ons</b>.</li>
+  <li>Use <b>Install from Disk</b>.</li>
+  <li>Choose the add-on's <code>.py</code> file or <code>.zip</code> package.</li>
+  <li>Enable the checkbox next to the add-on after Blender adds it to the list.</li>
+  <li>Use the add-on's article to find its panel, menu item, or operator.</li>
+</ol>
+
+<h2>Example from toolbox</h2>
+
+<p>
+  Suppose toolbox is cloned at <code>C:\Users\ccn\projects\toolbox</code> and you want to install one of the Blender add-ons stored in it.
+</p>
+
+<ol>
+  <li>In Blender, go to <b>Edit &gt; Preferences &gt; Add-ons</b>.</li>
+  <li>Click <b>Install from Disk</b>.</li>
+  <li>Choose a file from <code>C:\Users\ccn\projects\toolbox\content\notes\software\blender\addons</code>.</li>
+  <li>For example, choose <code>better_gltf_exporter_addon.py</code>.</li>
+  <li>Enable <b>Better glTF Exporter</b>.</li>
+  <li>Use <b>File &gt; Export &gt; Better glTF (.gltf)</b>.</li>
+</ol>
+
+<h2>Notes</h2>
+
+<ul>
+  <li>A standalone <code>.py</code> add-on can be installed directly.</li>
+  <li>If Blender copies the add-on into its preferences folder, editing the toolbox copy may not update Blender's installed copy automatically.</li>
+  <li>When actively developing an add-on, it can be faster to run the script from Blender's text editor, install it again after edits, or place a development copy in Blender's scripts/addons folder.</li>
+</ul>
