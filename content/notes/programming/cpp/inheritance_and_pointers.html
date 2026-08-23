@@ -1,5 +1,5 @@
   <p>
-    In C++, inheritance enables derived classes to extend or override behavior from a base class. But to use inheritance correctly — especially when dealing with polymorphism — you must use pointers or references, not values. This article explains why object slicing occurs, why destructors should be virtual, and how smart pointers help manage lifetimes.
+    In C++, inheritance enables derived classes to extend or override behavior from a base class. But to use inheritance correctly  -  especially when dealing with polymorphism  -  you must use pointers or references, not values. This article explains why object slicing occurs, why destructors should be virtual, and how smart pointers help manage lifetimes.
   </p>
 
   <h2>Object Slicing: What It Really Means</h2>
@@ -24,7 +24,7 @@ Base b = d;
 std::cout &lt;&lt; b.type(); // prints "Base"</code></pre>
 
   <p>
-    Although <code>d</code> is a <code>Derived</code> object, the assignment <code>Base b = d</code> performs a <strong>copy</strong> into a <code>Base</code> object. This invokes the <code>Base</code> copy constructor, which only copies the <code>Base</code> portion of <code>d</code>. Everything defined in <code>Derived</code> — data and overrides — is <strong>sliced off</strong>.
+    Although <code>d</code> is a <code>Derived</code> object, the assignment <code>Base b = d</code> performs a <strong>copy</strong> into a <code>Base</code> object. This invokes the <code>Base</code> copy constructor, which only copies the <code>Base</code> portion of <code>d</code>. Everything defined in <code>Derived</code>  -  data and overrides  -  is <strong>sliced off</strong>.
   </p>
 
   <p>
@@ -116,7 +116,7 @@ delete b; // Calls both Derived and Base destructors
   <h2>Summary</h2>
 
   <ul>
-    <li><strong>Object slicing</strong> happens when assigning a derived object to a base object by value — only the base part is kept.</li>
+    <li><strong>Object slicing</strong> happens when assigning a derived object to a base object by value  -  only the base part is kept.</li>
     <li>Use <strong>pointers or references</strong> to access polymorphic objects without slicing.</li>
     <li><strong>Smart pointers</strong> like <code>shared_ptr</code> or <code>unique_ptr</code> simplify and safeguard object lifetime management.</li>
     <li>Always declare the <strong>base class destructor as virtual</strong> if you intend to use inheritance. Otherwise, deleting via base pointers is unsafe.</li>

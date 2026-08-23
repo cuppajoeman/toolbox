@@ -1,0 +1,73 @@
+<h1>Better glTF Exporter add-on for Blender</h1>
+
+<p>
+  Blender's built-in glTF exporter can export separate <code>.gltf</code>,
+  <code>.bin</code>, and texture files, but the default workflow can leave all
+  exported files sitting together in one directory. Better glTF Exporter is a
+  small wrapper around Blender's normal glTF exporter that defaults to a cleaner
+  layout: the <code>.gltf</code> and <code>.bin</code> stay at the export
+  location, while textures go into a <code>textures</code> directory.
+</p>
+
+<h2>Files</h2>
+
+<ul>
+  <li>Add-on: <a href="better_gltf_exporter_addon.py">better_gltf_exporter_addon.py</a></li>
+  <li>Menu location: <code>File &gt; Export &gt; Better glTF (.gltf)</code></li>
+  <li>Operator: <code>export_scene.better_gltf</code></li>
+</ul>
+
+<h2>What it exports</h2>
+
+<p>
+  The add-on calls Blender's built-in <code>bpy.ops.export_scene.gltf</code>
+  operator with <code>export_format</code> set to
+  <code>GLTF_SEPARATE</code>. When supported by the Blender version, it also
+  passes <code>export_texture_dir</code> so copied textures are written under
+  the chosen texture folder.
+</p>
+
+<pre><code>my_asset.gltf
+my_asset.bin
+textures/
+  base_color.png
+  normal.png
+  roughness.png</code></pre>
+
+<h2>Workflow</h2>
+
+<ol>
+  <li>Install and enable <code>better_gltf_exporter_addon.py</code>.</li>
+  <li>Open the Blender file you want to export.</li>
+  <li>Use <code>File &gt; Export &gt; Better glTF (.gltf)</code>.</li>
+  <li>Choose the destination <code>.gltf</code> file.</li>
+  <li>Leave <code>Texture Directory</code> as <code>textures</code>, or set another relative folder name.</li>
+  <li>Export.</li>
+</ol>
+
+<h2>Options</h2>
+
+<ul>
+  <li><code>Selected Objects Only</code>: exports only selected objects when enabled.</li>
+  <li><code>Apply Modifiers</code>: asks the glTF exporter to apply modifiers when the Blender version supports that option.</li>
+  <li><code>Punctual Lights</code>: exports compatible point, spot, and directional lights when supported.</li>
+  <li><code>Texture Directory</code>: relative directory used for exported texture files. The default is <code>textures</code>.</li>
+</ul>
+
+<h2>Why it checks supported properties</h2>
+
+<p>
+  Blender's glTF exporter options change between Blender versions. The add-on
+  asks the active glTF operator which properties it supports, then only passes
+  options that exist. That keeps the wrapper from failing just because one
+  Blender version uses a slightly different option set.
+</p>
+
+<h2>Notes</h2>
+
+<ul>
+  <li>This is still Blender's built-in glTF exporter underneath.</li>
+  <li>Use this when you want editable external files instead of a packed <code>.glb</code>.</li>
+  <li>If you want a single-file export, use Blender's normal <code>glTF Binary (.glb)</code> export instead.</li>
+  <li>The texture directory is relative to the exported <code>.gltf</code> file.</li>
+</ul>

@@ -37,6 +37,9 @@
     <input id="patternScale" type="number" min="0.01" max="1" step="0.01" value="0.5">
     <span>1 = full size, 0.5 = half size</span>
 
+    <label for="showBulletImpacts">Show bullet impacts</label>
+    <input id="showBulletImpacts" type="checkbox">
+
     <button id="resetButton">Reset</button>
 
     <p id="weaponInfo"></p>
@@ -72,6 +75,7 @@ const weaponSelect = document.getElementById("weaponSelect");
 const guideFrequency = document.getElementById("guideFrequency");
 const timeScaleInput = document.getElementById("timeScale");
 const patternScaleInput = document.getElementById("patternScale");
+const showBulletImpactsInput = document.getElementById("showBulletImpacts");
 const resetButton = document.getElementById("resetButton");
 const weaponInfo = document.getElementById("weaponInfo");
 const statusText = document.getElementById("status");
@@ -685,6 +689,33 @@ function drawUserBulletMarkers() {
     });
 }
 
+function drawBulletImpacts() {
+    if (!showBulletImpactsInput.checked || !runStart || samples.length === 0) {
+        return;
+    }
+
+    trainingCtx.strokeStyle = "#3498db";
+    trainingCtx.fillStyle = "#3498db";
+    samples.forEach((sample, index) => {
+        const impact = {
+            x: runStart.x + sample.mouse.x - sample.target.x,
+            y: runStart.y + sample.mouse.y - sample.target.y
+        };
+        trainingCtx.beginPath();
+        trainingCtx.arc(impact.x, impact.y, index === 0 ? 5 : 3.5, 0, Math.PI * 2);
+        trainingCtx.fill();
+        trainingCtx.stroke();
+    });
+
+    trainingCtx.strokeStyle = "#3498db";
+    trainingCtx.beginPath();
+    trainingCtx.moveTo(runStart.x - 7, runStart.y);
+    trainingCtx.lineTo(runStart.x + 7, runStart.y);
+    trainingCtx.moveTo(runStart.x, runStart.y - 7);
+    trainingCtx.lineTo(runStart.x, runStart.y + 7);
+    trainingCtx.stroke();
+}
+
 function drawTraining() {
     const inkColor = canvasInkColor();
     trainingCtx.clearRect(0, 0, trainingCanvas.width, trainingCanvas.height);
@@ -720,6 +751,7 @@ function drawTraining() {
     }
 
     drawUserBulletMarkers();
+    drawBulletImpacts();
 
     if (mouse.inside && !running) {
         trainingCtx.fillStyle = pointInsideValidStart(mouse) ? "#2ecc71" : "#e74c3c";
@@ -759,6 +791,7 @@ let activePointerId = null;
 
 weaponSelect.addEventListener("change", () => selectPattern(weaponSelect.value));
 guideFrequency.addEventListener("change", draw);
+showBulletImpactsInput.addEventListener("change", draw);
 timeScaleInput.addEventListener("change", () => {
     timeScaleInput.value = getTimeScale().toFixed(1);
     updateWeaponInfo();

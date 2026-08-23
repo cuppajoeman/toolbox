@@ -50,7 +50,7 @@ def find_texture_file(base_name):
     )
 
     if not all_files:
-        print(f"⚠️ No files found in '{dir_path}' — skipping.")
+        print(f"Warning: No files found in '{dir_path}'  -  skipping.")
         return None
 
     # 1. Try exact match first
@@ -68,7 +68,7 @@ def find_texture_file(base_name):
 
     selected = fzf_select(all_files, base_name, dir_path)
     if not selected:
-        print("   (No selection made — skipping)")
+        print("   (No selection made  -  skipping)")
         return None
 
     return os.path.join(dir_path, selected)
@@ -121,7 +121,7 @@ def fix_mtl_file(mtl_path):
             new_lines.append(line)
             continue
 
-        # Existing map_Kd — check file existence
+        # Existing map_Kd  -  check file existence
         if stripped.startswith("map_Kd"):
             found_map_kd = True
             existing_map_kd_path = stripped.split(" ", 1)[1]
@@ -140,8 +140,8 @@ def fix_mtl_file(mtl_path):
                     insert_map_kd(tex_file, mtl_path, new_lines)
                     continue
             else:
-                # Invalid path — go find a replacement
-                print(f"⚠️ Missing texture: {existing_map_kd_path}")
+                # Invalid path  -  go find a replacement
+                print(f"Warning: Missing texture: {existing_map_kd_path}")
                 tex_file = find_texture_file(current_mtl)
                 insert_map_kd(tex_file, mtl_path, new_lines)
                 continue

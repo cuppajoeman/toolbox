@@ -10,7 +10,7 @@
 </p>
 
 <p>
-  In simpler terms, the vtable lets C++ decide which version of a virtual function to call — even when using a pointer or reference to a base class.
+  In simpler terms, the vtable lets C++ decide which version of a virtual function to call  -  even when using a pointer or reference to a base class.
 </p>
 
 <h2>Why Do We Need VTables?</h2>
@@ -41,7 +41,7 @@ int main() {
 </code></pre>
 
 <p>
-  Without vtables, the call to <code>b-&gt;greet()</code> inside <code>say_hello</code> would always invoke <code>Base::greet()</code>, because the pointer type is <code>Base*</code> — the compiler resolves function calls at compile time.
+  Without vtables, the call to <code>b-&gt;greet()</code> inside <code>say_hello</code> would always invoke <code>Base::greet()</code>, because the pointer type is <code>Base*</code>  -  the compiler resolves function calls at compile time.
 </p>
 
 <p>
@@ -55,7 +55,7 @@ int main() {
 </p>
 
 <ul>
-  <li>Each polymorphic class (i.e., a class with virtual functions) has a static vtable — an array of function pointers, one per virtual function.</li>
+  <li>Each polymorphic class (i.e., a class with virtual functions) has a static vtable  -  an array of function pointers, one per virtual function.</li>
   <li>Each object of that class stores a hidden pointer (called the <em>vptr</em>) pointing to its class's vtable.</li>
   <li>When a virtual function is called on an object, the call is resolved by looking up the function pointer in the vtable via the object's vptr, then invoking that function.</li>
 </ul>
@@ -93,7 +93,7 @@ int main() {
 <h2>Important Notes</h2>
 
 <ul>
-  <li>Vtables are an implementation detail — the C++ standard does not require compilers to use them, but all mainstream compilers do.</li>
+  <li>Vtables are an implementation detail  -  the C++ standard does not require compilers to use them, but all mainstream compilers do.</li>
   <li>Each polymorphic class usually has its own unique vtable.</li>
   <li>Each object of such a class has a hidden <code>vptr</code> pointer added by the compiler, which you don't see in your C++ code.</li>
   <li>Multiple inheritance and virtual inheritance introduce more complex vtable structures.</li>

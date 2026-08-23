@@ -14,7 +14,7 @@
     </pre>
     
     <p>
-        Note: -j8 is an optional performance optimization that became available in version 2.8, and fetches up to 8 submodules at a time in parallel — see man git-clone
+        Note: -j8 is an optional performance optimization that became available in version 2.8, and fetches up to 8 submodules at a time in parallel  -  see man git-clone
     </p>
     
     <p>
@@ -399,7 +399,7 @@ Errors during submodule fetch:
     <summary>Details</summary>
 
     <p>
-        In a Git repository, I have a subdirectory (e.g., client/) that contains a mix of regular files and nested submodules. I want to duplicate this entire directory to a new location within the same repository (e.g., single_player/). However, simply copying the directory with cp doesn't properly register the submodules in the new location — Git doesn't update .gitmodules or .git/modules, and the new submodule paths aren't tracked. How can I correctly duplicate the directory and ensure that all nested submodules are properly re-added and recognized by Git in their new location?
+        In a Git repository, I have a subdirectory (e.g., client/) that contains a mix of regular files and nested submodules. I want to duplicate this entire directory to a new location within the same repository (e.g., single_player/). However, simply copying the directory with cp doesn't properly register the submodules in the new location  -  Git doesn't update .gitmodules or .git/modules, and the new submodule paths aren't tracked. How can I correctly duplicate the directory and ensure that all nested submodules are properly re-added and recognized by Git in their new location?
     </p>
     
     

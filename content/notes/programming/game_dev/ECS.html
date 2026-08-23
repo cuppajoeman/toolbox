@@ -1,12 +1,12 @@
 
 <h1>The Why Behind ECS: Why We Bother with Entity-Component Systems</h1>
 
-<p>So, you've probably heard of the <em>Entity-Component System</em> (ECS) and might be wondering, "What’s the big deal? I already know about classes, objects, and inheritance—why do I need yet another pattern?" Good question! Let's take a dive into why ECS is so popular, especially in game development and other performance-critical applications. Spoiler: it’s all about flexibility and speed.</p>
+<p>So, you've probably heard of the <em>Entity-Component System</em> (ECS) and might be wondering, "What’s the big deal? I already know about classes, objects, and inheritance - why do I need yet another pattern?" Good question! Let's take a dive into why ECS is so popular, especially in game development and other performance-critical applications. Spoiler: it’s all about flexibility and speed.</p>
 
 <h2>OOP: It Works, But...</h2>
 <p>Most of us start our journey in software development learning object-oriented programming (OOP). You make a base class like <code>Player</code>, give it some attributes like <code>health</code>, <code>position</code>, and <code>velocity</code>, and maybe even add a method like <code>takeDamage()</code>. When you need something similar, say for enemies, you make an <code>Enemy</code> class that extends <code>Player</code> (because why not), and you’re off to the races.</p>
 
-<p>This works pretty well—for a while. But then things get a bit messy. Your <code>Player</code> class has grown too many responsibilities, your enemies need different logic but still share a lot of attributes with players, and you realize adding more things to this inheritance hierarchy is like digging yourself into a deeper and deeper hole.</p>
+<p>This works pretty well - for a while. But then things get a bit messy. Your <code>Player</code> class has grown too many responsibilities, your enemies need different logic but still share a lot of attributes with players, and you realize adding more things to this inheritance hierarchy is like digging yourself into a deeper and deeper hole.</p>
 
 <p>Let’s say you want to add a flying enemy. You might think about creating a <code>FlyingEnemy</code> class that extends <code>Enemy</code>. But what if only some enemies can fly? Or what if you need a player that can also fly? Suddenly, you have to create a complex inheritance tree to account for every combination of abilities. Here’s a quick example of how this looks in code:</p>
 
@@ -48,10 +48,10 @@ void fly() {
 
 <p>This might look fine at first, but now we have a problem: What if we want a flying player? Do we create a new <code>FlyingPlayer</code> class? What if an enemy can both fly and shoot fire? The number of combinations grows rapidly, and we end up with a bloated, tangled inheritance hierarchy.</p>
 
-<p>Here’s the first big issue: inheritance can get rigid. Adding new behaviors can involve reshuffling your class hierarchy, and suddenly, things that should be simple—like giving only some enemies the ability to fly—require a lot more work than expected.</p>
+<p>Here’s the first big issue: inheritance can get rigid. Adding new behaviors can involve reshuffling your class hierarchy, and suddenly, things that should be simple - like giving only some enemies the ability to fly - require a lot more work than expected.</p>
 
 <h2>Enter Components: Giving Inheritance the Boot</h2>
-<p>This is where <strong>composition over inheritance</strong> comes into play. Instead of locking yourself into rigid hierarchies, you break down objects into small, reusable chunks called <em>components</em>. Think of components as building blocks—each one handles a specific attribute or behavior, and you can mix and match them to create whatever kind of entity you want.</p>
+<p>This is where <strong>composition over inheritance</strong> comes into play. Instead of locking yourself into rigid hierarchies, you break down objects into small, reusable chunks called <em>components</em>. Think of components as building blocks - each one handles a specific attribute or behavior, and you can mix and match them to create whatever kind of entity you want.</p>
 
 <p>So, instead of a <code>Player</code> class that tries to manage everything, you have a <code>PositionComponent</code> for storing where the entity is, a <code>VelocityComponent</code> for movement, and a <code>HealthComponent</code> for (you guessed it) health. Suddenly, your player and enemy aren’t defined by inheritance. They’re just <em>entities</em> with different combinations of components. A player might have a <code>WeaponComponent</code>, while a flying enemy has a <code>FlightComponent</code> but no weapon.</p>
 
@@ -133,7 +133,7 @@ void update(Entity& entity) {
 <p>To sum up, ECS solves a few key problems that crop up in traditional OOP designs:</p>
 <ul>
     <li><strong>Flexibility:</strong> You can mix and match components to create entities without worrying about rigid inheritance hierarchies.</li>
-    <li><strong>Scalability:</strong> Adding new features doesn’t require deep refactoring of existing code—it’s easy to extend.</li>
+    <li><strong>Scalability:</strong> Adding new features doesn’t require deep refactoring of existing code - it’s easy to extend.</li>
     <li><strong>Performance:</strong> Systems operate on tightly packed component data, improving cache efficiency and reducing memory jumps.</li>
 </ul>
 

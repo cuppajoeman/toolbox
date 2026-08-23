@@ -1,0 +1,79 @@
+<h1>Better First Person Viewport add-on for Blender</h1>
+
+<p>
+  This add-on gives Blender a smoother first-person viewport mode for moving
+  around a scene. It uses mouse look, a fixed 90 degree field of view, a small
+  center crosshair, and ESDF movement instead of Blender's normal fly/walk
+  controls.
+</p>
+
+<h2>Files</h2>
+
+<ul>
+  <li>Add-on: <a href="better_first_person_viewport_addon.py">better_first_person_viewport_addon.py</a></li>
+  <li>Panel location: <code>3D Viewport &gt; Sidebar &gt; View &gt; Better First Person</code></li>
+  <li>Toggle operator: <code>view3d.better_first_person_toggle</code></li>
+  <li>Navigation operator: <code>view3d.better_first_person_navigate</code></li>
+</ul>
+
+<h2>What it does</h2>
+
+<p>
+  The add-on runs a modal viewport navigation operator. While it is active, the
+  mouse controls view direction and keyboard input moves the viewport camera
+  through the scene. The cursor is hidden and repeatedly centered so mouse
+  movement can continue without hitting the edge of the screen.
+</p>
+
+<p>
+  The camera update is handled on a timer at 144 Hz. Mouse movement is
+  accumulated between timer updates, then applied in one unified camera update.
+  That helps the movement feel steadier than applying view changes directly
+  inside every mouse event.
+</p>
+
+<h2>Workflow</h2>
+
+<ol>
+  <li>Install and enable <code>better_first_person_viewport_addon.py</code>.</li>
+  <li>Open a 3D Viewport.</li>
+  <li>Open the sidebar with <code>N</code>.</li>
+  <li>Go to <code>View &gt; Better First Person</code>.</li>
+  <li>Set movement speed and mouse sensitivity.</li>
+  <li>Click <code>Enable Better First Person</code>, or press middle mouse if the add-on keymap is active.</li>
+  <li>Press <code>Esc</code> or middle mouse to exit.</li>
+</ol>
+
+<h2>Controls</h2>
+
+<ul>
+  <li><code>E</code>: move forward.</li>
+  <li><code>D</code>: move backward.</li>
+  <li><code>S</code>: move left.</li>
+  <li><code>F</code>: move right.</li>
+  <li><code>Space</code>: move up.</li>
+  <li><code>Shift</code>: move down.</li>
+  <li><code>Tab</code>: move faster.</li>
+  <li><code>Ctrl</code>: move slower.</li>
+  <li><code>Mouse</code>: look around.</li>
+  <li><code>Middle Mouse</code>: toggle the mode.</li>
+  <li><code>Esc</code>: exit the mode.</li>
+</ul>
+
+<h2>Settings</h2>
+
+<ul>
+  <li><code>Move Speed</code>: normal movement speed.</li>
+  <li><code>Mouse Sensitivity</code>: mouse look sensitivity.</li>
+  <li><code>Tab Fast</code>: multiplier used while <code>Tab</code> is held.</li>
+  <li><code>Ctrl Slow</code>: multiplier used while <code>Ctrl</code> is held.</li>
+</ul>
+
+<h2>Notes</h2>
+
+<ul>
+  <li>The add-on changes only the active 3D viewport navigation, not the scene camera object.</li>
+  <li>The internal FOV is fixed at 90 degrees.</li>
+  <li>The pitch is clamped from -90 degrees to +90 degrees.</li>
+  <li>The addon keymap binds middle mouse in the 3D View. If that conflicts with another workflow, disable or edit the keymap in Blender preferences.</li>
+</ul>

@@ -29,7 +29,7 @@ def main():
             except OSError:
                 continue
             if size > GIT_FILE_LIMIT:
-                print(f"{path} — {bytes_to_readable(size)}")
+                print(f"{path}  -  {bytes_to_readable(size)}")
                 found = True
     if not found:
         print("No files exceed the GitHub 100 MB limit.")

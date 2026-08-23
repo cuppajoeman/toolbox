@@ -9,8 +9,8 @@ rename 's/^output_/newname_/' *.mp3
 </pre>
 <p>Explanation:</p>
 <ul>
-    <li><code>s/^output_/newname_/</code> – replaces the prefix "output_" with "newname_".</li>
-    <li><code>*.mp3</code> – applies to all MP3 files in the current folder.</li>
+    <li><code>s/^output_/newname_/</code> - replaces the prefix "output_" with "newname_".</li>
+    <li><code>*.mp3</code> - applies to all MP3 files in the current folder.</li>
 </ul>
 <p>You can test it first without renaming using:</p>
 <pre>
@@ -29,9 +29,9 @@ done
 </pre>
 <p>Explanation:</p>
 <ul>
-    <li><code>output_*.mp3</code> – matches all files starting with "output_".</li>
-    <li><code>${f#output_}</code> – removes the "output_" prefix from the filename.</li>
-    <li><code>mv</code> – renames the file.</li>
+    <li><code>output_*.mp3</code> - matches all files starting with "output_".</li>
+    <li><code>${f#output_}</code> - removes the "output_" prefix from the filename.</li>
+    <li><code>mv</code> - renames the file.</li>
 </ul>
 
 <p>These methods allow you to quickly rename many files in Linux.</p>

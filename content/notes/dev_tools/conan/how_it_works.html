@@ -25,7 +25,7 @@
   <li>Is linked into your final <code>.exe</code> during compilation</li>
 </ul>
 <p>
-  Once linked, the contents of the <code>.a</code> file are baked into your final executable — which is why you don’t need the static library present at runtime.
+  Once linked, the contents of the <code>.a</code> file are baked into your final executable  -  which is why you don’t need the static library present at runtime.
 </p>
 
 <h2>Static vs Shared Summary</h2>
@@ -73,7 +73,7 @@ void fallback_feature();
 #endif
 </code></pre>
 <p>
-  If the library was built with <code>USE_COOL_FEATURE</code> defined, but your code doesn't define it, the linker will look for <code>fallback_feature()</code> — which doesn’t exist in the static lib. This causes linker errors or worse: subtle runtime bugs.
+  If the library was built with <code>USE_COOL_FEATURE</code> defined, but your code doesn't define it, the linker will look for <code>fallback_feature()</code>  -  which doesn’t exist in the static lib. This causes linker errors or worse: subtle runtime bugs.
 </p>
 
 <h2>Best Practices to Avoid Macro Mismatches</h2>
@@ -85,5 +85,5 @@ void fallback_feature();
 </ul>
 
 <p>
-  Proper understanding of static linking and build configuration is essential to avoid hard-to-debug issues. With Conan, most of this can be automated — as long as your macros and profiles are consistent.
+  Proper understanding of static linking and build configuration is essential to avoid hard-to-debug issues. With Conan, most of this can be automated  -  as long as your macros and profiles are consistent.
 </p>
