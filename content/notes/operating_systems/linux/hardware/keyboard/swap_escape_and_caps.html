@@ -1,1 +1,140 @@
+<h1>Swap Escape and Caps Lock on Linux</h1>
+
+<p>
+  Linux uses the XKB option <code>caps:swapescape</code> to exchange the two keys: Caps Lock behaves as Escape, and Escape behaves as Caps Lock. How that option is applied depends on whether the desktop session uses X11 or Wayland.
+</p>
+
+<p>
+  Check the current session type and desktop environment with:
+</p>
+
+<pre><code class="language-bash">printf 'session=%s desktop=%s\n' "$XDG_SESSION_TYPE" "$XDG_CURRENT_DESKTOP"</code></pre>
+
+<h2>Wayland</h2>
+
+<p>
+  In a Wayland session, the desktop's compositor controls keyboard input. <code>setxkbmap</code> is an X11 tool, so running it under Wayland may affect only XWayland applications or have no useful effect. Configure the XKB option through the desktop environment or compositor instead.
+</p>
+
+<h3>GNOME Wayland</h3>
+
+<p>
+  GNOME is the default desktop on distributions such as Ubuntu and Fedora Workstation. Inspect the current per-user XKB options before changing them:
+</p>
+
+<pre><code class="language-bash">gsettings get org.gnome.desktop.input-sources xkb-options</code></pre>
+
+<p>
+  If the result is <code>@as []</code> or <code>[]</code>, enable the swap with:
+</p>
+
+<pre><code class="language-bash">gsettings set org.gnome.desktop.input-sources xkb-options "['caps:swapescape']"</code></pre>
+
+<p>
+  This setting persists for the current user and works in the GNOME Wayland session. The command replaces the complete list of XKB options. If the list already contains an option, keep it and add the swap. For example, preserve <code>compose:ralt</code> like this:
+</p>
+
+<pre><code class="language-bash">gsettings set org.gnome.desktop.input-sources xkb-options "['compose:ralt', 'caps:swapescape']"</code></pre>
+
+<p>
+  To remove the swap, set the list back to what <code>gsettings get</code> showed before the change. If it had no other options, use:
+</p>
+
+<pre><code class="language-bash">gsettings set org.gnome.desktop.input-sources xkb-options "[]"</code></pre>
+
+<p>
+  GNOME Tweaks can also expose this setting in its additional keyboard-layout options, but <code>gsettings</code> works without installing that extra application.
+</p>
+
+<h3>KDE Plasma Wayland</h3>
+
+<p>
+  Open <strong>System Settings</strong> and then <strong>Keyboard</strong>. In current Plasma versions, click <strong>Key Bindings</strong> in the upper-right corner of the Keyboard page. Expand <strong>Caps Lock behavior</strong>, select <strong>Swap Esc and Caps Lock</strong>, and apply the change.
+</p>
+
+<p>
+  Older Plasma versions put the same setting under <strong>Keyboard</strong>, <strong>Advanced</strong>. On those versions, first enable <strong>Configure keyboard options</strong>, then expand <strong>Caps Lock behavior</strong> and select the swap. The <strong>Key Bindings</strong> page in newer Plasma replaces this Advanced tab; it is not the separate <strong>Shortcuts</strong> page shown in the left sidebar.
+</p>
+
+<p>
+  Plasma stores the choice for the desktop session and applies it to its XKB keyboard configuration. Use the same panel to undo it.
+</p>
+
+<h3>Sway</h3>
+
+<p>
+  Add this block to <code>~/.config/sway/config</code>:
+</p>
+
+<pre><code>input type:keyboard {
+    xkb_options caps:swapescape
+}</code></pre>
+
+<p>
+  Reload the configuration with the normal Sway reload shortcut or:
+</p>
+
+<pre><code class="language-bash">swaymsg reload</code></pre>
+
+<p>
+  If <code>xkb_options</code> is already present, keep all required options in one comma-separated value, such as <code>compose:ralt,caps:swapescape</code>.
+</p>
+
+<h3>Hyprland</h3>
+
+<p>
+  Hyprland 0.55 and newer use Lua configuration. Add the option to <code>~/.config/hypr/hyprland.lua</code>:
+</p>
+
+<pre><code class="language-lua">hl.config({
+    input = {
+        kb_options = "caps:swapescape"
+    }
+})</code></pre>
+
+<p>
+  Hyprland reloads the configuration when it is saved. It can also be reloaded manually:
+</p>
+
+<pre><code class="language-bash">hyprctl reload</code></pre>
+
+<p>
+  Combine multiple XKB options in one comma-separated string, such as <code>"compose:ralt,caps:swapescape"</code>.
+</p>
+
+<p>
+  Hyprland 0.54 and older use the legacy <code>~/.config/hypr/hyprland.conf</code> format instead:
+</p>
+
+<pre><code>input {
+    kb_options = caps:swapescape
+}</code></pre>
+
+<h2>X11</h2>
+
+<p>
+  In an X11 desktop session, apply the swap for the current session with:
+</p>
+
+<pre><code class="language-bash">setxkbmap -option "caps:swapescape"</code></pre>
+
+<p>
+  This does not normally survive logging out. Run it from the desktop environment's startup applications or an X11 startup file to apply it at each login. The script below contains the same command:
+</p>
+
 <div class="code-file" data-file-name="swap_escape_and_caps.sh"></div>
+
+<h2>swap versus Caps Lock as another Escape</h2>
+
+<p>
+  <code>caps:swapescape</code> exchanges the two keys. If the goal is to make Caps Lock act as an additional Escape key while leaving the original Escape key unchanged, use <code>caps:escape</code> in the appropriate command or desktop setting instead.
+</p>
+
+<h2>references</h2>
+
+<ul>
+  <li><a href="https://help.gnome.org/system-admin-guide/keyboard-compose-key.html">GNOME documentation for the <code>xkb-options</code> setting</a></li>
+  <li><a href="https://docs.kde.org/stable_kf6/en/plasma-desktop/kcontrol/keyboard/advanced.html">KDE Plasma advanced keyboard options</a></li>
+  <li><a href="https://github.com/swaywm/sway/blob/master/sway/sway-input.5.scd">Sway input configuration reference</a></li>
+  <li><a href="https://wiki.hypr.land/Configuring/Basics/Binds/#remapping-caps-lock">Hyprland Caps Lock remapping reference</a></li>
+</ul>
