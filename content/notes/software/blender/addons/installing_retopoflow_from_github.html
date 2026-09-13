@@ -1,17 +1,17 @@
 <p>
-  This guide builds the RetopoFlow add-on from source and prepares a GitHub-style release ZIP. The script supports Windows through MSYS2 and Linux, including Blender installations managed through Steam.
+  This guide builds RetopoFlow 4 from its GitHub source and prepares a GitHub-style release ZIP using the repository's build scripts. The installation script supports Windows through MSYS2 and Linux, including Blender installations managed through Steam.
 </p>
 
 <h2>Prerequisites</h2>
 
 <ul>
   <li>Bash on Linux or MSYS2 Bash on Windows</li>
-  <li>Blender installed locally, including native, Steam, Snap, or Flatpak installations</li>
+  <li>Blender 4.3 or newer installed locally</li>
   <li>Internet access for cloning the CGCookie repositories</li>
 </ul>
 
 <p>
-  The script checks for all required command-line tools before making any changes. If something is missing, it displays an appropriate installation command.
+  The script checks for all required command-line tools before cloning or building anything. If something is missing, it displays an appropriate installation command.
 </p>
 
 <h2>Install script</h2>
@@ -22,6 +22,7 @@ set -Eeuo pipefail
 PROJECTS_DIR="${PROJECTS_DIR:-$HOME/projects}"
 REPO_DIR="$PROJECTS_DIR/retopoflow"
 BUILD_DIR="$PROJECTS_DIR/retopoflow_release"
+RETOPOFLOW_BRANCH="${RETOPOFLOW_BRANCH:-v4}"
 
 # ------------------------------------------------------------
 # Detect platform
@@ -42,6 +43,7 @@ case "$(uname -s)" in
 esac
 
 echo "=== Platform: $PLATFORM ==="
+echo "=== RetopoFlow branch: $RETOPOFLOW_BRANCH ==="
 
 # ------------------------------------------------------------
 # Check dependencies
@@ -62,6 +64,7 @@ REQUIRED_TOOLS=(
   chmod
   rm
   mkdir
+  ls
 )
 
 if [[ "$PLATFORM" == "msys2" ]]; then
@@ -246,7 +249,7 @@ echo "=== Blender version ==="
 "$BLENDER_LAUNCHER" --version
 
 # ------------------------------------------------------------
-# Clone or update RetopoFlow
+# Clone, switch, or update RetopoFlow
 # ------------------------------------------------------------
 
 echo
@@ -258,31 +261,61 @@ echo
 echo "=== Cloning/updating RetopoFlow ==="
 
 if [[ -d "$REPO_DIR/.git" ]]; then
-  git -C "$REPO_DIR" pull --ff-only
+  git -C "$REPO_DIR" fetch origin --prune
+
+  if git -C "$REPO_DIR" show-ref \
+    --verify \
+    --quiet "refs/heads/$RETOPOFLOW_BRANCH"; then
+    git -C "$REPO_DIR" checkout "$RETOPOFLOW_BRANCH"
+  else
+    git -C "$REPO_DIR" checkout \
+      --track \
+      -b "$RETOPOFLOW_BRANCH" \
+      "origin/$RETOPOFLOW_BRANCH"
+  fi
+
+  git -C "$REPO_DIR" pull \
+    --ff-only \
+    origin \
+    "$RETOPOFLOW_BRANCH"
 elif [[ -e "$REPO_DIR" ]]; then
   echo "ERROR: $REPO_DIR exists but is not a Git repository." &gt;&amp;2
   exit 1
 else
-  git clone https://github.com/CGCookie/retopoflow.git "$REPO_DIR"
+  git clone \
+    --branch "$RETOPOFLOW_BRANCH" \
+    https://github.com/CGCookie/retopoflow.git \
+    "$REPO_DIR"
 fi
 
 cd "$REPO_DIR"
 
-# The addon_common submodule uses an SSH GitHub URL.
-# Override it with HTTPS so GitHub SSH keys are not required.
-git submodule sync --recursive
-git config \
-  submodule.addon_common.url \
-  https://github.com/CGCookie/addon_common.git
-git submodule update --init --recursive
+# Initialize submodules if the selected branch declares any.
+if git config \
+  -f .gitmodules \
+  --get-regexp '^submodule\..*\.path$' \
+  &gt;/dev/null 2&gt;&amp;1; then
+  git submodule sync --recursive
+
+  # Use HTTPS for addon_common if it is configured as a submodule.
+  git config \
+    submodule.addon_common.url \
+    https://github.com/CGCookie/addon_common.git
+
+  git submodule update --init --recursive
+fi
 
 echo
 echo "=== Current RetopoFlow source ==="
 git log -1 --oneline
 
 echo
+echo "=== RetopoFlow branch ==="
+git branch --show-current
+
+echo
 echo "=== RetopoFlow version ==="
-python3 scripts/get_hive_value.py version || true
+python3 scripts/get_blinfo_value.py version
 
 # ------------------------------------------------------------
 # Build the package
@@ -379,15 +412,25 @@ echo "Install this ZIP from Blender's Add-ons or Extensions preferences."
 <pre><code class="language-bash">BLENDER_BIN='/c/Program Files/Blender Foundation/Blender 4.5/blender.exe' \
   ./install-retopoflow.sh</code></pre>
 
+<h2>Selecting another branch</h2>
+
+<p>
+  The script defaults to RetopoFlow's <code>v4</code> branch. A different branch can be selected through <code>RETOPOFLOW_BRANCH</code>.
+</p>
+
+<pre><code class="language-bash">RETOPOFLOW_BRANCH=v4 ./install-retopoflow.sh</code></pre>
+
 <h2>Notes</h2>
 
 <ul>
+  <li>The script explicitly checks out the <code>v4</code> branch instead of the repository's default <code>master</code> branch.</li>
+  <li>The default <code>master</code> branch currently contains RetopoFlow 3.</li>
   <li>The script supports Linux and Windows through MSYS2.</li>
   <li>Native, Steam, Snap, and Flatpak Blender installations are supported.</li>
-  <li>Common Steam locations are checked automatically on Linux.</li>
+  <li>Common Steam installation locations are checked automatically on Linux.</li>
   <li>Dependencies are checked before cloning, updating, cleaning, or building anything.</li>
   <li>Dependencies are not installed automatically.</li>
-  <li>An existing clone is updated with a fast-forward-only pull.</li>
-  <li>Otherwise, the repository is cloned into <code>~/projects/retopoflow</code>.</li>
+  <li>An existing clone is switched to the selected branch and updated with a fast-forward-only pull.</li>
+  <li>Otherwise, the selected branch is cloned into <code>~/projects/retopoflow</code>.</li>
   <li>The previous release directory is removed by RetopoFlow's <code>make clean</code> target before rebuilding.</li>
 </ul>
