@@ -1,30 +1,17 @@
-<h1>Installing RetopoFlow from GitHub (Windows + MSYS2)</h1>
-
 <p>
-  This guide builds the RetopoFlow add-on from source and prepares a GitHub-style release ZIP using the current repository scripts.
-</p>
-
-<h2>Prerequisites</h2>
-
-<ul>
-  <li>MSYS2 Bash</li>
-  <li>Git</li>
-  <li>Blender installed on Windows</li><h1>Installing RetopoFlow from GitHub (MSYS2 + Linux)</h1>
-
-<p>
-  This guide builds the RetopoFlow add-on from source and prepares a GitHub-style release ZIP using the current repository scripts. The installation script supports both Windows through MSYS2 and Linux.
+  This guide builds the RetopoFlow add-on from source and prepares a GitHub-style release ZIP. The script supports Windows through MSYS2 and Linux, including Blender installations managed through Steam.
 </p>
 
 <h2>Prerequisites</h2>
 
 <ul>
   <li>Bash on Linux or MSYS2 Bash on Windows</li>
-  <li>Blender installed locally</li>
+  <li>Blender installed locally, including native, Steam, Snap, or Flatpak installations</li>
   <li>Internet access for cloning the CGCookie repositories</li>
 </ul>
 
 <p>
-  The script checks for all required command-line tools before making any changes. If something is missing, it displays an appropriate installation command for your operating system.
+  The script checks for all required command-line tools before making any changes. If something is missing, it displays an appropriate installation command.
 </p>
 
 <h2>Install script</h2>
@@ -131,7 +118,7 @@ echo "=== Looking for Blender ==="
 BLENDER_MODE="binary"
 BLENDER_BIN="${BLENDER_BIN:-}"
 
-# Accept a Windows-style path when running under MSYS2.
+# Accept a Windows-style path under MSYS2.
 if [[ "$PLATFORM" == "msys2" &amp;&amp;
       "$BLENDER_BIN" =~ ^[A-Za-z]:[\\/].* ]]; then
   BLENDER_BIN="$(cygpath -u "$BLENDER_BIN")"
@@ -155,16 +142,35 @@ if [[ -z "$BLENDER_BIN" ]]; then
       )"
     fi
   else
-    # Handles distribution packages and Snap installations on PATH.
+    # Check distribution packages, Snap, and other installations
+    # that expose Blender on PATH.
     BLENDER_BIN="$(command -v blender 2&gt;/dev/null || true)"
 
-    # RetopoFlow's Makefile uses this as its default location.
+    # Check common Steam installation locations.
+    if [[ -z "$BLENDER_BIN" ]]; then
+      STEAM_ROOTS=(
+        "$HOME/.local/share/Steam"
+        "$HOME/.steam/steam"
+        "$HOME/.var/app/com.valvesoftware.Steam/data/Steam"
+      )
+
+      for STEAM_ROOT in "${STEAM_ROOTS[@]}"; do
+        STEAM_BLENDER="$STEAM_ROOT/steamapps/common/Blender/blender"
+
+        if [[ -x "$STEAM_BLENDER" ]]; then
+          BLENDER_BIN="$STEAM_BLENDER"
+          break
+        fi
+      done
+    fi
+
+    # Check RetopoFlow's default Blender location.
     if [[ -z "$BLENDER_BIN" &amp;&amp;
           -x "$HOME/software/blender/blender" ]]; then
       BLENDER_BIN="$HOME/software/blender/blender"
     fi
 
-    # Support Blender installed through Flatpak.
+    # Check Blender installed directly through Flatpak.
     if [[ -z "$BLENDER_BIN" ]] &amp;&amp;
        command -v flatpak &gt;/dev/null 2&gt;&amp;1 &amp;&amp;
        flatpak info org.blender.Blender &gt;/dev/null 2&gt;&amp;1; then
@@ -187,12 +193,12 @@ if [[ "$BLENDER_MODE" == "binary" ]]; then
       echo "Expected Blender beneath:" &gt;&amp;2
       echo '  C:\Program Files\Blender Foundation' &gt;&amp;2
     else
-      echo "Expected 'blender' to be available on PATH." &gt;&amp;2
+      echo "Checked PATH, common Steam locations, and Flatpak." &gt;&amp;2
     fi
 
     echo &gt;&amp;2
     echo "You can specify Blender explicitly:" &gt;&amp;2
-    echo "  BLENDER_BIN=/path/to/blender ./install-retopoflow.sh" &gt;&amp;2
+    echo "  BLENDER_BIN=/path/to/blender $0" &gt;&amp;2
     exit 1
   fi
 
@@ -263,8 +269,7 @@ fi
 cd "$REPO_DIR"
 
 # The addon_common submodule uses an SSH GitHub URL.
-# Sync first, then override it with HTTPS so GitHub SSH keys
-# are not required.
+# Override it with HTTPS so GitHub SSH keys are not required.
 git submodule sync --recursive
 git config \
   submodule.addon_common.url \
@@ -348,8 +353,8 @@ echo "Install this ZIP from Blender's Add-ons or Extensions preferences."
 <ol>
   <li>Save the script as <code>install-retopoflow.sh</code>.</li>
   <li>Open Linux Bash or MSYS2 Bash in the directory containing the script.</li>
-  <li>Make the script executable with <code>chmod +x install-retopoflow.sh</code>.</li>
-  <li>Run it with <code>./install-retopoflow.sh</code>.</li>
+  <li>Run <code>chmod +x install-retopoflow.sh</code>.</li>
+  <li>Run <code>./install-retopoflow.sh</code>.</li>
   <li>If dependencies are missing, install them using the command displayed by the script and run it again.</li>
   <li>Install the generated <code>*GitHub.zip</code> from Blender's Add-ons or Extensions preferences.</li>
 </ol>
@@ -357,12 +362,17 @@ echo "Install this ZIP from Blender's Add-ons or Extensions preferences."
 <h2>Custom Blender location</h2>
 
 <p>
-  If Blender is not available on <code>PATH</code> or in one of the standard locations, provide its executable through <code>BLENDER_BIN</code>.
+  If Blender is not available on <code>PATH</code> or in a recognized installation location, provide its executable through <code>BLENDER_BIN</code>.
 </p>
 
 <p>Linux example:</p>
 
 <pre><code class="language-bash">BLENDER_BIN=/opt/blender/blender ./install-retopoflow.sh</code></pre>
+
+<p>Steam on Linux example:</p>
+
+<pre><code class="language-bash">BLENDER_BIN="$HOME/.local/share/Steam/steamapps/common/Blender/blender" \
+  ./install-retopoflow.sh</code></pre>
 
 <p>MSYS2 example:</p>
 
@@ -373,142 +383,11 @@ echo "Install this ZIP from Blender's Add-ons or Extensions preferences."
 
 <ul>
   <li>The script supports Linux and Windows through MSYS2.</li>
-  <li>Common Debian, Ubuntu, Fedora, Arch Linux, openSUSE, Snap, and Flatpak Blender installations are supported.</li>
-  <li>The script validates its dependencies before cloning, updating, cleaning, or building anything.</li>
-  <li>Dependencies are not installed automatically. The script displays an appropriate installation command and exits.</li>
-  <li>An existing clone is updated with a fast-forward-only pull. Otherwise, the repository is cloned into <code>~/projects/retopoflow</code>.</li>
-  <li>The existing <code>~/projects/retopoflow_release</code> build directory is removed by RetopoFlow's <code>make clean</code> target before rebuilding.</li>
-  <li>The generated Blender launcher safely preserves all command-line arguments passed by the RetopoFlow Makefile.</li>
-</ul>
-  <li>Internet access for cloning CGCookie repositories</li>
-</ul>
-
-<h2>Install script</h2>
-
-<pre><code class="language-bash">#!/usr/bin/env bash
-set -e
-
-echo "=== Installing RetopoFlow build dependencies ==="
-pacman -S --needed --noconfirm make rsync zip python
-
-echo
-echo "=== Creating projects directory ==="
-mkdir -p ~/projects
-cd ~/projects
-
-echo
-echo "=== Cloning/updating RetopoFlow ==="
-
-if [ -d retopoflow/.git ]; then
-  cd retopoflow
-  git pull
-  git submodule sync --recursive
-  git submodule update --init --recursive
-else
-  git clone https://github.com/CGCookie/retopoflow.git
-  cd retopoflow
-
-  # Their addon_common submodule uses an SSH GitHub URL.
-  # Change it locally to HTTPS so you don't need GitHub SSH keys.
-  git config submodule.addon_common.url https://github.com/CGCookie/addon_common.git
-  git submodule update --init --recursive
-fi
-
-echo
-echo "=== Current RetopoFlow source ==="
-git log -1 --oneline
-
-echo
-echo "=== RetopoFlow version ==="
-python3 scripts/get_hive_value.py version || true
-
-echo
-echo "=== Looking for Blender ==="
-
-BLENDER="$(find "/c/Program Files/Blender Foundation" \
--maxdepth 3 \
--type f \
--iname 'blender.exe' \
-2>/dev/null \
-| sort -V \
-| tail -n 1)"
-
-if [ -z "$BLENDER" ]; then
-  echo
-  echo "ERROR: Could not automatically find Blender."
-  echo "Expected something like:"
-  echo 'C:\Program Files\Blender Foundation\Blender 4.5\blender.exe'
-  echo
-  echo "Installed Blender directories:"
-  ls -la "/c/Program Files/Blender Foundation" 2>/dev/null || true
-  exit 1
-fi
-
-echo "Found Blender:"
-echo "$BLENDER"
-
-echo
-echo "=== Blender version ==="
-"$BLENDER" --version | head -n 2
-
-echo
-echo "=== Creating no-space Blender launcher for Makefile ==="
-
-cat > /tmp/retopoflow-blender <<EOF
-#!/usr/bin/env bash
-exec "$BLENDER" "$@"
-EOF
-
-chmod +x /tmp/retopoflow-blender
-
-echo
-echo "=== Cleaning previous RetopoFlow build ==="
-rm -rf ../retopoflow_release
-
-echo
-echo "=== Building RetopoFlow GitHub package ==="
-
-make build-github BLENDER=/tmp/retopoflow-blender
-
-echo
-echo "=============================================="
-echo "BUILD COMPLETE"
-echo "=============================================="
-echo
-
-ZIP="$(find ../retopoflow_release \
--maxdepth 1 \
--type f \
--name '*GitHub.zip' \
-| head -n 1)"
-
-if [ -n "$ZIP" ]; then
-  FULLZIP="$(cygpath -w "$(realpath "$ZIP")")"
-  echo "Your RetopoFlow ZIP is:"
-  echo
-  echo "$FULLZIP"
-  echo
-  echo "Opening the folder in Windows Explorer..."
-  explorer.exe "$(cygpath -w "$(realpath ../retopoflow_release)")"
-else
-  echo "ERROR: Build finished but I couldn't find the GitHub ZIP."
-  echo
-  echo "Contents of release directory:"
-  ls -lah ../retopoflow_release || true
-  exit 1
-fi</code></pre>
-
-<h2>How to use</h2>
-
-<ol>
-  <li>Save the script as a <code>.sh</code> file in MSYS2 and run it from Bash.</li>
-  <li>Wait for the repository to clone/update and build.</li>
-  <li>Once complete, install the generated <code>*GitHub.zip</code> in Blender with <b>Edit &gt; Preferences &gt; Add-ons &gt; Install</b>.</li>
-</ol>
-
-<h2>Notes</h2>
-
-<ul>
-  <li>The script updates an existing local clone if present, otherwise it creates one in <code>~/projects/retopoflow</code>.</li>
-  <li>This is designed for one-click-ish rebuilds while keeping submodules in sync.</li>
+  <li>Native, Steam, Snap, and Flatpak Blender installations are supported.</li>
+  <li>Common Steam locations are checked automatically on Linux.</li>
+  <li>Dependencies are checked before cloning, updating, cleaning, or building anything.</li>
+  <li>Dependencies are not installed automatically.</li>
+  <li>An existing clone is updated with a fast-forward-only pull.</li>
+  <li>Otherwise, the repository is cloned into <code>~/projects/retopoflow</code>.</li>
+  <li>The previous release directory is removed by RetopoFlow's <code>make clean</code> target before rebuilding.</li>
 </ul>
