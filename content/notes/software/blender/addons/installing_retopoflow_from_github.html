@@ -1,0 +1,144 @@
+<h1>Installing RetopoFlow from GitHub (Windows + MSYS2)</h1>
+
+<p>
+  This guide builds the RetopoFlow add-on from source and prepares a GitHub-style release ZIP using the current repository scripts.
+</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+  <li>MSYS2 Bash</li>
+  <li>Git</li>
+  <li>Blender installed on Windows</li>
+  <li>Internet access for cloning CGCookie repositories</li>
+</ul>
+
+<h2>Install script</h2>
+
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -e
+
+echo "=== Installing RetopoFlow build dependencies ==="
+pacman -S --needed --noconfirm make rsync zip python
+
+echo
+echo "=== Creating projects directory ==="
+mkdir -p ~/projects
+cd ~/projects
+
+echo
+echo "=== Cloning/updating RetopoFlow ==="
+
+if [ -d retopoflow/.git ]; then
+  cd retopoflow
+  git pull
+  git submodule sync --recursive
+  git submodule update --init --recursive
+else
+  git clone https://github.com/CGCookie/retopoflow.git
+  cd retopoflow
+
+  # Their addon_common submodule uses an SSH GitHub URL.
+  # Change it locally to HTTPS so you don't need GitHub SSH keys.
+  git config submodule.addon_common.url https://github.com/CGCookie/addon_common.git
+  git submodule update --init --recursive
+fi
+
+echo
+echo "=== Current RetopoFlow source ==="
+git log -1 --oneline
+
+echo
+echo "=== RetopoFlow version ==="
+python3 scripts/get_hive_value.py version || true
+
+echo
+echo "=== Looking for Blender ==="
+
+BLENDER="$(find "/c/Program Files/Blender Foundation" \
+-maxdepth 3 \
+-type f \
+-iname 'blender.exe' \
+2>/dev/null \
+| sort -V \
+| tail -n 1)"
+
+if [ -z "$BLENDER" ]; then
+  echo
+  echo "ERROR: Could not automatically find Blender."
+  echo "Expected something like:"
+  echo 'C:\Program Files\Blender Foundation\Blender 4.5\blender.exe'
+  echo
+  echo "Installed Blender directories:"
+  ls -la "/c/Program Files/Blender Foundation" 2>/dev/null || true
+  exit 1
+fi
+
+echo "Found Blender:"
+echo "$BLENDER"
+
+echo
+echo "=== Blender version ==="
+"$BLENDER" --version | head -n 2
+
+echo
+echo "=== Creating no-space Blender launcher for Makefile ==="
+
+cat > /tmp/retopoflow-blender <<EOF
+#!/usr/bin/env bash
+exec "$BLENDER" "$@"
+EOF
+
+chmod +x /tmp/retopoflow-blender
+
+echo
+echo "=== Cleaning previous RetopoFlow build ==="
+rm -rf ../retopoflow_release
+
+echo
+echo "=== Building RetopoFlow GitHub package ==="
+
+make build-github BLENDER=/tmp/retopoflow-blender
+
+echo
+echo "=============================================="
+echo "BUILD COMPLETE"
+echo "=============================================="
+echo
+
+ZIP="$(find ../retopoflow_release \
+-maxdepth 1 \
+-type f \
+-name '*GitHub.zip' \
+| head -n 1)"
+
+if [ -n "$ZIP" ]; then
+  FULLZIP="$(cygpath -w "$(realpath "$ZIP")")"
+  echo "Your RetopoFlow ZIP is:"
+  echo
+  echo "$FULLZIP"
+  echo
+  echo "Opening the folder in Windows Explorer..."
+  explorer.exe "$(cygpath -w "$(realpath ../retopoflow_release)")"
+else
+  echo "ERROR: Build finished but I couldn't find the GitHub ZIP."
+  echo
+  echo "Contents of release directory:"
+  ls -lah ../retopoflow_release || true
+  exit 1
+fi</code></pre>
+
+<h2>How to use</h2>
+
+<ol>
+  <li>Save the script as a <code>.sh</code> file in MSYS2 and run it from Bash.</li>
+  <li>Wait for the repository to clone/update and build.</li>
+  <li>Once complete, install the generated <code>*GitHub.zip</code> in Blender with <b>Edit &gt; Preferences &gt; Add-ons &gt; Install</b>.</li>
+</ol>
+
+<h2>Notes</h2>
+
+<ul>
+  <li>The script updates an existing local clone if present, otherwise it creates one in <code>~/projects/retopoflow</code>.</li>
+  <li>This is designed for one-click-ish rebuilds while keeping submodules in sync.</li>
+</ul>

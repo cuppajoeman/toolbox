@@ -1,0 +1,62 @@
+<h1>Retopologizing a Sculpted Hand</h1>
+
+<p>
+  This is a practical way to retopologize a hand sculpt before animation or game export. The goal is a clean, even, low-poly flow that keeps the silhouette and hand articulation without losing shape.
+</p>
+
+<h2>Reference workflow</h2>
+
+<p>
+  Use this RetopoFlow-style flow for sculpted hands:
+</p>
+
+<ol>
+  <li>Duplicate the hand mesh first and keep the original sculpt untouched.</li>
+  <li>Keep your sculpt as the visual target.
+    <ul>
+      <li>Use the original sculpted hand as reference, not as the mesh you animate.</li>
+      <li>Turn on visibility options that make vertex and face counts easy to inspect.</li>
+    </ul>
+  </li>
+  <li>Set the sculpt as the shrink-wrap target.
+    <ul>
+      <li>For a hard-surface style: keep edge flow less curved and focus on joint ring control.</li>
+      <li>For a more organic style: keep denser density around knuckles, fingertips, and thumb webbing.</li>
+    </ul>
+  </li>
+  <li>Work broad to fine:
+    <ul>
+      <li>Block the whole hand with even quads.</li>
+      <li>Add loops at the wrist, knuckle creases, and finger bases.</li>
+      <li>Resolve each finger separately, keeping loop consistency from base to tip.</li>
+    </ul>
+  </li>
+  <li>Mirror and symmetry check: ensure both hands behave as intended, then freeze edge direction.</li>
+  <li>Run topology cleanup:
+    <ul>
+      <li>Check for long thin triangles and flipped normals.</li>
+      <li>Remove degenerate poles in hard-constraint zones and reduce extra poles near joints.</li>
+    </ul>
+  </li>
+  <li>Export one clean hand and one test pose version before moving to armature binding.</li>
+</ol>
+
+<h2>Quality checks</h2>
+
+<ul>
+  <li>Deform the hand through open/closed positions and confirm no large volume loss around knuckles.</li>
+  <li>Check edge flow with viewport smooth-shade + wire overlays.</li>
+  <li>Confirm each finger has a predictable loop sequence from tip to metacarpal.</li>
+</ul>
+
+<h2>Related</h2>
+
+<p>
+  A good hand sculpting baseline for this process is available in the linked hand sculpting tutorial:
+  <a href="sculpting_a_hand.html">Sculpting a hand</a>.
+</p>
+
+<p>
+  Direct video reference for hand retopology:
+  <a href="https://www.youtube.com/watch?v=MNZVvJZ3zPA">https://www.youtube.com/watch?v=MNZVvJZ3zPA</a>.
+</p>
