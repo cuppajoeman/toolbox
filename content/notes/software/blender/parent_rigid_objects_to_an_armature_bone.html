@@ -1,0 +1,142 @@
+<section>
+  <h1>Parent Rigid Objects to an Armature Bone</h1>
+
+  <p>
+    A rigid model is often easier to work with when its parts remain separate objects. A machine, tool, vehicle, or other hard-surface prop might have a body, handles, panels, fasteners, and moving pieces that should not be joined into one mesh.
+  </p>
+
+  <p>
+    If all of those objects need to move together, they can be parented directly to one bone. This gives the model a single transform and animation root without adding an Armature modifier, vertex groups, or weights to every object.
+  </p>
+
+  <h2>Choose the Root Orientation</h2>
+
+  <p>
+    Decide how the model should face before creating the parent relationships. A useful convention for a root bone is:
+  </p>
+
+  <ul>
+    <li>local <code>+Y</code> points forward</li>
+    <li>local <code>+Z</code> points up</li>
+  </ul>
+
+  <p>
+    A bone's local Y axis runs from its head to its tail, so place the head near the model's center or main body and point the tail forward. The bone does not need to span the whole model; its length is mainly a visual aid. Its position, direction, and roll define the coordinate system that matters.
+  </p>
+
+  <p>
+    The exact convention can be different, but it should be consistent across similar assets. A consistent root makes animation, attachments, export code, and placement in a game engine easier to reason about.
+  </p>
+
+  <h2>Create and Prepare the Armature</h2>
+
+  <ol>
+    <li>In Object Mode, use <strong>Add &gt; Armature</strong>.</li>
+    <li>Enter Edit Mode and rename the bone to something meaningful, such as <code>root</code>.</li>
+    <li>Move the bone's head and tail so it follows the chosen forward direction.</li>
+    <li>Adjust the bone roll so its local up axis matches the model's up direction.</li>
+  </ol>
+
+  <p>
+    To see the bone axes, select the armature and enable <strong>Axes</strong> in the armature's viewport display settings. Since head-to-tail always defines local Y, bone roll controls how the remaining local axes are oriented around it.
+  </p>
+
+  <p>
+    Finish the root bone's rest orientation before parenting the objects. Changes made to a bone in Edit Mode change the armature's rest structure rather than creating an animation transform. Reorienting it later can make existing child objects move or rotate unexpectedly.
+  </p>
+
+  <h2>Parent the Objects to the Bone</h2>
+
+  <ol>
+    <li>Return to Object Mode.</li>
+    <li>Select every rigid object that should follow the root bone.</li>
+    <li>Shift-select the armature last so it becomes the active object.</li>
+    <li>Switch the armature to Pose Mode.</li>
+    <li>Select the root bone.</li>
+    <li>While still in Pose Mode, press <code>Ctrl + P</code> and choose <strong>Bone</strong>.</li>
+  </ol>
+
+  <p>
+    Pose Mode is needed here because the armature is an object that can contain many bones. Selecting the armature in Object Mode identifies the armature, while selecting a bone in Pose Mode identifies the particular transform that should become the parent.
+  </p>
+
+  <p>
+    The result is conceptually:
+  </p>
+
+  <pre><code>Armature
+└── root
+    ├── body
+    ├── handle
+    ├── panel
+    └── attachment</code></pre>
+
+  <p>
+    The objects remain separate meshes. Blender may draw dotted relationship lines from their origins to the parent bone; these are viewport guides and are not part of the model's geometry.
+  </p>
+
+  <h2>Test the Result</h2>
+
+  <p>
+    Select the armature, enter Pose Mode, and move or rotate the root bone. Every object parented to it should move as one rigid assembly. If one part stays behind, it was probably not selected when the parent relationship was created.
+  </p>
+
+  <p>
+    Object origins can still be adjusted afterward with <strong>Object &gt; Set Origin &gt; Origin to Geometry</strong>. The relationship lines will move with the origins, but the bone-parent relationship remains.
+  </p>
+
+  <h2>Add Independently Moving Parts</h2>
+
+  <p>
+    A one-bone rig can be extended without joining the meshes. Add child bones for any parts that need their own animation, then parent each rigid object to the appropriate bone:
+  </p>
+
+  <pre><code>Armature
+└── root
+    ├── lever
+    ├── cover
+    └── wheel</code></pre>
+
+  <p>
+    The main body stays parented to <code>root</code>, while the lever, cover, and wheel objects follow their matching bones. This works well for mechanical models because each object has one clear rigid parent.
+  </p>
+
+  <h2>When to Use Weights Instead</h2>
+
+  <p>
+    Direct bone parenting is appropriate when an entire object should follow one bone without bending. Armature deformation and weight painting are useful when vertices in a mesh need to be influenced by one or more bones, such as a flexible cable, a character limb, or material bending across a joint.
+  </p>
+
+  <p>
+    A rigid object could be given an Armature modifier and assigned completely to one vertex group, but that adds a deformation setup to express a simpler relationship: the whole object follows one bone.
+  </p>
+
+  <h2>Fix a Root Bone That Was Oriented Too Late</h2>
+
+  <p>
+    If the objects were parented before the root bone was oriented correctly, detach them without changing their current world transforms:
+  </p>
+
+  <ol>
+    <li>In Object Mode, select the child objects.</li>
+    <li>Press <code>Alt + P</code> and choose <strong>Clear Parent (Keep Transform)</strong>.</li>
+    <li>Select the armature, enter Edit Mode, and correct the root bone's direction and roll.</li>
+    <li>Repeat the bone-parenting steps above.</li>
+  </ol>
+
+  <p>
+    <strong>Keep Transform</strong> removes the parent relationship while leaving the objects where they are. This makes it possible to repair the rest orientation without rebuilding the model.
+  </p>
+
+  <h2>Mode Summary</h2>
+
+  <ul>
+    <li><strong>Edit Mode:</strong> define the bones and their rest orientation.</li>
+    <li><strong>Pose Mode:</strong> select and animate bones, and create a bone-parent relationship.</li>
+    <li><strong>Object Mode:</strong> select the separate model objects and manage their object-level transforms.</li>
+  </ul>
+
+  <p>
+    See Blender's <a href="https://docs.blender.org/manual/en/latest/scene_layout/object/editing/parent.html#bone-parent">bone-parenting documentation</a> for the underlying parent types and the difference between <strong>Bone</strong> and <strong>Bone Relative</strong>.
+  </p>
+</section>

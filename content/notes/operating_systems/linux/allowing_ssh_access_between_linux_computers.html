@@ -1,0 +1,246 @@
+<h1>Allowing SSH access between Linux computers</h1>
+
+<p>
+  To let one computer connect to another over SSH, add the connecting user's public SSH key to a particular user's <code>~/.ssh/authorized_keys</code> file on the receiving computer. SSH access is granted to an account, not to the whole computer. The private key stays on the connecting computer and must never be shared.
+</p>
+
+<p>
+  In this example, the computer making the connection is the client and the computer accepting the connection is the server.
+</p>
+
+<h2>make sure the server accepts ssh connections</h2>
+
+<p>
+  The SSH server must be installed and running on the receiving computer. On Ubuntu or Debian:
+</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install openssh-server
+sudo systemctl enable --now ssh</code></pre>
+
+<p>
+  If <code>ufw</code> is enabled, allow SSH through the firewall:
+</p>
+
+<pre><code class="language-bash">sudo ufw allow OpenSSH
+sudo ufw status verbose</code></pre>
+
+<p>
+  Port <code>22/tcp</code> must also be allowed by any router, VPS, or cloud-provider firewall between the two computers.
+</p>
+
+<h2>create a key on the client</h2>
+
+<p>
+  On the computer that will make the connection, check for an existing public key:
+</p>
+
+<pre><code class="language-bash">ls ~/.ssh/*.pub</code></pre>
+
+<p>
+  If there is no key, create one:
+</p>
+
+<pre><code class="language-bash">ssh-keygen -t ed25519</code></pre>
+
+<p>
+  Press <code>Enter</code> to accept the default file location. Use a passphrase if desired, or press <code>Enter</code> twice for no passphrase.
+</p>
+
+<h2>choose the account on the server</h2>
+
+<p>
+  A Linux server normally has the all-powerful <code>root</code> account, one or more regular human accounts, and several service accounts used by programs. The username in an SSH command tells the server which account you are trying to enter:
+</p>
+
+<pre><code class="language-bash">ssh cjm@1.2.3.4</code></pre>
+
+<p>
+  This asks to log in as <code>cjm</code>. If the server accepts the key, the session starts with that account's home directory, files, groups, and permissions. The server looks for the key in <code>cjm</code>'s <code>~/.ssh/authorized_keys</code>, usually <code>/home/cjm/.ssh/authorized_keys</code>. It does not look in <code>/root/.ssh/authorized_keys</code>.
+</p>
+
+<p>
+  In most cases, install the key for the regular account that you normally use on the server. This is often the account created while installing Linux or creating the VPS. After logging in, use <code>sudo</code> for individual administrative commands when necessary:
+</p>
+
+<pre><code class="language-bash">ssh cjm@1.2.3.4
+sudo apt update</code></pre>
+
+<p>
+  This is safer than logging in directly as <code>root</code>: everyday commands do not automatically have permission to change or delete anything on the system, and administrative actions are associated with the regular account that requested them. Many SSH servers disable or restrict direct root login by default.
+</p>
+
+<p>
+  Only install a key for <code>root</code> when direct root access is a deliberate requirement and the server's SSH configuration permits it. Do not choose a service account such as <code>www-data</code>; those accounts are normally intended for programs and may not be allowed to log in.
+</p>
+
+<p>
+  If you are at the server and are unsure of your current regular username, run:
+</p>
+
+<pre><code class="language-bash">whoami</code></pre>
+
+<p>
+  To inspect a proposed account, run <code>id</code> and ask the account database for its home directory and login shell:
+</p>
+
+<pre><code class="language-bash">id cjm
+getent passwd cjm</code></pre>
+
+<p>
+  Use the account intended for your work and confirm that you are authorized to access it. If another person administers the server, ask them which username they created for you. Different people should normally use separate accounts and install their keys into their own <code>authorized_keys</code> files.
+</p>
+
+<p>
+  For an automated task, it can be better to create a dedicated account with only the permissions that task needs. Adding the same public key to several users' <code>authorized_keys</code> files grants that key separate access to every one of those accounts.
+</p>
+
+<h2>first access to a rented cloud server</h2>
+
+<p>
+  A VPS or cloud provider such as DigitalOcean rents you a remote Linux machine and gives you its public IP address. The provider must also give you some initial way to administer it. Common methods are installing a public SSH key while the machine is created, supplying an initial account and password, or providing a browser-based console in the provider's website.
+</p>
+
+<p>
+  The browser console is a shell connected through the provider's management system rather than through SSH from your computer. It is useful for the initial setup and for recovery when SSH, the firewall, or the network configuration is broken. Protect the provider account with a strong password and multi-factor authentication because someone who controls that account may also control this console.
+</p>
+
+<h3>let the provider install the key</h3>
+
+<p>
+  Many providers let you paste or select a public SSH key while creating the server. On your computer, print the public key:
+</p>
+
+<pre><code class="language-bash">cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<p>
+  Copy the entire single line beginning with <code>ssh-ed25519</code> and paste it into the provider's SSH-key field. Never paste the contents of <code>~/.ssh/id_ed25519</code>, which is the private key. The provider installs the public key for the initial login account when it builds the machine.
+</p>
+
+<p>
+  The provider should tell you the initial username; it might be <code>root</code>, <code>ubuntu</code>, <code>debian</code>, or a username chosen during setup. Use exactly that username when connecting:
+</p>
+
+<pre><code class="language-bash">ssh ubuntu@203.0.113.10</code></pre>
+
+<p>
+  Do not guess that the account is <code>root</code>. The chosen Linux image and the provider's setup process determine the initial account.
+</p>
+
+<h3>install the key through the provider console</h3>
+
+<p>
+  If the server already exists and your computer's key has not been installed, open the machine's console from the provider's website and log in using the initial credentials or recovery method supplied by the provider. Decide which regular account should accept your SSH connections. If the console opens as <code>root</code> but the intended account is <code>cjm</code>, switch to that account:
+</p>
+
+<pre><code class="language-bash">su - cjm</code></pre>
+
+<p>
+  On your own computer, print and copy the public key:
+</p>
+
+<pre><code class="language-bash">cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<p>
+  In the provider console, create the SSH directory, open the target account's authorization file, and paste the public key as one complete new line:
+</p>
+
+<pre><code class="language-bash">mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+nano ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys</code></pre>
+
+<p>
+  Save the file and exit the editor. Because these commands are run as the intended account, <code>~</code> refers to that account's home directory and the files have the correct owner. Each line in <code>authorized_keys</code> represents a separately authorized public key; do not remove keys that still belong there.
+</p>
+
+<p>
+  Back on your own computer, connect using that same account and the public IP address supplied by the provider:
+</p>
+
+<pre><code class="language-bash">ssh cjm@203.0.113.10</code></pre>
+
+<p>
+  Use the provider console to obtain and verify the server's host-key fingerprint before accepting the first SSH connection, as described below. Once key login works, the browser console remains a useful recovery route, but normal work can happen through SSH.
+</p>
+
+<h2>authorize the client key with ssh-copy-id</h2>
+
+<p>
+  If the key was installed during cloud-server creation or through a provider console, skip this step. Otherwise, if the server account currently permits password login, the easiest method is <code>ssh-copy-id</code>. Run this on the client, replacing the username and address with those of the server:
+</p>
+
+<pre><code class="language-bash">ssh-copy-id -i ~/.ssh/id_ed25519.pub cjm@1.2.3.4</code></pre>
+
+<p>
+  The username before <code>@</code> selects the account that will receive the key. In this example, the key is installed for <code>cjm</code>, and the password prompt asks for <code>cjm</code>'s current server password—not the root password.
+</p>
+
+<p>
+  The <code>-i</code> option explicitly selects the public key to install. <code>ssh-copy-id</code> never needs to copy the private key. It opens a normal SSH connection, logs in using the selected server account's current authentication method, and normally runs commands on the server that create <code>~/.ssh</code> if needed and append the public key to <code>~/.ssh/authorized_keys</code>. It also avoids adding the same key again if it is already present.
+</p>
+
+<h2>verify the server before entering the password</h2>
+
+<p>
+  The first time the client connects, SSH does not yet know the server's identity. It displays the server's host-key fingerprint and asks whether to continue. A prompt might contain a fingerprint shaped like this:
+</p>
+
+<pre><code>SHA256:long_string_of_letters_and_numbers</code></pre>
+
+<p>
+  Before answering <code>yes</code>, compare that fingerprint with the one shown directly on the server. For an Ed25519 host key, run this at the server's keyboard, through a trusted management console, or ask the server's administrator to run it:
+</p>
+
+<pre><code class="language-bash">sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub</code></pre>
+
+<p>
+  Compare the complete <code>SHA256:</code> fingerprint, not just part of it. The server address alone does not prove that the computer answering is the intended server. Verifying the fingerprint through a separate trusted route protects against connecting to an impostor between the client and server.
+</p>
+
+<p>
+  Once accepted, the server's host key is saved in the client's <code>~/.ssh/known_hosts</code> file. Future connections check it automatically. If SSH later warns that the host key has changed, investigate before entering a password or removing the old entry. A legitimate reinstall can change the key, but the warning can also indicate an attack.
+</p>
+
+<h2>why entering the password is safe</h2>
+
+<p>
+  SSH negotiates an encrypted connection and verifies the server's host key before asking for the account password. The password is sent through that encrypted connection, not as readable text over the network. Someone monitoring the network cannot read it.
+</p>
+
+<p>
+  Encryption alone is not enough if the client has connected to the wrong machine: an impostor server could read the password after decrypting its end of the connection. That is why checking the host-key fingerprint before entering the password is important on the first connection.
+</p>
+
+<p>
+  After the fingerprint is verified, enter the server user's password when <code>ssh-copy-id</code> prompts for it. This initial password login gives <code>ssh-copy-id</code> permission to install the public key. Later logins can use the key instead of the account password.
+</p>
+
+<p>
+  If <code>ssh-copy-id</code> is unavailable, print the public key on the client:
+</p>
+
+<pre><code class="language-bash">cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<p>
+  Copy the entire line, then add it as a new line in <code>~/.ssh/authorized_keys</code> for the user on the server. On the server, make sure the permissions are correct:
+</p>
+
+<pre><code class="language-bash">chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys</code></pre>
+
+<h2>test the connection</h2>
+
+<p>
+  From the client, connect using the server user's name and the server's IP address or hostname:
+</p>
+
+<pre><code class="language-bash">ssh cjm@1.2.3.4</code></pre>
+
+<p>
+  If the key was installed successfully, the server should accept it. You may still be asked for the key's passphrase if you assigned one when creating the key. That passphrase unlocks the private key locally and is not the server account's password.
+</p>
+
+<p>
+  These two files have different purposes: <code>authorized_keys</code> on the server lists the client keys allowed to log in, while <code>known_hosts</code> on the client records the identities of servers it has connected to.
+</p>
