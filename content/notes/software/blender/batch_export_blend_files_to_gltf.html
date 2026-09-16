@@ -1,0 +1,99 @@
+<h1>Batch export Blender files to glTF</h1>
+
+<p>
+  This script recursively finds every <code>.blend</code> file below a directory
+  and exports each one as separate glTF files. It launches Blender in background
+  mode for each model, so the batch can be run from a normal Python installation
+  without opening the files manually.
+</p>
+
+<h2>File</h2>
+
+<p>
+  <a href="batch_export_blend_files_to_gltf.py">batch_export_blend_files_to_gltf.py</a>
+</p>
+
+<h2>Output layout</h2>
+
+<p>
+  Each source file gets an <code>export</code> directory beside it. The glTF and
+  binary data are placed there, while textures are kept in a nested
+  <code>textures</code> directory.
+</p>
+
+<pre><code>models/
+  character.blend
+  export/
+    character.gltf
+    character.bin
+    textures/
+      base_color.png
+      normal.png</code></pre>
+
+<p>
+  Existing directories named <code>export</code> are excluded while searching,
+  which prevents exported content from being treated as source material.
+</p>
+
+<h2>Usage</h2>
+
+<p>
+  Place the script at the root of the Blender project tree and run it with a
+  normal Python installation:
+</p>
+
+<pre><code class="language-bash">python batch_export_blend_files_to_gltf.py</code></pre>
+
+<p>To export a different directory:</p>
+
+<pre><code class="language-bash">python batch_export_blend_files_to_gltf.py --root path/to/models</code></pre>
+
+<p>Preview the work without launching Blender:</p>
+
+<pre><code class="language-bash">python batch_export_blend_files_to_gltf.py --dry-run</code></pre>
+
+<p>Show the Blender executables the script detected:</p>
+
+<pre><code class="language-bash">python batch_export_blend_files_to_gltf.py --list-blenders</code></pre>
+
+<p>Choose a particular Blender executable:</p>
+
+<pre><code class="language-bash">python batch_export_blend_files_to_gltf.py --blender "C:\Program Files\Blender Foundation\Blender 4.5\blender.exe"</code></pre>
+
+<h2>How Blender is found</h2>
+
+<p>The script checks, in order:</p>
+
+<ul>
+  <li>The <code>BLENDER_EXE</code> or <code>BLENDER_PATH</code> environment variable.</li>
+  <li>A <code>blender</code> executable available on <code>PATH</code>.</li>
+  <li>Normal Blender Foundation installation directories on Windows.</li>
+  <li>Common Blender installation locations on Linux.</li>
+  <li>The default Steam library and additional libraries listed in <code>libraryfolders.vdf</code>.</li>
+</ul>
+
+<p>
+  When multiple discovered installations exist, newer versions are preferred.
+  An explicit command-line path or environment variable remains the most direct
+  way to select a version.
+</p>
+
+<h2>Export behavior</h2>
+
+<ul>
+  <li>Uses Blender's built-in glTF exporter.</li>
+  <li>Exports separate <code>.gltf</code>, <code>.bin</code>, and texture files.</li>
+  <li>Applies modifiers when the installed Blender version supports the option.</li>
+  <li>Exports lights, texture coordinates, and normals when supported.</li>
+  <li>Uses glTF's Y-up export convention.</li>
+  <li>Continues through the batch after a failed model and reports all failures at the end.</li>
+</ul>
+
+<h2>Notes</h2>
+
+<ul>
+  <li>Run <code>--dry-run</code> first when checking a large project.</li>
+  <li>The script uses <code>--factory-startup</code>, so user startup-file settings do not affect the batch.</li>
+  <li>Blender exporter properties vary by version; unsupported optional settings are skipped automatically.</li>
+  <li>Re-running the script writes to the same export paths and may replace previous exports.</li>
+</ul>
