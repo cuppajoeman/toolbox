@@ -16,19 +16,20 @@
 <h2>Output layout</h2>
 
 <p>
-  Each source file gets an <code>export</code> directory beside it. The glTF and
-  binary data are placed there, while textures are kept in a nested
-  <code>textures</code> directory.
+  Each source file gets an <code>export/gltf</code> directory beside it. The glTF
+  and binary data are placed there, while textures are kept in a nested
+  <code>textures</code> directory so the complete glTF asset stays together.
 </p>
 
 <pre><code>models/
   character.blend
   export/
-    character.gltf
-    character.bin
-    textures/
-      base_color.png
-      normal.png</code></pre>
+    gltf/
+      character.gltf
+      character.bin
+      textures/
+        base_color.png
+        normal.png</code></pre>
 
 <p>
   Existing directories named <code>export</code> are excluded while searching,
@@ -82,7 +83,7 @@
 
 <ul>
   <li>Uses Blender's built-in glTF exporter.</li>
-  <li>Exports separate <code>.gltf</code>, <code>.bin</code>, and texture files.</li>
+  <li>Exports separate <code>.gltf</code>, <code>.bin</code>, and texture files under <code>export/gltf/</code>.</li>
   <li>Applies modifiers when the installed Blender version supports the option.</li>
   <li>Exports lights, texture coordinates, and normals when supported.</li>
   <li>Uses glTF's Y-up export convention.</li>

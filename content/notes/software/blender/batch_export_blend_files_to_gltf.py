@@ -6,7 +6,8 @@ Run with a normal Python installation:
     python batch_export_blend_files_to_gltf.py
 
 The script finds Blender on Windows or Linux, including common Steam library
-locations, and launches it in background mode once for each .blend file.
+locations, and launches it in background mode once for each .blend file. Each
+model is exported below its own export/gltf directory.
 """
 
 from __future__ import annotations
@@ -254,7 +255,7 @@ def main() -> int:
     failures: list[Path] = []
     script = Path(__file__).resolve()
     for index, blend_file in enumerate(blend_files, start=1):
-        output = blend_file.parent / "export" / f"{blend_file.stem}.gltf"
+        output = blend_file.parent / "export" / "gltf" / f"{blend_file.stem}.gltf"
         command = [
             blender,
             "--background",
