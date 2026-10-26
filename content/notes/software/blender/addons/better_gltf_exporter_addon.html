@@ -5,8 +5,8 @@
   <code>.bin</code>, and texture files, but the default workflow can leave all
   exported files sitting together in one directory. Better glTF Exporter is a
   small wrapper around Blender's normal glTF exporter that defaults to a cleaner
-  layout: the <code>.gltf</code> and <code>.bin</code> stay at the export
-  location, while textures go into a <code>textures</code> directory.
+  layout: the <code>.gltf</code>, <code>.bin</code>, and textures are grouped
+  under an <code>export/gltf</code> directory.
 </p>
 
 <h2>Files</h2>
@@ -31,19 +31,21 @@
   the chosen texture folder.
 </p>
 
-<pre><code>my_asset.gltf
-my_asset.bin
-textures/
-  base_color.png
-  normal.png
-  roughness.png</code></pre>
+<pre><code>export/
+  gltf/
+    my_asset.gltf
+    my_asset.bin
+    textures/
+      base_color.png
+      normal.png
+      roughness.png</code></pre>
 
 <h2>Workflow</h2>
 
 <ol>
   <li>Open the Blender file you want to export.</li>
   <li>Use <code>File &gt; Export &gt; Better glTF (.gltf)</code>.</li>
-  <li>Choose the destination <code>.gltf</code> file.</li>
+  <li>Choose the destination root and <code>.gltf</code> filename. The add-on creates <code>export/gltf</code> below that location.</li>
   <li>Leave <code>Texture Directory</code> as <code>textures</code>, or set another relative folder name.</li>
   <li>Export.</li>
 </ol>
@@ -56,6 +58,12 @@ textures/
   <li><code>Punctual Lights</code>: exports compatible point, spot, and directional lights when supported.</li>
   <li><code>Texture Directory</code>: relative directory used for exported texture files. The default is <code>textures</code>.</li>
 </ul>
+
+<p>
+  If the selected destination already ends in <code>export</code> or
+  <code>export/gltf</code>, the add-on reuses that structure instead of nesting
+  another <code>export/gltf</code> inside it.
+</p>
 
 <h2>Why it checks supported properties</h2>
 

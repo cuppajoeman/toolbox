@@ -1,9 +1,9 @@
 bl_info = {
     "name": "Better glTF Exporter",
-    "version": (1, 0, 0),
+    "version": (1, 1, 0),
     "blender": (4, 0, 0),
     "location": "File > Export > Better glTF (.gltf)",
-    "description": "Exports glTF separate files with textures placed in a textures directory",
+    "description": "Exports separate glTF files under export/gltf with a textures directory",
     "category": "Import-Export",
 }
 
@@ -24,6 +24,27 @@ def _gltf_export_property_names():
 def _set_if_supported(kwargs, supported, name, value):
     if name in supported:
         kwargs[name] = value
+
+
+def _structured_filepath(filepath):
+    """Put the selected glTF below export/gltf without duplicating that suffix."""
+    filepath = os.path.abspath(filepath)
+    if not filepath.lower().endswith(".gltf"):
+        filepath += ".gltf"
+
+    selected_dir = os.path.dirname(filepath)
+    filename = os.path.basename(filepath)
+    normalized_dir = os.path.normpath(selected_dir)
+    tail = [os.path.normcase(part) for part in normalized_dir.split(os.sep)]
+
+    if len(tail) >= 2 and tail[-2:] == ["export", "gltf"]:
+        output_dir = selected_dir
+    elif tail and tail[-1] == "export":
+        output_dir = os.path.join(selected_dir, "gltf")
+    else:
+        output_dir = os.path.join(selected_dir, "export", "gltf")
+
+    return os.path.join(output_dir, filename)
 
 
 class EXPORT_SCENE_OT_better_gltf(bpy.types.Operator, ExportHelper):
@@ -48,9 +69,7 @@ class EXPORT_SCENE_OT_better_gltf(bpy.types.Operator, ExportHelper):
     )
 
     def execute(self, context):
-        filepath = self.filepath
-        if not filepath.lower().endswith(".gltf"):
-            filepath += ".gltf"
+        filepath = _structured_filepath(self.filepath)
 
         output_dir = os.path.dirname(filepath)
         if output_dir:
@@ -78,7 +97,7 @@ class EXPORT_SCENE_OT_better_gltf(bpy.types.Operator, ExportHelper):
             self.report({"ERROR"}, "Better glTF export failed")
             return {"CANCELLED"}
 
-        self.report({"INFO"}, f"Exported glTF with textures in {texture_dir}/")
+        self.report({"INFO"}, f"Exported glTF to {filepath} with textures in {texture_dir}/")
         return {"FINISHED"}
 
 
