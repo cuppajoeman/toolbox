@@ -1,0 +1,577 @@
+<h1>Using Another Computer Remotely</h1>
+
+<p>
+  Suppose we have a second computer whose operating system, processor, or tools we need. We may want to sit at our usual computer, wake the second computer, send it a project, build the project there, copy the result back, and let the second computer return to sleep. This article builds that workflow from the beginning for Linux, macOS, and Windows.
+</p>
+
+<p>
+  We will use <abbr title="Secure Shell">SSH</abbr> for the remote terminal and encrypted file transfers. On Windows, we will use MSYS2 as the Unix-like command-line and build environment. Windows' built-in OpenSSH service will accept the connection, then it can launch a build inside MSYS2.
+</p>
+
+<h2>The people and machines involved</h2>
+
+<p>
+  The person asking another computer to do something is the <strong>operator</strong>. The computer at the operator's keyboard initiates an SSH connection, so SSH calls it the <strong>client</strong>. It is also commonly called the <strong>local machine</strong>.
+</p>
+
+<p>
+  The computer being contacted runs an SSH server, so SSH calls it the <strong>server</strong>. It is also called the <strong>remote machine</strong>, <strong>target machine</strong>, or <strong>host</strong>. “Client” and “server” describe the two machines' roles in this connection; they do not imply that either computer is permanently more important.
+</p>
+
+<pre><code>operator
+   |
+   | uses
+   v
+local machine / SSH client  -------- SSH --------&gt;  remote machine / SSH server
+                                                     |
+                                                     v
+                                             a particular user account</code></pre>
+
+<p>
+  SSH access belongs to an account on the remote machine, not to the machine in general. In <code>ssh ada@build-mac.local</code>, <code>ada</code> is a user on the Mac, even if the local computer has a differently named user.
+</p>
+
+<h2>First case: both computers are already on</h2>
+
+<p>
+  Begin with both computers awake and connected to the same local network. The remote machine needs an SSH server listening for connections. The local machine only needs an SSH client. No router port forwarding is needed when both machines are on the same local network.
+</p>
+
+<p>
+  Do not begin with Wake-on-LAN. First make SSH, authentication, file copying, and the build work while we can walk over to the target and see what it is doing. Power management is much easier to diagnose after this foundation works.
+</p>
+
+<h2>Prepare the command line on the local machine</h2>
+
+<h3>Linux</h3>
+
+<p>
+  Most desktop Linux installations already have the OpenSSH client. Check without assuming a particular distribution:
+</p>
+
+<pre><code class="language-bash">command -v ssh
+ssh -V</code></pre>
+
+<p>
+  If it is absent, install the OpenSSH client with the distribution's package manager. Package names are commonly <code>openssh-client</code> or <code>openssh</code>.
+</p>
+
+<h3>macOS</h3>
+
+<p>
+  macOS includes an SSH client. Apple's Command Line Tools are not required merely to use SSH, but they provide the compiler and related tools needed for our build example:
+</p>
+
+<pre><code class="language-bash">ssh -V
+xcode-select -p
+cc --version</code></pre>
+
+<p>
+  If <code>xcode-select -p</code> says that the tools are missing, request their installer:
+</p>
+
+<pre><code class="language-bash">xcode-select --install</code></pre>
+
+<h3>Windows with MSYS2</h3>
+
+<p>
+  Open the <strong>MSYS2 UCRT64</strong> terminal. <abbr title="Universal C Runtime">UCRT</abbr> is Microsoft's current C runtime; the UCRT64 environment is a good general default for native 64-bit Windows software. Update MSYS2, then install the SSH client, <code>rsync</code>, and a C compiler:
+</p>
+
+<pre><code class="language-bash">pacman -Syu
+pacman -S --needed openssh rsync mingw-w64-ucrt-x86_64-gcc</code></pre>
+
+<p>
+  If MSYS2 asks us to close the terminal during a core update, close it, reopen UCRT64, and run the commands again. From this point, commands such as <code>ssh</code>, <code>scp</code>, <code>rsync</code>, and <code>ssh-keygen</code> look much like their Linux equivalents.
+</p>
+
+<h2>Enable the SSH server on the remote machine</h2>
+
+<h3>Linux target</h3>
+
+<p>
+  Check whether the OpenSSH server is installed:
+</p>
+
+<pre><code class="language-bash">command -v sshd</code></pre>
+
+<p>
+  If it is absent, install the OpenSSH <em>server</em> with the distribution's package manager. The package is commonly named <code>openssh-server</code> or <code>openssh</code>. Distributions using systemd usually name the service either <code>ssh</code> or <code>sshd</code>:
+</p>
+
+<pre><code class="language-bash">systemctl list-unit-files | grep -E '^(ssh|sshd)\.service'
+
+# Use the name that the preceding command displayed.
+sudo systemctl enable --now sshd
+sudo systemctl status sshd</code></pre>
+
+<p>
+  On a distribution without systemd, enable <code>sshd</code> with that system's service manager. If a firewall is active, allow TCP port 22 from the local network only. The firewall command differs by distribution, so inspect the active firewall rather than blindly copying a command for a different system.
+</p>
+
+<h3>macOS target</h3>
+
+<p>
+  macOS already contains an SSH server. Open <strong>System Settings → General → Sharing</strong>, enable <strong>Remote Login</strong>, and choose which users may log in. On older macOS versions, the path is <strong>System Preferences → Sharing → Remote Login</strong>.
+</p>
+
+<p>
+  It can also be enabled from a Mac terminal:
+</p>
+
+<pre><code class="language-bash">sudo systemsetup -setremotelogin on
+sudo systemsetup -getremotelogin</code></pre>
+
+<p>
+  Some macOS versions restrict <code>systemsetup</code> unless the terminal has Full Disk Access. The Sharing panel is the simpler fallback.
+</p>
+
+<h3>Windows target</h3>
+
+<p>
+  MSYS2 supplies our tools and build environment, but the Windows OpenSSH service is the most direct way to accept a connection before anyone has logged into the desktop. In an <strong>Administrator PowerShell</strong> window, inspect and install the optional OpenSSH Server feature:
+</p>
+
+<pre><code class="language-powershell">Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+Start-Service sshd
+Set-Service -Name sshd -StartupType Automatic</code></pre>
+
+<p>
+  Installation normally creates and enables the inbound firewall rule named <code>OpenSSH-Server-In-TCP</code>. Check that rule if connections time out. The initial SSH shell is Windows' configured OpenSSH shell, not automatically an MSYS2 shell; we will bridge into MSYS2 for builds later.
+</p>
+
+<h2>Find the remote account and network address</h2>
+
+<p>
+  Run the relevant commands at the remote machine. Record both the username and one address on the local network.
+</p>
+
+<h3>Linux</h3>
+
+<pre><code class="language-bash">whoami
+ip -brief -4 address show</code></pre>
+
+<p>
+  <code>hostname -I</code> is another convenient option when it is available. Ignore loopback address <code>127.0.0.1</code>; it means “this same machine.” Home-network addresses commonly begin with <code>192.168.</code>, <code>10.</code>, or <code>172.16.</code> through <code>172.31.</code>.
+</p>
+
+<h3>macOS</h3>
+
+<pre><code class="language-bash">whoami
+scutil --get LocalHostName
+ipconfig getifaddr en0</code></pre>
+
+<p>
+  If <code>en0</code> has no address, use <code>networksetup -listallhardwareports</code> to find the device name for the active Wi-Fi or Ethernet port. A Mac whose local hostname is <code>Build-Mac</code> may also be reachable as <code>Build-Mac.local</code> through Bonjour.
+</p>
+
+<h3>Windows</h3>
+
+<p>
+  From MSYS2, these Windows programs print the Windows account and network configuration:
+</p>
+
+<pre><code class="language-bash">powershell.exe -NoProfile -Command '[Environment]::UserName'
+ipconfig.exe</code></pre>
+
+<p>
+  Use the Windows account name, not the name of the MSYS2 environment. If the address changes later, make a DHCP reservation in the router or use a working local hostname instead of scattering a temporary address through scripts.
+</p>
+
+<h2>Make and verify the first connection</h2>
+
+<p>
+  From the local machine, combine the remote username and address:
+</p>
+
+<pre><code class="language-bash">ssh ada@192.168.1.105</code></pre>
+
+<p>
+  The first connection displays the server's host-key fingerprint. This fingerprint lets us determine whether the machine answering really is our target. Before entering the target account's password, compare it with the fingerprint printed directly on that target.
+</p>
+
+<p>On a Linux or macOS target:</p>
+
+<pre><code class="language-bash">sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub</code></pre>
+
+<p>On a Windows target, from Administrator PowerShell:</p>
+
+<pre><code class="language-powershell">ssh-keygen.exe -lf "$env:ProgramData\ssh\ssh_host_ed25519_key.pub"</code></pre>
+
+<p>
+  Compare the complete <code>SHA256:</code> value. After we accept the correct key, SSH records it in the local machine's <code>~/.ssh/known_hosts</code>. A later “host identification has changed” warning deserves investigation; do not reflexively delete the old entry.
+</p>
+
+<p>
+  SSH negotiates encryption before asking for the account password. The password is therefore not sent as readable text across the network. Verifying the host key still matters: encryption to an impostor would protect the password from bystanders but not from the impostor itself.
+</p>
+
+<h2>Use a regular remote account and an SSH key</h2>
+
+<p>
+  Normally connect to a regular user intended for this work, not Linux <code>root</code>, a macOS administrator acting with elevated privileges, or a Windows administrator. Use <code>sudo</code> or an Administrator terminal only for the individual operations that require it. A dedicated build account is useful when automation should have access to only build files and tools.
+</p>
+
+<p>Create a key on the local machine:</p>
+
+<pre><code class="language-bash">ssh-keygen -t ed25519</code></pre>
+
+<p>
+  The private file, normally <code>~/.ssh/id_ed25519</code>, stays on the local machine. The public <code>.pub</code> file is the part installed for the remote account. Give the private key a passphrase unless unattended automation requires a separate, tightly restricted key.
+</p>
+
+<h3>Install the key on Linux or macOS</h3>
+
+<p>If <code>ssh-copy-id</code> is available on the local machine:</p>
+
+<pre><code class="language-bash">ssh-copy-id -i ~/.ssh/id_ed25519.pub ada@192.168.1.105</code></pre>
+
+<p>
+  <code>ssh-copy-id</code> makes an ordinary encrypted SSH connection, authenticates once with the remote account's current password, and appends only the public key to that account's <code>~/.ssh/authorized_keys</code>. It does not send the private key. If <code>ssh-copy-id</code> is unavailable, this portable command performs the essential operation:
+</p>
+
+<pre><code class="language-bash">cat ~/.ssh/id_ed25519.pub | ssh ada@192.168.1.105 \
+  'umask 077; mkdir -p ~/.ssh; cat &gt;&gt; ~/.ssh/authorized_keys'</code></pre>
+
+<p>
+  The manual command can add a duplicate if run repeatedly; <code>ssh-copy-id</code> normally checks first.
+</p>
+
+<h3>Install the key on Windows</h3>
+
+<p>
+  For an ordinary, non-administrator Windows account, put the complete public-key line in <code>C:\Users\the-user\.ssh\authorized_keys</code>. Creating the file from a PowerShell session logged in as that target user avoids confusing ownership.
+</p>
+
+<p>
+  Windows OpenSSH treats accounts in the Administrators group differently by default: their keys go in <code>C:\ProgramData\ssh\administrators_authorized_keys</code>, and that file must be writable only by Administrators and SYSTEM:
+</p>
+
+<pre><code class="language-powershell">icacls.exe "C:\ProgramData\ssh\administrators_authorized_keys" /inheritance:r `
+  /grant "Administrators:F" /grant "SYSTEM:F"</code></pre>
+
+<p>
+  A non-administrator build account is usually simpler and safer. Test a fresh connection before disabling any password-based recovery route.
+</p>
+
+<h2>Give the target a short SSH name</h2>
+
+<p>Add an entry to <code>~/.ssh/config</code> on the local machine:</p>
+
+<pre><code>Host build-mac
+    HostName 192.168.1.105
+    User ada
+    IdentityFile ~/.ssh/id_ed25519</code></pre>
+
+<p>Now all SSH-based tools can use the same name:</p>
+
+<pre><code class="language-bash">ssh build-mac</code></pre>
+
+<h2>Run commands and move files</h2>
+
+<p>A command after the target name runs on the target instead of opening an interactive shell:</p>
+
+<pre><code class="language-bash">ssh build-mac 'uname -a'</code></pre>
+
+<p>Send a project with <code>scp</code>:</p>
+
+<pre><code class="language-bash">scp -r ./project build-mac:~/remote-build/</code></pre>
+
+<p>Copy a finished artifact back:</p>
+
+<pre><code class="language-bash">mkdir -p ./artifacts
+scp build-mac:~/remote-build/project/out/my-program ./artifacts/</code></pre>
+
+<p>
+  For repeated transfers, <code>rsync</code> can avoid retransmitting unchanged data. It must be installed on both ends, and the remote SSH shell must be able to find it. See <a href="linux/sending_files_between_linux_computers.html">Sending files between Linux computers</a> for its source/destination syntax and the important meaning of a trailing slash.
+</p>
+
+<h2>Build on the remote computer</h2>
+
+<p>
+  If we send source code to a Mac and invoke the Mac's compiler there, that is a <strong>remote native build</strong>. Doing the same project on several operating systems is often called a <strong>multi-platform build</strong>. It is not cross-compilation in the strict sense. Cross-compilation means that a compiler running on one platform directly produces code for a different target platform.
+</p>
+
+<p>On a Linux or macOS target, a project can expose one build script:</p>
+
+<pre><code class="language-bash">ssh build-mac 'cd ~/remote-build/project &amp;&amp; ./build.sh'</code></pre>
+
+<p>
+  On the Mac, verify <code>xcode-select -p</code> and <code>cc --version</code> locally once before relying on an unattended build.
+</p>
+
+<h3>Run a build inside MSYS2 on a Windows target</h3>
+
+<p>
+  An SSH session accepted by Windows does not automatically receive the environment established by the MSYS2 UCRT64 launcher. Create a small Windows command file such as <code>C:\Users\build\run-msys2-build.cmd</code> on the target:
+</p>
+
+<pre><code class="language-batch">@echo off
+C:\msys64\usr\bin\env.exe MSYSTEM=UCRT64 CHERE_INVOKING=1 /usr/bin/bash -lc "cd /c/Users/build/remote-project &amp;&amp; ./build.sh"</code></pre>
+
+<p>
+  <code>MSYSTEM=UCRT64</code> selects that MSYS2 environment. Bash's <code>-l</code> requests a login shell so the environment's startup setup runs, and <code>-c</code> supplies the command. Invoke the wrapper from the local machine:
+</p>
+
+<pre><code class="language-bash">ssh windows-build 'C:\Users\build\run-msys2-build.cmd'</code></pre>
+
+<p>
+  Keep the wrapper under the build user's control and give it a narrow purpose. This is clearer than making every remote Windows shell pretend to be an interactive MSYS2 terminal.
+</p>
+
+<h2>Second case: the remote computer is asleep or off</h2>
+
+<p>
+  SSH cannot connect to a computer that is not running. <abbr title="Wake-on-LAN">Wake-on-LAN</abbr>, abbreviated WoL, is a separate mechanism: a network interface watches for a small “magic packet” containing its hardware address and asks the machine to wake.
+</p>
+
+<p>
+  Wake-on-LAN is not the same as remotely pressing the power button. Support depends on the firmware, network adapter, driver, connection type, and power state. Ethernet is the most reliable choice. Waking over Wi-Fi is supported only by some combinations of hardware and operating system.
+</p>
+
+<p>
+  For a repeatable on-demand build machine, prefer <strong>sleep</strong>, or hibernation on hardware that explicitly supports waking from it. Waking from a complete soft-off state is hardware-dependent. In particular, Windows officially supports ordinary WoL from sleep and explicit hibernation, not universally from Fast Startup's hybrid shutdown or the fully off state. Macs should likewise be treated as wake-from-sleep machines unless that exact model has been tested otherwise.
+</p>
+
+<h2>Record the target's hardware address</h2>
+
+<p>
+  A network interface's <abbr title="Media Access Control">MAC</abbr> address identifies that interface on the local network. It is six bytes commonly written as <code>a1:b2:c3:d4:e5:f6</code>. It is not a secret.
+</p>
+
+<p>On Linux:</p>
+
+<pre><code class="language-bash">ip link show
+
+# If ethtool is installed, this is another useful check:
+sudo ethtool -P enp3s0</code></pre>
+
+<p>On macOS:</p>
+
+<pre><code class="language-bash">networksetup -listallhardwareports</code></pre>
+
+<p>On Windows, from MSYS2 or a Windows terminal:</p>
+
+<pre><code class="language-bash">getmac.exe /v
+ipconfig.exe /all</code></pre>
+
+<p>
+  Record the address of the interface that will remain connected while the computer sleeps, normally wired Ethernet. Also find the local network's broadcast address. A network such as <code>192.168.1.0/24</code> commonly uses <code>192.168.1.255</code>, but do not assume this if the subnet differs.
+</p>
+
+<h2>Send a Wake-on-LAN packet from any of the three systems</h2>
+
+<p>
+  This site includes a small portable C program so the same command can be built on Linux, macOS, or Windows/MSYS2: <a href="send_wake_on_lan.c" download>download send_wake_on_lan.c</a>.
+</p>
+
+<p>Compile it on Linux or macOS:</p>
+
+<pre><code class="language-bash">cc -std=c11 -O2 send_wake_on_lan.c -o send-wol</code></pre>
+
+<p>Compile it in the MSYS2 UCRT64 terminal:</p>
+
+<pre><code class="language-bash">cc -std=c11 -O2 send_wake_on_lan.c -lws2_32 -o send-wol.exe</code></pre>
+
+<p>Send the packet, supplying the target MAC address and broadcast address:</p>
+
+<pre><code class="language-bash">./send-wol a1:b2:c3:d4:e5:f6 192.168.1.255</code></pre>
+
+<p>
+  From MSYS2, use <code>./send-wol.exe</code>. Omitting the second argument uses the limited broadcast address <code>255.255.255.255</code>, but some networks require their directed broadcast address instead. The program sends UDP port 9 by convention; the magic packet itself is normally unauthenticated, so it should be treated as a local-network convenience rather than an authorization system.
+</p>
+
+<h2>Configure Wake-on-LAN on the target</h2>
+
+<p>
+  Start in the machine's <abbr title="Unified Extensible Firmware Interface">UEFI</abbr> or older <abbr title="Basic Input/Output System">BIOS</abbr> settings and enable an option such as <em>Wake on LAN</em>, <em>Power on by PCI-E</em>, or <em>Resume by LAN</em>. The operating system must then leave the adapter armed when it sleeps.
+</p>
+
+<h3>Linux target</h3>
+
+<p>
+  If <code>ethtool</code> is installed, inspect the wired interface. Replace <code>enp3s0</code> with its actual name:
+</p>
+
+<pre><code class="language-bash">sudo ethtool enp3s0</code></pre>
+
+<p>
+  Under <code>Supports Wake-on</code>, the letter <code>g</code> means the adapter supports waking from a magic packet. Enable it for the current boot:
+</p>
+
+<pre><code class="language-bash">sudo ethtool -s enp3s0 wol g</code></pre>
+
+<p>
+  A network manager or driver reload may reset that setting. If NetworkManager controls the connection, make it persistent on that connection profile:
+</p>
+
+<pre><code class="language-bash">nmcli connection show
+sudo nmcli connection modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
+sudo nmcli connection up "Wired connection 1"</code></pre>
+
+<p>
+  Replace the profile name exactly. If systemd-networkd manages the interface instead, a <code>.link</code> file can use this shape:
+</p>
+
+<pre><code>[Match]
+MACAddress=a1:b2:c3:d4:e5:f6
+
+[Link]
+WakeOnLan=magic</code></pre>
+
+<p>
+  Configure the manager that actually owns the interface; do not layer several persistence mechanisms onto it without understanding which one wins.
+</p>
+
+<h3>Windows target</h3>
+
+<p>
+  After enabling the firmware option, open the network adapter in Device Manager. Its <strong>Advanced</strong> page commonly has <strong>Wake on Magic Packet</strong>; its <strong>Power Management</strong> page commonly has <strong>Allow this device to wake the computer</strong>. Names vary by driver.
+</p>
+
+<p>Administrator PowerShell can show and arm wake-capable devices:</p>
+
+<pre><code class="language-powershell">powercfg /devicequery wake_programmable
+powercfg /deviceenableawake "Exact adapter name"
+powercfg /devicequery wake_armed</code></pre>
+
+<p>
+  After an unexpected wake, <code>powercfg /lastwake</code> can help identify its source. Test sleep first, then explicit hibernation. Do not assume a normal Windows shutdown will remain remotely wakeable; Fast Startup and the fully off state have additional limitations even when the firmware advertises WoL.
+</p>
+
+<h3>macOS target</h3>
+
+<p>
+  In System Settings, enable <strong>Wake for network access</strong> under Battery or Energy Saver. The exact panel name depends on the macOS version. The equivalent power-management setting can be inspected and enabled from Terminal:
+</p>
+
+<pre><code class="language-bash">pmset -g custom
+sudo pmset -a womp 1</code></pre>
+
+<p>
+  <code>womp</code> means wake on magic packet. For an older MacBook, test while it is connected to power, using Ethernet if possible, and initially leave the lid open. Some Macs support Wake on Wireless; inspect the Wi-Fi report rather than assuming it:
+</p>
+
+<pre><code class="language-bash">system_profiler SPAirPortDataType | grep "Wake On Wireless"</code></pre>
+
+<p>
+  Apple's remote-wake behavior can also depend on whether the machines share a subnet or a Bonjour sleep proxy is present. This is another reason to establish the workflow on one local network first.
+</p>
+
+<h2>Test waking separately from building</h2>
+
+<ol>
+  <li>Confirm SSH works while the target is awake.</li>
+  <li>Put the target to sleep manually.</li>
+  <li>Send the magic packet from another machine.</li>
+  <li>Watch the target directly and confirm that it wakes.</li>
+  <li>Wait for SSH to become available.</li>
+</ol>
+
+<p>
+  After key authentication and the host key have already been set up, this loop waits until SSH is ready:
+</p>
+
+<pre><code class="language-bash">until ssh -o BatchMode=yes -o ConnectTimeout=2 build-mac true; do
+    sleep 2
+done</code></pre>
+
+<p>
+  <code>BatchMode=yes</code> prevents a hidden password or confirmation prompt from making an automation appear to hang. Only after sleep works should we test hibernation or shutdown, and only if the hardware documentation claims to support that state.
+</p>
+
+<h2>An on-demand build sequence</h2>
+
+<p>A simple local script can now perform the sequence explicitly:</p>
+
+<pre><code class="language-bash">#!/bin/sh
+set -eu
+
+./send-wol a1:b2:c3:d4:e5:f6 192.168.1.255
+
+until ssh -o BatchMode=yes -o ConnectTimeout=2 build-mac true; do
+    sleep 2
+done
+
+scp -r ./project build-mac:~/remote-build/
+ssh build-mac 'cd ~/remote-build/project &amp;&amp; ./build.sh'
+mkdir -p ./artifacts
+scp build-mac:~/remote-build/project/out/my-program ./artifacts/</code></pre>
+
+<p>
+  For Windows, replace the remote build command with the MSYS2 wrapper shown earlier. Real build scripts should also use a maximum wait time, preserve build logs, and stop before scheduling sleep or shutdown if copying the artifact fails.
+</p>
+
+<h2>Leave it available for 30 minutes, then power it down</h2>
+
+<p>
+  Schedule the final power action only <em>after</em> the artifact has been copied safely. The following commands request a shutdown in 30 minutes.
+</p>
+
+<p>Linux:</p>
+
+<pre><code class="language-bash">ssh -t linux-build 'sudo shutdown -h +30'
+
+# Cancel before it occurs:
+ssh -t linux-build 'sudo shutdown -c'</code></pre>
+
+<p>macOS:</p>
+
+<pre><code class="language-bash">ssh -t build-mac 'sudo shutdown -h +30'</code></pre>
+
+<p>Windows:</p>
+
+<pre><code class="language-bash">ssh windows-build 'shutdown.exe /s /t 1800'
+
+# Cancel before it occurs:
+ssh windows-build 'shutdown.exe /a'</code></pre>
+
+<p>
+  These commands really ask for shutdown. That satisfies “turn it off,” but it may also make the next arbitrary network wake impossible. For a machine meant to be used repeatedly on demand, configure its normal power policy to sleep, run the build under the operating system's sleep-inhibition facility, keep it inhibited for another 30 minutes, and then allow normal sleep:
+</p>
+
+<ul>
+  <li>On macOS, <code>caffeinate -i sh -c './build.sh; sleep 1800'</code> prevents idle sleep during the build and wait.</li>
+  <li>On a systemd Linux desktop, <code>systemd-inhibit --what=sleep sh -c './build.sh; sleep 1800'</code> serves the same purpose.</li>
+  <li>On Windows, use the machine's sleep power plan together with a narrowly scoped scheduled task or build agent that marks the build active and releases that request after 30 minutes.</li>
+</ul>
+
+<p>
+  After the inhibitor exits, the operating system's configured idle policy decides when to sleep. Exact unattended “sleep now” automation is privileged and OS-specific. Prefer a root-owned system service, macOS <code>launchd</code> job, or Windows scheduled task that can perform only this one action. Do not store an administrator password in a script and do not grant password-free access to an arbitrary shell merely to make power management convenient.
+</p>
+
+<h2>Connecting from outside the local network</h2>
+
+<p>
+  Broadcast Wake-on-LAN packets normally stay inside one local network, and exposing SSH or a Wake-on-LAN UDP port directly through a home router increases the attack surface. For remote use, connect to the home network through a VPN or keep a small, always-on machine there as an authenticated relay. That relay can send the local magic packet and provide a route to the build machine.
+</p>
+
+<p>
+  Do not forward a broadcast WoL port from the public Internet. The magic packet normally proves no identity, and routers deliberately restrict directed broadcasts.
+</p>
+
+<h2>What to check when it fails</h2>
+
+<ul>
+  <li><strong>Connection refused while awake:</strong> the address is reachable, but the SSH server is not listening or a local firewall rejected it.</li>
+  <li><strong>Connection times out while awake:</strong> recheck the address, Wi-Fi isolation, subnet, firewall, and whether both machines are actually on the same network.</li>
+  <li><strong>Password works but the key does not:</strong> recheck the remote account, <code>authorized_keys</code> location, ownership, and permissions. Windows administrator accounts use the special global file by default.</li>
+  <li><strong>Magic packet sends but nothing wakes:</strong> recheck the target interface's MAC address, directed broadcast address, firmware setting, driver setting, power state, Ethernet link lights, and whether the adapter remains powered.</li>
+  <li><strong>The target wakes but SSH is initially unavailable:</strong> booting and acquiring an address takes time; use the bounded retry loop rather than one immediate SSH attempt.</li>
+  <li><strong>The target cannot be woken after shutdown:</strong> retest from sleep. The fully off state is not portable Wake-on-LAN behavior.</li>
+</ul>
+
+<h2>Further reading</h2>
+
+<ul>
+  <li><a href="linux/allowing_ssh_access_between_linux_computers.html">Allowing SSH access between Linux computers</a> — a closer look at accounts, keys, <code>ssh-copy-id</code>, and rented Linux servers.</li>
+  <li><a href="linux/sending_files_between_linux_computers.html">Sending files between Linux computers</a> — repeated file transfers with <code>rsync</code>.</li>
+  <li><a href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse">Microsoft: Get started with OpenSSH Server for Windows</a>.</li>
+  <li><a href="https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-server-configuration">Microsoft: OpenSSH Server configuration for Windows</a>.</li>
+  <li><a href="https://learn.microsoft.com/en-us/troubleshoot/windows-client/setup-upgrade-and-drivers/wake-on-lan-feature">Microsoft: Wake-on-LAN behavior</a>.</li>
+  <li><a href="https://support.apple.com/guide/mac-help/allow-a-remote-computer-to-access-your-mac-mchlp1066/mac">Apple: Allow a remote computer to access your Mac</a>.</li>
+  <li><a href="https://support.apple.com/en-gb/guide/mac-help/mh27905/mac">Apple: Share your Mac resources when it is in sleep</a>.</li>
+  <li><a href="https://packages.msys2.org/packages/openssh">MSYS2 OpenSSH package</a> and <a href="https://www.msys2.org/wiki/Launchers/">MSYS2 launcher documentation</a>.</li>
+  <li><a href="https://man7.org/linux/man-pages/man8/ethtool.8.html">Linux <code>ethtool</code> manual</a>, <a href="https://networkmanager.pages.freedesktop.org/NetworkManager/NetworkManager/nm-settings-nmcli.html">NetworkManager settings</a>, and <a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.link">systemd.link documentation</a>.</li>
+</ul>
